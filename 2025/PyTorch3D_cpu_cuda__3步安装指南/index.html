@@ -1,0 +1,785 @@
+<!DOCTYPE html>
+<html lang="zh-CN,en,default">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" href="/lib/pace/pace-theme-minimal.min.css">
+  <script src="/lib/pace/pace.min.js"></script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"blog.mviai.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":true,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":true,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="自动摘要: 	系统环境：	Windows10+Python3.9+cuda11.6+VisualStudio2019+PyTorch13.1	 ……..">
+<meta property="og:type" content="article">
+<meta property="og:title" content="PyTorch3D_cpu_cuda__3步安装指南">
+<meta property="og:url" content="http://blog.mviai.com/2025/PyTorch3D_cpu_cuda__3%E6%AD%A5%E5%AE%89%E8%A3%85%E6%8C%87%E5%8D%97/index.html">
+<meta property="og:site_name" content="落叶无痕">
+<meta property="og:description" content="自动摘要: 	系统环境：	Windows10+Python3.9+cuda11.6+VisualStudio2019+PyTorch13.1	 ……..">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://blog.mviai.com/images/1677142593761-a43944aa-1e6e-4ddd-acfd-6fc377539261.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1677143928318-23a24432-3b39-49fe-9b90-068bcc7c6811.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1677143935751-35c30a15-e675-428d-9ee6-867c747e74ab.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1677049061014-355201ba-6db1-4af1-b06b-a0cdaffb8b8d.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1677046446024-273c9f72-3720-405c-a22f-458e43479108.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1677122330096-7d99a75a-8ac5-41b5-863a-03fc1c48da29.png">
+<meta property="article:published_time" content="2025-01-22T04:37:39.000Z">
+<meta property="article:modified_time" content="2025-01-22T12:37:39.831Z">
+<meta property="article:author" content="SindreYang">
+<meta property="article:tag" content="生活">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://blog.mviai.com/images/1677142593761-a43944aa-1e6e-4ddd-acfd-6fc377539261.png">
+
+<link rel="canonical" href="http://blog.mviai.com/2025/PyTorch3D_cpu_cuda__3%E6%AD%A5%E5%AE%89%E8%A3%85%E6%8C%87%E5%8D%97/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>PyTorch3D_cpu_cuda__3步安装指南 | 落叶无痕</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">落叶无痕</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类<span class="badge">72</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档<span class="badge">321</span></a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+  <span class="exturl github-corner" data-url="aHR0cHM6Ly9naXRodWIuY29tL1NpbmRyZVlhbmc=" title="Follow me on GitHub" aria-label="Follow me on GitHub"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></span>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://blog.mviai.com/2025/PyTorch3D_cpu_cuda__3%E6%AD%A5%E5%AE%89%E8%A3%85%E6%8C%87%E5%8D%97/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="SindreYang">
+      <meta itemprop="description" content="沉淀后我愿意做一个温暖的人。有自己的喜好，有自己的原则，有自己的信仰，不急功近利，不浮夸轻薄，宠辱不惊，淡定安逸，心静如水。------不忘初心，方得始终">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="落叶无痕">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          PyTorch3D_cpu_cuda__3步安装指南
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2025-01-22 12:37:39 / 修改时间：20:37:39" itemprop="dateCreated datePublished" datetime="2025-01-22T12:37:39+08:00">2025-01-22</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E9%97%AE%E9%A2%98%E9%9B%86%E9%94%A6/" itemprop="url" rel="index"><span itemprop="name">问题集锦</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">Changyan：</span>
+    
+    
+      <a title="changyan" href="/2025/PyTorch3D_cpu_cuda__3%E6%AD%A5%E5%AE%89%E8%A3%85%E6%8C%87%E5%8D%97/#SOHUCS" itemprop="discussionUrl">
+        <span id="changyan_count_unit" class="post-comments-count hc-comment-count" data-xid="2025/PyTorch3D_cpu_cuda__3步安装指南/" itemprop="commentCount"></span>
+      </a>
+    
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>自动摘要: 	系统环境：	Windows10+<strong>Python3.9</strong>+<strong>cuda11.6</strong>+<strong>VisualStudio2019</strong>+PyTorch13.1	 ……..</p>
+<span id="more"></span>
+
+<h1 id="系统环境："><a href="#系统环境：" class="headerlink" title="系统环境："></a>系统环境：</h1><ul>
+<li>Windows 10 + <strong>Python 3.9</strong> + <strong>cuda 11.6</strong> + <strong>Visual Studio 2019</strong> + PyTorch 13.1<ul>
+<li><p>因为window版需要<strong>cuda的nvcc，所以需要从NVIDIA官网下载2GB的cuda toolkit，</strong>conda安装的只是cuda运行库，不是工具包。</p>
+</li>
+<li><p><strong>因为需要编译文件，所以需要vs的cl.exe</strong>, vs2019只安装编译工具：<span class="exturl" data-url="aHR0cHM6Ly9sZWFybi5taWNyb3NvZnQuY29tL3poLWNuL3Zpc3VhbHN0dWRpby9yZWxlYXNlcy8yMDE5L2hpc3Rvcnk=" title="https://learn.microsoft.com/zh-cn/visualstudio/releases/2019/history">https://learn.microsoft.com/zh-cn/visualstudio/releases/2019/history<i class="fa fa-external-link"></i></span> ，安装后选择C++开发，语言里勾选英文。</p>
+</li>
+<li><p><img src="/images/1677142593761-a43944aa-1e6e-4ddd-acfd-6fc377539261.png"></p>
+</li>
+<li><p><img src="/images/1677143928318-23a24432-3b39-49fe-9b90-068bcc7c6811.png"></p>
+</li>
+</ul>
+</li>
+</ul>
+<p><img src="/images/1677143935751-35c30a15-e675-428d-9ee6-867c747e74ab.png"></p>
+<ul>
+<li>如果是**linux(无论是cpu&#x2F;cuda)**，直接运行以下命令即可<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">conda install pytorch3d <span class="literal">-c</span> pytorch3d</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h1 id="安装步骤："><a href="#安装步骤：" class="headerlink" title="安装步骤："></a>安装步骤：</h1><ol>
+<li><p><strong>按照PyTorch官网 <strong><a href="https://link.zhihu.com/?target=https://pytorch.org/"><strong>https://pytorch.org/</strong></a></strong> 的说明，下载与系统cuda版本对应的PyTorch。</strong></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">conda create -n pytorch3d python=3.9 </span><br><span class="line">conda activate pytorch3d</span><br><span class="line">conda install pytorch torchvision torchaudio pytorch-cuda=11.6 -c pytorch -c nvidia</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>参考 PyTorch3D 说明文档</strong><a href="https://github.com/facebookresearch/pytorch3d/blob/main/INSTALL.md"><strong>https://github.com/facebookresearch/pytorch3d/blob/main/INSTALL.md</strong></a><strong>，进行配置。</strong></p>
+</li>
+</ol>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">conda install <span class="literal">-c</span> fvcore <span class="literal">-c</span> iopath <span class="literal">-c</span> conda<span class="literal">-forge</span> fvcore iopath		</span><br></pre></td></tr></table></figure>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip install <span class="string">&quot;git+https://github.com/facebookresearch/pytorch3d.git&quot;</span>	</span><br></pre></td></tr></table></figure>
+
+<ol start="3">
+<li><strong>安装完成，如图</strong></li>
+</ol>
+<p><img src="/images/1677049061014-355201ba-6db1-4af1-b06b-a0cdaffb8b8d.png"></p>
+<h1 id="如遇到错误，请看下文："><a href="#如遇到错误，请看下文：" class="headerlink" title="如遇到错误，请看下文："></a>如遇到错误，请看下文：</h1><hr>
+<ol start="3">
+<li><strong>可能有以下报错</strong>：<ol>
+<li><p><img src="/images/1677046446024-273c9f72-3720-405c-a22f-458e43479108.png"></p>
+</li>
+<li><p><strong>解决方法：</strong><span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2ZhY2Vib29rcmVzZWFyY2gvcHl0b3JjaDNkL2lzc3Vlcy8xMzk4" title="https://github.com/facebookresearch/pytorch3d/issues/1398">https://github.com/facebookresearch/pytorch3d/issues/1398<i class="fa fa-external-link"></i></span>，原因cuda版本建议cuda11.3或者cuda11.7，cuda11.6就会报这个错。在“C:\Users\sindre\AppData\Local\Temp\pip-req-build-senb7u_k\pytorch3d\csrc\marching_cubes”（根据pip安装在哪里，自己修改对应路径）<strong>替换同名</strong><span class="exturl" data-url="aHR0cHM6Ly93d3cueXVxdWUuY29tL2F0dGFjaG1lbnRzL3l1cXVlLzAvMjAyMy90eHQvMjIyMTA5MTkvMTY3NzA0ODEyMjY1MC1hYjk0MDk4ZC1jNjJlLTRiZmQtODI1NS0yMDJiYjUxOWU3OTAudHh0P19sYWtlX2NhcmQ9JTdCJTIyc3JjJTIyOiUyMmh0dHBzOi8vd3d3Lnl1cXVlLmNvbS9hdHRhY2htZW50cy95dXF1ZS8wLzIwMjMvdHh0LzIyMjEwOTE5LzE2NzcwNDgxMjI2NTAtYWI5NDA5OGQtYzYyZS00YmZkLTgyNTUtMjAyYmI1MTllNzkwLnR4dCUyMiwlMjJuYW1lJTIyOiUyMm1hcmNoaW5nX2N1YmVzLmN1LnR4dCUyMiwlMjJzaXplJTIyOjIxMzc3LCUyMmV4dCUyMjolMjJ0eHQlMjIsJTIyc291cmNlJTIyOiUyMiUyMiwlMjJzdGF0dXMlMjI6JTIyZG9uZSUyMiwlMjJkb3dubG9hZCUyMjp0cnVlLCUyMnRhc2tJZCUyMjolMjJ1YTNjMjVmOTYtMjE4Yi00YzJkLTk3MTctYWNiZGRjODIzYTAlMjIsJTIydGFza1R5cGUlMjI6JTIydXBsb2FkJTIyLCUyMnR5cGUlMjI6JTIydGV4dC9wbGFpbiUyMiwlMjJfX3NwYWNpbmclMjI6JTIyYm90aCUyMiwlMjJtb2RlJTIyOiUyMnRpdGxlJTIyLCUyMmlkJTIyOiUyMnU5ZDRmYmQ3NCUyMiwlMjJtYXJnaW4lMjI6JTdCJTIydG9wJTIyOnRydWUsJTIyYm90dG9tJTIyOnRydWUlN0QsJTIyY2FyZCUyMjolMjJmaWxlJTIyJTdE" title="https://www.yuque.com/attachments/yuque/0/2023/txt/22210919/1677048122650-ab94098d-c62e-4bfd-8255-202bb519e790.txt?_lake_card=%7B%22src%22:%22https://www.yuque.com/attachments/yuque/0/2023/txt/22210919/1677048122650-ab94098d-c62e-4bfd-8255-202bb519e790.txt%22,%22name%22:%22marching_cubes.cu.txt%22,%22size%22:21377,%22ext%22:%22txt%22,%22source%22:%22%22,%22status%22:%22done%22,%22download%22:true,%22taskId%22:%22ua3c25f96-218b-4c2d-9717-acbddc823a0%22,%22taskType%22:%22upload%22,%22type%22:%22text/plain%22,%22__spacing%22:%22both%22,%22mode%22:%22title%22,%22id%22:%22u9d4fbd74%22,%22margin%22:%7B%22top%22:true,%22bottom%22:true%7D,%22card%22:%22file%22%7D">marching_cubes.cu.txt<i class="fa fa-external-link"></i></span>（记得去除尾缀txt)</p>
+</li>
+<li><p><img src="/images/1677122330096-7d99a75a-8ac5-41b5-863a-03fc1c48da29.png"></p>
+</li>
+<li><p><strong>解决方法：</strong></p>
+<ol>
+<li>网络问题，可以添加steam++，加速git访问;</li>
+<li>也可以换成国内镜像加速下载：</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip install &quot;git+https://kgithub.com/facebookresearch/pytorch3d.git&quot;</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h1 id="如果要离线安装，请看下文："><a href="#如果要离线安装，请看下文：" class="headerlink" title="如果要离线安装，请看下文："></a>如果要离线安装，请看下文：</h1><ul>
+<li>如果要<strong>离线编译</strong>，则按照以下进行编译<ol>
+<li><strong>注意（低于cuda11.7需安装cub依赖)：</strong><ol>
+<li>下载NVIDIA CUB:<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL05WSURJQS9jdWIvcmVsZWFzZXM=" title="https://github.com/NVIDIA/cub/releases">https://github.com/NVIDIA/cub/releases<i class="fa fa-external-link"></i></span>，然后解压。我从Release里下载了0.17.2版本。</li>
+<li>设置环境变量 CUB_HOME&#x3D;解压目录。可以在cmd里执行 <strong>set CUB_HOME&#x3D;解压目录</strong>，也可以在系统设置里弄。</li>
+<li>下载源码包<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2ZhY2Vib29rcmVzZWFyY2gvcHl0b3JjaDNkL3JlbGVhc2VzL3RhZy92MC43LjI=" title="https://github.com/facebookresearch/pytorch3d/releases/tag/v0.7.2">https://github.com/facebookresearch/pytorch3d/releases/tag/v0.7.2<i class="fa fa-external-link"></i></span>，然后运行</li>
+</ol>
+</li>
+</ol>
+</li>
+</ul>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> pytorch3d</span><br><span class="line">python3 setup.py install</span><br></pre></td></tr></table></figure>
+
+<pre><code>     - 如果编译的时候报了以下的错误（原因是你的cuda已经含有cub，要么重新取消CUB_HOME环境变量，要么强制安装），**下面是强制安装方法**
+</code></pre>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">fatal error C1189: #error:  The version of CUB in your include path is not compatible with this release of Thrust.</span><br><span class="line">CUB is now included in the CUDA Toolkit, so you no longer need to use your own checkout of CUB.</span><br><span class="line">Define THRUST_IGNORE_CUB_VERSION_CHECK to ignore this.</span><br></pre></td></tr></table></figure>
+
+<pre><code>     - 强制修改cuda源文件config.h（在C盘cuda工具包下），找到这一部分
+</code></pre>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">ifndef</span> THRUST_IGNORE_CUB_VERSION_CHECK <span class="comment">//添加这行，代表不使用内置cub，注意ifndef 需要于endif配对</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;thrust/version.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;cub/util_namespace.cuh&gt;</span> <span class="comment">// This includes &lt;cub/version.cuh&gt; in newer releases.</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">if</span> THRUST_VERSION != CUB_VERSION</span></span><br><span class="line"><span class="meta">#<span class="keyword">error</span> The version of CUB in your <span class="keyword">include</span> path is not compatible with this release of Thrust. CUB is now included in the CUDA Toolkit, so you no longer need to use your own checkout of CUB. Define THRUST_IGNORE_CUB_VERSION_CHECK to ignore this.</span></span><br><span class="line"><span class="meta">#<span class="keyword">endif</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">endif</span></span></span><br></pre></td></tr></table></figure>
+
+<pre><code>  1. 测试：
+     1. 安装以下依赖，供测试程序运行，不然容易造成测试不通过；
+</code></pre>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">conda install jupyter</span><br><span class="line">pip install scikit<span class="literal">-image</span> matplotlib imageio plotly opencv<span class="literal">-python</span> black usort flake8 flake8<span class="literal">-bugbear</span> flake8<span class="literal">-comprehensions</span></span><br><span class="line">python <span class="literal">-m</span> unittest discover <span class="literal">-v</span> <span class="literal">-s</span> tests <span class="literal">-t</span> .</span><br></pre></td></tr></table></figure>
+
+
+    </div>
+
+    
+    
+    
+        <div class="reward-container">
+  <div></div>
+  <button onclick="var qr = document.getElementById('qr'); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/images/wechatpay.png" alt="SindreYang 微信支付">
+        <p>微信支付</p>
+      </div>
+      
+      <div style="display: inline-block;">
+        <img src="/images/alipay.png" alt="SindreYang 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>SindreYang
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://blog.mviai.com/2025/PyTorch3D_cpu_cuda__3%E6%AD%A5%E5%AE%89%E8%A3%85%E6%8C%87%E5%8D%97/" title="PyTorch3D_cpu_cuda__3步安装指南">http://blog.mviai.com/2025/PyTorch3D_cpu_cuda__3步安装指南/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <span class="exturl" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC9kZWVkLnpo"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</span> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+        
+
+  <div class="followme">
+    <p>欢迎关注我的其它发布渠道</p>
+
+    <div class="social-list">
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="/images/wechat.png">
+            <span class="icon">
+              <i class="fa fa-wechat"></i>
+            </span>
+
+            <span class="label">WeChat</span>
+          </a>
+        </div>
+    </div>
+  </div>
+
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2025/VCG%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/" rel="prev" title="VCG基础知识">
+      <i class="fa fa-chevron-left"></i> VCG基础知识
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2025/PointNet_%E7%94%A8%E4%BA%8E%E7%82%B9%E4%BA%91%E7%9A%84%E5%88%86%E7%B1%BB%E5%92%8C%E5%88%86%E5%89%B2%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/" rel="next" title="PointNet_用于点云的分类和分割深度学习">
+      PointNet_用于点云的分类和分割深度学习 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    
+  <div class="comments">
+    <div id="SOHUCS"></div>
+  </div>
+  
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%B3%BB%E7%BB%9F%E7%8E%AF%E5%A2%83%EF%BC%9A"><span class="nav-number">1.</span> <span class="nav-text">系统环境：</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%AE%89%E8%A3%85%E6%AD%A5%E9%AA%A4%EF%BC%9A"><span class="nav-number">2.</span> <span class="nav-text">安装步骤：</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%A6%82%E9%81%87%E5%88%B0%E9%94%99%E8%AF%AF%EF%BC%8C%E8%AF%B7%E7%9C%8B%E4%B8%8B%E6%96%87%EF%BC%9A"><span class="nav-number">3.</span> <span class="nav-text">如遇到错误，请看下文：</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%A6%82%E6%9E%9C%E8%A6%81%E7%A6%BB%E7%BA%BF%E5%AE%89%E8%A3%85%EF%BC%8C%E8%AF%B7%E7%9C%8B%E4%B8%8B%E6%96%87%EF%BC%9A"><span class="nav-number">4.</span> <span class="nav-text">如果要离线安装，请看下文：</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="SindreYang"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">SindreYang</p>
+  <div class="site-description" itemprop="description">沉淀后我愿意做一个温暖的人。有自己的喜好，有自己的原则，有自己的信仰，不急功近利，不浮夸轻薄，宠辱不惊，淡定安逸，心静如水。------不忘初心，方得始终</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">321</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">72</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL1NpbmRyZVlhbmc=" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;SindreYang"><i class="fa fa-fw fa-github"></i>GitHub</span>
+      </span>
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="bWFpbHRvOnl4QG12aWFpLmNvbQ==" title="E-Mail → mailto:yx@mviai.com"><i class="fa fa-fw fa-envelope"></i>E-Mail</span>
+      </span>
+  </div>
+  <div class="cc-license motion-element" itemprop="license">
+    <span class="exturl cc-opacity" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC9kZWVkLnpo"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+  <div class="languages">
+    <label class="lang-select-label">
+      <i class="fa fa-language"></i>
+      <span>简体中文</span>
+      <i class="fa fa-angle-up" aria-hidden="true"></i>
+    </label>
+    <select class="lang-select" data-canonical="">
+      
+        <option value="zh-CN" data-href="/2025/PyTorch3D_cpu_cuda__3%E6%AD%A5%E5%AE%89%E8%A3%85%E6%8C%87%E5%8D%97/" selected="">
+          简体中文
+        </option>
+      
+        <option value="en" data-href="/en/2025/PyTorch3D_cpu_cuda__3%E6%AD%A5%E5%AE%89%E8%A3%85%E6%8C%87%E5%8D%97/" selected="">
+          English
+        </option>
+      
+    </select>
+  </div>
+
+        
+
+<div class="copyright">
+  
+  &copy; 2018 – 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">SindreYang</span>
+</div><!-- 页面点击小红心 -->
+<script type="text/javascript" src="/js/love.js"></script>
+<!-- 背景波浪 -->
+<script color="0,0,255" opacity="0.5" zIndex="-1" count="99" src="https://cdn.jsdelivr.net/npm/canvas-nest.js@1/dist/canvas-nest.js"></script>
+
+
+<!-- 腾讯企业邮箱 -->
+<style>
+.bizmail_loginpanel {
+    font-size: 12px;
+    width: 300px;
+    height: auto;
+    background: transparent;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.bizmail_LoginBox {
+    padding: 10px 15px;
+}
+
+
+.bizmail_loginpanel form {
+    margin: 0;
+    padding: 0;
+}
+
+.bizmail_loginpanel input.text {
+    font-size: 12px;
+    width: 100px;
+    height: 20px;
+    margin: 0 2px;
+    background-color: transparent;
+    border:1px solid transparent;
+    box-shadow: none;
+    color: black;
+}
+
+.bizmail_loginpanel .bizmail_column {
+    height: 28px;
+}
+
+.bizmail_loginpanel .bizmail_column label {
+    display: block;
+    float: left;
+    width: 30px;
+    height: 24px;
+    line-height: 24px;
+    font-size: 12px;
+}
+
+.bizmail_loginpanel .bizmail_column .bizmail_inputArea {
+    float: left;
+    width: 240px;
+}
+
+.bizmail_loginpanel .bizmail_column span {
+    font-size: 12px;
+    word-wrap: break-word;
+    margin-left: 2px;
+    line-height: 200%;
+}
+
+.bizmail_loginpanel .bizmail_SubmitArea {
+    margin-left: 30px;
+    clear: both;
+}
+
+.bizmail_loginpanel .bizmail_SubmitArea a {
+    font-size: 12px;
+    margin-left: 5px;
+}
+
+.bizmail_loginpanel select {
+    width: 110px;
+    height: 20px;
+    margin: 0 2px;
+}
+.bizmail_loginpanel input {
+
+    background-color: rgba(83, 126, 236, 0.562);
+}
+
+
+</style>
+
+<script type="text/javascript">
+function checkInput() {
+    var e = document.form1.uin,
+        i = document.form1.pwd;
+    return 0 == e.value.length ? e.focus() : 0 == i.value.length ? i.focus() : (document.form1.submit(), setTimeout(" document.form1.pwd.value = '' ", 500)), !1
+}
+
+function writeLoginPanel(e) {
+    if (e && e.domainlist && -1 != e.domainlist.indexOf(".")) {
+        var a = "return checkInput()",
+            t = '<div id="divLoginpanelHor" class="bizmail_loginpanel" style="width:550px;"><div class="bizmail_LoginBox"><form name="form1" action="https://exmail.qq.com/cgi-bin/login" target="_blank" method="post" onsubmit="' + a + '"><input type="hidden" name="firstlogin" value="false" /><input type="hidden" name="errtemplate" value="dm_loginpage" /><input type="hidden" name="aliastype" value="other" /><input type="hidden" name="dmtype" value="bizmail" /><input type="hidden" name="p" value="" /><label>\u8d26\u53f7:</label><input type="text" name="uin" class="text" value="" />@#domainlist#<label>&nbsp&nbsp&nbsp;\u5bc6\u7801:</label><input type="password" name="pwd" class="text" value="" /><input type="submit" class="" name="" value="\u767b\u5f55" />&nbsp;<a href="https://exmail.qq.com/cgi-bin/readtemplate?check=false&t=biz_rf_portal#recovery" target="_blank">\u5fd8\u8bb0\u5bc6\u7801\uff1f</a></form></div></div>',
+            n = '<div id="divLoginpanelVer" class="bizmail_loginpanel"><div class="bizmail_LoginBox"><form name="form1" action="https://exmail.qq.com/cgi-bin/login" target="_blank" method="post" onsubmit="' + a + '"><input type="hidden" name="firstlogin" value="false" /><input type="hidden" name="errtemplate" value="dm_loginpage" /><input type="hidden" name="aliastype" value="other" /><input type="hidden" name="dmtype" value="bizmail" /><input type="hidden" name="p" value="" /><div class="bizmail_column"><label>\u8d26\u53f7:</label><div class="bizmail_inputArea"><input type="text" name="uin" class="text" value="" />@#domainlist#</div></div><div class="bizmail_column"><label>\u5bc6\u7801:</label><div class="bizmail_inputArea"><input type="password" name="pwd" class="text" value="" /></div></div><div class="bizmail_SubmitArea"><input type="submit" class="" name="" style="width:66px;" value="\u767b\u5f55" /><a href="https://exmail.qq.com/cgi-bin/readtemplate?check=false&t=biz_rf_portal#recovery" target="_blank">\u5fd8\u8bb0\u5bc6\u7801\uff1f</a></div></form></div></div>',
+            l = e.domainlist.split(";");
+        if (1 == l.length) var m = '<span>#domain#</span><input type="hidden" name="domain" value="#domain#" />'.replace(/#domain#/g, l[0]);
+        else {
+            m = '<select name="domain">';
+            for (i = 0; i < l.length; i++) m += '<option value="' + l[i] + '">' + l[i] + "</option>";
+            m += "</select>"
+        }
+        e.mode && "vertical" != e.mode && "both" != e.mode || document.write(n.replace(/#domainlist#/g, m)), "horizontal" != e.mode && "both" != e.mode || document.write(t.replace(/#domainlist#/g, m))
+    }
+}
+
+</script>      
+
+<script type="text/javascript"> writeLoginPanel({domainlist:"mviai.com", mode:"horizontal"});</script>      
+
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script size="300" alpha="0.6" zIndex="-1" src="/lib/canvas-ribbon/canvas-ribbon.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/medium-zoom@1/dist/medium-zoom.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+  <script defer src="/lib/three/three.min.js"></script>
+    <script defer src="/lib/three/three-waves.min.js"></script>
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+<script>
+document.querySelectorAll('.pdfobject-container').forEach(element => {
+  let url = element.dataset.target;
+  let pdfOpenParams = {
+    navpanes : 0,
+    toolbar  : 0,
+    statusbar: 0,
+    pagemode : 'thumbs',
+    view     : 'FitH'
+  };
+  let pdfOpenFragment = '#' + Object.entries(pdfOpenParams).map(([key, value]) => `${key}=${encodeURIComponent(value)}`).join('&');
+  let fullURL = `/lib/pdf/web/viewer.html?file=${encodeURIComponent(url)}${pdfOpenFragment}`;
+
+  if (NexT.utils.supportsPDFs()) {
+    element.innerHTML = `<embed class="pdfobject" src="${url + pdfOpenFragment}" type="application/pdf" style="height: ${element.dataset.height};">`;
+  } else {
+    element.innerHTML = `<iframe src="${fullURL}" style="height: ${element.dataset.height};" frameborder="0"></iframe>`;
+  }
+});
+</script>
+
+
+
+
+  
+
+  
+
+  <script>
+  NexT.utils.loadComments(document.querySelector('#SOHUCS'), () => {
+    var appid = 'cyxmItxjS';
+    var conf = 'e5e71132d9086bb54aeeba6e88e87df9';
+    var width = window.innerWidth || document.documentElement.clientWidth;
+    if (width < 960) {
+      window.document.write('<script id="changyan_mobile_js" charset="utf-8" type="text/javascript" src="https://cy-cdn.kuaizhan.com/upload/mobile/wap-js/changyan_mobile.js?client_id=' + appid + '&conf=' + conf + '"><\/script>');
+    } else {
+      var loadJs=function(d,a){var c=document.getElementsByTagName("head")[0]||document.head||document.documentElement;var b=document.createElement("script");b.setAttribute("type","text/javascript");b.setAttribute("charset","UTF-8");b.setAttribute("src",d);if(typeof a==="function"){if(window.attachEvent){b.onreadystatechange=function(){var e=b.readyState;if(e==="loaded"||e==="complete"){b.onreadystatechange=null;a()}}}else{b.onload=a}}c.appendChild(b)};loadJs("https://changyan.sohu.com/upload/changyan.js",function(){window.changyan.api.config({appid:appid,conf:conf})});
+    }
+  });
+  </script>
+  <script src="https://cy-cdn.kuaizhan.com/upload/plugins/plugins.count.js"></script>
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/z16.model.json"},"display":{"position":"left","width":75,"height":150},"mobile":{"show":true},"log":false});</script></body>
+</html>
+
+
+
+

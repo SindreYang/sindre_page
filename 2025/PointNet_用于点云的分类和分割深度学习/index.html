@@ -1,0 +1,1554 @@
+<!DOCTYPE html>
+<html lang="zh-CN,en,default">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" href="/lib/pace/pace-theme-minimal.min.css">
+  <script src="/lib/pace/pace.min.js"></script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"blog.mviai.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":true,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":true,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="自动摘要: 	摘要	点云是几何数据结构的一种重要类型。由于其不规则的格式，大多数研究人员将此类数据转换为常规3D体素网格或图像集合。然而，这使得数据不必要地庞大，并导致问题。在本文中，我们设计了一种新型的直 ……..">
+<meta property="og:type" content="article">
+<meta property="og:title" content="PointNet_用于点云的分类和分割深度学习">
+<meta property="og:url" content="http://blog.mviai.com/2025/PointNet_%E7%94%A8%E4%BA%8E%E7%82%B9%E4%BA%91%E7%9A%84%E5%88%86%E7%B1%BB%E5%92%8C%E5%88%86%E5%89%B2%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/index.html">
+<meta property="og:site_name" content="落叶无痕">
+<meta property="og:description" content="自动摘要: 	摘要	点云是几何数据结构的一种重要类型。由于其不规则的格式，大多数研究人员将此类数据转换为常规3D体素网格或图像集合。然而，这使得数据不必要地庞大，并导致问题。在本文中，我们设计了一种新型的直 ……..">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://blog.mviai.com/images/1636966503785-1c174523-708d-45dc-9646-4d9ef66dd76c.png">
+<meta property="og:image" content="http://blog.mviai.com/images/cf048f74f71721abd7b8df49453d1310.svg">
+<meta property="og:image" content="http://blog.mviai.com/images/cf048f74f71721abd7b8df49453d1310.svg">
+<meta property="og:image" content="http://blog.mviai.com/images/1636971040917-b568db7d-5be6-44ad-a46d-2570b36c84c1.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1638864759586-a1c725c6-efd4-4631-a03b-36483428a7cf.png">
+<meta property="og:image" content="http://blog.mviai.com/images/7f0d8c03a90d4f8609bf34ebe5b6b2ba.svg">
+<meta property="og:image" content="http://blog.mviai.com/images/71b7c855c7ff9d1e23b922c9394a4f57.svg">
+<meta property="og:image" content="http://blog.mviai.com/images/af845b027b02ef533ed29d6fe325909d.svg">
+<meta property="og:image" content="http://blog.mviai.com/images/2510c39011c5be704182423e3a695e91.svg">
+<meta property="og:image" content="http://blog.mviai.com/images/2510c39011c5be704182423e3a695e91.svg">
+<meta property="og:image" content="http://blog.mviai.com/images/8fa14cdd754f91cc6554c9e71929cce7.svg">
+<meta property="og:image" content="http://blog.mviai.com/images/3192bf8f574dbdb1009a852df3810922.svg">
+<meta property="og:image" content="http://blog.mviai.com/images/bbeff57721ed3ad262bbf34fa967bffa.svg">
+<meta property="og:image" content="http://blog.mviai.com/images/f2e6327379caffa26ddae0b66045d7bb.svg">
+<meta property="og:image" content="http://blog.mviai.com/images/02129bb861061d1a052c592e2dc6b383.svg">
+<meta property="og:image" content="http://blog.mviai.com/images/7497ef81cc546252a1191c7da993e593.svg">
+<meta property="og:image" content="http://blog.mviai.com/images/4676170b5ab72fe3629b01030177a16e.svg">
+<meta property="og:image" content="http://blog.mviai.com/images/8fa14cdd754f91cc6554c9e71929cce7.svg">
+<meta property="og:image" content="http://blog.mviai.com/images/a5f3c6a11b03839d46af9fb43c97c188.svg">
+<meta property="og:image" content="http://blog.mviai.com/images/74b83401ca610b067c321112a30fa424.svg">
+<meta property="og:image" content="http://blog.mviai.com/images/765e492df867d1ab17b0f61edcea9ab1.svg">
+<meta property="og:image" content="http://blog.mviai.com/images/95a1fe7f64355c7936193ba770968cf8.svg">
+<meta property="og:image" content="http://blog.mviai.com/images/a3b70344994dfd4185264d2dce7a70ed.svg">
+<meta property="og:image" content="http://blog.mviai.com/images/5dbc98dcc983a70728bd082d1a47546e.svg">
+<meta property="og:image" content="http://blog.mviai.com/images/ae539dfcc999c28e25a0f3ae65c1de79.svg">
+<meta property="og:image" content="http://blog.mviai.com/images/26a4b44a837bf97b972628509912b4a5.svg">
+<meta property="og:image" content="http://blog.mviai.com/images/8fa14cdd754f91cc6554c9e71929cce7.svg">
+<meta property="og:image" content="http://blog.mviai.com/images/8fa14cdd754f91cc6554c9e71929cce7.svg">
+<meta property="og:image" content="http://blog.mviai.com/images/ccfee76667d31a4d7c597d1b94272e3d.svg">
+<meta property="og:image" content="http://blog.mviai.com/images/082623791cd4a378e842f2aa276c45dc.svg">
+<meta property="og:image" content="http://blog.mviai.com/images/58d644a18643064eb4785fdbadbf27dc.svg">
+<meta property="og:image" content="http://blog.mviai.com/images/b2ecd93fec7062868b1f52e6a8eeaaa4.svg">
+<meta property="og:image" content="http://blog.mviai.com/images/98bf7dd67e227162ce354f74746d867b.svg">
+<meta property="og:image" content="http://blog.mviai.com/images/df2e34d3231041da6d269c0e53908a19.svg">
+<meta property="og:image" content="http://blog.mviai.com/images/b106d796ce40362c3dbe199481328fcb.svg">
+<meta property="og:image" content="http://blog.mviai.com/images/8fa14cdd754f91cc6554c9e71929cce7.svg">
+<meta property="og:image" content="http://blog.mviai.com/images/2510c39011c5be704182423e3a695e91.svg">
+<meta property="og:image" content="http://blog.mviai.com/images/1638856647865-c3641ea1-5eaf-431d-b71b-2062c0d45ded.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1638863930305-58cf750d-a0ef-47e7-a91f-cad1b943e86c.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1638864759586-a1c725c6-efd4-4631-a03b-36483428a7cf.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1638865032976-4537570d-7f3a-49b4-a26c-fe49ec9a128a.png">
+<meta property="og:image" content="http://blog.mviai.com/images/98bf7dd67e227162ce354f74746d867b.svg">
+<meta property="og:image" content="http://blog.mviai.com/images/98bf7dd67e227162ce354f74746d867b.svg">
+<meta property="og:image" content="http://blog.mviai.com/images/98bf7dd67e227162ce354f74746d867b.svg">
+<meta property="og:image" content="http://blog.mviai.com/images/df2e34d3231041da6d269c0e53908a19.svg">
+<meta property="og:image" content="http://blog.mviai.com/images/d60b395645b16b8b64e19d9a741fc6d9.svg">
+<meta property="og:image" content="http://blog.mviai.com/images/a0982f0f4fddb7497cce99374436c382.svg">
+<meta property="og:image" content="http://blog.mviai.com/images/83878c91171338902e0fe0fb97a8c47a.svg">
+<meta property="og:image" content="http://blog.mviai.com/images/1638865970282-13f07930-e410-41a9-8f6b-c6d873147481.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1638868730839-9bd27f79-bdd2-4216-ae3e-e9b0f811330f.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1638868846692-34dc84e1-21dc-4809-84d6-b5d9c04fca53.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1638869553671-50e02a33-694e-4705-9650-303127610248.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1638869925091-72039eea-eb3f-4682-a2b2-4a9a3c4255a9.png">
+<meta property="og:image" content="http://blog.mviai.com/images/98bf7dd67e227162ce354f74746d867b.svg">
+<meta property="og:image" content="http://blog.mviai.com/images/1640677215294-4032e99b-4131-4337-ab1b-c67034243830.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1640677264908-8b1a3330-1342-4878-b6b0-9ae440c6be2c.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1640678129245-6c1ba21a-dbee-46c6-a4b1-1e8b65122583.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1641100981900-ba80d2be-0fcf-4a48-805b-b064f625172b.png">
+<meta property="og:image" content="http://blog.mviai.com/images/5dbc98dcc983a70728bd082d1a47546e.svg">
+<meta property="og:image" content="http://blog.mviai.com/images/d60b395645b16b8b64e19d9a741fc6d9.svg">
+<meta property="og:image" content="http://blog.mviai.com/images/1641101039075-ebf11009-eba6-4ddf-a682-b8cee6925cd9.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1641101158788-084bc8c5-8d72-4324-b129-df3d0d8efd2d.png">
+<meta property="og:image" content="http://blog.mviai.com/images/8fa14cdd754f91cc6554c9e71929cce7.svg">
+<meta property="og:image" content="http://blog.mviai.com/images/2510c39011c5be704182423e3a695e91.svg">
+<meta property="og:image" content="http://blog.mviai.com/images/ae539dfcc999c28e25a0f3ae65c1de79.svg">
+<meta property="og:image" content="http://blog.mviai.com/images/26a4b44a837bf97b972628509912b4a5.svg">
+<meta property="og:image" content="http://blog.mviai.com/images/7b8b965ad4bca0e41ab51de7b31363a1.svg">
+<meta property="og:image" content="http://blog.mviai.com/images/dcb0abe6f6c032d40a4bad0cdf38728c.svg">
+<meta property="og:image" content="http://blog.mviai.com/images/5dbc98dcc983a70728bd082d1a47546e.svg">
+<meta property="og:image" content="http://blog.mviai.com/images/cf23882ac5543ff2f8e13d71e2e04870.svg">
+<meta property="og:image" content="http://blog.mviai.com/images/00457c50a85c15adf493a20bfeb571ed.svg">
+<meta property="og:image" content="http://blog.mviai.com/images/5408180f54165b9b52e3f0cca172403e.svg">
+<meta property="og:image" content="http://blog.mviai.com/images/4a733dae8cbba447fa91230334579323.svg">
+<meta property="og:image" content="http://blog.mviai.com/images/d17e2f40be8bf149e055d7a758daf94c.svg">
+<meta property="og:image" content="http://blog.mviai.com/images/c117b416b2157d059c923b3dee04e518.svg">
+<meta property="og:image" content="http://blog.mviai.com/images/0688372c2f379a88b3e7cea9287de1e1.svg">
+<meta property="og:image" content="http://blog.mviai.com/images/32775032f6d4b56db7a2db628fa80598.svg">
+<meta property="og:image" content="http://blog.mviai.com/images/fdc4b519a93c0e3c822a501e2611700d.svg">
+<meta property="og:image" content="http://blog.mviai.com/images/38cb654005b4f4326119cdfe4ed76849.svg">
+<meta property="og:image" content="http://blog.mviai.com/images/2fddf3118b19b0bf2de600585615f871.svg">
+<meta property="og:image" content="http://blog.mviai.com/images/5800a49b55ede819b3f79762dd29d9af.svg">
+<meta property="og:image" content="http://blog.mviai.com/images/00d352eb9bc222697d6e61dc3e656900.svg">
+<meta property="og:image" content="http://blog.mviai.com/images/6789a7c09664013dd061f5b484393977.svg">
+<meta property="og:image" content="http://blog.mviai.com/images/7e087725d949e14994c6df17c133abe3.svg">
+<meta property="og:image" content="http://blog.mviai.com/images/44821ffdd8049c6d6cb1dfd1e4ef6a7f.svg">
+<meta property="og:image" content="http://blog.mviai.com/images/7d23553dba3ac5def61b9711b0c3efaf.svg">
+<meta property="og:image" content="http://blog.mviai.com/images/1641194568258-b720f6a9-1298-4d70-945e-ff17629260e6.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1641194658344-d1c868ca-694d-48d4-b9f0-c6f36144d666.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1641194714470-d778630c-5226-45a2-aeda-1ecd516ac8de.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1641194755833-bc29aeb5-5f6f-4684-8bf2-dbd7cb81cfb9.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1641194149636-64791789-1544-47c3-b543-92cfad6e9706.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1641194159757-4165a3e2-e5b8-4239-9403-aa36932c21b5.png">
+<meta property="og:image" content="http://blog.mviai.com/images/b1e0e973796be203f9e66ba7e2c907fa.svg">
+<meta property="og:image" content="http://blog.mviai.com/images/247f942e5342be18289af8d5e532f2c5.svg">
+<meta property="og:image" content="http://blog.mviai.com/images/631cba3e03c2a43088344401c5e66274.svg">
+<meta property="og:image" content="http://blog.mviai.com/images/1641194019572-3ae8d4ae-6f2b-4193-8bc9-41d4f70e6707.png">
+<meta property="article:published_time" content="2025-01-22T04:37:39.000Z">
+<meta property="article:modified_time" content="2025-01-22T12:37:40.255Z">
+<meta property="article:author" content="SindreYang">
+<meta property="article:tag" content="生活">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://blog.mviai.com/images/1636966503785-1c174523-708d-45dc-9646-4d9ef66dd76c.png">
+
+<link rel="canonical" href="http://blog.mviai.com/2025/PointNet_%E7%94%A8%E4%BA%8E%E7%82%B9%E4%BA%91%E7%9A%84%E5%88%86%E7%B1%BB%E5%92%8C%E5%88%86%E5%89%B2%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>PointNet_用于点云的分类和分割深度学习 | 落叶无痕</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">落叶无痕</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类<span class="badge">72</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档<span class="badge">321</span></a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+  <span class="exturl github-corner" data-url="aHR0cHM6Ly9naXRodWIuY29tL1NpbmRyZVlhbmc=" title="Follow me on GitHub" aria-label="Follow me on GitHub"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></span>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://blog.mviai.com/2025/PointNet_%E7%94%A8%E4%BA%8E%E7%82%B9%E4%BA%91%E7%9A%84%E5%88%86%E7%B1%BB%E5%92%8C%E5%88%86%E5%89%B2%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="SindreYang">
+      <meta itemprop="description" content="沉淀后我愿意做一个温暖的人。有自己的喜好，有自己的原则，有自己的信仰，不急功近利，不浮夸轻薄，宠辱不惊，淡定安逸，心静如水。------不忘初心，方得始终">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="落叶无痕">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          PointNet_用于点云的分类和分割深度学习
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2025-01-22 12:37:39 / 修改时间：20:37:40" itemprop="dateCreated datePublished" datetime="2025-01-22T12:37:39+08:00">2025-01-22</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E7%82%B9%E4%BA%91%E7%B3%BB%E5%88%97/" itemprop="url" rel="index"><span itemprop="name">点云系列</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">Changyan：</span>
+    
+    
+      <a title="changyan" href="/2025/PointNet_%E7%94%A8%E4%BA%8E%E7%82%B9%E4%BA%91%E7%9A%84%E5%88%86%E7%B1%BB%E5%92%8C%E5%88%86%E5%89%B2%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/#SOHUCS" itemprop="discussionUrl">
+        <span id="changyan_count_unit" class="post-comments-count hc-comment-count" data-xid="2025/PointNet_用于点云的分类和分割深度学习/" itemprop="commentCount"></span>
+      </a>
+    
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>自动摘要: 	摘要	点云是几何数据结构的一种重要类型。由于其不规则的格式，大多数研究人员将此类数据转换为常规3D体素网格或图像集合。然而，这使得数据不必要地庞大，并导致问题。在本文中，我们设计了一种新型的直 ……..</p>
+<span id="more"></span>
+
+<h1 id="摘要"><a href="#摘要" class="headerlink" title="摘要"></a>摘要</h1><p>点云是几何数据结构的一种重要类型。由于其不规则的格式，大多数研究人员将此类数据转换为常规3D体素网格或图像集合。然而，这使得数据不必要地庞大，并导致问题。 在本文中，我们设计了一种新型的直接使用点云数据的神经网络，它很好地遵循了点云的排列不变性。 我们的网络名为 PointNet, 提供从对象分类，部件分割，场景语义解析的应用程序的统一架构。虽然简单, 但PointNet 是高效并且有效的 ，经过实践证明, 他表现的效果超越当前的效果.。理论上，我们提供分析来理解网络学到了什么，以及为什么网络在针对输入数据干扰和丢失方面是稳健的。 </p>
+<h1 id="1-介绍"><a href="#1-介绍" class="headerlink" title="1.介绍"></a>1.介绍</h1><p>在本文中，我们探索了能够推理三维几何数据 (如点云或网格) 的深度学习体系结构。典型的卷积架构需要高度规则的输入数据格式，如图像网格或3D体素格式，以便执行权重共享和其他内核优化。由于点云或网格不是常规格式，大多数研究人员通常将此类数据转换为常规3D体素网格或图像集合 (如：视图)，然后将它们提供给深层网络架构。 然而，这种数据表示转换使得生成的数据产生了不必要的特征——同时也引入了量化噪声，掩盖了数据的自然不变性。因此，我们将重点放在使用简单点云的3D几何图形的不同输入表示上 ——并命名我们由此产生的深层网络PointNets. 点云是简单且统一的结构，可避免网格的组合不规则性和复杂性。因此更容易学习。然而，PointNet仍然必须尊重这样一个事实，即点云只是一组点，因此对其成员的排列不变，因此需要在网络计算中进行某些对称性，还需要考虑刚性运动的进一步不变性。<img src="/images/1636966503785-1c174523-708d-45dc-9646-4d9ef66dd76c.png"><br><em>图1.PointNet的应用__我们提出了一种新的深层网络架构，它使用原始点云 (一组点) 而不进行体素化或渲染. 它是一个学习全局和局部点特征的统一架构，为许多3D识别任务提供了简单、高效和有效的方法。</em></p>
+<hr>
+<p>我们的PointNet是一个统一的体系结构，它直接将点云作为输入，并为整个输入输出类标签，或为每个输入点输出每个点段&#x2F;部分标签。 我们网络的基本架构非常简单，因为在初始阶段，每个点都被相同且独立地处理。在基本设置中，每个点仅由其三个坐标 (x，y，z) 表示，可以通过计算法线和其他局部或全局特征来添加其他维度。我们方法的关键是使用单对称函数，最大池化。网络有效地学习了一组优化函数&#x2F;标准，这些优化函数&#x2F;标准选择了点云中有趣或信息丰富的点，并对选择它们的原因进行了编码。网络的最后的全连接层将这些学习到的最佳值聚合到如上所述的整个形状的全局描述符中 (形状分类) 或用于预测每个点的标签 (形状分割)。我们的输入格式很容易应用刚性或仿射变换，因为每个点是独立变换。因此，我们可以添加一个数据相关的空间<del>transform</del> 变换网络，试图在PointNet处理数据之前对数据进行规范化，以便进一步改善结果。 我们提供了我们的方法的理论分析和实验评估。我们证明了我们的网络可以接近任何连续的集合函数。更有趣的是，事实证明，我们的网络通过一组稀疏的关键点来学习总结输入点云，这些关键点大致对应于可视化对象的框架。 理论分析提供了一个理解，为什么我们的PointNet对输入点的小扰动以及通过点插入 (异常值) 或删除 (缺失数据) 造成的损坏具有高度鲁棒性。在从形状分类、部分分割到场景分割的许多基准数据集上，我们将我们的PonintNet与基于多视图和体素表示的最先进方法进行了实验比较。在统一的架构下，我们的PointNet不仅速度更快，而且表现出色，甚至比现有技术效果更好。我们工作的主要贡献如下: • 我们设计了一种新颖的深度网络架构，适合在3D中使用无序点集; • 我们展示了如何训练这样的网络来执行3D形状分类、形状部分分割和场景语义解析任务; • 我们对该方法的稳定性和效率进行了全面的实证和理论分析。• 我们阐述了由网络中选定的神经元计算的3D特征，并对其性能进行了直观的解释。</p>
+<hr>
+<p>通过神经网络处理无序集的问题是一个非常普遍和基本的问题——我们期望我们的想法也可以转移到其他领域。 他们的操作仍然是稀疏的，</p>
+<h1 id="2-相关工作"><a href="#2-相关工作" class="headerlink" title="2.相关工作"></a>2.相关工作</h1><ul>
+<li><strong>点云特征</strong><ul>
+<li>大多数针对特定任务的点云现有特性都是人工制作的。点特征通常编码点的某些统计特性，并且被设计成对某些变换不变，这些变换通常被分类为内在 [2，24，3] 或外在 [20，19，14，10，5]。它们也可以分为本地特征和全局特征。对于特定任务，找到最佳特征组合并非易事。</li>
+</ul>
+</li>
+<li>** 3D数据深度学习**<ul>
+<li>3D数据具有多种流行的表示形式，导致了各种学习方法. <ul>
+<li>Volumetric （体素） CNNs：  [28,17，18] 是在体素化形状上应用3D卷积神经网络的先驱。然而，由于3D卷积的数据稀疏性和计算成本，体积表示受到其分辨率的限制. FPNN [13] 和 Vote3D [26] 提出了处理稀疏问题的特殊方法，然而，他们的操作仍然是稀疏的，对他们来说处理非常大的点云是一个挑战。</li>
+<li>Multiview（多视图）CNNs：  [23, 18] 尝试将3D点云或形状渲染为2D图像，然后应用2D conv网络对其进行分类。利用精心设计的图像CNNs，这一系列方法在形状分类和检索任务中获得了主导性能 [21]。然而，将它们扩展到场景理解或其他3D任务 (如点分类和形状修复) 是困难的. </li>
+<li>Spectral  （光谱）CNNs： 一些最新作品 [4,16] 在网格上使用光谱CNNs。然而，这些方法目前被限制在流形网格上，如有机物体，如何将它们扩展到非等距形状，如家具，将获得较差的效果。</li>
+<li>Feature-based（基于特征) DNNs：[6,8] 首先将3D数据转换为向量, 通过提取传统形状特征，然后使用全连接的网络对形状进行分类。我们认为它们受到提取特征的表示能力的限制。</li>
+<li>从数据结构的角度对无序集进行深度学习，点云是一组无序的向量。虽然大多数深度学习工作侧重于常规输入表示，如序列 (在语音和语言处理中)，图像和体素(视频或3D数据)，在点集的深度学习中没有做太多工作。</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p>Oriol Vinyals等人最近的一项工作 [25] 调查了这个问题。他们针对无序的输入集使用具有注意力机制的读写网络，并表明他们的网络具有对数字进行排序的能力。 然而，由于他们的工作侧重于通用集合和NLP应用，因此缺乏几何在集合中的作用。</p>
+<h1 id="3-问题陈述"><a href="#3-问题陈述" class="headerlink" title="3.问题陈述"></a>3.问题陈述</h1><p>我们设计了一个直接使用无序点集作为输入的深度学习框架。 点云表示为一组3D点{Pi | i &#x3D; 1, …, n}，其中每个pi是其 (x，y，z) 坐标加上额外特征通道 (如颜色，法线等) 的向量。为了简单明了，除非另有说明，我们只使用 (x，y，z) 坐标作为我们点的通道。  对于对象分类任务， 输入点云可以直接从形状采样，也可以从场景点云预分割。 我们提出的深度网络输出所有k候选类的k分数. 用于语义分割, 输入可以是单个目标进行区域分割，也可以是三维场景的子体进行区域分割。 </p>
+<h1 id="4-点集深度学习"><a href="#4-点集深度学习" class="headerlink" title="4.点集深度学习"></a>4.点集深度学习</h1><p> 我们的网络架构(下面第2节)的灵感来自于<img src="/images/cf048f74f71721abd7b8df49453d1310.svg"><br>(下面第1节)中的点集的性质。</p>
+<ol>
+<li><strong>在</strong><img src="/images/cf048f74f71721abd7b8df49453d1310.svg"><br><strong>中点集的属性</strong><ul>
+<li>我们的输入是来自欧几里得空间的点的子集。它有三个主要属性:</li>
+<li>无序<ul>
+<li>与图像中的像素阵列或体素网格中的体素阵列不同，点云是一组没有特定顺序的点。换句话说，使用N个3D点集的网络需要对保持不变，按数据输入顺序排列输入集。</li>
+</ul>
+</li>
+<li>点之间的相互作用<ul>
+<li>这些点来自具有距离度量的空间。这意味着点不是孤立的，相邻的点形成一个有意义的子集。因此，该模型需要能够从附近点捕获局部结构，以及局部结构之间的组合相互作用。</li>
+</ul>
+</li>
+<li>变换下的不变性<ul>
+<li>作为一个几何对象，学习的点集表示应该对某些变换保持不变。 例如，旋转和平移所有点不应修改全局点云类别，也不应该分割点。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>** PointNet 架构**<ul>
+<li><p>我们的完整网络架构在图2中可视化，其中分类网络和分割网络共享很大一部分结构。请阅读图2的标题。</p>
+</li>
+<li><p><img src="/images/1636971040917-b568db7d-5be6-44ad-a46d-2570b36c84c1.png"></p>
+</li>
+<li><p>我们的网络有三个关键模块: </p>
+<ul>
+<li>最大池化层作为对称函数，用于聚合来自所有点的信息、</li>
+<li>局部和全局信息组合结构</li>
+<li>两个对齐输入点和点特征的联合对齐网络。</li>
+</ul>
+</li>
+<li><p>我们将在下面的单独段落中讨论这些设计选择背后的原因</p>
+<ul>
+<li>无序输入的对称函数——为了使输入排列的模型不变，存在三种策略: <ul>
+<li><ol>
+<li>将输入排序为规范顺序;</li>
+</ol>
+</li>
+<li><ol start="2">
+<li>将输入视为训练RNN的序列，但通过各种排列来增加训练数据;</li>
+</ol>
+</li>
+<li><ol start="3">
+<li>使用一个简单的对称函数来聚合来自每个点的信息。</li>
+</ol>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>这里，对称函数将n个向量作为输入，并输出一个对输入顺序不变的新向量。 例如，+ 和 * 运算符是对称二进制函数</p>
+</li>
+<li><p>虽然排序听起来像一个简单的解决方案，在高维空间中，实际上不存在点扰动和稳定的顺序。这很容易通过<del>矛盾</del>反证法表现出来。 如果存在这样的排序策略，它将定义高维空间和1维实数之间的双向映射直线。 不难看出，要求点扰动的次序是稳定的，相当于要求该映射在维数减少时保持空间邻近性，这是在一般情况下无法实现的任务。 因此，排序不能完全解决顺序问题，并且由于排序问题仍然存在，网络很难学习从输入到输出的一致映射。如实验 (图5) 所示，我们发现直接在排序的点集上应用MLP表现不佳，尽管比直接处理未排序的输入略好。</p>
+</li>
+<li><p><img src="/images/1638864759586-a1c725c6-efd4-4631-a03b-36483428a7cf.png"></p>
+</li>
+</ul>
+</li>
+</ol>
+<p> 由5个神经元大小为64、64,128、1024的隐藏层组成，所有点共享MLP的单个副本。靠近输出的MLP由两层组成，大小为512,256”)</p>
+<ul>
+<li>使用RNN的思想认为点集是一个序列信号，希望通过使用随机排列的序列来训练RNN，使RNN对输入顺序保持不变。然而，在“OrderMatters（顺序问题）”[25]中，作者证明了顺序确实很重要，不能完全忽略 。虽然RNN对小长度 (几十个) 序列的输入排序具有相对较好的鲁棒性，但很难缩放到数千个输入元素，这是点集的常见大小。根据经验，我们还表明，基于RNN的模型的性能不如我们提出的方法 (图5)。</li>
+<li>我们的想法是通过对集合中的变换元素应用对称函数来近似定义在点集中的一般函数:<ul>
+<li><p><img src="/images/7f0d8c03a90d4f8609bf34ebe5b6b2ba.svg"></p>
+</li>
+<li><p>当 <img src="/images/71b7c855c7ff9d1e23b922c9394a4f57.svg"></p>
+</li>
+</ul>
+</li>
+</ul>
+<p>,   <img src="/images/af845b027b02ef533ed29d6fe325909d.svg"><br>为对称函数<br>      - </p>
+<ul>
+<li>根据经验，我们的基本模块非常简单: 我们通过多层感知器网络近似<img src="/images/2510c39011c5be704182423e3a695e91.svg"><br>，通过单个变量函数和最大池函数的组成近似<img src="/images/2510c39011c5be704182423e3a695e91.svg"><br>的收集，我们可以学习许多<img src="/images/8fa14cdd754f91cc6554c9e71929cce7.svg"><br>的参数来捕获集合的不同属性。</li>
+<li>虽然我们的关键模块看起来很简单, 它具有有趣的特性 (请参阅第5.3节)，并且可以在一些不同的应用中有不错的表现 (请参阅第5.1节)。由于我们模块的简单性，我们还能够提供第4.3节中的理论分析。</li>
+<li>局部与全局信息聚合<ul>
+<li>上述部分的输出形成一个向量<img src="/images/3192bf8f574dbdb1009a852df3810922.svg"><br>，这是输入集的全局特征.。我们可以很容易地在形状全局特征上训练SVM或多层感知器分类器进行分类。然而，点云分割需要局部和全局知识的结合。我们可以通过一种简单而高效的方式来实现这一点。</li>
+<li>我们的解决方案见图2 (分割网络)。 在计算了全局点云特征向量之后，我们通过将全局特征与每个点特征连接起来，将其反馈给每个点特征。然后，我们基于组合的点特征提取新的点特征，这次点特征同时了解本地和全局信息。</li>
+<li>通过这种修改，我们的网络能够预测依赖于局部几何和全局语义的每个点的数量。例如，我们可以准确地预测每个点的法线 (补充章节中的图)，验证网络能够从点的局部特征中总结信息。 在实验阶段，我们还展示了我们的模型可以在形状部分分割和场景分割上实现上拥有不错的性能表现。</li>
+</ul>
+</li>
+<li>联合对齐网络<ul>
+<li><p>如果点云经历某些几何变换 (如刚性变换)，则点云的语义标记必须不变。因此，我们期望由我们的点集学习的表示对于这些转换是不变的。</p>
+</li>
+<li><p>一个自然的解决方案是在特征提取之前将所有输入集对齐到规范空间。 Jaderberg et al. [9] 介绍了空间transformer的思想，通过采样和插值来对齐2D图像，通过在GPU上实现的特定定制层来实现</p>
+</li>
+<li><p>我们的点云的输入形式使我们能够以更简单的方式实现这一目标[9]. 我们不需要创造任何新的图层，也不需要像在图像情况下那样引入别名。我们通过微型网络 (图2中的T-net) 预测仿射变换矩阵，并将该变换直接应用于输入点的坐标。小型网络本身类似于大型网络，由点独立特征提取、最大池和完全连接层的基本模块组成。有关T-net的更多详细信息，请参见补充</p>
+</li>
+<li><p>这个想法可以进一步扩展到特征空间的对齐，以及我们可以在点特征上插入另一个对齐网络，并预测一个特征转换矩阵来对齐来自不同输入点云的特征。然而，特征空间中的变换矩阵比空间变换矩阵具有更高的维数，大大增加了优化的难度。因此，我们在softmax训练损失中增加了一个正则化项。我们限制特征变换矩阵接近正交矩阵:</p>
+<ul>
+<li><img src="/images/bbeff57721ed3ad262bbf34fa967bffa.svg"></li>
+</ul>
+</li>
+<li><p>其中A是由微型网络预测的特征对齐矩阵。正交变换不会丢失输入中的信息，因此需要，我们发现，通过添加正则化项，优化变得更加稳定，并且我们的模型获得了更好的性能。</p>
+</li>
+<li></li>
+</ul>
+</li>
+</ul>
+<ol start="3">
+<li><strong>理论分析</strong></li>
+</ol>
+<ul>
+<li>全局逼近 <ul>
+<li>我们首先展示了我们的神经网络对连续集函数的全局逼近能力。通过集合函数的连续性，直观地说，对输入点集的小扰动不应极大地改变函数值，例如分类或分割分数。</li>
+<li>形式上, 假设 <img src="/images/f2e6327379caffa26ddae0b66045d7bb.svg"><br>是在<img src="/images/02129bb861061d1a052c592e2dc6b383.svg"><br>上的一个关于豪斯多夫距离<img src="/images/7497ef81cc546252a1191c7da993e593.svg"><br>的连续集函数<ul>
+<li><p><img src="/images/4676170b5ab72fe3629b01030177a16e.svg"></p>
+</li>
+<li><p>我们的定理表明，如果在最大池层有足够多的神经元，<img src="/images/8fa14cdd754f91cc6554c9e71929cce7.svg"></p>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p>可以由我们的网络任意逼近，即<img src="/images/a5f3c6a11b03839d46af9fb43c97c188.svg"><br>在公式(1)中足够大。</p>
+<ul>
+<li>定理1： <ul>
+<li><p><img src="/images/74b83401ca610b067c321112a30fa424.svg"></p>
+</li>
+<li><p><img src="/images/765e492df867d1ab17b0f61edcea9ab1.svg"></p>
+<ul>
+<li><img src="/images/95a1fe7f64355c7936193ba770968cf8.svg"></li>
+</ul>
+</li>
+<li><p>其中<img src="/images/a3b70344994dfd4185264d2dce7a70ed.svg"></p>
+</li>
+</ul>
+</li>
+</ul>
+<p>是<img src="/images/5dbc98dcc983a70728bd082d1a47546e.svg"><br>中任意有序元素的完整列表，<img src="/images/ae539dfcc999c28e25a0f3ae65c1de79.svg"><br>是一个连续函数，<img src="/images/26a4b44a837bf97b972628509912b4a5.svg"><br>是向量max运算符，它将n个向量作为输入并返回元素最大值的新向量。</p>
+<ul>
+<li>这个定理的证明可以在我们的补充材料中找到。关键思想是，在最坏的情况下，网络可以通过将空间划分为大小相等的体素，学会将点云转换为体积表示。 然而，在实践中，网络学会了一个更聪明的策略来探测空间，正如我们将在点函数可视化中看到的那样。 </li>
+<li>维度限制和稳定性<ul>
+<li><p>理论上和实验上，我们发现我们的网络的表达能力强烈地受到最大池化层的维数的影响，即K 在公式（1）中。在这里，我们提供了一个分析，这也揭示了与我们的模型稳定性相关的属性。 </p>
+</li>
+<li><p>定义<img src="/images/8fa14cdd754f91cc6554c9e71929cce7.svg"><br>的子网络， <img src="/images/8fa14cdd754f91cc6554c9e71929cce7.svg"><br>的子网络将<img src="/images/ccfee76667d31a4d7c597d1b94272e3d.svg"><br> 中的点集映射到 k 维向量。下面的定理告诉我们，输入集中的微小损坏或额外的噪声点不太可能改变我们网络的输出:</p>
+</li>
+<li><p>定理2：</p>
+<ul>
+<li>假设<img src="/images/082623791cd4a378e842f2aa276c45dc.svg"><br>,</li>
+<li>那么：<ul>
+<li><p><img src="/images/58d644a18643064eb4785fdbadbf27dc.svg"></p>
+</li>
+<li><p><img src="/images/b2ecd93fec7062868b1f52e6a8eeaaa4.svg"></p>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>我们解释了该定理的含义。</p>
+<ul>
+<li>（a）表明：如果保留<img src="/images/98bf7dd67e227162ce354f74746d867b.svg"></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p>所有点数，则<img src="/images/df2e34d3231041da6d269c0e53908a19.svg"><br>直到输入错误，都是保持不变的，在额外的噪声达到<img src="/images/b106d796ce40362c3dbe199481328fcb.svg"><br>之前，它本身也时不变。<br>      -   (b)  表明：<img src="/images/8fa14cdd754f91cc6554c9e71929cce7.svg"><br>的瓶颈维度。</p>
+<ul>
+<li>结合<img src="/images/2510c39011c5be704182423e3a695e91.svg"><br>的连续性，这解释了我们的模型关于点扰动、错误和额外噪声点的鲁棒性。与机器学习模型中的稀疏性原理类似，获得了鲁棒性。直观地，我们的网络通过一组稀疏的关键点来学习总结形状。在实验部分，我们看到关键点形成了物体的骨架。</li>
+</ul>
+<h1 id="5-实验"><a href="#5-实验" class="headerlink" title="5.实验"></a>5.实验</h1><p>实验分为四个部分。首先，我们展示了PointNet可以应用于多个3D识别任务 (第5.1节)。其次，我们提供详细的实验来验证我们的网络设计 (第5.2节)。最后，我们将网络学到的东西可视化 (第5.3节)，并分析时间和空间的复杂性 (第5.4节)。</p>
+<p><strong>5.1 应用</strong>在本节中，我们将展示如何训练我们的网络以执行3D对象分类、对象部分分割和语义场景分割。即使我们正在开发一种全新的数据表示 (点集)，我们仍能够在多个任务的基准上实现可比甚至更好的性能。</p>
+<ul>
+<li><strong>3D对象分类</strong><ul>
+<li>我们的网络学习可用于对象分类的全局点云功能。我们在ModelNet40 [28] 形状分类基准上评估了我们的模型。有来自40个人造物体类别的12,311个计算机辅助设计模型，分为9,843个用于训练，2,468个用于测试。虽然以前的方法侧重于体素和多视图图像表示，但我们是第一个直接研究原始点云的方法。</li>
+<li>我们根据面积对网格面上的1024个点进行均匀抽样，并将其归一化为单位球面。在训练过程中，我们通过沿着上轴随机旋转物体并且用一个零平均值和0.02标准差的高斯噪声抖动每个点的位置来增加动态点云。</li>
+<li>在表1中，我们将我们的模型与以前的作品以及使用MLP提取自点云 (点密度、D2、形状轮廓等) 的传统特征的基线进行了比较。我们的模型在基于3D输入 (体素和点云) 的方法中获得了最先进的性能。只有完全连接的层和最大池，我们的网络在推理速度上获得了很大的领先，并且可以很容易地在CPU中并行化。我们的方法与基于多视图的方法 (MVCNN [23]) 之间仍有很小的差距，我们认为这是由于渲染图像可以捕获的精细几何细节的丢失。<table>
+<thead>
+<tr>
+<th></th>
+<th>输入</th>
+<th>视图</th>
+<th>准确性（分类平均分）</th>
+<th>准确性（总分）</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>SPH [11]</td>
+<td>网格</td>
+<td>-</td>
+<td>68.2</td>
+<td>-</td>
+</tr>
+<tr>
+<td>3DShapeNets [28]   VoxNet [17] Subvolume [18]</td>
+<td>体素体素体素</td>
+<td>11220</td>
+<td>77.383.086.0</td>
+<td>84.785.989.2</td>
+</tr>
+<tr>
+<td>LFD [28]   MVCNN [23]</td>
+<td>图片图片</td>
+<td>1080</td>
+<td>75.590.1</td>
+<td>–</td>
+</tr>
+<tr>
+<td>Ours baseline   Ours PointNet</td>
+<td>点云点云</td>
+<td>-1</td>
+<td>72.686.2</td>
+<td>77.489.2</td>
+</tr>
+</tbody></table>
+</li>
+</ul>
+</li>
+</ul>
+<p>表1：基于ModelNet40上的分类结果，我们的网络在3D输入深度网络中实现了最先进的技术。 </p>
+<ul>
+<li><strong>3D对象部分分割</strong><ul>
+<li>部分分割是一项具有挑战性的细粒度3D识别任务，给定一个3D扫描或网格模型，任务是分配部分类别标签(如椅腿，杯柄)到每个点或面上。</li>
+<li>我们对来自 [29] 的ShapeNet部分数据集进行评估，该数据集包含来自16个类别的16,881个形状，总共注释了50个部分。 大多数对象类别都标有两到五个部分。基准（GT）注释被标记在形状的采样点上。 </li>
+<li>我们将部分分割定义为逐点分类问题。评价指标是点上的mIoU。对于C类中的每个形状S，计算形状的mIoU:对于C类中的每个零件类型，计算根据基准与预测之间的差距。如果基准与预测点的并集为空，则将IoU部分计算为1。然后我们平均 C 类中所有零件类型的 IoU 以获得该形状的 mIoU。 为了计算类别的 mIoU，我们取该类别中所有形状的 mIoU 的平均值。</li>
+<li>在本节中，我们将分割版本PointNet（图2的修改版本，分割网络）与两种传统方法[27]和[29]进行比较，这两种方法都利用了逐点几何特征和形状之间的对应关系，以及我们自己的3D CNN基线。有关3D CNN的详细修改和网络架构，请参见补充说明。</li>
+<li>在表2中，我们报告了每个类别和平均IoU(%) 得分。我们观察到2.3% 的平均IoU改善，在大多数类别中，我们的方法优于基线方法。<table>
+<thead>
+<tr>
+<th></th>
+<th>平均值</th>
+<th>飞机</th>
+<th>背包</th>
+<th>帽子</th>
+<th>汽车</th>
+<th>椅子</th>
+<th>听筒</th>
+<th>吉他</th>
+<th>刀具</th>
+<th>灯具</th>
+<th>笔记本电脑</th>
+<th>摩托车</th>
+<th>马克杯</th>
+<th>手枪</th>
+<th>火箭</th>
+<th>滑板</th>
+<th>桌子</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>形态数</td>
+<td></td>
+<td>2690</td>
+<td>76</td>
+<td>55</td>
+<td>898</td>
+<td>3758</td>
+<td>69</td>
+<td>787</td>
+<td>392</td>
+<td>1547</td>
+<td>451</td>
+<td>202</td>
+<td>184</td>
+<td>283</td>
+<td>66</td>
+<td>152</td>
+<td>5271</td>
+</tr>
+<tr>
+<td>Wu [27]</td>
+<td>-</td>
+<td>63.2</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>73.5</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>74.4</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>74.8</td>
+</tr>
+<tr>
+<td>Yi [29]</td>
+<td>81.4</td>
+<td>81.0</td>
+<td>78.4</td>
+<td>77.7</td>
+<td>75.7</td>
+<td>87.6</td>
+<td>61.9</td>
+<td>92.0</td>
+<td>85.4</td>
+<td>82.5</td>
+<td>95.7</td>
+<td>70.6</td>
+<td>91.9</td>
+<td>85.9</td>
+<td>53.1</td>
+<td>69.8</td>
+<td>75.3</td>
+</tr>
+<tr>
+<td>3DCNN</td>
+<td>79.4</td>
+<td>75.1</td>
+<td>72.8</td>
+<td>73.3</td>
+<td>70.0</td>
+<td>87.2</td>
+<td>63.5</td>
+<td>88.4</td>
+<td>79.6</td>
+<td>74.4</td>
+<td>93.9</td>
+<td>58.7</td>
+<td>91.8</td>
+<td>76.4</td>
+<td>51.2</td>
+<td>65.3</td>
+<td>77.4</td>
+</tr>
+<tr>
+<td>Ours</td>
+<td>83.7</td>
+<td>83.4</td>
+<td>78.7</td>
+<td>82.5</td>
+<td>74.9</td>
+<td>89.6</td>
+<td>73.0</td>
+<td>91.5</td>
+<td>85.9</td>
+<td>80.8</td>
+<td>95.3</td>
+<td>65.2</td>
+<td>93.0</td>
+<td>81.2</td>
+<td>57.9</td>
+<td>72.8</td>
+<td>80.6</td>
+</tr>
+</tbody></table>
+</li>
+</ul>
+</li>
+</ul>
+<p>表2： ShapeNet部分数据集的分割结果。度量是点云的mIoU(%)。我们与两种传统方法 [27] 和 [29] 以及我们提出的3D全卷积网络基线进行了比较。我们的pointnet方法在mIoU是最优的。</p>
+<ul>
+<li><p>我们还对模拟Kinect扫描进行了实验，以测试这些方法的鲁棒性。对于ShapeNet部分数据集中的每个CAD模型，我们使用Blensor Kinect模拟器[7]从六个随机视点生成不完整的点云。我们使用相同的网络架构和训练设置，在完整的形状和部分扫描上训练我们的PointNet。结果表明，我们只损失了5.3%的平均IoU。在图3中，我们给出了完整和部分数据的定性结果。可以看出，尽管部分数据相当具有挑战性，但我们的预测是合理的。</p>
+</li>
+<li><p><img src="/images/1638856647865-c3641ea1-5eaf-431d-b71b-2062c0d45ded.png"></p>
+</li>
+<li><p><strong>场景中的语义分割</strong></p>
+<ul>
+<li>我们的部分分割网络可以很容易地扩展到语义场景分割，其中点标签变成语义对象类而不是对象部分标签。</li>
+<li>我们在斯坦福3D语义解析数据集 [1] 上进行了实验。数据集包含来自6个区域 (包括271个房间) 的Matterport扫描仪的3D扫描。扫描中的每个点都用13个类别 (椅子、桌子、地板、墙壁等加上杂物) 中的一个语义标签进行注释。 </li>
+<li>为了准备训练数据，我们首先按房间划分点，然后将样品室分成面积为1米乘1米的块。我们训练我们的PointNet细分版本来预测每个块中的每个点类。每个点由XYZ、RGB的9-dim矢量和房间的归一化位置 (从0到1) 表示。在训练时，我们在每个区块中随机采样4096个点。在测试时间，我们对所有点进行测试。我们遵循与 [1] 相同的协议使用k-fold策略进行训练和测试。</li>
+<li>我们将我们的方法与使用人工制作的点特征的基线进行比较。基线提取相同的9维局部特征和三个附加特征：局部点密度、局部曲率和法线。我们使用标准MLP作为分类器。结果如表3所示，其中我们的PointNet方法明显优于基线方法。在图4中，我们展示了定性分割结果。我们的网络能够输出平滑的预测，并且对缺失点和遮挡具有鲁棒性。<table>
+<thead>
+<tr>
+<th></th>
+<th>平均 IoU</th>
+<th>总分</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Ours baseline</td>
+<td>20.12</td>
+<td>53.19</td>
+</tr>
+<tr>
+<td>Ours PointNet</td>
+<td>47.71</td>
+<td>78.62</td>
+</tr>
+</tbody></table>
+</li>
+</ul>
+</li>
+</ul>
+<p>表3：场景语义分割结果。指标是13个类别（结构和家具元素加上杂乱）的平均IoU和按点计算的分类精度。</p>
+<p><img src="/images/1638863930305-58cf750d-a0ef-47e7-a91f-cad1b943e86c.png"><br>，显示在与输入相同的相机视点中。”)</p>
+<ul>
+<li>基于来自我们网络的语义分割输出，我们进一步使用连接组件来构建对象感知的3D对象检测系统（有关详细信息，请参阅补充）。我们与先前的最先进的方法比较表4.先前的方法基于滑动形状方法（带CRF后处理），SVMs在体素网格中的本地几何特征和全局室上下文功能上训练。我们的方法在家具类别有很大的优势。<table>
+<thead>
+<tr>
+<th></th>
+<th>桌子</th>
+<th>椅子</th>
+<th>沙发</th>
+<th>木板</th>
+<th>均值</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>实例数量</td>
+<td>455</td>
+<td>1363</td>
+<td>55</td>
+<td>137</td>
+<td></td>
+</tr>
+<tr>
+<td>Armeni et al. [1]</td>
+<td>46.02</td>
+<td>16.15</td>
+<td>6.78</td>
+<td>3.91</td>
+<td>18.22</td>
+</tr>
+<tr>
+<td>Ours</td>
+<td>46.67</td>
+<td>33.80</td>
+<td>4.76</td>
+<td>11.72</td>
+<td>24.24</td>
+</tr>
+</tbody></table>
+</li>
+</ul>
+<p> 表4：场景中3D对象检测的结果。度量标准是在阈值IoU 0.5以3D体素计算平均精度</p>
+<p>** 5.2架构设计分析**在本节中，我们通过对照实验验证我们的设计选择。我们还展示了网络超参数的影响。</p>
+<ul>
+<li><strong>与其他顺序不变方法的比较</strong><ul>
+<li>正如在第4.2节中提到的，至少有三种选择可以使用无序集合输入。我们使用 modelnet40形状分类问题作为对这些选项进行比较的测试平台，下面的两个控制实验也将使用这个任务。</li>
+<li>我们与之比较的基线 (如图5所示) 包括未排序和排序点的多层感知器，如n × 3阵列，将输入点视为序列的RNN模型，以及基于对称函数的模型。 我们实验的对称运算包括最大池化、平均池化和基于注意力的加权和。注意方法类似于[25]中的方法，其中从每个点特征预测标量分数，然后通过计算softmax对分数进行归一化。然后根据标准化分数和点特征计算加权和。如图5所示，最大池化操作通过较大的分数，实现了最佳效果，这验证了我们的选择。</li>
+</ul>
+</li>
+</ul>
+<p><img src="/images/1638864759586-a1c725c6-efd4-4631-a03b-36483428a7cf.png"><br> 由5个神经元大小为64、64,128、1024的隐藏层组成，所有点共享MLP的单个副本。靠近输出的MLP由两层组成，大小为512,256”)</p>
+<ul>
+<li><strong>输入和特征转换的有效性</strong><ul>
+<li>在表5中，我们展示了输入和特征转换 (用于对齐) 的积极影响。有趣的是，最基本的架构已经取得了相当合理的结果.。使用输入转换可将性能提升0.8%。正则化损失对于更高维度变换的工作是必要的。通过结合转换和正则化项，我们实现了最佳性能。<table>
+<thead>
+<tr>
+<th>变换</th>
+<th>分数</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>none</td>
+<td>87.1</td>
+</tr>
+<tr>
+<td>input（3x3）</td>
+<td>87.9</td>
+</tr>
+<tr>
+<td>feature（64x64)</td>
+<td>86.9</td>
+</tr>
+<tr>
+<td>feature  (64x64)+reg.</td>
+<td>87.4</td>
+</tr>
+<tr>
+<td>both</td>
+<td>89.2</td>
+</tr>
+</tbody></table>
+</li>
+</ul>
+</li>
+</ul>
+<p>表5.输入特征转换的效果。度量标准是modelnet40测试集的整体分类精度</p>
+<ul>
+<li><strong>鲁棒性测试</strong><ul>
+<li>我们展示了我们的pointNet，虽然简单有效，但对各种输入损坏是稳健的。我们使用与图5的最大池网络相同的架构。输入点被标准化为一个单位球体。结果如图6所示。</li>
+<li>至于缺失点，当有50% 个点缺失时，最远输入采样精度仅下降2.4%；随机输入采样精度仅下降3.8%。如果我们的网在训练中出现过，它对异常值也很鲁棒。我们评估两个模型: 一个在坐标为 (x，y，z) 的点上训练; 另一个在 (x，y，z) 加上点密度上训练。即使20% 的点是异常值，网络的精度也超过80%。图6右图显示网对于点扰动是鲁棒的。</li>
+</ul>
+</li>
+</ul>
+<p><img src="/images/1638865032976-4537570d-7f3a-49b4-a26c-fe49ec9a128a.png"></p>
+<p><strong>5.3 可视化PointNet</strong>在图7中，我们可视化了一些样本形状S的临界点集<img src="/images/98bf7dd67e227162ce354f74746d867b.svg"><br>和上限形状<img src="/images/98bf7dd67e227162ce354f74746d867b.svg"><br>，那些有助于最大合并特征的，总结了形状的骨架。上限形状<img src="/images/98bf7dd67e227162ce354f74746d867b.svg"><br>和<img src="/images/df2e34d3231041da6d269c0e53908a19.svg"><br>。构造<img src="/images/d60b395645b16b8b64e19d9a741fc6d9.svg"><br> 的方法是将边长为2的立方体中的所有点通过网络转发，并选择点函数值<img src="/images/a0982f0f4fddb7497cce99374436c382.svg"><br>不大于全局形状描述子的点 <img src="/images/83878c91171338902e0fe0fb97a8c47a.svg"><br><img src="/images/1638865970282-13f07930-e410-41a9-8f6b-c6d873147481.png"><br> 图7。临界点和上界形状。当临界点共同决定给定形状的整体形状特征时，任何位于临界点集和上界形状之间的点云给出了完全相同的特征。我们用颜色标记所有的数字来显示深度信息。</p>
+<p><strong>5.4时间与空间复杂度分析</strong>表6总结了我们的分类PointNet的空间 (网络中参数的数量) 和时间 (浮点操作&#x2F;样本) 复杂性。我们还将PointNet与先前工作中基于体素和多视图的体系结构的代表性集合进行了比较。 MVCNN [23]和 Subvolume (3dcnn)[18]实现了高性能，而 PointNet 在计算成本方面更有效率(以 flop&#x2F;sample 衡量，分别提升141倍 和8倍 。此外，就网络中的参数量而言，PointNet比MVCNN节省更多空间 (参数少17倍)。此外，PointNet更具可扩展性，它的空间和时间复杂性是O(N) ，输入点的数量是线性的。 然而，由于卷积在计算时间上占主导地位，多视图方法的时间复杂度在图像分辨率上直接增长，基于体素卷积的方法随着体积大小而立体增长 根据经验，PointNet每秒能够处理超过100万个点的点云分类 (大约1k个对象&#x2F;秒) 或语义分割 (大约2个房间&#x2F;秒) 在tensorflow上使用GTX 1080 GPU，显示出实时应用的巨大潜力</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>参数量</th>
+<th>FLOPs&#x2F;sample</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>PointNet( 普通版）</td>
+<td>0.8M</td>
+<td>148M</td>
+</tr>
+<tr>
+<td>PointNet</td>
+<td>3.5M</td>
+<td>440M</td>
+</tr>
+<tr>
+<td>Subvolume[18]</td>
+<td>16.6M</td>
+<td>3633M</td>
+</tr>
+<tr>
+<td>MVCNN[23]</td>
+<td>60.0M</td>
+<td>62057M</td>
+</tr>
+</tbody></table>
+<p> 表6。三维数据分类深层架构的时间和空间复杂性。PointNet（vanilla）是没有输入和特征转换的分类PointNet。FLOP代表浮点运算。“M”代表百万。Subvolume和MVCNN使用来自多个旋转或视图的输入数据池，没有这些数据，它们的性能会差得多。</p>
+<h1 id="6-结论"><a href="#6-结论" class="headerlink" title="6.结论"></a>6.结论</h1><p>在这项工作中，我们提出了一种新的深度神经网络PointNet直接使用点云。我们的网络为许多3D识别任务提供了统一的方法，包括对象分类、部分分割和语义分割，同时获得了与标准基准技术水平相当或更好的结果。我们还提供理论分析和可视化来理解我们的网络. 确认。作者非常感谢三星GRO基金，ONR MURI N00014- 13-1-0341基金，NSF基金IIS-1528025，谷歌Fo核心研究奖s的支持，来自Adobe公司的礼物和NVIDIA的硬件捐赠。</p>
+<h1 id="补充说明："><a href="#补充说明：" class="headerlink" title="补充说明："></a>补充说明：</h1><h2 id="A-概述："><a href="#A-概述：" class="headerlink" title="A 概述："></a>A 概述：</h2><p>本文档为主要论文提供了额外的定量结果、技术细节和更多的定性测试实例。</p>
+<ul>
+<li>B节中，我们扩展了鲁棒性测试，以比较PointNet和VoxNet在不完整输入上的差异。</li>
+<li>C节中，我们提供了有关神经网络体系结构，训练参数的更多详细信息 </li>
+<li>D节中，我们描述了场景中的检测流程。 </li>
+<li>E节说明了PointNet的更多应用，</li>
+<li>F节显示了更多的分析实验。</li>
+<li>G节为我们关于PointNet的理论提供了证明。</li>
+<li>H节中显示了更多的可视化结果</li>
+</ul>
+<h2 id="B-PointNet和VoxNet的比较-第5-2节-："><a href="#B-PointNet和VoxNet的比较-第5-2节-：" class="headerlink" title="B PointNet和VoxNet的比较 (第5.2节)："></a>B PointNet和VoxNet的比较 (第5.2节)：</h2><pre><code> 我们扩展了第5.2节鲁棒性测试中的实验，以比较PointNet和VoxNet [17] (体积表示的代表性架构) 对输入点云中缺失数据的稳健性。两个网络都在同一个分割训练集进行训练，输入1024个点。对于VoxNet，我们将点云体素化为32 × 32占用网格，并通过绕上轴随机旋转和抖动来增加训练数据。  在测试时，输入点以一定的比例随机退出。由于VoxNet对旋转很敏感，它的预测使用了来自12个视点的点云的平均得分。如图8所示，我们看到我们的PointNet对缺失点更加鲁棒。当一半的输入点丢失时，VoxNet的精度急剧下降，从86.3% 到46.0%，相差40.3%，而我们的PointNet的性能下降了3.7%。这可以通过我们的pointNet的理论分析和解释来解释 -- 它正在学习使用临界点的集合来总结形状，因此它对丢失的数据非常鲁棒。![](/images/1638867727439-1b0339a5-cfa6-47c5-b70d-cd637cfe3411.png)
+</code></pre>
+<p> 图8. PointNet v.s.VoxNet [17] 关于不完整的输入数据。指标是ModelNet40测试集的总体分类精度。请注意，VoxNet使用12个平均视点，而PointNet仅使用点云的一个视图。显然，PointNet对缺失点具有更强的鲁棒性。</p>
+<h2 id="C-网络架构和训练详情-第5-1节-："><a href="#C-网络架构和训练详情-第5-1节-：" class="headerlink" title="C 网络架构和训练详情 (第5.1节)："></a>C 网络架构和训练详情 (第5.1节)：</h2><ul>
+<li><p><strong>PointNet分类网络</strong></p>
+<ul>
+<li>作为基本的体系结构已经在主要论文中进行了说明，在这里我们提供了有关联合对准&#x2F;转换网络和训练参数的更多详细信息。</li>
+<li>第一个转换网络是一个微型PointNet，它以原始点云作为输入并回归到3 × 3矩阵。它由每个点的共享MLP (64，128，1024) 网络 (层输出大小为64，128，1024) 组成，归一化和两个完全连接的层的最大池，输出大小为512，256。输出矩阵初始化为单位矩阵。除最后一层外，所有层均包括ReLU和批处理规范化。除了输出是64 × 64矩阵外，第二转换网络与第一转换网络具有相同的架构。矩阵也被初始化为单位矩阵。 正则化损失 (权重为0.001) 被添加到softmax分类损失中，以使矩阵接近正交。</li>
+<li>在类分数预测之前，我们在最后一个完全连接的层（其输出维度为256）上使用保留比为0.7的 dropout层。 批量标准化的衰减率从0.5开始，并逐渐增加到0.99。我们使用adam优化器，初始学习率为0.001，变化量为0.9，批量大小为32。学习率每20个时期除以2。使用TensorFlow和GTX1080 GPU进行ModelNet培训需要3-6小时。</li>
+</ul>
+</li>
+<li><p><strong>PointNet分割网络</strong></p>
+<ul>
+<li>分割网络是分类pointnet的扩展。每个点的局部点特征（第二个转换网络后的输出）和全局特征（最大池的输出）连接在一起。分割网络不使用dropout。训练参数与分类网络相同。</li>
+<li>关于形状部分分割的任务，我们对基本分割网络架构进行了一些修改 (主要论文中的图2)，以实现最佳性能，如图9所示。我们添加了一个指示输入类的one hot向量，并将其与最大池化层的输出连接起来。我们还增加了某些层中的神经元，并添加跳越链接以收集不同层中的局部点特征，并将它们连接起来，形成点特征输入到分割网络。</li>
+<li>而 [27] 和 [29] 独立处理每个对象类别，由于缺乏某些类别的训练数据 (数据集中所有类别的形状总数显示在第一行)，我们跨类别训练pointNet(但使用one hot向量输入来指示类别)。为了进行公平的比较，在测试这两个模型时，我们只预测给定特定对象类别的部分标签。</li>
+<li>对于语义分割任务，我们在主要论文中使用了如图2所示的结构。</li>
+<li>在ShapeNet部分数据集上训练模型大约需要6到12个小时，在standford语义解析数据集上训练大约需要半天。</li>
+<li><img src="/images/1638868730839-9bd27f79-bdd2-4216-ae3e-e9b0f811330f.png"></li>
+</ul>
+</li>
+<li><p><strong>基线3D CNN分割网络</strong></p>
+<ul>
+<li>在ShapeNet部分分割实验中，我们将我们提出的分割版本PointNet与两种传统方法以及3D体素CNN网络基线进行了比较。在图10中，我们展示了我们使用的基线3D体素CNN网络。我们将著名的3D CNN结构（如VoxNet[17]和3DShapeNet[28]）推广为完全卷积的3D CNN分割网络。</li>
+<li>对于给定的点云，我们首先将其转换为体素度量表示，作为分辨率为32×32×32的占用网格。然后，五个3D卷积操作，每个操作具有32个输出通道和1个步幅，依次应用于提取特征。每个体素的感受野为19。最后，将核大小为1 × 1 x 1 的3D卷积层序列附加到计算出的特征图中，以预测每个体素的分割标签.。除了最后一个图层，所有图层都使用了 ReLU 和 batch normalization。网络是跨类别训练的。但是，为了与给定对象类别的其他基线方法进行比较，我们仅考虑给定对象类别中的输出分数。</li>
+<li><img src="/images/1638868846692-34dc84e1-21dc-4809-84d6-b5d9c04fca53.png"></li>
+</ul>
+</li>
+</ul>
+<h2 id="D-检测流程详情-第5-1节"><a href="#D-检测流程详情-第5-1节" class="headerlink" title="D 检测流程详情 (第5.1节)"></a>D 检测流程详情 (第5.1节)</h2><p>基于语义分割结果和对象分类PointNet，构建了一个简单的三维对象检测系统。我们使用具有分割分数的连接组件来获得场景中的对象建议。从场景中的一个随机点开始，我们找到它的预测标签，并使用BFS搜索具有相同标签的附近点，搜索半径为0.2米。如果生成的簇具有200多个点（假设在1m×1m的区域中有4096个点采样），则簇的边界框将标记为一个对象。对于每个提议的对象，它的检测分数被计算为该类别的平均分数。在评估之前，对面积&#x2F;体积极小的提案进行修剪。对于桌子、椅子和沙发，边界框延伸到地板，以防腿与座位&#x2F;表面分开。 我们观察到，在一些房间，如礼堂，许多物体 (如椅子) 彼此靠近，其中连接的组件无法正确地分割出单个组件。因此，我们利用我们的分类网络并使用滑动形状方法来缓解椅子类的问题。我们为每个类别训练一个二进制分类网络，并使用分类器进行滑动窗口检测。 结果框通过非最大抑制进行修剪。来自连接组件和滑动形状的建议盒子被组合起来进行最终评估。在图11中，我们显示了用于对象检测的精度-召回曲线。我们训练了六个模型，其中每个模型都在五个区域进行训练，并在左侧区域进行测试。在测试阶段，每个模型都在它从未见过的区域进行测试。对所有六个区域的测试结果进行汇总，以生成PR曲线。<img src="/images/1638869553671-50e02a33-694e-4705-9650-303127610248.png"></p>
+<h2 id="E-更多应用-第5-1节"><a href="#E-更多应用-第5-1节" class="headerlink" title="E 更多应用 (第5.1节)"></a>E 更多应用 (第5.1节)</h2><ul>
+<li><p>** 基于点云的3D模型检索**</p>
+<ul>
+<li>我们的 PointNet 为每个给定的输入点云学习一个全局形状签名。我们期望几何上相似的形状有相似的全局特征。在这一部分中，我们检验我们关于形状检索应用的猜想。更具体地说，对于模型网测试分割中的每个给定查询形状，我们计算其全局特征 (分数预测层之前的层的输出) 由我们的分类PointNet给出，并在由最近邻搜索分割的列车中检索相似的形状。结果如图12所示</li>
+<li><img src="/images/1638869925091-72039eea-eb3f-4682-a2b2-4a9a3c4255a9.png"></li>
+</ul>
+</li>
+<li><p><strong>形状匹配</strong></p>
+<ul>
+<li>在本节中，我们展示了PointNet学习的点特征可以潜在地用于计算形状对应关系。给定两种形状，我们通过匹配激活全局特征中相同维度的点对来计算它们的临界点集<img src="/images/98bf7dd67e227162ce354f74746d867b.svg"><br>之间的对应关系。图13和图14显示了两个相似的椅子和桌子之间检测到的形状对应关系。</li>
+</ul>
+</li>
+</ul>
+<p> <img src="/images/1640677215294-4032e99b-4131-4337-ab1b-c67034243830.png"><br><img src="/images/1640677264908-8b1a3330-1342-4878-b6b0-9ae440c6be2c.png"></p>
+<h2 id="F-更多架构分析-第5-2节"><a href="#F-更多架构分析-第5-2节" class="headerlink" title="F 更多架构分析 (第5.2节)"></a>F 更多架构分析 (第5.2节)</h2><ul>
+<li><strong>维度限制和输入点数量的影响</strong><ul>
+<li><p>在这里，我们展示了我们模型关于第一个最大层输出的大小以及输入点的数量的性能变化。在图15中，我们看到性能随着我们增加点数而增长，但是它在大约1k点饱和。 最大层大小起着重要的作用，将层大小从64增加到1024会导致2-4% 的性能提升。这表明我们需要足够的点特征函数来覆盖3D空间，以便区分不同的形状。值得注意的是，即使有64个点作为输入 (从网格上最远的点采样中获得)，我们的网络也能实现不错的性能。</p>
+</li>
+<li><p><img src="/images/1640678129245-6c1ba21a-dbee-46c6-a4b1-1e8b65122583.png"></p>
+</li>
+<li><p><strong>MNIST数字分类</strong></p>
+<ul>
+<li>当我们专注于3D点云学习时，一个健全性检查实验是将我们的网络应用于2D点云-像素集。 要将MNIST图像转换为2D点集，设置阈值像素值并添加像素(表示为图像中具有 (x，y) 坐标的点），其值大于128的集合。我们使用设置大小为256。如果设置了超过256个像素，我们随机对其进行子采样; 如果少于，我们用集合中的一个像素填充集合 (由于我们的最大值操作，用于填充的该点不会影响结果)  </li>
+<li>如表7所示，我们与包括多层感知器在内的一些基线进行比较，这些基线将输入图像视为有序向量，将输入视为从像素 (0,0) 到像素 (27,27) 的序列的RNN，以及普通版本的CNN。虽然在MNIST上表现最好的模型仍然是精心设计的CNNs (实现不到0.3% 的错误率)，有趣的是，我们的PointNet模型可以通过将图像视为2D点集来实现合理的性能。</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>input</th>
+<th>error (% ）</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Multi-layer perceptron [22]</td>
+<td>vector</td>
+<td>1.60</td>
+</tr>
+<tr>
+<td>LeNet5 [12]</td>
+<td>image</td>
+<td>0.80</td>
+</tr>
+<tr>
+<td>Ours PointNet</td>
+<td>point set</td>
+<td>0.78</td>
+</tr>
+</tbody></table>
+<p> 表 7. MNIST分类结果。我们与其他深度架构的普通版本进行比较，以显示我们基于点集输入的网络在这个传统任务上获得了合理的性能。</p>
+<ul>
+<li><p>** 法线估计 **</p>
+<ul>
+<li>在 PointNet 的分割版本中，将局部点特征和全局特征连接起来，为局部点提供上下文，但是，目前尚不清楚这些上面是否通过这种级联学习。在这个实验中，我们通过展示我们的分割网络可以被训练来预测点法线来验证我们的设计，这是一个由点的邻域决定的局部几何属性。</li>
+<li>我们以监督的方式训练我们的分割PointNet的修改版本，以逼近到真实点的法线。我们只是改变分割PointNet的最后一层来预测每个点的正态向量。我们使用余弦距离的绝对值作为损失。</li>
+<li>图16： 将我们的PointNet法线预测结果（左列）与网格中的真实法线计算值（右列）进行了比较。. 我们观察到合理的正常重建。 我们的预测比真实值更平滑、更连续，基准包括某些区域的翻转正常方向。</li>
+<li><img src="/images/1641100981900-ba80d2be-0fcf-4a48-805b-b064f625172b.png"></li>
+</ul>
+</li>
+<li><p><strong>分割鲁棒性</strong></p>
+<ul>
+<li>如第5.2节和第B节所述，我们的PointNet对数据损坏和分类任务的缺失点不太敏感，因为全局形状特征是从给定输入点云的临界点集合中提取的。在本节中，我们展示了对分割任务的稳健性。 基于每个点特征和学习的全局形状特征的组合来预测每个点部件标签。在图17中，我们说明了给定输入点云<img src="/images/5dbc98dcc983a70728bd082d1a47546e.svg"><br> (最左边的一列) 的分割结果，临界点设置<img src="/images/d60b395645b16b8b64e19d9a741fc6d9.svg"><br>。</li>
+<li><img src="/images/1641101039075-ebf11009-eba6-4ddf-a682-b8cee6925cd9.png"></li>
+</ul>
+</li>
+<li><p>**对不可见形状类别的网络泛化能力  **</p>
+<ul>
+<li>在图18, 我们对ModelNet或ShapeNet中不存在的不可见类别（脸、房子、兔子、茶壶）中的新形状的临界点集和表面形状进行可视化。 它表明学习的每点函数是可推广的。 然而，由于我们主要在具有大量平面结构的人造物体上进行训练，因此在新类别中重建的表面形状也包含更多的平面。</li>
+</ul>
+</li>
+<li></li>
+<li></li>
+<li><p><img src="/images/1641101158788-084bc8c5-8d72-4324-b129-df3d0d8efd2d.png"><br> .</p>
+</li>
+</ul>
+<h2 id="G-定理证明-第4-3节"><a href="#G-定理证明-第4-3节" class="headerlink" title="G  定理证明 (第4.3节)"></a>G  定理证明 (第4.3节)</h2><p>设<img src="/images/8fa14cdd754f91cc6554c9e71929cce7.svg"><br>可以通过组成一个对称函数和一个连续函数来任意近似。</p>
+<ul>
+<li><strong>定理1</strong><ul>
+<li><p>假设<img src="/images/2510c39011c5be704182423e3a695e91.svg"><br> 和一个对称函数<img src="/images/ae539dfcc999c28e25a0f3ae65c1de79.svg"><br>是一个连续函数，<img src="/images/26a4b44a837bf97b972628509912b4a5.svg"><br>是一个向量运算符，以<img src="/images/7b8b965ad4bca0e41ab51de7b31363a1.svg"><br>个向量作为输入并返回元素最大值的新向量，以此对于任何<img src="/images/dcb0abe6f6c032d40a4bad0cdf38728c.svg"></p>
+<pre><code>- ![](/images/c90c440c6180fff8bd9150dfda77644c.svg)
+</code></pre>
+</li>
+<li><p>其中 <img src="/images/5dbc98dcc983a70728bd082d1a47546e.svg"></p>
+</li>
+</ul>
+</li>
+</ul>
+<p>中按一定顺序提取的。</p>
+<ul>
+<li><strong>证明：</strong> <ul>
+<li><p><img src="/images/cf23882ac5543ff2f8e13d71e2e04870.svg"></p>
+</li>
+<li><p><img src="/images/00457c50a85c15adf493a20bfeb571ed.svg"></p>
+</li>
+</ul>
+</li>
+</ul>
+<p>，并定义一个辅助函数，该函数将一个点映射到它所在的间隔的左端：<br>         - <img src="/images/5408180f54165b9b52e3f0cca172403e.svg"></p>
+<pre><code>     - ![](/images/ef75c604f236f2dc58150f737b9034e5.svg)
+
+  - ![](/images/982edebf4ab7ca708485520d5bcb1fca.svg)
+</code></pre>
+<p>  <img src="/images/4a733dae8cbba447fa91230334579323.svg"><br>.<br>      - <img src="/images/d17e2f40be8bf149e055d7a758daf94c.svg"><br> <img src="/images/c117b416b2157d059c923b3dee04e518.svg"></p>
+<pre><code>  - ![](/images/22663de9f01cd1f865a93ce7e312be07.svg)
+</code></pre>
+<p>其中占用向量映射到包含每个占用间隔左端的集合，则很容易证明：<br>      - <img src="/images/0688372c2f379a88b3e7cea9287de1e1.svg"></p>
+<pre><code>     - ![](/images/a6e6f6e84b55b1f3dcebe09ff504a50f.svg)
+</code></pre>
+<p>顺序提取的。<br>      - <img src="/images/32775032f6d4b56db7a2db628fa80598.svg"></p>
+<pre><code>  - ![](/images/981e3ddef6c0701c3896f076bfafbdd4.svg)
+
+     - 注意：![](/images/ddc93dc1f5c2d2bf6b5b3f9647237c9d.svg)
+
+     - ![](/images/de334ffe4fe881e66f858c2296a72327.svg)
+
+     - 显然![](/images/d190640d5c92e03ed962838184e0e5c5.svg)
+</code></pre>
+<p>是对称函数</p>
+<ul>
+<li><strong>定理2的证明。</strong><ul>
+<li><p>定义<img src="/images/fdc4b519a93c0e3c822a501e2611700d.svg"><br> 的子网络，<img src="/images/38cb654005b4f4326119cdfe4ed76849.svg"><br>中的点集映射到 k 维向量。下面的定理告诉我们，输入集中的小的损坏或额外的噪声点不太可能改变我们网络的输出:</p>
+</li>
+<li><p><img src="/images/2fddf3118b19b0bf2de600585615f871.svg"></p>
+</li>
+<li><p><img src="/images/5800a49b55ede819b3f79762dd29d9af.svg"></p>
+</li>
+<li><p><img src="/images/00d352eb9bc222697d6e61dc3e656900.svg"></p>
+</li>
+<li><p><strong>证明：</strong></p>
+<ul>
+<li><p><img src="/images/6789a7c09664013dd061f5b484393977.svg"></p>
+</li>
+<li><p><img src="/images/7e087725d949e14994c6df17c133abe3.svg"></p>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p><img src="/images/44821ffdd8049c6d6cb1dfd1e4ef6a7f.svg"></p>
+<pre><code>  - ![](/images/ea288050c5da01abf802ff63aa54175c.svg)
+</code></pre>
+<p><img src="/images/7d23553dba3ac5def61b9711b0c3efaf.svg"></p>
+<h2 id="H-更多可视化"><a href="#H-更多可视化" class="headerlink" title="H 更多可视化"></a>H 更多可视化</h2><ul>
+<li><p><strong>分类可视化</strong></p>
+<ul>
+<li>我们使用t-SNE[15]将来自分类PointNet的点云全局签名（1024维）嵌入到2D空间中。图20显示了ModelNet 40测试分割形状的嵌入空间。相似形状根据其语义类别聚集在一起。</li>
+<li><img src="/images/1641194568258-b720f6a9-1298-4d70-945e-ff17629260e6.png"></li>
+</ul>
+</li>
+<li><p><strong>分割可视化</strong></p>
+<ul>
+<li><p>我们在完整的CAD模型和模拟Kinect局部扫描上给出了更多的分割结果。我们还通过错误分析可视化故障案例。图21和图22显示了在完整的CAD模型及其模拟Kinect扫描中产生的更多分割结果。图23说明了一些故障情况。请阅读标题以进行错误分析。</p>
+</li>
+<li><p><img src="/images/1641194658344-d1c868ca-694d-48d4-b9f0-c6f36144d666.png"></p>
+</li>
+<li><p><img src="/images/1641194714470-d778630c-5226-45a2-aeda-1ecd516ac8de.png"></p>
+</li>
+<li><p><img src="/images/1641194755833-bc29aeb5-5f6f-4684-8bf2-dbd7cb81cfb9.png"></p>
+</li>
+</ul>
+</li>
+</ul>
+<p> 说明了最常见的故障情况: 边界上的点被错误地标记。在示例中，桌子&#x2F;椅子腿和顶部之间的交叉点附近的标签预测不准确。然而，大多数分割算法都受到此错误的影响。 ● (b) 显示外来形状的误差。例如，图中所示的吊灯和飞机在数据集中非常罕见。  ● (c)显示小部件可以被附近的大部件覆盖。例如，飞机的喷气发动机（图中的黄色）被错误地划分为机身（绿色）或机翼（紫色） ● (d) 显示了由形状部分的固有模糊性引起的误差。例如，图中两个表格的两个底部被分类为桌腿和桌脚 ([29] 中的其他类别)，而真实值分割则相反。 ● (e)说明了部分扫描不完整所引入的错误。对于图中的两个大写字母，几乎有一半的点云丢失了。  ● (f) 显示当某些对象类别的训练数据太少，无法涵盖足够的种类时的失败案例。在这里显示的两个类别中，整个数据集中只有54个袋子和39个帽子。”)</p>
+<ul>
+<li><strong>场景语义解析可视化</strong><ul>
+<li><p>我们在图24中给出了语义解析的可视化，其中我们显示了两个办公室和一个会议室的语义分割和对象检测的输入点云、预测和真实值。该区域和房间在训练集中是没有的。</p>
+</li>
+<li><p><img src="/images/1641194149636-64791789-1544-47c3-b543-92cfad6e9706.png"></p>
+</li>
+<li><p><img src="/images/1641194159757-4165a3e2-e5b8-4239-9403-aa36932c21b5.png"></p>
+</li>
+</ul>
+</li>
+</ul>
+<p>。最后两行是带有边界框的目标检测，其中预测框来自基于语义分割预测的连接组件”)</p>
+<ul>
+<li><strong>点函数可视化</strong><ul>
+<li>我们的分类pointNet计算K (在这个可视化中我们取K &#x3D; 1024) 每个点的尺寸点特征，并通过最大池层将所有每个点的局部特征聚合为一个K维向量，形成全局形状描述符。 为了获得更多关于学习到的每点函数<img src="/images/b1e0e973796be203f9e66ba7e2c907fa.svg"><br>检测的见解，我们可视化了图19中给出高每点函数值<img src="/images/247f942e5342be18289af8d5e532f2c5.svg"><br> 的点<img src="/images/631cba3e03c2a43088344401c5e66274.svg"><br>。这种可视化清楚地表明，不同的点函数学习检测分散在整个空间中的各种形状的不同区域中的点。</li>
+<li><img src="/images/1641194019572-3ae8d4ae-6f2b-4193-8bc9-41d4f70e6707.png"><br>，当训练我们的PointNet时，它在空间上覆盖了我们的输入形状标准化的单位球体。在该图中，我们将所有h(p)&gt; 0.5的点p可视化，其函数值由体素的亮度进行颜色编码。我们随机选择15个点函数，并可视化它们的激活区域。”)</li>
+</ul>
+</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+        <div class="reward-container">
+  <div></div>
+  <button onclick="var qr = document.getElementById('qr'); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/images/wechatpay.png" alt="SindreYang 微信支付">
+        <p>微信支付</p>
+      </div>
+      
+      <div style="display: inline-block;">
+        <img src="/images/alipay.png" alt="SindreYang 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>SindreYang
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://blog.mviai.com/2025/PointNet_%E7%94%A8%E4%BA%8E%E7%82%B9%E4%BA%91%E7%9A%84%E5%88%86%E7%B1%BB%E5%92%8C%E5%88%86%E5%89%B2%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/" title="PointNet_用于点云的分类和分割深度学习">http://blog.mviai.com/2025/PointNet_用于点云的分类和分割深度学习/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <span class="exturl" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC9kZWVkLnpo"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</span> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+        
+
+  <div class="followme">
+    <p>欢迎关注我的其它发布渠道</p>
+
+    <div class="social-list">
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="/images/wechat.png">
+            <span class="icon">
+              <i class="fa fa-wechat"></i>
+            </span>
+
+            <span class="label">WeChat</span>
+          </a>
+        </div>
+    </div>
+  </div>
+
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2025/PyTorch3D_cpu_cuda__3%E6%AD%A5%E5%AE%89%E8%A3%85%E6%8C%87%E5%8D%97/" rel="prev" title="PyTorch3D_cpu_cuda__3步安装指南">
+      <i class="fa fa-chevron-left"></i> PyTorch3D_cpu_cuda__3步安装指南
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2025/PointNet_pytorch%E7%89%88%E4%BB%A3%E7%A0%81%E8%A7%A3%E6%9E%90/" rel="next" title="PointNet_pytorch版代码解析">
+      PointNet_pytorch版代码解析 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    
+  <div class="comments">
+    <div id="SOHUCS"></div>
+  </div>
+  
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%91%98%E8%A6%81"><span class="nav-number">1.</span> <span class="nav-text">摘要</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#1-%E4%BB%8B%E7%BB%8D"><span class="nav-number">2.</span> <span class="nav-text">1.介绍</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-%E7%9B%B8%E5%85%B3%E5%B7%A5%E4%BD%9C"><span class="nav-number">3.</span> <span class="nav-text">2.相关工作</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-%E9%97%AE%E9%A2%98%E9%99%88%E8%BF%B0"><span class="nav-number">4.</span> <span class="nav-text">3.问题陈述</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#4-%E7%82%B9%E9%9B%86%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0"><span class="nav-number">5.</span> <span class="nav-text">4.点集深度学习</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#5-%E5%AE%9E%E9%AA%8C"><span class="nav-number">6.</span> <span class="nav-text">5.实验</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#6-%E7%BB%93%E8%AE%BA"><span class="nav-number">7.</span> <span class="nav-text">6.结论</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%A1%A5%E5%85%85%E8%AF%B4%E6%98%8E%EF%BC%9A"><span class="nav-number">8.</span> <span class="nav-text">补充说明：</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#A-%E6%A6%82%E8%BF%B0%EF%BC%9A"><span class="nav-number">8.1.</span> <span class="nav-text">A 概述：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#B-PointNet%E5%92%8CVoxNet%E7%9A%84%E6%AF%94%E8%BE%83-%E7%AC%AC5-2%E8%8A%82-%EF%BC%9A"><span class="nav-number">8.2.</span> <span class="nav-text">B PointNet和VoxNet的比较 (第5.2节)：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#C-%E7%BD%91%E7%BB%9C%E6%9E%B6%E6%9E%84%E5%92%8C%E8%AE%AD%E7%BB%83%E8%AF%A6%E6%83%85-%E7%AC%AC5-1%E8%8A%82-%EF%BC%9A"><span class="nav-number">8.3.</span> <span class="nav-text">C 网络架构和训练详情 (第5.1节)：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#D-%E6%A3%80%E6%B5%8B%E6%B5%81%E7%A8%8B%E8%AF%A6%E6%83%85-%E7%AC%AC5-1%E8%8A%82"><span class="nav-number">8.4.</span> <span class="nav-text">D 检测流程详情 (第5.1节)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#E-%E6%9B%B4%E5%A4%9A%E5%BA%94%E7%94%A8-%E7%AC%AC5-1%E8%8A%82"><span class="nav-number">8.5.</span> <span class="nav-text">E 更多应用 (第5.1节)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#F-%E6%9B%B4%E5%A4%9A%E6%9E%B6%E6%9E%84%E5%88%86%E6%9E%90-%E7%AC%AC5-2%E8%8A%82"><span class="nav-number">8.6.</span> <span class="nav-text">F 更多架构分析 (第5.2节)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#G-%E5%AE%9A%E7%90%86%E8%AF%81%E6%98%8E-%E7%AC%AC4-3%E8%8A%82"><span class="nav-number">8.7.</span> <span class="nav-text">G  定理证明 (第4.3节)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#H-%E6%9B%B4%E5%A4%9A%E5%8F%AF%E8%A7%86%E5%8C%96"><span class="nav-number">8.8.</span> <span class="nav-text">H 更多可视化</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="SindreYang"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">SindreYang</p>
+  <div class="site-description" itemprop="description">沉淀后我愿意做一个温暖的人。有自己的喜好，有自己的原则，有自己的信仰，不急功近利，不浮夸轻薄，宠辱不惊，淡定安逸，心静如水。------不忘初心，方得始终</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">321</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">72</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL1NpbmRyZVlhbmc=" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;SindreYang"><i class="fa fa-fw fa-github"></i>GitHub</span>
+      </span>
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="bWFpbHRvOnl4QG12aWFpLmNvbQ==" title="E-Mail → mailto:yx@mviai.com"><i class="fa fa-fw fa-envelope"></i>E-Mail</span>
+      </span>
+  </div>
+  <div class="cc-license motion-element" itemprop="license">
+    <span class="exturl cc-opacity" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC9kZWVkLnpo"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+  <div class="languages">
+    <label class="lang-select-label">
+      <i class="fa fa-language"></i>
+      <span>简体中文</span>
+      <i class="fa fa-angle-up" aria-hidden="true"></i>
+    </label>
+    <select class="lang-select" data-canonical="">
+      
+        <option value="zh-CN" data-href="/2025/PointNet_%E7%94%A8%E4%BA%8E%E7%82%B9%E4%BA%91%E7%9A%84%E5%88%86%E7%B1%BB%E5%92%8C%E5%88%86%E5%89%B2%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/" selected="">
+          简体中文
+        </option>
+      
+        <option value="en" data-href="/en/2025/PointNet_%E7%94%A8%E4%BA%8E%E7%82%B9%E4%BA%91%E7%9A%84%E5%88%86%E7%B1%BB%E5%92%8C%E5%88%86%E5%89%B2%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/" selected="">
+          English
+        </option>
+      
+    </select>
+  </div>
+
+        
+
+<div class="copyright">
+  
+  &copy; 2018 – 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">SindreYang</span>
+</div><!-- 页面点击小红心 -->
+<script type="text/javascript" src="/js/love.js"></script>
+<!-- 背景波浪 -->
+<script color="0,0,255" opacity="0.5" zIndex="-1" count="99" src="https://cdn.jsdelivr.net/npm/canvas-nest.js@1/dist/canvas-nest.js"></script>
+
+
+<!-- 腾讯企业邮箱 -->
+<style>
+.bizmail_loginpanel {
+    font-size: 12px;
+    width: 300px;
+    height: auto;
+    background: transparent;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.bizmail_LoginBox {
+    padding: 10px 15px;
+}
+
+
+.bizmail_loginpanel form {
+    margin: 0;
+    padding: 0;
+}
+
+.bizmail_loginpanel input.text {
+    font-size: 12px;
+    width: 100px;
+    height: 20px;
+    margin: 0 2px;
+    background-color: transparent;
+    border:1px solid transparent;
+    box-shadow: none;
+    color: black;
+}
+
+.bizmail_loginpanel .bizmail_column {
+    height: 28px;
+}
+
+.bizmail_loginpanel .bizmail_column label {
+    display: block;
+    float: left;
+    width: 30px;
+    height: 24px;
+    line-height: 24px;
+    font-size: 12px;
+}
+
+.bizmail_loginpanel .bizmail_column .bizmail_inputArea {
+    float: left;
+    width: 240px;
+}
+
+.bizmail_loginpanel .bizmail_column span {
+    font-size: 12px;
+    word-wrap: break-word;
+    margin-left: 2px;
+    line-height: 200%;
+}
+
+.bizmail_loginpanel .bizmail_SubmitArea {
+    margin-left: 30px;
+    clear: both;
+}
+
+.bizmail_loginpanel .bizmail_SubmitArea a {
+    font-size: 12px;
+    margin-left: 5px;
+}
+
+.bizmail_loginpanel select {
+    width: 110px;
+    height: 20px;
+    margin: 0 2px;
+}
+.bizmail_loginpanel input {
+
+    background-color: rgba(83, 126, 236, 0.562);
+}
+
+
+</style>
+
+<script type="text/javascript">
+function checkInput() {
+    var e = document.form1.uin,
+        i = document.form1.pwd;
+    return 0 == e.value.length ? e.focus() : 0 == i.value.length ? i.focus() : (document.form1.submit(), setTimeout(" document.form1.pwd.value = '' ", 500)), !1
+}
+
+function writeLoginPanel(e) {
+    if (e && e.domainlist && -1 != e.domainlist.indexOf(".")) {
+        var a = "return checkInput()",
+            t = '<div id="divLoginpanelHor" class="bizmail_loginpanel" style="width:550px;"><div class="bizmail_LoginBox"><form name="form1" action="https://exmail.qq.com/cgi-bin/login" target="_blank" method="post" onsubmit="' + a + '"><input type="hidden" name="firstlogin" value="false" /><input type="hidden" name="errtemplate" value="dm_loginpage" /><input type="hidden" name="aliastype" value="other" /><input type="hidden" name="dmtype" value="bizmail" /><input type="hidden" name="p" value="" /><label>\u8d26\u53f7:</label><input type="text" name="uin" class="text" value="" />@#domainlist#<label>&nbsp&nbsp&nbsp;\u5bc6\u7801:</label><input type="password" name="pwd" class="text" value="" /><input type="submit" class="" name="" value="\u767b\u5f55" />&nbsp;<a href="https://exmail.qq.com/cgi-bin/readtemplate?check=false&t=biz_rf_portal#recovery" target="_blank">\u5fd8\u8bb0\u5bc6\u7801\uff1f</a></form></div></div>',
+            n = '<div id="divLoginpanelVer" class="bizmail_loginpanel"><div class="bizmail_LoginBox"><form name="form1" action="https://exmail.qq.com/cgi-bin/login" target="_blank" method="post" onsubmit="' + a + '"><input type="hidden" name="firstlogin" value="false" /><input type="hidden" name="errtemplate" value="dm_loginpage" /><input type="hidden" name="aliastype" value="other" /><input type="hidden" name="dmtype" value="bizmail" /><input type="hidden" name="p" value="" /><div class="bizmail_column"><label>\u8d26\u53f7:</label><div class="bizmail_inputArea"><input type="text" name="uin" class="text" value="" />@#domainlist#</div></div><div class="bizmail_column"><label>\u5bc6\u7801:</label><div class="bizmail_inputArea"><input type="password" name="pwd" class="text" value="" /></div></div><div class="bizmail_SubmitArea"><input type="submit" class="" name="" style="width:66px;" value="\u767b\u5f55" /><a href="https://exmail.qq.com/cgi-bin/readtemplate?check=false&t=biz_rf_portal#recovery" target="_blank">\u5fd8\u8bb0\u5bc6\u7801\uff1f</a></div></form></div></div>',
+            l = e.domainlist.split(";");
+        if (1 == l.length) var m = '<span>#domain#</span><input type="hidden" name="domain" value="#domain#" />'.replace(/#domain#/g, l[0]);
+        else {
+            m = '<select name="domain">';
+            for (i = 0; i < l.length; i++) m += '<option value="' + l[i] + '">' + l[i] + "</option>";
+            m += "</select>"
+        }
+        e.mode && "vertical" != e.mode && "both" != e.mode || document.write(n.replace(/#domainlist#/g, m)), "horizontal" != e.mode && "both" != e.mode || document.write(t.replace(/#domainlist#/g, m))
+    }
+}
+
+</script>      
+
+<script type="text/javascript"> writeLoginPanel({domainlist:"mviai.com", mode:"horizontal"});</script>      
+
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script size="300" alpha="0.6" zIndex="-1" src="/lib/canvas-ribbon/canvas-ribbon.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/medium-zoom@1/dist/medium-zoom.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+  <script defer src="/lib/three/three.min.js"></script>
+    <script defer src="/lib/three/three-waves.min.js"></script>
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+<script>
+document.querySelectorAll('.pdfobject-container').forEach(element => {
+  let url = element.dataset.target;
+  let pdfOpenParams = {
+    navpanes : 0,
+    toolbar  : 0,
+    statusbar: 0,
+    pagemode : 'thumbs',
+    view     : 'FitH'
+  };
+  let pdfOpenFragment = '#' + Object.entries(pdfOpenParams).map(([key, value]) => `${key}=${encodeURIComponent(value)}`).join('&');
+  let fullURL = `/lib/pdf/web/viewer.html?file=${encodeURIComponent(url)}${pdfOpenFragment}`;
+
+  if (NexT.utils.supportsPDFs()) {
+    element.innerHTML = `<embed class="pdfobject" src="${url + pdfOpenFragment}" type="application/pdf" style="height: ${element.dataset.height};">`;
+  } else {
+    element.innerHTML = `<iframe src="${fullURL}" style="height: ${element.dataset.height};" frameborder="0"></iframe>`;
+  }
+});
+</script>
+
+
+
+
+  
+
+  
+
+  <script>
+  NexT.utils.loadComments(document.querySelector('#SOHUCS'), () => {
+    var appid = 'cyxmItxjS';
+    var conf = 'e5e71132d9086bb54aeeba6e88e87df9';
+    var width = window.innerWidth || document.documentElement.clientWidth;
+    if (width < 960) {
+      window.document.write('<script id="changyan_mobile_js" charset="utf-8" type="text/javascript" src="https://cy-cdn.kuaizhan.com/upload/mobile/wap-js/changyan_mobile.js?client_id=' + appid + '&conf=' + conf + '"><\/script>');
+    } else {
+      var loadJs=function(d,a){var c=document.getElementsByTagName("head")[0]||document.head||document.documentElement;var b=document.createElement("script");b.setAttribute("type","text/javascript");b.setAttribute("charset","UTF-8");b.setAttribute("src",d);if(typeof a==="function"){if(window.attachEvent){b.onreadystatechange=function(){var e=b.readyState;if(e==="loaded"||e==="complete"){b.onreadystatechange=null;a()}}}else{b.onload=a}}c.appendChild(b)};loadJs("https://changyan.sohu.com/upload/changyan.js",function(){window.changyan.api.config({appid:appid,conf:conf})});
+    }
+  });
+  </script>
+  <script src="https://cy-cdn.kuaizhan.com/upload/plugins/plugins.count.js"></script>
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/z16.model.json"},"display":{"position":"left","width":75,"height":150},"mobile":{"show":true},"log":false});</script></body>
+</html>
+
+
+
+

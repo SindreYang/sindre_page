@@ -1,0 +1,733 @@
+<!DOCTYPE html>
+<html lang="zh-CN,en,default">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" href="/lib/pace/pace-theme-minimal.min.css">
+  <script src="/lib/pace/pace.min.js"></script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"blog.mviai.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":true,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":true,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="自动摘要: 			应用场景		 ……..">
+<meta property="og:type" content="article">
+<meta property="og:title" content="深度图还原点云">
+<meta property="og:url" content="http://blog.mviai.com/2025/%E6%B7%B1%E5%BA%A6%E5%9B%BE%E8%BF%98%E5%8E%9F%E7%82%B9%E4%BA%91/index.html">
+<meta property="og:site_name" content="落叶无痕">
+<meta property="og:description" content="自动摘要: 			应用场景		 ……..">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://blog.mviai.com/images/1635325778285ef9ee1024b3342daa70630108cb38cdc.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1635325778285-ef9ee102-4b33-42da-a706-30108cb38cdc.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1635386473129-4ba38c5b-3534-4c92-84dd-a299f6122f76.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1635328780907-050a3350-5a21-4b11-b4ee-4e71370d5117.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1635328979707-f91b5a29-e7c2-45a3-815a-07886e4b90ad.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1635382875479-2931e5bc-36df-489d-a491-c46fae468612.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1635383403064-89433f8b-28da-4c01-8f3d-19f80906dbd3.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1635386200527-1b41e9ea-7759-4ffa-b6c6-6b39204be5bf.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1635386343608-4488829f-39fb-4469-9cc4-38b65e31c8cf.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1635386584053-96c535df-17cc-4ef7-ae93-d91cb896a727.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1636701767468-5e5360e7-dee1-4b89-baed-7cc463f163a5.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1636701794654-07be20fa-12ef-4709-b6fd-19ea33628168.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1636701815531-8382fb31-c53d-4acd-bd18-a94b0c37ac17.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1636686743257-a8f04571-e8af-45bc-90b4-38de27516184.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1636686921362-aeaa1261-e388-469b-97f3-3a7fd5d4f6bf.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1636686935982-801ad20b-f3b5-4312-b443-e79b6554cbf6.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1636686973181-5fa25984-a6ab-42ee-98a8-0280700d49e0.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1636687015303-bbfa675d-e413-447e-8299-5051258324b4.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1636687091884-11b0be15-010e-4a1f-899a-9ff11f4f81f7.png">
+<meta property="article:published_time" content="2025-01-22T04:37:41.000Z">
+<meta property="article:modified_time" content="2025-01-22T12:37:41.347Z">
+<meta property="article:author" content="SindreYang">
+<meta property="article:tag" content="生活">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://blog.mviai.com/images/1635325778285ef9ee1024b3342daa70630108cb38cdc.png">
+
+<link rel="canonical" href="http://blog.mviai.com/2025/%E6%B7%B1%E5%BA%A6%E5%9B%BE%E8%BF%98%E5%8E%9F%E7%82%B9%E4%BA%91/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>深度图还原点云 | 落叶无痕</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">落叶无痕</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类<span class="badge">72</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档<span class="badge">321</span></a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+  <span class="exturl github-corner" data-url="aHR0cHM6Ly9naXRodWIuY29tL1NpbmRyZVlhbmc=" title="Follow me on GitHub" aria-label="Follow me on GitHub"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></span>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://blog.mviai.com/2025/%E6%B7%B1%E5%BA%A6%E5%9B%BE%E8%BF%98%E5%8E%9F%E7%82%B9%E4%BA%91/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="SindreYang">
+      <meta itemprop="description" content="沉淀后我愿意做一个温暖的人。有自己的喜好，有自己的原则，有自己的信仰，不急功近利，不浮夸轻薄，宠辱不惊，淡定安逸，心静如水。------不忘初心，方得始终">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="落叶无痕">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          深度图还原点云
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2025-01-22 12:37:41 / 修改时间：20:37:41" itemprop="dateCreated datePublished" datetime="2025-01-22T12:37:41+08:00">2025-01-22</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%9C%AA%E6%95%B4%E7%90%86%E6%96%87%E6%A1%A3/" itemprop="url" rel="index"><span itemprop="name">未整理文档</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">Changyan：</span>
+    
+    
+      <a title="changyan" href="/2025/%E6%B7%B1%E5%BA%A6%E5%9B%BE%E8%BF%98%E5%8E%9F%E7%82%B9%E4%BA%91/#SOHUCS" itemprop="discussionUrl">
+        <span id="changyan_count_unit" class="post-comments-count hc-comment-count" data-xid="2025/深度图还原点云/" itemprop="commentCount"></span>
+      </a>
+    
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>自动摘要: 	<img src="/../../images/1635325778285ef9ee1024b3342daa70630108cb38cdc.png" alt="image.png">		应用场景		 ……..</p>
+<span id="more"></span>
+
+<h2 id=""><a href="#" class="headerlink" title=""></a><img src="/images/1635325778285-ef9ee102-4b33-42da-a706-30108cb38cdc.png"></h2><h2 id="应用场景"><a href="#应用场景" class="headerlink" title="应用场景"></a>应用场景</h2><h3 id="1、嵌体"><a href="#1、嵌体" class="headerlink" title="1、嵌体"></a>1、嵌体</h3><h3 id="2、冠的自动生成"><a href="#2、冠的自动生成" class="headerlink" title="2、冠的自动生成"></a>2、冠的自动生成</h3><h2 id="PCN深度图还原点云（第一次迭代）"><a href="#PCN深度图还原点云（第一次迭代）" class="headerlink" title="PCN深度图还原点云（第一次迭代）"></a>PCN深度图还原点云（第一次迭代）</h2><h2 id="流程"><a href="#流程" class="headerlink" title="流程"></a>流程</h2><h3 id="1、模型输入"><a href="#1、模型输入" class="headerlink" title="1、模型输入"></a>1、模型输入</h3><p><img src="/images/1635386473129-4ba38c5b-3534-4c92-84dd-a299f6122f76.png"></p>
+<h3 id="2、深度图获取"><a href="#2、深度图获取" class="headerlink" title="2、深度图获取"></a>2、深度图获取</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">import</span> bpy</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> string</span><br><span class="line"><span class="keyword">import</span> random</span><br><span class="line">input_dir = <span class="string">&#x27;C:\\Users\\admin\\Desktop\\Dental_Inlay_Data\\input&#x27;</span></span><br><span class="line">output_dir = <span class="string">&#x27;C:\\Users\\admin\\Desktop\\dataset\\ShapeNetCore.v1&#x27;</span></span><br><span class="line">model_list = <span class="built_in">open</span>(<span class="string">&quot;C:/Users/admin/Desktop/dataset/model_list&quot;</span>, <span class="string">&quot;w&quot;</span>)</span><br><span class="line">length = <span class="number">16</span></span><br><span class="line"><span class="comment">#生成8位随机数作为文件夹名称</span></span><br><span class="line">random_num = <span class="built_in">str</span>(random.randint(<span class="number">0</span>, <span class="number">99999999</span>)).zfill(<span class="number">8</span>)</span><br><span class="line">f_name = os.path.join(output_dir, random_num)</span><br><span class="line">os.mkdir(f_name)</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">314</span>):</span><br><span class="line"> file_name = <span class="built_in">str</span>(i+<span class="number">1</span>)</span><br><span class="line"> <span class="comment">#创建场景，导入模型</span></span><br><span class="line"> bpy.ops.import_mesh.ply(filepath=os.path.join(input_dir, (file_name + <span class="string">&#x27;.ply&#x27;</span>)))</span><br><span class="line"> <span class="comment">#选中模型</span></span><br><span class="line"> bpy.ops.<span class="built_in">object</span>.select_pattern(pattern=file_name, case_sensitive=<span class="literal">False</span>, extend=<span class="literal">True</span>)</span><br><span class="line"> <span class="comment"># 设置场景中心点</span></span><br><span class="line"> bpy.ops.<span class="built_in">object</span>.origin_set(<span class="built_in">type</span>=<span class="string">&#x27;ORIGIN_CURSOR&#x27;</span>, center=<span class="string">&#x27;MEDIAN&#x27;</span>)</span><br><span class="line"> bpy.ops.<span class="built_in">object</span>.origin_set(<span class="built_in">type</span>=<span class="string">&#x27;GEOMETRY_ORIGIN&#x27;</span>, center=<span class="string">&#x27;MEDIAN&#x27;</span>)</span><br><span class="line"> bpy.ops.transform.resize(value=(<span class="number">0.1</span>,<span class="number">0.1</span>,<span class="number">0.1</span>))</span><br><span class="line"> <span class="comment"># 设置导出ply的路径</span></span><br><span class="line"> <span class="comment">#生成31位随机数字加小写字母作为文件夹名称</span></span><br><span class="line"> a = np.random.choice(<span class="built_in">list</span>(string.ascii_lowercase + string.digits), length)</span><br><span class="line"> ch_file_name= <span class="string">&#x27;&#x27;</span>.join(a)</span><br><span class="line"> all_dir = os.path.join(f_name, ch_file_name)</span><br><span class="line"> os.mkdir(all_dir)</span><br><span class="line"><span class="comment"># 生成model_list文件</span></span><br><span class="line"> model_list.write(random_num+<span class="string">&#x27;/&#x27;</span>+ch_file_name)</span><br><span class="line"> model_list.write(<span class="string">&#x27;\n&#x27;</span>)</span><br><span class="line"> bpy.ops.export_scene.obj(filepath=os.path.join(all_dir, (<span class="string">&#x27;model.obj&#x27;</span>)))</span><br><span class="line"> bpy.ops.<span class="built_in">object</span>.select_all(action=<span class="string">&#x27;SELECT&#x27;</span>)</span><br><span class="line"> bpy.ops.<span class="built_in">object</span>.delete()</span><br></pre></td></tr></table></figure>
+
+<h3 id="-1"><a href="#-1" class="headerlink" title=""></a><img src="/images/1635328780907-050a3350-5a21-4b11-b4ee-4e71370d5117.png"></h3><p><img src="/images/1635328979707-f91b5a29-e7c2-45a3-815a-07886e4b90ad.png"><br><img src="/images/1635382875479-2931e5bc-36df-489d-a491-c46fae468612.png"></p>
+<h3 id="3、生成点云"><a href="#3、生成点云" class="headerlink" title="3、生成点云"></a>3、生成点云</h3><p><img src="/images/1635383403064-89433f8b-28da-4c01-8f3d-19f80906dbd3.png"></p>
+<h2 id="遇到问题"><a href="#遇到问题" class="headerlink" title="遇到问题"></a>遇到问题</h2><h3 id="问题1：代码错误"><a href="#问题1：代码错误" class="headerlink" title="问题1：代码错误"></a>问题1：代码错误</h3><p><img src="/images/1635386200527-1b41e9ea-7759-4ffa-b6c6-6b39204be5bf.png"><br>修改：<img src="/images/1635386343608-4488829f-39fb-4469-9cc4-38b65e31c8cf.png"></p>
+<h3 id="问题2：牙齿模型太大"><a href="#问题2：牙齿模型太大" class="headerlink" title="问题2：牙齿模型太大"></a>问题2：牙齿模型太大</h3><p>解决方法：修改相机参数<img src="/images/1635386584053-96c535df-17cc-4ef7-ae93-d91cb896a727.png"><br>缩小模型</p>
+<h3 id="问题3：Imath和OpenEXR包的安装"><a href="#问题3：Imath和OpenEXR包的安装" class="headerlink" title="问题3：Imath和OpenEXR包的安装"></a>问题3：Imath和OpenEXR包的安装</h3><h2 id="PCN深度图还原点云（第二次迭代）"><a href="#PCN深度图还原点云（第二次迭代）" class="headerlink" title="PCN深度图还原点云（第二次迭代）"></a>PCN深度图还原点云（第二次迭代）</h2><h2 id="流程-1"><a href="#流程-1" class="headerlink" title="流程"></a>流程</h2><h2 id="修改blender为2-79版本采样的深度图成功还原成点云"><a href="#修改blender为2-79版本采样的深度图成功还原成点云" class="headerlink" title="修改blender为2.79版本采样的深度图成功还原成点云"></a>修改blender为2.79版本采样的深度图成功还原成点云<img src="/images/1636701767468-5e5360e7-dee1-4b89-baed-7cc463f163a5.png"><br><img src="/images/1636701794654-07be20fa-12ef-4709-b6fd-19ea33628168.png"><br><img src="/images/1636701815531-8382fb31-c53d-4acd-bd18-a94b0c37ac17.png"></h2><h2 id="-2"><a href="#-2" class="headerlink" title=""></a></h2><h2 id="流程（第二次迭代）"><a href="#流程（第二次迭代）" class="headerlink" title="流程（第二次迭代）"></a>流程（第二次迭代）</h2><h3 id="1、模型输入-1"><a href="#1、模型输入-1" class="headerlink" title="1、模型输入"></a>1、模型输入</h3><p><img src="/images/1636686743257-a8f04571-e8af-45bc-90b4-38de27516184.png"></p>
+<h3 id="2、深度图获取-1"><a href="#2、深度图获取-1" class="headerlink" title="2、深度图获取"></a>2、深度图获取</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> math</span><br><span class="line"><span class="keyword">from</span> math <span class="keyword">import</span> sqrt</span><br><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</span><br><span class="line"><span class="keyword">import</span> open3d <span class="keyword">as</span> o3d</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">pcd = o3d.io.read_point_cloud(<span class="string">&#x27;/home/zpp/depth_image/models/data0200.ply&#x27;</span>)</span><br><span class="line"><span class="built_in">print</span>(pcd)</span><br><span class="line">all_points = np.asarray(pcd.points)</span><br><span class="line"><span class="built_in">print</span>(all_points)</span><br><span class="line">obb = pcd.get_oriented_bounding_box()</span><br><span class="line">obb.color = (<span class="number">0</span>,<span class="number">1</span>,<span class="number">0</span>)<span class="comment">#obb包围盒为绿色</span></span><br><span class="line">eight_points = np.asarray(obb.get_box_points())</span><br><span class="line"><span class="comment">#print(eight_points)</span></span><br><span class="line">o3d.visualization.draw_geometries([pcd, obb])</span><br><span class="line">pcd_points = np.asarray(pcd.points)</span><br><span class="line">min_x = np.<span class="built_in">min</span>(eight_points[:, <span class="number">0</span>])</span><br><span class="line">max_x = np.<span class="built_in">max</span>(eight_points[:, <span class="number">0</span>])</span><br><span class="line">min_y = np.<span class="built_in">min</span>(eight_points[:, <span class="number">1</span>])</span><br><span class="line">max_y = np.<span class="built_in">max</span>(eight_points[:, <span class="number">1</span>])</span><br><span class="line">min_z = np.<span class="built_in">min</span>(eight_points[:, <span class="number">2</span>])</span><br><span class="line">max_z = np.<span class="built_in">max</span>(eight_points[:, <span class="number">2</span>])</span><br><span class="line"><span class="comment">#print(min_x, max_x, min_y, max_y, min_x, max_x)</span></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">法向量n</span></span><br><span class="line"><span class="string">三个点确定一个平面</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br><span class="line">point1 = np.array([min_x, min_y, max_z])</span><br><span class="line">point2 = np.array([min_x, max_y, max_z])</span><br><span class="line">point3 = np.array([max_x, min_y, max_z])</span><br><span class="line">point4 = np.array([max_x, max_y, max_z])</span><br><span class="line">r = <span class="number">100</span></span><br><span class="line">point_d = []</span><br><span class="line"><span class="keyword">def</span> <span class="title function_">point_face_d</span>(<span class="params">point1, point2, point3, point4, r, all_points</span>):</span><br><span class="line">    AB = np.asmatrix(point2-point1)</span><br><span class="line">    AC = np.asmatrix(point3-point1)</span><br><span class="line">    N = np.cross(AB, AC)</span><br><span class="line">    A = N[<span class="number">0</span>, <span class="number">0</span>]</span><br><span class="line">    B = N[<span class="number">0</span>, <span class="number">1</span>]</span><br><span class="line">    C = N[<span class="number">0</span>, <span class="number">2</span>]</span><br><span class="line">    D = -(A * point4[<span class="number">0</span>] + B * point4[<span class="number">1</span>] + C * point4[<span class="number">2</span>]-r)</span><br><span class="line">    <span class="comment">#function</span></span><br><span class="line">    <span class="keyword">for</span> p <span class="keyword">in</span> all_points:</span><br><span class="line">        d = (A*p[<span class="number">0</span>]+B*p[<span class="number">1</span>]+C*p[<span class="number">2</span>]+D)/sqrt(A**<span class="number">2</span>+B**<span class="number">2</span>+C**<span class="number">2</span>)</span><br><span class="line">        point_d.append(d)</span><br><span class="line">    <span class="keyword">return</span> r/C</span><br><span class="line"><span class="comment">#平移距离</span></span><br><span class="line">translation_z = point_face_d(point1, point2, point3, point4, r, all_points)</span><br><span class="line">all_points[:, <span class="number">2</span>] = point_d</span><br><span class="line"><span class="built_in">print</span>(all_points)</span><br><span class="line"><span class="comment">#将距离d进行归一化处理后*255取整</span></span><br><span class="line">max_d = np.<span class="built_in">max</span>(point_d)</span><br><span class="line">max_x = np.<span class="built_in">max</span>(all_points[:, <span class="number">0</span>])</span><br><span class="line">max_y = np.<span class="built_in">max</span>(all_points[:, <span class="number">1</span>])</span><br><span class="line"><span class="built_in">print</span>(max_x, max_y)</span><br><span class="line"><span class="comment"># img_h = math.ceil(point2[1]-point1[1])</span></span><br><span class="line"><span class="comment"># img_w = math.ceil(point3[0]-point1[0])</span></span><br><span class="line"><span class="comment"># img_w = max_x - min_x</span></span><br><span class="line"><span class="comment"># img_h = max_y - min_y</span></span><br><span class="line"><span class="comment"># print(img_w, img_h)</span></span><br><span class="line">t = <span class="number">2.54</span></span><br><span class="line">nor_point_d = []</span><br><span class="line">nor_point_x = []</span><br><span class="line">nor_point_y = []</span><br><span class="line">result = []</span><br><span class="line"><span class="keyword">for</span> d <span class="keyword">in</span> point_d:</span><br><span class="line">    nor_point_d.append(<span class="built_in">round</span>(d * <span class="number">255</span> / max_d))</span><br><span class="line"><span class="keyword">for</span> x <span class="keyword">in</span> all_points[:, <span class="number">0</span>]:</span><br><span class="line">    <span class="comment">#x = x + abs(min_x)</span></span><br><span class="line">    nor_point_x.append(<span class="built_in">round</span>(x * <span class="number">100</span> * t / max_x))</span><br><span class="line"><span class="keyword">for</span> y <span class="keyword">in</span> all_points[:, <span class="number">1</span>]:</span><br><span class="line">    y = y + <span class="built_in">abs</span>(min_y)</span><br><span class="line">    nor_point_y.append(<span class="built_in">round</span>(y * <span class="number">100</span> / max_y))</span><br><span class="line">img_depth = np.zeros((<span class="built_in">int</span>(<span class="number">140</span>*t), <span class="number">140</span>), np.uint8)</span><br><span class="line"><span class="keyword">for</span> idx, d <span class="keyword">in</span> <span class="built_in">enumerate</span>(nor_point_d):</span><br><span class="line">    a = nor_point_x[idx]</span><br><span class="line">    b = nor_point_y[idx]</span><br><span class="line">    tmp = (nor_point_x[idx], nor_point_y[idx], nor_point_d[idx])</span><br><span class="line">    result.append(tmp)</span><br><span class="line">    img_depth[a, b] = d</span><br><span class="line">tmp = np.array(result)</span><br><span class="line">h = <span class="built_in">abs</span>(max_z - min_z) + translation_z</span><br><span class="line">ori_z = []</span><br><span class="line"><span class="keyword">for</span> z <span class="keyword">in</span> tmp:</span><br><span class="line">    ori_value = h - z[<span class="number">2</span>]/<span class="number">255</span>*max_d</span><br><span class="line">    ori_z.append(ori_value)</span><br><span class="line">ori_z = np.array(ori_z)</span><br><span class="line">tmp[:, <span class="number">2</span>] = ori_z</span><br><span class="line"><span class="keyword">from</span> PIL <span class="keyword">import</span> Image</span><br><span class="line">im = Image.fromarray(img_depth)</span><br><span class="line">im.save(<span class="string">&quot;out1.jpg&quot;</span>)</span><br><span class="line"></span><br><span class="line">point_cloud = o3d.geometry.PointCloud()</span><br><span class="line">point_cloud.points = o3d.utility.Vector3dVector(tmp)</span><br><span class="line"></span><br><span class="line">o3d.io.write_point_cloud(<span class="string">&#x27;/home/zpp/depth_image/models/data.ply&#x27;</span>, point_cloud)</span><br><span class="line">o3d.visualization.draw_geometries([point_cloud])</span><br></pre></td></tr></table></figure>
+
+<h3 id="-3"><a href="#-3" class="headerlink" title=""></a><img src="/images/1636686921362-aeaa1261-e388-469b-97f3-3a7fd5d4f6bf.png"></h3><h3 id="3、生成点云-1"><a href="#3、生成点云-1" class="headerlink" title="3、生成点云"></a>3、生成点云</h3><p><img src="/images/1636686935982-801ad20b-f3b5-4312-b443-e79b6554cbf6.png"><br><img src="/images/1636686973181-5fa25984-a6ab-42ee-98a8-0280700d49e0.png"></p>
+<h2 id="遇到问题-1"><a href="#遇到问题-1" class="headerlink" title="遇到问题"></a>遇到问题</h2><h3 id="问题1：坐标混乱"><a href="#问题1：坐标混乱" class="headerlink" title="问题1：坐标混乱"></a>问题1：坐标混乱</h3><p><img src="/images/1636687015303-bbfa675d-e413-447e-8299-5051258324b4.png"></p>
+<h3 id="问题2：牙齿模型太大-1"><a href="#问题2：牙齿模型太大-1" class="headerlink" title="问题2：牙齿模型太大"></a>问题2：牙齿模型太大</h3><p>解决方法：平移坐标<img src="/images/1636687091884-11b0be15-010e-4a1f-899a-9ff11f4f81f7.png"></p>
+
+    </div>
+
+    
+    
+    
+        <div class="reward-container">
+  <div></div>
+  <button onclick="var qr = document.getElementById('qr'); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/images/wechatpay.png" alt="SindreYang 微信支付">
+        <p>微信支付</p>
+      </div>
+      
+      <div style="display: inline-block;">
+        <img src="/images/alipay.png" alt="SindreYang 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>SindreYang
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://blog.mviai.com/2025/%E6%B7%B1%E5%BA%A6%E5%9B%BE%E8%BF%98%E5%8E%9F%E7%82%B9%E4%BA%91/" title="深度图还原点云">http://blog.mviai.com/2025/深度图还原点云/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <span class="exturl" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC9kZWVkLnpo"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</span> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+        
+
+  <div class="followme">
+    <p>欢迎关注我的其它发布渠道</p>
+
+    <div class="social-list">
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="/images/wechat.png">
+            <span class="icon">
+              <i class="fa fa-wechat"></i>
+            </span>
+
+            <span class="label">WeChat</span>
+          </a>
+        </div>
+    </div>
+  </div>
+
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2025/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0_%E5%8D%B7%E7%A7%AF%E4%B8%8E%E6%BB%A4%E6%B3%A2%E5%99%A8/" rel="prev" title="深度学习_卷积与滤波器">
+      <i class="fa fa-chevron-left"></i> 深度学习_卷积与滤波器
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2025/%E6%AD%A3%E7%95%B8%E8%87%AA%E5%8A%A8%E6%8E%92%E7%89%99%E9%9C%80%E6%B1%82V1.1.1/" rel="next" title="正畸自动排牙需求V1">
+      正畸自动排牙需求V1 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    
+  <div class="comments">
+    <div id="SOHUCS"></div>
+  </div>
+  
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link"><span class="nav-number">1.</span> <span class="nav-text"></span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BA%94%E7%94%A8%E5%9C%BA%E6%99%AF"><span class="nav-number">2.</span> <span class="nav-text">应用场景</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1%E3%80%81%E5%B5%8C%E4%BD%93"><span class="nav-number">2.1.</span> <span class="nav-text">1、嵌体</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2%E3%80%81%E5%86%A0%E7%9A%84%E8%87%AA%E5%8A%A8%E7%94%9F%E6%88%90"><span class="nav-number">2.2.</span> <span class="nav-text">2、冠的自动生成</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#PCN%E6%B7%B1%E5%BA%A6%E5%9B%BE%E8%BF%98%E5%8E%9F%E7%82%B9%E4%BA%91%EF%BC%88%E7%AC%AC%E4%B8%80%E6%AC%A1%E8%BF%AD%E4%BB%A3%EF%BC%89"><span class="nav-number">3.</span> <span class="nav-text">PCN深度图还原点云（第一次迭代）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B5%81%E7%A8%8B"><span class="nav-number">4.</span> <span class="nav-text">流程</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1%E3%80%81%E6%A8%A1%E5%9E%8B%E8%BE%93%E5%85%A5"><span class="nav-number">4.1.</span> <span class="nav-text">1、模型输入</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2%E3%80%81%E6%B7%B1%E5%BA%A6%E5%9B%BE%E8%8E%B7%E5%8F%96"><span class="nav-number">4.2.</span> <span class="nav-text">2、深度图获取</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#-1"><span class="nav-number">4.3.</span> <span class="nav-text"></span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3%E3%80%81%E7%94%9F%E6%88%90%E7%82%B9%E4%BA%91"><span class="nav-number">4.4.</span> <span class="nav-text">3、生成点云</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%81%87%E5%88%B0%E9%97%AE%E9%A2%98"><span class="nav-number">5.</span> <span class="nav-text">遇到问题</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%97%AE%E9%A2%981%EF%BC%9A%E4%BB%A3%E7%A0%81%E9%94%99%E8%AF%AF"><span class="nav-number">5.1.</span> <span class="nav-text">问题1：代码错误</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%97%AE%E9%A2%982%EF%BC%9A%E7%89%99%E9%BD%BF%E6%A8%A1%E5%9E%8B%E5%A4%AA%E5%A4%A7"><span class="nav-number">5.2.</span> <span class="nav-text">问题2：牙齿模型太大</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%97%AE%E9%A2%983%EF%BC%9AImath%E5%92%8COpenEXR%E5%8C%85%E7%9A%84%E5%AE%89%E8%A3%85"><span class="nav-number">5.3.</span> <span class="nav-text">问题3：Imath和OpenEXR包的安装</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#PCN%E6%B7%B1%E5%BA%A6%E5%9B%BE%E8%BF%98%E5%8E%9F%E7%82%B9%E4%BA%91%EF%BC%88%E7%AC%AC%E4%BA%8C%E6%AC%A1%E8%BF%AD%E4%BB%A3%EF%BC%89"><span class="nav-number">6.</span> <span class="nav-text">PCN深度图还原点云（第二次迭代）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B5%81%E7%A8%8B-1"><span class="nav-number">7.</span> <span class="nav-text">流程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BF%AE%E6%94%B9blender%E4%B8%BA2-79%E7%89%88%E6%9C%AC%E9%87%87%E6%A0%B7%E7%9A%84%E6%B7%B1%E5%BA%A6%E5%9B%BE%E6%88%90%E5%8A%9F%E8%BF%98%E5%8E%9F%E6%88%90%E7%82%B9%E4%BA%91"><span class="nav-number">8.</span> <span class="nav-text">修改blender为2.79版本采样的深度图成功还原成点云</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#-2"><span class="nav-number">9.</span> <span class="nav-text"></span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B5%81%E7%A8%8B%EF%BC%88%E7%AC%AC%E4%BA%8C%E6%AC%A1%E8%BF%AD%E4%BB%A3%EF%BC%89"><span class="nav-number">10.</span> <span class="nav-text">流程（第二次迭代）</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1%E3%80%81%E6%A8%A1%E5%9E%8B%E8%BE%93%E5%85%A5-1"><span class="nav-number">10.1.</span> <span class="nav-text">1、模型输入</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2%E3%80%81%E6%B7%B1%E5%BA%A6%E5%9B%BE%E8%8E%B7%E5%8F%96-1"><span class="nav-number">10.2.</span> <span class="nav-text">2、深度图获取</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#-3"><span class="nav-number">10.3.</span> <span class="nav-text"></span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3%E3%80%81%E7%94%9F%E6%88%90%E7%82%B9%E4%BA%91-1"><span class="nav-number">10.4.</span> <span class="nav-text">3、生成点云</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%81%87%E5%88%B0%E9%97%AE%E9%A2%98-1"><span class="nav-number">11.</span> <span class="nav-text">遇到问题</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%97%AE%E9%A2%981%EF%BC%9A%E5%9D%90%E6%A0%87%E6%B7%B7%E4%B9%B1"><span class="nav-number">11.1.</span> <span class="nav-text">问题1：坐标混乱</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%97%AE%E9%A2%982%EF%BC%9A%E7%89%99%E9%BD%BF%E6%A8%A1%E5%9E%8B%E5%A4%AA%E5%A4%A7-1"><span class="nav-number">11.2.</span> <span class="nav-text">问题2：牙齿模型太大</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="SindreYang"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">SindreYang</p>
+  <div class="site-description" itemprop="description">沉淀后我愿意做一个温暖的人。有自己的喜好，有自己的原则，有自己的信仰，不急功近利，不浮夸轻薄，宠辱不惊，淡定安逸，心静如水。------不忘初心，方得始终</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">321</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">72</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL1NpbmRyZVlhbmc=" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;SindreYang"><i class="fa fa-fw fa-github"></i>GitHub</span>
+      </span>
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="bWFpbHRvOnl4QG12aWFpLmNvbQ==" title="E-Mail → mailto:yx@mviai.com"><i class="fa fa-fw fa-envelope"></i>E-Mail</span>
+      </span>
+  </div>
+  <div class="cc-license motion-element" itemprop="license">
+    <span class="exturl cc-opacity" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC9kZWVkLnpo"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+  <div class="languages">
+    <label class="lang-select-label">
+      <i class="fa fa-language"></i>
+      <span>简体中文</span>
+      <i class="fa fa-angle-up" aria-hidden="true"></i>
+    </label>
+    <select class="lang-select" data-canonical="">
+      
+        <option value="zh-CN" data-href="/2025/%E6%B7%B1%E5%BA%A6%E5%9B%BE%E8%BF%98%E5%8E%9F%E7%82%B9%E4%BA%91/" selected="">
+          简体中文
+        </option>
+      
+        <option value="en" data-href="/en/2025/%E6%B7%B1%E5%BA%A6%E5%9B%BE%E8%BF%98%E5%8E%9F%E7%82%B9%E4%BA%91/" selected="">
+          English
+        </option>
+      
+    </select>
+  </div>
+
+        
+
+<div class="copyright">
+  
+  &copy; 2018 – 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">SindreYang</span>
+</div><!-- 页面点击小红心 -->
+<script type="text/javascript" src="/js/love.js"></script>
+<!-- 背景波浪 -->
+<script color="0,0,255" opacity="0.5" zIndex="-1" count="99" src="https://cdn.jsdelivr.net/npm/canvas-nest.js@1/dist/canvas-nest.js"></script>
+
+
+<!-- 腾讯企业邮箱 -->
+<style>
+.bizmail_loginpanel {
+    font-size: 12px;
+    width: 300px;
+    height: auto;
+    background: transparent;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.bizmail_LoginBox {
+    padding: 10px 15px;
+}
+
+
+.bizmail_loginpanel form {
+    margin: 0;
+    padding: 0;
+}
+
+.bizmail_loginpanel input.text {
+    font-size: 12px;
+    width: 100px;
+    height: 20px;
+    margin: 0 2px;
+    background-color: transparent;
+    border:1px solid transparent;
+    box-shadow: none;
+    color: black;
+}
+
+.bizmail_loginpanel .bizmail_column {
+    height: 28px;
+}
+
+.bizmail_loginpanel .bizmail_column label {
+    display: block;
+    float: left;
+    width: 30px;
+    height: 24px;
+    line-height: 24px;
+    font-size: 12px;
+}
+
+.bizmail_loginpanel .bizmail_column .bizmail_inputArea {
+    float: left;
+    width: 240px;
+}
+
+.bizmail_loginpanel .bizmail_column span {
+    font-size: 12px;
+    word-wrap: break-word;
+    margin-left: 2px;
+    line-height: 200%;
+}
+
+.bizmail_loginpanel .bizmail_SubmitArea {
+    margin-left: 30px;
+    clear: both;
+}
+
+.bizmail_loginpanel .bizmail_SubmitArea a {
+    font-size: 12px;
+    margin-left: 5px;
+}
+
+.bizmail_loginpanel select {
+    width: 110px;
+    height: 20px;
+    margin: 0 2px;
+}
+.bizmail_loginpanel input {
+
+    background-color: rgba(83, 126, 236, 0.562);
+}
+
+
+</style>
+
+<script type="text/javascript">
+function checkInput() {
+    var e = document.form1.uin,
+        i = document.form1.pwd;
+    return 0 == e.value.length ? e.focus() : 0 == i.value.length ? i.focus() : (document.form1.submit(), setTimeout(" document.form1.pwd.value = '' ", 500)), !1
+}
+
+function writeLoginPanel(e) {
+    if (e && e.domainlist && -1 != e.domainlist.indexOf(".")) {
+        var a = "return checkInput()",
+            t = '<div id="divLoginpanelHor" class="bizmail_loginpanel" style="width:550px;"><div class="bizmail_LoginBox"><form name="form1" action="https://exmail.qq.com/cgi-bin/login" target="_blank" method="post" onsubmit="' + a + '"><input type="hidden" name="firstlogin" value="false" /><input type="hidden" name="errtemplate" value="dm_loginpage" /><input type="hidden" name="aliastype" value="other" /><input type="hidden" name="dmtype" value="bizmail" /><input type="hidden" name="p" value="" /><label>\u8d26\u53f7:</label><input type="text" name="uin" class="text" value="" />@#domainlist#<label>&nbsp&nbsp&nbsp;\u5bc6\u7801:</label><input type="password" name="pwd" class="text" value="" /><input type="submit" class="" name="" value="\u767b\u5f55" />&nbsp;<a href="https://exmail.qq.com/cgi-bin/readtemplate?check=false&t=biz_rf_portal#recovery" target="_blank">\u5fd8\u8bb0\u5bc6\u7801\uff1f</a></form></div></div>',
+            n = '<div id="divLoginpanelVer" class="bizmail_loginpanel"><div class="bizmail_LoginBox"><form name="form1" action="https://exmail.qq.com/cgi-bin/login" target="_blank" method="post" onsubmit="' + a + '"><input type="hidden" name="firstlogin" value="false" /><input type="hidden" name="errtemplate" value="dm_loginpage" /><input type="hidden" name="aliastype" value="other" /><input type="hidden" name="dmtype" value="bizmail" /><input type="hidden" name="p" value="" /><div class="bizmail_column"><label>\u8d26\u53f7:</label><div class="bizmail_inputArea"><input type="text" name="uin" class="text" value="" />@#domainlist#</div></div><div class="bizmail_column"><label>\u5bc6\u7801:</label><div class="bizmail_inputArea"><input type="password" name="pwd" class="text" value="" /></div></div><div class="bizmail_SubmitArea"><input type="submit" class="" name="" style="width:66px;" value="\u767b\u5f55" /><a href="https://exmail.qq.com/cgi-bin/readtemplate?check=false&t=biz_rf_portal#recovery" target="_blank">\u5fd8\u8bb0\u5bc6\u7801\uff1f</a></div></form></div></div>',
+            l = e.domainlist.split(";");
+        if (1 == l.length) var m = '<span>#domain#</span><input type="hidden" name="domain" value="#domain#" />'.replace(/#domain#/g, l[0]);
+        else {
+            m = '<select name="domain">';
+            for (i = 0; i < l.length; i++) m += '<option value="' + l[i] + '">' + l[i] + "</option>";
+            m += "</select>"
+        }
+        e.mode && "vertical" != e.mode && "both" != e.mode || document.write(n.replace(/#domainlist#/g, m)), "horizontal" != e.mode && "both" != e.mode || document.write(t.replace(/#domainlist#/g, m))
+    }
+}
+
+</script>      
+
+<script type="text/javascript"> writeLoginPanel({domainlist:"mviai.com", mode:"horizontal"});</script>      
+
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script size="300" alpha="0.6" zIndex="-1" src="/lib/canvas-ribbon/canvas-ribbon.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/medium-zoom@1/dist/medium-zoom.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+  <script defer src="/lib/three/three.min.js"></script>
+    <script defer src="/lib/three/three-waves.min.js"></script>
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+<script>
+document.querySelectorAll('.pdfobject-container').forEach(element => {
+  let url = element.dataset.target;
+  let pdfOpenParams = {
+    navpanes : 0,
+    toolbar  : 0,
+    statusbar: 0,
+    pagemode : 'thumbs',
+    view     : 'FitH'
+  };
+  let pdfOpenFragment = '#' + Object.entries(pdfOpenParams).map(([key, value]) => `${key}=${encodeURIComponent(value)}`).join('&');
+  let fullURL = `/lib/pdf/web/viewer.html?file=${encodeURIComponent(url)}${pdfOpenFragment}`;
+
+  if (NexT.utils.supportsPDFs()) {
+    element.innerHTML = `<embed class="pdfobject" src="${url + pdfOpenFragment}" type="application/pdf" style="height: ${element.dataset.height};">`;
+  } else {
+    element.innerHTML = `<iframe src="${fullURL}" style="height: ${element.dataset.height};" frameborder="0"></iframe>`;
+  }
+});
+</script>
+
+
+
+
+  
+
+  
+
+  <script>
+  NexT.utils.loadComments(document.querySelector('#SOHUCS'), () => {
+    var appid = 'cyxmItxjS';
+    var conf = 'e5e71132d9086bb54aeeba6e88e87df9';
+    var width = window.innerWidth || document.documentElement.clientWidth;
+    if (width < 960) {
+      window.document.write('<script id="changyan_mobile_js" charset="utf-8" type="text/javascript" src="https://cy-cdn.kuaizhan.com/upload/mobile/wap-js/changyan_mobile.js?client_id=' + appid + '&conf=' + conf + '"><\/script>');
+    } else {
+      var loadJs=function(d,a){var c=document.getElementsByTagName("head")[0]||document.head||document.documentElement;var b=document.createElement("script");b.setAttribute("type","text/javascript");b.setAttribute("charset","UTF-8");b.setAttribute("src",d);if(typeof a==="function"){if(window.attachEvent){b.onreadystatechange=function(){var e=b.readyState;if(e==="loaded"||e==="complete"){b.onreadystatechange=null;a()}}}else{b.onload=a}}c.appendChild(b)};loadJs("https://changyan.sohu.com/upload/changyan.js",function(){window.changyan.api.config({appid:appid,conf:conf})});
+    }
+  });
+  </script>
+  <script src="https://cy-cdn.kuaizhan.com/upload/plugins/plugins.count.js"></script>
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/z16.model.json"},"display":{"position":"left","width":75,"height":150},"mobile":{"show":true},"log":false});</script></body>
+</html>
+
+
+
+

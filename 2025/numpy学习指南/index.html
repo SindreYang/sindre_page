@@ -1,0 +1,1608 @@
+<!DOCTYPE html>
+<html lang="zh-CN,en,default">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" href="/lib/pace/pace-theme-minimal.min.css">
+  <script src="/lib/pace/pace.min.js"></script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"blog.mviai.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":true,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":true,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="自动摘要: 	numpy.linalg.norm	linalg.norm(x,ord&#x3D;None,axis&#x3D;None,keepdims&#x3D;False)矩阵或向量范数。		根据ord参数的值，这个函数可以 ……..">
+<meta property="og:type" content="article">
+<meta property="og:title" content="numpy学习指南">
+<meta property="og:url" content="http://blog.mviai.com/2025/numpy%E5%AD%A6%E4%B9%A0%E6%8C%87%E5%8D%97/index.html">
+<meta property="og:site_name" content="落叶无痕">
+<meta property="og:description" content="自动摘要: 	numpy.linalg.norm	linalg.norm(x,ord&#x3D;None,axis&#x3D;None,keepdims&#x3D;False)矩阵或向量范数。		根据ord参数的值，这个函数可以 ……..">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://blog.mviai.com/images/1068ff88a7e7b373180cf69ec474d9b1.svg">
+<meta property="og:image" content="http://blog.mviai.com/images/1234fe88b22ee8b455392610a34380ac.svg">
+<meta property="article:published_time" content="2025-01-22T04:37:41.000Z">
+<meta property="article:modified_time" content="2025-01-22T12:37:41.760Z">
+<meta property="article:author" content="SindreYang">
+<meta property="article:tag" content="生活">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://blog.mviai.com/images/1068ff88a7e7b373180cf69ec474d9b1.svg">
+
+<link rel="canonical" href="http://blog.mviai.com/2025/numpy%E5%AD%A6%E4%B9%A0%E6%8C%87%E5%8D%97/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>numpy学习指南 | 落叶无痕</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">落叶无痕</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类<span class="badge">72</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档<span class="badge">321</span></a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+  <span class="exturl github-corner" data-url="aHR0cHM6Ly9naXRodWIuY29tL1NpbmRyZVlhbmc=" title="Follow me on GitHub" aria-label="Follow me on GitHub"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></span>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://blog.mviai.com/2025/numpy%E5%AD%A6%E4%B9%A0%E6%8C%87%E5%8D%97/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="SindreYang">
+      <meta itemprop="description" content="沉淀后我愿意做一个温暖的人。有自己的喜好，有自己的原则，有自己的信仰，不急功近利，不浮夸轻薄，宠辱不惊，淡定安逸，心静如水。------不忘初心，方得始终">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="落叶无痕">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          numpy学习指南
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2025-01-22 12:37:41 / 修改时间：20:37:41" itemprop="dateCreated datePublished" datetime="2025-01-22T12:37:41+08:00">2025-01-22</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%88%86%E5%89%B2%E5%9F%B9%E8%AE%AD%E8%AE%A1%E5%88%92/" itemprop="url" rel="index"><span itemprop="name">分割培训计划</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">Changyan：</span>
+    
+    
+      <a title="changyan" href="/2025/numpy%E5%AD%A6%E4%B9%A0%E6%8C%87%E5%8D%97/#SOHUCS" itemprop="discussionUrl">
+        <span id="changyan_count_unit" class="post-comments-count hc-comment-count" data-xid="2025/numpy学习指南/" itemprop="commentCount"></span>
+      </a>
+    
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>自动摘要: 	numpy.linalg.norm	linalg.norm(x,ord&#x3D;None,axis&#x3D;None,keepdims&#x3D;False)矩阵或向量范数。		根据ord参数的值，这个函数可以 ……..</p>
+<span id="more"></span>
+
+<h1 id="numpy-linalg-norm"><a href="#numpy-linalg-norm" class="headerlink" title="numpy.linalg.norm"></a>numpy.linalg.norm</h1><p>linalg.norm(x, ord&#x3D;None, axis&#x3D;None, keepdims&#x3D;False)矩阵或向量范数。</p>
+<p>根据 ord 参数的值，这个函数可以返回八个不同的矩阵范数中的一个，或者无限多个向量范数中的一个(如下所述)。</p>
+<p>参数：</p>
+<ul>
+<li><p>x ：array_like</p>
+<ul>
+<li>输入数组。如果坐标轴为“无”，则 x 必须为1-D 或2-D，除非 ord 为“无”。如果两个坐标轴和 ord 都为无，则返回 x.ravel 的2-范数。</li>
+</ul>
+</li>
+<li><p>ord ： {non-zero int, inf, -inf, ‘fro’, ‘nuc’}, optional</p>
+<ul>
+<li>标准的norm(见附注下的表格)。Inf 表示 numpy 的 inf 对象，默认值为 Nothing</li>
+</ul>
+</li>
+<li><p>axis ： {None, int, 2-tuple of ints}, optional.</p>
+<ul>
+<li>如果坐标轴是一个整数，它指定计算向量范数的 x 轴。如果轴是一个2元组，它指定持有2-D 矩阵的轴，并计算这些矩阵的矩阵范数。如果坐标轴为无，则返回向量范数(当 x 为1-D 时)或矩阵范数(当 x 为2-D 时)。默认值为 Nothing。</li>
+</ul>
+</li>
+<li><p>keep ： dimsbool, optional</p>
+<ul>
+<li>如果设置为 True，则在结果中以尺寸为1的维度保留规范化的轴。使用这个选项，结果将正确地广播到原始的 x。</li>
+</ul>
+</li>
+</ul>
+<p>返回值：</p>
+<ul>
+<li>n：float or ndarray<ul>
+<li>矩阵或向量的范数。</li>
+</ul>
+</li>
+</ul>
+<p>另请参阅：</p>
+<ul>
+<li><span class="exturl" data-url="aHR0cHM6Ly9kb2NzLnNjaXB5Lm9yZy9kb2Mvc2NpcHkvcmVmZXJlbmNlL2dlbmVyYXRlZC9zY2lweS5saW5hbGcubm9ybS5odG1sI3NjaXB5LmxpbmFsZy5ub3Jt" title="https://docs.scipy.org/doc/scipy/reference/generated/scipy.linalg.norm.html#scipy.linalg.norm">scipy.linalg.norm<i class="fa fa-external-link"></i></span>  SciPy 中的类似功能</li>
+</ul>
+<p>注意：对于 ord &lt; 1的值，严格地说，结果不是数学上的“范数”，但是它仍然可以用于各种数值计算。</p>
+<p>可以计算出以下准则:</p>
+<table>
+<thead>
+<tr>
+<th>ord</th>
+<th>矩阵范数</th>
+<th>向量范数</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>None</td>
+<td>Frobenius norm 弗罗贝尼乌斯范数</td>
+<td>2-范数</td>
+</tr>
+<tr>
+<td>‘fro’</td>
+<td>Frobenius norm 弗罗贝尼乌斯范数</td>
+<td>–</td>
+</tr>
+<tr>
+<td>‘nuc’</td>
+<td>核范数</td>
+<td>–</td>
+</tr>
+<tr>
+<td>inf</td>
+<td>max(sum(abs(x), axis&#x3D;1))</td>
+<td>max(abs(x))</td>
+</tr>
+<tr>
+<td>-inf</td>
+<td>min(sum(abs(x), axis&#x3D;1))</td>
+<td>min(abs(x))</td>
+</tr>
+<tr>
+<td>0</td>
+<td>–</td>
+<td>sum(x !&#x3D; 0)</td>
+</tr>
+<tr>
+<td>1</td>
+<td>max(sum(abs(x), axis&#x3D;0))</td>
+<td>同下</td>
+</tr>
+<tr>
+<td>-1</td>
+<td>min(sum(abs(x), axis&#x3D;0))</td>
+<td>同下</td>
+</tr>
+<tr>
+<td>2</td>
+<td>2-norm (largest sing. value)</td>
+<td>同下</td>
+</tr>
+<tr>
+<td>-2</td>
+<td>最小奇异值</td>
+<td>同下</td>
+</tr>
+<tr>
+<td>other</td>
+<td>–</td>
+<td>sum(abs(x)<strong>ord)</strong>(1.&#x2F;ord)</td>
+</tr>
+</tbody></table>
+<p>Frobenius 范数由[1]给出:<img src="/images/1068ff88a7e7b373180cf69ec474d9b1.svg"><br>核范数是奇异值的和。Frobenius 和核范数阶都只对矩阵定义，当 x.ndim! &#x3D; 2时会产生一个 ValueError。</p>
+<p>参考文献：[1] G. H. Golub and C. F. Van Loan, <em>Matrix Computations</em>, Baltimore, MD, Johns Hopkins University Press, 1985, pg. 15</p>
+<p>示例：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> numpy <span class="keyword">import</span> linalg <span class="keyword">as</span> LA</span><br><span class="line">a = np.arange(<span class="number">9</span>) - <span class="number">4</span></span><br><span class="line">a</span><br><span class="line">array([-<span class="number">4</span>, -<span class="number">3</span>, -<span class="number">2</span>, ...,  <span class="number">2</span>,  <span class="number">3</span>,  <span class="number">4</span>])</span><br><span class="line"></span><br><span class="line">b = a.reshape((<span class="number">3</span>, <span class="number">3</span>))</span><br><span class="line">b</span><br><span class="line">array([[-<span class="number">4</span>, -<span class="number">3</span>, -<span class="number">2</span>],</span><br><span class="line">       [-<span class="number">1</span>,  <span class="number">0</span>,  <span class="number">1</span>],</span><br><span class="line">       [ <span class="number">2</span>,  <span class="number">3</span>,  <span class="number">4</span>]])</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">LA.norm(a)</span><br><span class="line"><span class="number">7.745966692414834</span></span><br><span class="line"></span><br><span class="line">LA.norm(b)</span><br><span class="line"><span class="number">7.745966692414834</span></span><br><span class="line"></span><br><span class="line">LA.norm(b, <span class="string">&#x27;fro&#x27;</span>)</span><br><span class="line"><span class="number">7.745966692414834</span></span><br><span class="line"></span><br><span class="line">LA.norm(a, np.inf)</span><br><span class="line"><span class="number">4.0</span></span><br><span class="line"></span><br><span class="line">LA.norm(b, np.inf)</span><br><span class="line"><span class="number">9.0</span></span><br><span class="line"></span><br><span class="line">LA.norm(a, -np.inf)</span><br><span class="line"><span class="number">0.0</span></span><br><span class="line"></span><br><span class="line">LA.norm(b, -np.inf)</span><br><span class="line"><span class="number">2.0</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">LA.norm(a, <span class="number">1</span>)</span><br><span class="line"><span class="number">20.0</span></span><br><span class="line"></span><br><span class="line">LA.norm(b, <span class="number">1</span>)</span><br><span class="line"><span class="number">7.0</span></span><br><span class="line"></span><br><span class="line">LA.norm(a, -<span class="number">1</span>)</span><br><span class="line">-<span class="number">4.6566128774142013e-010</span></span><br><span class="line"></span><br><span class="line">LA.norm(b, -<span class="number">1</span>)</span><br><span class="line"><span class="number">6.0</span></span><br><span class="line"></span><br><span class="line">LA.norm(a, <span class="number">2</span>)</span><br><span class="line"><span class="number">7.745966692414834</span></span><br><span class="line"></span><br><span class="line">LA.norm(b, <span class="number">2</span>)</span><br><span class="line"><span class="number">7.3484692283495345</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">LA.norm(a, -<span class="number">2</span>)</span><br><span class="line"><span class="number">0.0</span></span><br><span class="line"></span><br><span class="line">LA.norm(b, -<span class="number">2</span>)</span><br><span class="line"><span class="number">1.8570331885190563e-016</span> <span class="comment"># may vary</span></span><br><span class="line"></span><br><span class="line">LA.norm(a, <span class="number">3</span>)</span><br><span class="line"><span class="number">5.8480354764257312</span> <span class="comment"># may vary</span></span><br><span class="line"></span><br><span class="line">LA.norm(a, -<span class="number">3</span>)</span><br><span class="line"><span class="number">0.0</span></span><br></pre></td></tr></table></figure>
+<p>使用轴参数计算向量范数:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">c = np.array([[ <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>],</span><br><span class="line">              [-<span class="number">1</span>, <span class="number">1</span>, <span class="number">4</span>]])</span><br><span class="line">LA.norm(c, axis=<span class="number">0</span>)</span><br><span class="line">array([ <span class="number">1.41421356</span>,  <span class="number">2.23606798</span>,  <span class="number">5.</span>        ])</span><br><span class="line"></span><br><span class="line">LA.norm(c, axis=<span class="number">1</span>)</span><br><span class="line">array([ <span class="number">3.74165739</span>,  <span class="number">4.24264069</span>])</span><br><span class="line"></span><br><span class="line">LA.norm(c, <span class="built_in">ord</span>=<span class="number">1</span>, axis=<span class="number">1</span>)</span><br><span class="line">array([ <span class="number">6.</span>,  <span class="number">6.</span>])</span><br></pre></td></tr></table></figure>
+<p>使用轴参数计算矩阵范数:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">m = np.arange(<span class="number">8</span>).reshape(<span class="number">2</span>,<span class="number">2</span>,<span class="number">2</span>)</span><br><span class="line">LA.norm(m, axis=(<span class="number">1</span>,<span class="number">2</span>))</span><br><span class="line">array([  <span class="number">3.74165739</span>,  <span class="number">11.22497216</span>])</span><br><span class="line"></span><br><span class="line">LA.norm(m[<span class="number">0</span>, :, :]), LA.norm(m[<span class="number">1</span>, :, :])</span><br><span class="line">(<span class="number">3.7416573867739413</span>, <span class="number">11.224972160321824</span>)</span><br></pre></td></tr></table></figure>
+
+
+<h1 id="numpy-argsort"><a href="#numpy-argsort" class="headerlink" title="numpy.argsort"></a>numpy.argsort</h1><p>numpy.argsort(a, axis&#x3D;-1, kind&#x3D;None, order&#x3D;None)返回数组排序后的元素原索引值。</p>
+<p>使用 kind 关键字指定的算法沿给定轴执行间接排序。它按排序顺序返回沿给定轴的索引数据形状相同的索引数组。</p>
+<p>参数：</p>
+<ul>
+<li><p>a：array_like</p>
+<ul>
+<li>要排序的数组</li>
+</ul>
+</li>
+<li><p>axis：int or None, optional</p>
+<ul>
+<li>要排序的轴。默认值是 -1(最后一个轴)。如果没有，则使用扁平数组。</li>
+</ul>
+</li>
+<li><p>kind：{‘quicksort’,  ‘mergesort’,  ‘heapsort’,  ‘stable’}, optional</p>
+<ul>
+<li>排序算法。默认值是“快排”。请注意，“稳定”和“合并排序”都暗中使用 timsort，而且一般来说，实际的实现将随着数据类型的不同而不同。保留“合并排序”选项是为了向后兼容。</li>
+</ul>
+</li>
+<li><p>order：str or list of str, optional</p>
+<ul>
+<li>当 a 是一个定义了字段的数组时，该参数指定首先比较哪些字段，其次比较哪些字段，等等。可以将单个字段指定为字符串，并且不需要指定所有字段，但仍将按照在 dtype 中出现的顺序使用未指定的字段来断开关系。</li>
+</ul>
+</li>
+</ul>
+<p>返回值：</p>
+<ul>
+<li>index_array：ndarray, int<ul>
+<li>沿指定轴对 a 进行排序的索引数组。如果 a 是一维的，则[ index _ array ]生成一个经过排序的。更一般地说，np.take _ along _ axis (a，index _ array，ax&#x3D; axis)总是生成排序后的 a，与维度无关。</li>
+</ul>
+</li>
+</ul>
+<p>另请参阅：</p>
+<ul>
+<li><span class="exturl" data-url="aHR0cHM6Ly9udW1weS5vcmcvZG9jL3N0YWJsZS9yZWZlcmVuY2UvZ2VuZXJhdGVkL251bXB5LnNvcnQuaHRtbCNudW1weS5zb3J0" title="https://numpy.org/doc/stable/reference/generated/numpy.sort.html#numpy.sort">sort<i class="fa fa-external-link"></i></span>：描述使用的排序算法。</li>
+<li><span class="exturl" data-url="aHR0cHM6Ly9udW1weS5vcmcvZG9jL3N0YWJsZS9yZWZlcmVuY2UvZ2VuZXJhdGVkL251bXB5LmxleHNvcnQuaHRtbCNudW1weS5sZXhzb3J0" title="https://numpy.org/doc/stable/reference/generated/numpy.lexsort.html#numpy.lexsort">lexsort<i class="fa fa-external-link"></i></span>：具有多个键的间接稳定排序。</li>
+<li><span class="exturl" data-url="aHR0cHM6Ly9udW1weS5vcmcvZG9jL3N0YWJsZS9yZWZlcmVuY2UvZ2VuZXJhdGVkL251bXB5Lm5kYXJyYXkuc29ydC5odG1sI251bXB5Lm5kYXJyYXkuc29ydA==" title="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.sort.html#numpy.ndarray.sort">ndarray.sort<i class="fa fa-external-link"></i></span>：原地排序。</li>
+<li><span class="exturl" data-url="aHR0cHM6Ly9udW1weS5vcmcvZG9jL3N0YWJsZS9yZWZlcmVuY2UvZ2VuZXJhdGVkL251bXB5LmFyZ3BhcnRpdGlvbi5odG1sI251bXB5LmFyZ3BhcnRpdGlvbg==" title="https://numpy.org/doc/stable/reference/generated/numpy.argpartition.html#numpy.argpartition">argpartition<i class="fa fa-external-link"></i></span>：间接部分排序。</li>
+<li><span class="exturl" data-url="aHR0cHM6Ly9udW1weS5vcmcvZG9jL3N0YWJsZS9yZWZlcmVuY2UvZ2VuZXJhdGVkL251bXB5LnRha2VfYWxvbmdfYXhpcy5odG1sI251bXB5LnRha2VfYWxvbmdfYXhpcw==" title="https://numpy.org/doc/stable/reference/generated/numpy.take_along_axis.html#numpy.take_along_axis">take_along_axis<i class="fa fa-external-link"></i></span>：将 index _ array 从 argsort 应用到数组，就像通过调用 sort 一样。</li>
+</ul>
+<p>注意：有关不同排序算法的说明，请参见  <span class="exturl" data-url="aHR0cHM6Ly9udW1weS5vcmcvZG9jL3N0YWJsZS9yZWZlcmVuY2UvZ2VuZXJhdGVkL251bXB5LnNvcnQuaHRtbCNudW1weS5zb3J0" title="https://numpy.org/doc/stable/reference/generated/numpy.sort.html#numpy.sort">sort<i class="fa fa-external-link"></i></span>。从 NumPy 1.4.0开始，argsort 使用包含 nan 值的实数&#x2F;复数数组。增强的排序顺序以排序形式记录。</p>
+<p>示例：一维数组：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">x = np.array([<span class="number">3</span>, <span class="number">1</span>, <span class="number">2</span>])</span><br><span class="line">np.argsort(x)</span><br><span class="line">array([<span class="number">1</span>, <span class="number">2</span>, <span class="number">0</span>])</span><br></pre></td></tr></table></figure>
+
+<p>二维数组：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">x = np.array([[<span class="number">0</span>, <span class="number">3</span>], [<span class="number">2</span>, <span class="number">2</span>]])</span><br><span class="line">x</span><br><span class="line">array([[<span class="number">0</span>, <span class="number">3</span>],</span><br><span class="line">       [<span class="number">2</span>, <span class="number">2</span>]])</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">ind = np.argsort(x, axis=<span class="number">0</span>)  <span class="comment"># sorts along first axis (down)</span></span><br><span class="line">ind</span><br><span class="line">array([[<span class="number">0</span>, <span class="number">1</span>],</span><br><span class="line">       [<span class="number">1</span>, <span class="number">0</span>]])</span><br><span class="line"></span><br><span class="line">np.take_along_axis(x, ind, axis=<span class="number">0</span>)  <span class="comment"># same as np.sort(x, axis=0)</span></span><br><span class="line">array([[<span class="number">0</span>, <span class="number">2</span>],</span><br><span class="line">       [<span class="number">2</span>, <span class="number">3</span>]])</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">ind = np.argsort(x, axis=<span class="number">1</span>)  <span class="comment"># sorts along last axis (across)</span></span><br><span class="line">ind</span><br><span class="line">array([[<span class="number">0</span>, <span class="number">1</span>],</span><br><span class="line">       [<span class="number">0</span>, <span class="number">1</span>]])</span><br><span class="line"></span><br><span class="line">np.take_along_axis(x, ind, axis=<span class="number">1</span>)  <span class="comment"># same as np.sort(x, axis=1)</span></span><br><span class="line">array([[<span class="number">0</span>, <span class="number">3</span>],</span><br><span class="line">       [<span class="number">2</span>, <span class="number">2</span>]])</span><br></pre></td></tr></table></figure>
+
+<p>N-维数组中已排序元素的索引:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">ind = np.unravel_index(np.argsort(x, axis=<span class="literal">None</span>), x.shape)</span><br><span class="line">ind</span><br><span class="line">(array([<span class="number">0</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">0</span>]), array([<span class="number">0</span>, <span class="number">0</span>, <span class="number">1</span>, <span class="number">1</span>]))</span><br><span class="line"></span><br><span class="line">x[ind]  <span class="comment"># same as np.sort(x, axis=None)</span></span><br><span class="line">array([<span class="number">0</span>, <span class="number">2</span>, <span class="number">2</span>, <span class="number">3</span>])</span><br></pre></td></tr></table></figure>
+
+<p>使用键排序：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">x = np.array([(<span class="number">1</span>, <span class="number">0</span>), (<span class="number">0</span>, <span class="number">1</span>)], dtype=[(<span class="string">&#x27;x&#x27;</span>, <span class="string">&#x27;&lt;i4&#x27;</span>), (<span class="string">&#x27;y&#x27;</span>, <span class="string">&#x27;&lt;i4&#x27;</span>)])</span><br><span class="line">x</span><br><span class="line">array([(<span class="number">1</span>, <span class="number">0</span>), (<span class="number">0</span>, <span class="number">1</span>)], dtype=[(<span class="string">&#x27;x&#x27;</span>, <span class="string">&#x27;&lt;i4&#x27;</span>), (<span class="string">&#x27;y&#x27;</span>, <span class="string">&#x27;&lt;i4&#x27;</span>)])</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">np.argsort(x, order=(<span class="string">&#x27;x&#x27;</span>,<span class="string">&#x27;y&#x27;</span>))</span><br><span class="line">array([<span class="number">1</span>, <span class="number">0</span>])</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">np.argsort(x, order=(<span class="string">&#x27;y&#x27;</span>,<span class="string">&#x27;x&#x27;</span>))</span><br><span class="line">array([<span class="number">0</span>, <span class="number">1</span>])</span><br></pre></td></tr></table></figure>
+
+
+<h1 id="numpy-ravel"><a href="#numpy-ravel" class="headerlink" title="numpy.ravel"></a>numpy.ravel</h1><p>numpy.ravel(a, order&#x3D;’C’)返回一个连续的平展一维数组。</p>
+<p>返回一个包含输入元素的1-D 数组。只有在需要时才复制。</p>
+<p>从 NumPy 1.10开始，返回的数组将具有与输入数组相同的类型。(例如，对于掩码数组输入，将返回一个掩码数组)。</p>
+<p>参数：</p>
+<ul>
+<li><p>a：array_like</p>
+<ul>
+<li>输入数组。 a 中的元素按顺序指定的顺序读取，并打包为一维数组。</li>
+</ul>
+</li>
+<li><p>order：{‘C’, ‘F’,  ‘A’, ‘K’}, optional</p>
+<ul>
+<li>使用此索引顺序读取 a 的元素。“ C”表示行主序、 C 风格的顺序对元素进行索引，最后一个轴索引变化最快，返回到第一个轴索引变化最慢。‘ F’表示按列主序、 Fortran 风格的顺序对元素进行索引，第一个索引变化最快，最后一个索引变化最慢。请注意，‘ C’和‘ F’选项没有考虑基础数组的内存布局，只是引用了轴索引的顺序。‘ A’表示如果 a 在内存中是 Fortran 连续的，则以类似 Fortran 的索引顺序读取元素，否则以类似 C 的顺序读取元素。“ K”表示按照元素在内存中出现的顺序读取元素，但当步长为负值时则反转数据。默认情况下，使用“ C”索引顺序。</li>
+</ul>
+</li>
+</ul>
+<p>返回值：y：array_like</p>
+<ul>
+<li>Y 是一个子类型与 a 相同的数组，带有形状(a.size, )。请注意，矩阵是特殊情况下的向下兼容，如果 a 是一个矩阵，那么 y 是一个一维 ndarray。</li>
+</ul>
+<p>另请参阅：</p>
+<ul>
+<li><span class="exturl" data-url="aHR0cHM6Ly9udW1weS5vcmcvZG9jL3N0YWJsZS9yZWZlcmVuY2UvZ2VuZXJhdGVkL251bXB5Lm5kYXJyYXkuZmxhdC5odG1sI251bXB5Lm5kYXJyYXkuZmxhdA==" title="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.flat.html#numpy.ndarray.flat">ndarray.flat<i class="fa fa-external-link"></i></span>：数组上的1-D 迭代器；</li>
+<li><span class="exturl" data-url="aHR0cHM6Ly9udW1weS5vcmcvZG9jL3N0YWJsZS9yZWZlcmVuY2UvZ2VuZXJhdGVkL251bXB5Lm5kYXJyYXkuZmxhdHRlbi5odG1sI251bXB5Lm5kYXJyYXkuZmxhdHRlbg==" title="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.flatten.html#numpy.ndarray.flatten">ndarray.flatten<i class="fa fa-external-link"></i></span>：数组元素的1-D 数组副本按行主序排列；</li>
+<li><span class="exturl" data-url="aHR0cHM6Ly9udW1weS5vcmcvZG9jL3N0YWJsZS9yZWZlcmVuY2UvZ2VuZXJhdGVkL251bXB5Lm5kYXJyYXkucmVzaGFwZS5odG1sI251bXB5Lm5kYXJyYXkucmVzaGFwZQ==" title="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.reshape.html#numpy.ndarray.reshape">ndarray.reshape<i class="fa fa-external-link"></i></span>：更改数组的形状而不更改其数据。</li>
+</ul>
+<p>注意：</p>
+<ul>
+<li><p>在行主序、 C 样式的顺序中，在两个维度中，行索引变化最慢，列索引变化最快。这可以推广到多个维度，其中行-主要顺序意味着沿着第一个轴的索引变化最慢，而沿着最后一个轴的索引变化最快。对于列主序，Fortran 样式的索引排序，则相反。</p>
+</li>
+<li><p>当在尽可能多的情况下需要一个视图时，arr.reform (-1) 可能更可取。</p>
+</li>
+</ul>
+<p>示例：它相当于重塑reshape(-1, order&#x3D;order)。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">x = np.array([[<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>], [<span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>]])</span><br><span class="line">np.ravel(x)</span><br><span class="line">array([<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>])</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">x.reshape(-<span class="number">1</span>)</span><br><span class="line">array([<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>])</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">np.ravel(x, order=<span class="string">&#x27;F&#x27;</span>)</span><br><span class="line">array([<span class="number">1</span>, <span class="number">4</span>, <span class="number">2</span>, <span class="number">5</span>, <span class="number">3</span>, <span class="number">6</span>])</span><br></pre></td></tr></table></figure>
+
+<p>当顺序为“ A”时，它将保留数组的“ C”或“ F”顺序:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">np.ravel(x.T)</span><br><span class="line">array([<span class="number">1</span>, <span class="number">4</span>, <span class="number">2</span>, <span class="number">5</span>, <span class="number">3</span>, <span class="number">6</span>])</span><br><span class="line"></span><br><span class="line">np.ravel(x.T, order=<span class="string">&#x27;A&#x27;</span>)</span><br><span class="line">array([<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>])</span><br></pre></td></tr></table></figure>
+
+<p>当顺序是“ K”时，它将保留既不是“ C”也不是“ F”的顺序，但不会反转轴:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">a = np.arange(<span class="number">3</span>)[::-<span class="number">1</span>]; </span><br><span class="line">a</span><br><span class="line">array([<span class="number">2</span>, <span class="number">1</span>, <span class="number">0</span>])</span><br><span class="line"></span><br><span class="line">a.ravel(order=<span class="string">&#x27;C&#x27;</span>)</span><br><span class="line">array([<span class="number">2</span>, <span class="number">1</span>, <span class="number">0</span>])</span><br><span class="line"></span><br><span class="line">a.ravel(order=<span class="string">&#x27;K&#x27;</span>)</span><br><span class="line">array([<span class="number">2</span>, <span class="number">1</span>, <span class="number">0</span>])</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">a = np.arange(<span class="number">12</span>).reshape(<span class="number">2</span>,<span class="number">3</span>,<span class="number">2</span>).swapaxes(<span class="number">1</span>,<span class="number">2</span>); </span><br><span class="line">a</span><br><span class="line">array([[[ <span class="number">0</span>,  <span class="number">2</span>,  <span class="number">4</span>],</span><br><span class="line">        [ <span class="number">1</span>,  <span class="number">3</span>,  <span class="number">5</span>]],</span><br><span class="line">       [[ <span class="number">6</span>,  <span class="number">8</span>, <span class="number">10</span>],</span><br><span class="line">        [ <span class="number">7</span>,  <span class="number">9</span>, <span class="number">11</span>]]])</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">a.ravel(order=<span class="string">&#x27;C&#x27;</span>)</span><br><span class="line">array([ <span class="number">0</span>,  <span class="number">2</span>,  <span class="number">4</span>,  <span class="number">1</span>,  <span class="number">3</span>,  <span class="number">5</span>,  <span class="number">6</span>,  <span class="number">8</span>, <span class="number">10</span>,  <span class="number">7</span>,  <span class="number">9</span>, <span class="number">11</span>])</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">a.ravel(order=<span class="string">&#x27;K&#x27;</span>)</span><br><span class="line">array([ <span class="number">0</span>,  <span class="number">1</span>,  <span class="number">2</span>,  <span class="number">3</span>,  <span class="number">4</span>,  <span class="number">5</span>,  <span class="number">6</span>,  <span class="number">7</span>,  <span class="number">8</span>,  <span class="number">9</span>, <span class="number">10</span>, <span class="number">11</span>])</span><br></pre></td></tr></table></figure>
+
+
+<h1 id="numpy-argwhere"><a href="#numpy-argwhere" class="headerlink" title="numpy.argwhere"></a>numpy.argwhere</h1><p>numpy.argwhere(a)返回非0的数组元素的索引，其中a是要索引数组的条件。</p>
+<p>参数：</p>
+<ul>
+<li>a：array_like<ul>
+<li>输入数据</li>
+</ul>
+</li>
+</ul>
+<p>返回值：</p>
+<ul>
+<li>index_array：(N, a.ndim) ndarray<ul>
+<li>非零元素的索引。索引按元素分组。这个数组将有一个形状(N，a.ndim) ，其中 N 是非零项的数目。</li>
+</ul>
+</li>
+</ul>
+<p>另请参阅：</p>
+<ul>
+<li><span class="exturl" data-url="aHR0cHM6Ly9udW1weS5vcmcvZG9jL3N0YWJsZS9yZWZlcmVuY2UvZ2VuZXJhdGVkL251bXB5LndoZXJlLmh0bWwjbnVtcHkud2hlcmU=" title="https://numpy.org/doc/stable/reference/generated/numpy.where.html#numpy.where">where<i class="fa fa-external-link"></i></span>**, **<span class="exturl" data-url="aHR0cHM6Ly9udW1weS5vcmcvZG9jL3N0YWJsZS9yZWZlcmVuY2UvZ2VuZXJhdGVkL251bXB5Lm5vbnplcm8uaHRtbCNudW1weS5ub256ZXJv" title="https://numpy.org/doc/stable/reference/generated/numpy.nonzero.html#numpy.nonzero">nonzero<i class="fa fa-external-link"></i></span></li>
+</ul>
+<p>注意：</p>
+<ul>
+<li>Argwhere (a)与 np.transose (np.nonzero (a))几乎相同，但会为 0D 数组生成正确形状的结果。</li>
+<li>Argwhere 的输出不适合为数组建立索引。对此可以使用nonzero(a)代替。</li>
+</ul>
+<p>示例：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">x = np.arange(<span class="number">6</span>).reshape(<span class="number">2</span>,<span class="number">3</span>)</span><br><span class="line">x</span><br><span class="line">array([[<span class="number">0</span>, <span class="number">1</span>, <span class="number">2</span>],</span><br><span class="line">       [<span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>]])</span><br><span class="line"></span><br><span class="line">np.argwhere(x&gt;<span class="number">1</span>)</span><br><span class="line">array([[<span class="number">0</span>, <span class="number">2</span>],</span><br><span class="line">       [<span class="number">1</span>, <span class="number">0</span>],</span><br><span class="line">       [<span class="number">1</span>, <span class="number">1</span>],</span><br><span class="line">       [<span class="number">1</span>, <span class="number">2</span>]])</span><br></pre></td></tr></table></figure>
+
+
+<h1 id="numpy-where"><a href="#numpy-where" class="headerlink" title="numpy.where"></a>numpy.where</h1><p>numpy.where(condition, [x, y, ]&#x2F;)根据条件返回从 x 或 y 中选择的元素。（是三元表达式 x if condition else y 的矢量化版本）</p>
+<p>注意：当只提供条件时，此函数是np.asarray(condition).nonzero()，直接使用 <span class="exturl" data-url="aHR0cHM6Ly9udW1weS5vcmcvZG9jL3N0YWJsZS9yZWZlcmVuY2UvZ2VuZXJhdGVkL251bXB5Lm5vbnplcm8uaHRtbCNudW1weS5ub256ZXJv" title="https://numpy.org/doc/stable/reference/generated/numpy.nonzero.html#numpy.nonzero">nonzero<i class="fa fa-external-link"></i></span>。本文档的其余部分只提供了三个参数所涉及的内容。</p>
+<p>参数：</p>
+<ul>
+<li><p>condition：array_like, bool</p>
+<ul>
+<li>如果为 True，则产生 x，否则产生 y。</li>
+</ul>
+</li>
+<li><p>x, y：array_like</p>
+<ul>
+<li>要从中选择的值。x，y和条件需要可以播放到某种形状。</li>
+</ul>
+</li>
+</ul>
+<p>返回值：</p>
+<ul>
+<li>out：ndarray<ul>
+<li>如果同时指定了x和y，则输出数组包含x的元素，其中condition为True，其他元素来自y。如果只给出条件，则返回元组condition.nanzero()，条件为True的索引。</li>
+</ul>
+</li>
+</ul>
+<p>另请参阅：</p>
+<ul>
+<li><span class="exturl" data-url="aHR0cHM6Ly9udW1weS5vcmcvZG9jL3N0YWJsZS9yZWZlcmVuY2UvZ2VuZXJhdGVkL251bXB5LmNob29zZS5odG1sI251bXB5LmNob29zZQ==" title="https://numpy.org/doc/stable/reference/generated/numpy.choose.html#numpy.choose">choose<i class="fa fa-external-link"></i></span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly9udW1weS5vcmcvZG9jL3N0YWJsZS9yZWZlcmVuY2UvZ2VuZXJhdGVkL251bXB5Lm5vbnplcm8uaHRtbCNudW1weS5ub256ZXJv" title="https://numpy.org/doc/stable/reference/generated/numpy.nonzero.html#numpy.nonzero">nonzero<i class="fa fa-external-link"></i></span><ul>
+<li>省略 x 和 y 时调用的函数</li>
+</ul>
+</li>
+</ul>
+<p>注意：如果所有数组都是1-D，其中等效于:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[xv <span class="keyword">if</span> c <span class="keyword">else</span> yv</span><br><span class="line"> <span class="keyword">for</span> c, xv, yv <span class="keyword">in</span> <span class="built_in">zip</span>(condition, x, y)]</span><br></pre></td></tr></table></figure>
+
+<p>示例：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">a = np.arange(<span class="number">10</span>)</span><br><span class="line">a</span><br><span class="line">array([<span class="number">0</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>, <span class="number">8</span>, <span class="number">9</span>])</span><br><span class="line"></span><br><span class="line">np.where(a &lt; <span class="number">5</span>, a, <span class="number">10</span>*a)</span><br><span class="line">array([ <span class="number">0</span>,  <span class="number">1</span>,  <span class="number">2</span>,  <span class="number">3</span>,  <span class="number">4</span>, <span class="number">50</span>, <span class="number">60</span>, <span class="number">70</span>, <span class="number">80</span>, <span class="number">90</span>])</span><br></pre></td></tr></table></figure>
+<p>这也可以用于多维数组:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">np.where([[<span class="literal">True</span>, <span class="literal">False</span>], [<span class="literal">True</span>, <span class="literal">True</span>]],</span><br><span class="line">         [[<span class="number">1</span>, <span class="number">2</span>], [<span class="number">3</span>, <span class="number">4</span>]],</span><br><span class="line">         [[<span class="number">9</span>, <span class="number">8</span>], [<span class="number">7</span>, <span class="number">6</span>]])</span><br><span class="line">array([[<span class="number">1</span>, <span class="number">8</span>],</span><br><span class="line">       [<span class="number">3</span>, <span class="number">4</span>]])</span><br></pre></td></tr></table></figure>
+<p>x、 y 和条件一起广播:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">x, y = np.ogrid[:<span class="number">3</span>, :<span class="number">4</span>]</span><br><span class="line">np.where(x &lt; y, x, <span class="number">10</span> + y)  <span class="comment"># both x and 10+y are broadcast</span></span><br><span class="line">array([[<span class="number">10</span>,  <span class="number">0</span>,  <span class="number">0</span>,  <span class="number">0</span>],</span><br><span class="line">       [<span class="number">10</span>, <span class="number">11</span>,  <span class="number">1</span>,  <span class="number">1</span>],</span><br><span class="line">       [<span class="number">10</span>, <span class="number">11</span>, <span class="number">12</span>,  <span class="number">2</span>]])</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">a = np.array([[<span class="number">0</span>, <span class="number">1</span>, <span class="number">2</span>],</span><br><span class="line">              [<span class="number">0</span>, <span class="number">2</span>, <span class="number">4</span>],</span><br><span class="line">              [<span class="number">0</span>, <span class="number">3</span>, <span class="number">6</span>]])</span><br><span class="line">np.where(a &lt; <span class="number">4</span>, a, -<span class="number">1</span>)  <span class="comment"># -1 is broadcast</span></span><br><span class="line">array([[ <span class="number">0</span>,  <span class="number">1</span>,  <span class="number">2</span>],</span><br><span class="line">       [ <span class="number">0</span>,  <span class="number">2</span>, -<span class="number">1</span>],</span><br><span class="line">       [ <span class="number">0</span>,  <span class="number">3</span>, -<span class="number">1</span>]])</span><br></pre></td></tr></table></figure>
+
+
+<h1 id="numpy-nonzero"><a href="#numpy-nonzero" class="headerlink" title="numpy.nonzero"></a>numpy.nonzero</h1><p>numpy.nonzero(a)返回非零元素的索引。</p>
+<p>返回一个数组元组，a中每个元组对应一个维度，该维度包含该维度中非零元素的索引。a 中的值始终在行主序中进行测试并返回C-style顺序。</p>
+<p>若要按元素而不是维度对索引进行分组，请使用 argwhere，它为每个非零元素返回一行。</p>
+<p>参数：</p>
+<ul>
+<li>a：array_like<ul>
+<li>输入数组</li>
+</ul>
+</li>
+</ul>
+<p>返回值：</p>
+<ul>
+<li>tuple_of_arrays：tuple<ul>
+<li>非零元素的索引（如二维：两个矩阵， 包含了相应维度上非零元素所在的行标号，与列标标号。）。</li>
+</ul>
+</li>
+</ul>
+<p>另请参阅:</p>
+<ul>
+<li><span class="exturl" data-url="aHR0cHM6Ly9udW1weS5vcmcvZG9jL3N0YWJsZS9yZWZlcmVuY2UvZ2VuZXJhdGVkL251bXB5LmZsYXRub256ZXJvLmh0bWwjbnVtcHkuZmxhdG5vbnplcm8=" title="https://numpy.org/doc/stable/reference/generated/numpy.flatnonzero.html#numpy.flatnonzero">flatnonzero<i class="fa fa-external-link"></i></span><ul>
+<li>返回输入数组展平后的非零索引。</li>
+</ul>
+</li>
+<li><span class="exturl" data-url="aHR0cHM6Ly9udW1weS5vcmcvZG9jL3N0YWJsZS9yZWZlcmVuY2UvZ2VuZXJhdGVkL251bXB5Lm5kYXJyYXkubm9uemVyby5odG1sI251bXB5Lm5kYXJyYXkubm9uemVybw==" title="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.nonzero.html#numpy.ndarray.nonzero">ndarray.nonzero<i class="fa fa-external-link"></i></span><ul>
+<li>等效 ndarray 方法。</li>
+</ul>
+</li>
+<li><span class="exturl" data-url="aHR0cHM6Ly9udW1weS5vcmcvZG9jL3N0YWJsZS9yZWZlcmVuY2UvZ2VuZXJhdGVkL251bXB5LmNvdW50X25vbnplcm8uaHRtbCNudW1weS5jb3VudF9ub256ZXJv" title="https://numpy.org/doc/stable/reference/generated/numpy.count_nonzero.html#numpy.count_nonzero">count_nonzero<i class="fa fa-external-link"></i></span><ul>
+<li>计算输入数组中非零元素的数量。</li>
+</ul>
+</li>
+</ul>
+<p>注意：虽然可以用[ nonzero (a)]获得非零值，但建议使用 x [ x.astype (bool)]或 x [ x！&#x3D; 0] ，它将正确处理0-d 数组。</p>
+<p>示例：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">x = np.array([[<span class="number">3</span>, <span class="number">0</span>, <span class="number">0</span>], [<span class="number">0</span>, <span class="number">4</span>, <span class="number">0</span>], [<span class="number">5</span>, <span class="number">6</span>, <span class="number">0</span>]])</span><br><span class="line">x</span><br><span class="line">array([[<span class="number">3</span>, <span class="number">0</span>, <span class="number">0</span>],</span><br><span class="line">       [<span class="number">0</span>, <span class="number">4</span>, <span class="number">0</span>],</span><br><span class="line">       [<span class="number">5</span>, <span class="number">6</span>, <span class="number">0</span>]])</span><br><span class="line"></span><br><span class="line">np.nonzero(x)</span><br><span class="line">(array([<span class="number">0</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">2</span>]), array([<span class="number">0</span>, <span class="number">1</span>, <span class="number">0</span>, <span class="number">1</span>]))</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">x[np.nonzero(x)]</span><br><span class="line">array([<span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>])</span><br><span class="line"></span><br><span class="line">np.transpose(np.nonzero(x))</span><br><span class="line">array([[<span class="number">0</span>, <span class="number">0</span>],</span><br><span class="line">       [<span class="number">1</span>, <span class="number">1</span>],</span><br><span class="line">       [<span class="number">2</span>, <span class="number">0</span>],</span><br><span class="line">       [<span class="number">2</span>, <span class="number">1</span>]])</span><br></pre></td></tr></table></figure>
+<p>非零的一个常见用法是查找数组的索引，其中条件为 True。给定一个数组 a，条件 a &gt; 3是一个布尔数组，因为 False 被解释为0，np.nonzero (a &gt; 3)生成条件为 true 的 a 的索引。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">a = np.array([[<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>], [<span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>], [<span class="number">7</span>, <span class="number">8</span>, <span class="number">9</span>]])</span><br><span class="line">a &gt; <span class="number">3</span></span><br><span class="line">array([[<span class="literal">False</span>, <span class="literal">False</span>, <span class="literal">False</span>],</span><br><span class="line">       [ <span class="literal">True</span>,  <span class="literal">True</span>,  <span class="literal">True</span>],</span><br><span class="line">       [ <span class="literal">True</span>,  <span class="literal">True</span>,  <span class="literal">True</span>]])</span><br><span class="line"></span><br><span class="line">np.nonzero(a &gt; <span class="number">3</span>)</span><br><span class="line">(array([<span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">2</span>, <span class="number">2</span>]), array([<span class="number">0</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">0</span>, <span class="number">1</span>, <span class="number">2</span>]))</span><br></pre></td></tr></table></figure>
+<p>使用这个结果来索引 a 相当于直接使用掩码:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">a[np.nonzero(a &gt; <span class="number">3</span>)]</span><br><span class="line">array([<span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>, <span class="number">8</span>, <span class="number">9</span>])</span><br><span class="line"></span><br><span class="line">a[a &gt; <span class="number">3</span>]  <span class="comment">#喜欢这个写法</span></span><br><span class="line">array([<span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>, <span class="number">8</span>, <span class="number">9</span>])</span><br></pre></td></tr></table></figure>
+<p>也可以将 nonzero 作为数组的方法调用。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">(a &gt; <span class="number">3</span>).nonzero()</span><br><span class="line">(array([<span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">2</span>, <span class="number">2</span>]), array([<span class="number">0</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">0</span>, <span class="number">1</span>, <span class="number">2</span>]))</span><br></pre></td></tr></table></figure>
+
+
+<h1 id="numpy-unique"><a href="#numpy-unique" class="headerlink" title="numpy.unique"></a>numpy.unique</h1><p>numpy.unique(ar, return_index&#x3D;False, return_inverse&#x3D;False, return_counts&#x3D;False, axis&#x3D;None, *, equal_nan&#x3D;True)对于一维数组或者列表，unique函数去除其中重复的元素，并按元素由大到小返回一个新的无元素重复的元组或者列表。</p>
+<p>返回一个数组中已排序的唯一元素。除了唯一元素外，还有三个可选输出:</p>
+<ul>
+<li>给出唯一值的输入数组的索引;</li>
+<li>重建输入数组的唯一数组的索引;</li>
+<li>每个唯一值出现在输入数组中的次数。</li>
+</ul>
+<p>参数：</p>
+<ul>
+<li><p>a：rarray_like</p>
+<ul>
+<li>输入数组。除非指定了轴，否则如果它不是1-D，它将展平。</li>
+</ul>
+</li>
+<li><p>return_index：bool, optional</p>
+<ul>
+<li>如果为 True，还将返回 ar 的索引(如果提供，则沿指定的轴，或在展平数组中) ，从而生成唯一数组。</li>
+</ul>
+</li>
+<li><p>return_inverse：bool, optional</p>
+<ul>
+<li>如果为 True，还返回可用于重新构造 ar 的唯一数组的索引(如果提供了指定的轴)。</li>
+</ul>
+</li>
+<li><p>return_counts：bool, optional</p>
+<ul>
+<li>如果为 True，也返回每个唯一项在 ar 中出现的次数。</li>
+</ul>
+</li>
+<li><p>axis：int or None, optional</p>
+<ul>
+<li>要操作的轴。如果为None，ar将被展平。如果是一个整数，给定轴索引的子数组将被展平，并被视为具有给定轴维数的一维数组的元素，更多细节参见注释。如果使用坐标轴 kwarg，则不支持包含对象的对象数组或结构化数组。默认值为 None。</li>
+</ul>
+</li>
+<li><p>equal_nan：bool, optional</p>
+<ul>
+<li>如果为 True，则将返回数组中的多个 NaN 值折叠为一个。</li>
+</ul>
+</li>
+</ul>
+<p>返回值：</p>
+<ul>
+<li><p>unique：ndarray</p>
+<ul>
+<li>排序的唯一值。</li>
+</ul>
+</li>
+<li><p>unique_indices：ndarray, optional</p>
+<ul>
+<li>原始数组中唯一值的第一个匹配项的索引。只有当 return _ index 为 True 时才提供。</li>
+</ul>
+</li>
+<li><p>unique_inverse：ndarray, optional</p>
+<ul>
+<li>用于从唯一数组重建原始数组的索引。只有 return _ verse 为 True 时才提供。</li>
+</ul>
+</li>
+<li><p>unique_counts：ndarray, optional</p>
+<ul>
+<li>每个唯一值在原始数组中出现的次数。只有 return _ count 为 True 时才提供。</li>
+</ul>
+</li>
+</ul>
+<p>另请参阅：</p>
+<ul>
+<li><p><span class="exturl" data-url="aHR0cHM6Ly9udW1weS5vcmcvZG9jL3N0YWJsZS9yZWZlcmVuY2UvZ2VuZXJhdGVkL251bXB5LmxpYi5hcnJheXNldG9wcy5odG1sI21vZHVsZS1udW1weS5saWIuYXJyYXlzZXRvcHM=" title="https://numpy.org/doc/stable/reference/generated/numpy.lib.arraysetops.html#module-numpy.lib.arraysetops">numpy.lib.arraysetops<i class="fa fa-external-link"></i></span></p>
+<ul>
+<li>模块中包含许多其他函数，用于对数组执行集合操作。</li>
+</ul>
+</li>
+<li><p><span class="exturl" data-url="aHR0cHM6Ly9udW1weS5vcmcvZG9jL3N0YWJsZS9yZWZlcmVuY2UvZ2VuZXJhdGVkL251bXB5LnJlcGVhdC5odG1sI251bXB5LnJlcGVhdA==" title="https://numpy.org/doc/stable/reference/generated/numpy.repeat.html#numpy.repeat">repeat<i class="fa fa-external-link"></i></span></p>
+<ul>
+<li>重复数组的元素。</li>
+</ul>
+</li>
+</ul>
+<p>注意：当指定一个轴时，按轴索引的子数组将被排序。这是通过将指定的轴作为数组的第一维(将轴移动到第一维以保持其他轴的顺序) ，然后按 C 顺序展平子数组来完成的。然后将扁平化的子数组视为一个结构化类型，每个元素都有一个标签，这样我们就得到了一个结构化类型的1-D 数组，可以像处理其他任何1-D 数组一样处理这个数组。其结果是从第一个元素开始按照字典顺序对平坦子阵进行排序。</p>
+<p>示例：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">np.unique([<span class="number">1</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">3</span>])</span><br><span class="line">array([<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>])</span><br><span class="line"></span><br><span class="line">a = np.array([[<span class="number">1</span>, <span class="number">1</span>], [<span class="number">2</span>, <span class="number">3</span>]])</span><br><span class="line">np.unique(a)</span><br><span class="line">array([<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>])</span><br></pre></td></tr></table></figure>
+<p>回2D 数组的唯一行：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">a = np.array([[<span class="number">1</span>, <span class="number">0</span>, <span class="number">0</span>], [<span class="number">1</span>, <span class="number">0</span>, <span class="number">0</span>], [<span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>]])</span><br><span class="line">np.unique(a, axis=<span class="number">0</span>)</span><br><span class="line">array([[<span class="number">1</span>, <span class="number">0</span>, <span class="number">0</span>], [<span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>]])</span><br></pre></td></tr></table></figure>
+<p>返回给出唯一值的原始数组的索引:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">a = np.array([<span class="string">&#x27;a&#x27;</span>, <span class="string">&#x27;b&#x27;</span>, <span class="string">&#x27;b&#x27;</span>, <span class="string">&#x27;c&#x27;</span>, <span class="string">&#x27;a&#x27;</span>])</span><br><span class="line">u, indices = np.unique(a, return_index=<span class="literal">True</span>)</span><br><span class="line">u</span><br><span class="line">array([<span class="string">&#x27;a&#x27;</span>, <span class="string">&#x27;b&#x27;</span>, <span class="string">&#x27;c&#x27;</span>], dtype=<span class="string">&#x27;&lt;U1&#x27;</span>)</span><br><span class="line"></span><br><span class="line">indices</span><br><span class="line">array([<span class="number">0</span>, <span class="number">1</span>, <span class="number">3</span>])</span><br><span class="line"></span><br><span class="line">a[indices]</span><br><span class="line">array([<span class="string">&#x27;a&#x27;</span>, <span class="string">&#x27;b&#x27;</span>, <span class="string">&#x27;c&#x27;</span>], dtype=<span class="string">&#x27;&lt;U1&#x27;</span>)</span><br></pre></td></tr></table></figure>
+<p>根据唯一值和逆值重新构造输入数组:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">a = np.array([<span class="number">1</span>, <span class="number">2</span>, <span class="number">6</span>, <span class="number">4</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">2</span>])</span><br><span class="line">u, indices = np.unique(a, return_inverse=<span class="literal">True</span>)</span><br><span class="line">u</span><br><span class="line">array([<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">6</span>])</span><br><span class="line"></span><br><span class="line">indices</span><br><span class="line">array([<span class="number">0</span>, <span class="number">1</span>, <span class="number">4</span>, <span class="number">3</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">1</span>])</span><br><span class="line"></span><br><span class="line">u[indices]</span><br><span class="line">array([<span class="number">1</span>, <span class="number">2</span>, <span class="number">6</span>, <span class="number">4</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">2</span>])</span><br></pre></td></tr></table></figure>
+<p>根据唯一值和计数重新构造输入值:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">a = np.array([<span class="number">1</span>, <span class="number">2</span>, <span class="number">6</span>, <span class="number">4</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">2</span>])</span><br><span class="line">values, counts = np.unique(a, return_counts=<span class="literal">True</span>)</span><br><span class="line">values</span><br><span class="line">array([<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">6</span>])</span><br><span class="line"></span><br><span class="line">counts</span><br><span class="line">array([<span class="number">1</span>, <span class="number">3</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>])</span><br><span class="line"></span><br><span class="line">np.repeat(values, counts)</span><br><span class="line">array([<span class="number">1</span>, <span class="number">2</span>, <span class="number">2</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">6</span>])    <span class="comment"># 原始顺序未保留</span></span><br></pre></td></tr></table></figure>
+
+
+<h1 id="numpy-delete"><a href="#numpy-delete" class="headerlink" title="numpy.delete"></a>numpy.delete</h1><p>numpy.delete(arr, obj, axis&#x3D;None)返回一个删除后的新数组，其中子数组沿删除的轴方向排列。对于一维数组，返回 arr [ obj ]没有返回的条目。</p>
+<p>参数：</p>
+<ul>
+<li><p>arr：array_like</p>
+<ul>
+<li>输入数组；</li>
+</ul>
+</li>
+<li><p>obj：slice, int or array of ints</p>
+<ul>
+<li>指示要沿指定轴移除的子数组的索引（指定要通过的整数,切片或者列表（数组）删除的行号&#x2F;列号）；</li>
+</ul>
+</li>
+<li><p>axis：int, optional</p>
+<ul>
+<li>要删除由 obj 定义的子数组的轴。如果坐标轴为 None，则arr先按行展平，然后按照obj，删除第obj-1(从0开始)位置的数，返回一个行矩阵。</li>
+</ul>
+</li>
+</ul>
+<p>返回值：</p>
+<ul>
+<li>out：ndarray<ul>
+<li>删除了 obj 指定的元素的 arr 的副本。注意，删除不会就地发生。如果坐标轴为None，则 out 为展平数组。</li>
+</ul>
+</li>
+</ul>
+<p>另请参阅：</p>
+<ul>
+<li><span class="exturl" data-url="aHR0cHM6Ly9udW1weS5vcmcvZG9jL3N0YWJsZS9yZWZlcmVuY2UvZ2VuZXJhdGVkL251bXB5Lmluc2VydC5odG1sI251bXB5Lmluc2VydA==" title="https://numpy.org/doc/stable/reference/generated/numpy.insert.html#numpy.insert">insert<i class="fa fa-external-link"></i></span><ul>
+<li>将元素插入数组。</li>
+</ul>
+</li>
+<li><span class="exturl" data-url="aHR0cHM6Ly9udW1weS5vcmcvZG9jL3N0YWJsZS9yZWZlcmVuY2UvZ2VuZXJhdGVkL251bXB5LmFwcGVuZC5odG1sI251bXB5LmFwcGVuZA==" title="https://numpy.org/doc/stable/reference/generated/numpy.append.html#numpy.append">append<i class="fa fa-external-link"></i></span><ul>
+<li>在数组末尾追加元素。</li>
+</ul>
+</li>
+</ul>
+<p>注意：通常最好使用布尔掩码，例如:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">arr = np.arange(<span class="number">12</span>) + <span class="number">1</span></span><br><span class="line">mask = np.ones(<span class="built_in">len</span>(arr), dtype=<span class="built_in">bool</span>)</span><br><span class="line">mask[[<span class="number">0</span>,<span class="number">2</span>,<span class="number">4</span>]] = <span class="literal">False</span></span><br><span class="line">result = arr[mask,...]</span><br></pre></td></tr></table></figure>
+<p>等效于 np.delete (arr，[0,2,4] ，ax&#x3D; 0) ，但允许进一步使用掩码。</p>
+<p>示例：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">arr = np.array([[<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>], [<span class="number">5</span>,<span class="number">6</span>,<span class="number">7</span>,<span class="number">8</span>], [<span class="number">9</span>,<span class="number">10</span>,<span class="number">11</span>,<span class="number">12</span>]])</span><br><span class="line">arr</span><br><span class="line">array([[ <span class="number">1</span>,  <span class="number">2</span>,  <span class="number">3</span>,  <span class="number">4</span>],</span><br><span class="line">       [ <span class="number">5</span>,  <span class="number">6</span>,  <span class="number">7</span>,  <span class="number">8</span>],</span><br><span class="line">       [ <span class="number">9</span>, <span class="number">10</span>, <span class="number">11</span>, <span class="number">12</span>]])</span><br><span class="line"></span><br><span class="line">np.delete(arr, <span class="number">1</span>, <span class="number">0</span>)</span><br><span class="line">array([[ <span class="number">1</span>,  <span class="number">2</span>,  <span class="number">3</span>,  <span class="number">4</span>],</span><br><span class="line">       [ <span class="number">9</span>, <span class="number">10</span>, <span class="number">11</span>, <span class="number">12</span>]])</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">np.delete(arr, np.s_[::<span class="number">2</span>], <span class="number">1</span>)</span><br><span class="line">array([[ <span class="number">2</span>,  <span class="number">4</span>],</span><br><span class="line">       [ <span class="number">6</span>,  <span class="number">8</span>],</span><br><span class="line">       [<span class="number">10</span>, <span class="number">12</span>]])</span><br><span class="line"></span><br><span class="line">np.delete(arr, [<span class="number">1</span>,<span class="number">3</span>,<span class="number">5</span>], <span class="literal">None</span>)</span><br><span class="line">array([ <span class="number">1</span>,  <span class="number">3</span>,  <span class="number">5</span>,  <span class="number">7</span>,  <span class="number">8</span>,  <span class="number">9</span>, <span class="number">10</span>, <span class="number">11</span>, <span class="number">12</span>])</span><br></pre></td></tr></table></figure>
+
+
+
+<h1 id="numpy-vstack"><a href="#numpy-vstack" class="headerlink" title="numpy.vstack"></a>numpy.vstack</h1><p>numpy.vstack(tup, *, dtype&#x3D;None, casting&#x3D;’same_kind’)</p>
+<p>按顺序垂直堆栈数组(按行排列)。</p>
+<p>这相当于将形状为(N,)的一维列阵改成形状为(1，N)后沿着竖直方向堆叠。重建阵列除以vsplit。</p>
+<p>这个函数对于最多3维的数组最有意义。例如，对于具有高度(第一轴)、宽度(第二轴)和 r&#x2F;g&#x2F;b 通道(第三轴)的像素数据。函数级联、堆栈和块提供了更通用的堆栈和级联操作。</p>
+<p>Row _ stack 是 vstack 的别名，它们是相同的函数。</p>
+<p>参数：</p>
+<ul>
+<li><p>tup：ndarrays序列</p>
+<ul>
+<li>数组必须沿着第一个轴线以外的所有轴线具有相同的形状。1-D 数组必须具有相同的长度。</li>
+</ul>
+</li>
+<li><p>dtype：str or dtype</p>
+<ul>
+<li>如果提供，目标数组将具有此 dtype。不能与 out 一起提供。</li>
+</ul>
+</li>
+<li><p>.. versionadded:: 1.24</p>
+</li>
+<li><p>casting：{‘no’, ‘equiv’, ‘safe’, ‘same_kind’, ‘unsafe’}, 可选择的</p>
+<ul>
+<li>控制可能发生的数据类型转换。默认为“ same _ kind”。</li>
+</ul>
+</li>
+<li><p>.. versionadded:: 1.24</p>
+</li>
+</ul>
+<p>Returns：</p>
+<ul>
+<li>stacked：ndarray<ul>
+<li>通过叠加给定的数组形成的数组，将至少是2-D 的。</li>
+</ul>
+</li>
+</ul>
+<p>示例：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">a = np.array([<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>])</span><br><span class="line">b = np.array([<span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>])</span><br><span class="line">np.vstack((a,b))</span><br><span class="line">array([[<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>],</span><br><span class="line">       [<span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>]])</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">a = np.array([[<span class="number">1</span>], [<span class="number">2</span>], [<span class="number">3</span>]])</span><br><span class="line">b = np.array([[<span class="number">4</span>], [<span class="number">5</span>], [<span class="number">6</span>]])</span><br><span class="line">np.vstack((a,b))</span><br><span class="line">array([[<span class="number">1</span>],</span><br><span class="line">       [<span class="number">2</span>],</span><br><span class="line">       [<span class="number">3</span>],</span><br><span class="line">       [<span class="number">4</span>],</span><br><span class="line">       [<span class="number">5</span>],</span><br><span class="line">       [<span class="number">6</span>]])</span><br></pre></td></tr></table></figure>
+
+
+
+<h1 id="numpy-ones"><a href="#numpy-ones" class="headerlink" title="numpy.ones"></a>numpy.ones</h1><p>numpy.ones(shape, dtype&#x3D;None, order&#x3D;’C’, *, like&#x3D;None)</p>
+<p>返回一个给定形状和类型的新数组，数组元素全为1.</p>
+<p>参数：</p>
+<ul>
+<li><p>shape：int 或 整数序列</p>
+<ul>
+<li>新数组的形状,例如,(2,3)或2。</li>
+</ul>
+</li>
+<li><p>dtype：data-type, 可选</p>
+<ul>
+<li>数组所需的数据类型，例如 numpy.int8。默认值是 numpy.float64。</li>
+</ul>
+</li>
+<li><p>order：{‘C’, ‘F’}, 可选, 默认: C</p>
+<ul>
+<li>是否在内存中按行主序 (C- 风格)或列主序 (Fortran- 风格)顺序存储多维数据。</li>
+</ul>
+</li>
+<li><p>like：array_like, 可选</p>
+<ul>
+<li>引用对象允许创建非 NumPy 数组的数组。如果以类似方式传入的类数组支持 _ _ array _ function _ _ protocol，则结果将由其定义。在这种情况下，它确保创建与通过此参数传入的数组对象兼容的数组对象。</li>
+</ul>
+</li>
+</ul>
+<p>Returns:</p>
+<ul>
+<li>out：ndarray<ul>
+<li>具有给定形状、 dtype 和顺序的数组，元素值全为1。</li>
+</ul>
+</li>
+</ul>
+<p>示例：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">np.ones(<span class="number">5</span>)</span><br><span class="line">array([<span class="number">1.</span>, <span class="number">1.</span>, <span class="number">1.</span>, <span class="number">1.</span>, <span class="number">1.</span>])</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">np.ones((<span class="number">5</span>,), dtype=<span class="built_in">int</span>)</span><br><span class="line">array([<span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>])</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">np.ones((<span class="number">2</span>, <span class="number">1</span>))</span><br><span class="line">array([[<span class="number">1.</span>],</span><br><span class="line">       [<span class="number">1.</span>]])</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">s = (<span class="number">2</span>,<span class="number">2</span>)</span><br><span class="line">np.ones(s)</span><br><span class="line">array([[<span class="number">1.</span>,  <span class="number">1.</span>],</span><br><span class="line">       [<span class="number">1.</span>,  <span class="number">1.</span>]])</span><br></pre></td></tr></table></figure>
+
+
+
+<h1 id="numpy-zeros"><a href="#numpy-zeros" class="headerlink" title="numpy.zeros"></a>numpy.zeros</h1><p>numpy.zeros(shape, dtype&#x3D;float, order&#x3D;’C’, *, like&#x3D;None)返回一个给定形状和类型的新数组，该数组由零填充</p>
+<p>参数：</p>
+<ul>
+<li><p>shape：int or 整数tuple</p>
+<ul>
+<li>新数组的形状，例如(2,3)或2。</li>
+</ul>
+</li>
+<li><p>dtype：data-type, 可选</p>
+<ul>
+<li>数组所需的数据类型，例如 numpy.int8。默认值是 numpy.float64。</li>
+</ul>
+</li>
+<li><p>order{‘C’, ‘F’}, optional, default: ‘C’</p>
+<ul>
+<li>是否在内存中按行主序 (C- 风格)或列主序 (Fortran- 风格)顺序存储多维数据。</li>
+</ul>
+</li>
+<li><p>like：array_like, 可选</p>
+<ul>
+<li>引用对象以允许创建非 NumPy 数组的数组。如果以类似方式传入的类数组支持 _ _ array _ function _ _ protocol，则结果将由其定义。在这种情况下，它确保创建与通过此参数传入的数组对象兼容的数组对象。</li>
+</ul>
+</li>
+</ul>
+<p>返回值：</p>
+<ul>
+<li>out：ndarray<ul>
+<li>具有给定形状、 dtype 和顺序的零数组。</li>
+</ul>
+</li>
+</ul>
+<p>示例：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">np.zeros(<span class="number">5</span>)</span><br><span class="line">array([ <span class="number">0.</span>,  <span class="number">0.</span>,  <span class="number">0.</span>,  <span class="number">0.</span>,  <span class="number">0.</span>])</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">np.zeros((<span class="number">5</span>,), dtype=<span class="built_in">int</span>)</span><br><span class="line">array([<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>])</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">np.zeros((<span class="number">2</span>, <span class="number">1</span>))</span><br><span class="line">array([[ <span class="number">0.</span>],</span><br><span class="line">       [ <span class="number">0.</span>]])</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">s = (<span class="number">2</span>,<span class="number">2</span>)</span><br><span class="line">np.zeros(s)</span><br><span class="line">array([[ <span class="number">0.</span>,  <span class="number">0.</span>],</span><br><span class="line">       [ <span class="number">0.</span>,  <span class="number">0.</span>]])</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">np.zeros((<span class="number">2</span>,), dtype=[(<span class="string">&#x27;x&#x27;</span>, <span class="string">&#x27;i4&#x27;</span>), (<span class="string">&#x27;y&#x27;</span>, <span class="string">&#x27;i4&#x27;</span>)]) <span class="comment"># custom dtype</span></span><br><span class="line">array([(<span class="number">0</span>, <span class="number">0</span>), (<span class="number">0</span>, <span class="number">0</span>)],</span><br><span class="line">      dtype=[(<span class="string">&#x27;x&#x27;</span>, <span class="string">&#x27;&lt;i4&#x27;</span>), (<span class="string">&#x27;y&#x27;</span>, <span class="string">&#x27;&lt;i4&#x27;</span>)])</span><br></pre></td></tr></table></figure>
+
+
+
+<h1 id="numpy-linalg-inv"><a href="#numpy-linalg-inv" class="headerlink" title="numpy.linalg.inv"></a>numpy.linalg.inv</h1><p>linalg.inv(a)计算矩阵的(乘法)逆</p>
+<p>给定一个方阵 a，返回矩阵 ainv 满足 dot(a, ainv) &#x3D; dot(ainv, a) &#x3D; eye(a.shape[0])。</p>
+<p>参数：</p>
+<ul>
+<li>a：(…, M, M) array_like<ul>
+<li>矩阵的逆</li>
+</ul>
+</li>
+</ul>
+<p>返回值：</p>
+<ul>
+<li>ainv：(…, M, M) ndarray or matrix<ul>
+<li>矩阵 a 的逆(乘法)。</li>
+</ul>
+</li>
+</ul>
+<p>Raises: LinAlgError如果 a 不是正方形或反转失败。</p>
+<p>示例：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> numpy.linalg <span class="keyword">import</span> inv</span><br><span class="line">a = np.array([[<span class="number">1.</span>, <span class="number">2.</span>], [<span class="number">3.</span>, <span class="number">4.</span>]])</span><br><span class="line">ainv = inv(a)</span><br><span class="line">np.allclose(np.dot(a, ainv), np.eye(<span class="number">2</span>))</span><br><span class="line"><span class="literal">True</span></span><br><span class="line">np.allclose(np.dot(ainv, a), np.eye(<span class="number">2</span>))</span><br><span class="line"><span class="literal">True</span></span><br></pre></td></tr></table></figure>
+
+<p>如果a是一个矩阵，则返回值是一个矩阵：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">ainv = inv(np.matrix(a))</span><br><span class="line">ainv</span><br><span class="line">matrix([[-<span class="number">2.</span> ,  <span class="number">1.</span> ],</span><br><span class="line">        [ <span class="number">1.5</span>, -<span class="number">0.5</span>]])</span><br></pre></td></tr></table></figure>
+
+<p>几个矩阵的逆可以一次计算出来:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">a = np.array([[[<span class="number">1.</span>, <span class="number">2.</span>], [<span class="number">3.</span>, <span class="number">4.</span>]], [[<span class="number">1</span>, <span class="number">3</span>], [<span class="number">3</span>, <span class="number">5</span>]]])</span><br><span class="line">inv(a)</span><br><span class="line">array([[[-<span class="number">2.</span>  ,  <span class="number">1.</span>  ],</span><br><span class="line">        [ <span class="number">1.5</span> , -<span class="number">0.5</span> ]],</span><br><span class="line">       [[-<span class="number">1.25</span>,  <span class="number">0.75</span>],</span><br><span class="line">        [ <span class="number">0.75</span>, -<span class="number">0.25</span>]]])</span><br></pre></td></tr></table></figure>
+
+
+
+<h1 id="numpy-dot"><a href="#numpy-dot" class="headerlink" title="numpy.dot"></a>numpy.dot</h1><p>numpy.dot(a, b, out&#x3D;None)两个数组的点积，其中：</p>
+<ul>
+<li>如果 a 和 b 都是一维数组，则它是向量的内积(无复共轭)。</li>
+<li>如果 a 和 b 都是2-d 数组，那么它是矩阵乘法的，但是最好使用 matmul 或者 a@b。</li>
+<li>如果 a 或 b 是0-D (标量) ，那么它等价于乘法，最好使用 numpy.multi(a，b)或 a * b。</li>
+<li>如果 a 是 N-D 数组，b 是1-D 数组，它是 a 和 b 最后一个轴的和乘积。</li>
+<li>如果 a 是 N-D 数组，b 是 M-D 数组(其中 M &gt; &#x3D; 2) ，它是 a 的最后一个轴和 b 的倒数第二个轴的和乘积:<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">dot(a, b)[i,j,k,m] = <span class="built_in">sum</span>(a[i,j,:] * b[k,:,m])</span><br></pre></td></tr></table></figure></li>
+</ul>
+<p>参数：</p>
+<ul>
+<li><p>a：array_like</p>
+<ul>
+<li>First argument.</li>
+</ul>
+</li>
+<li><p>b：array_like</p>
+<ul>
+<li>Second argument.</li>
+</ul>
+</li>
+<li><p>out：ndarray, 可选</p>
+<ul>
+<li>输出参数。如果不使用它，它必须具有返回的确切类型。特别是，它必须具有正确的类型，必须是C-contiguous，并且它的 dtype 必须是要为 dot(a，b)返回的 dtype。这是一个表演特色。因此，如果不满足这些条件，将引发异常，而不是尝试灵活处理。</li>
+</ul>
+</li>
+</ul>
+<p>返回值：</p>
+<ul>
+<li>output：ndarray<ul>
+<li>返回 a 和 b 的点乘。如果 a 和 b 都是标量或者都是1-D 数组，则返回标量; 否则返回数组。如果给出 out，则返回它。</li>
+</ul>
+</li>
+</ul>
+<p>Raises: ValueError</p>
+<ul>
+<li>如果 a 的最后一个维度与 b 的倒数第二个维度的大小不同。</li>
+</ul>
+<p>示例：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">np.dot(<span class="number">3</span>, <span class="number">4</span>)</span><br><span class="line"><span class="number">12</span></span><br></pre></td></tr></table></figure>
+
+<p>这两个参数都不是复共轭的：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">np.dot([<span class="number">2j</span>, <span class="number">3j</span>], [<span class="number">2j</span>, <span class="number">3j</span>])</span><br><span class="line">(-<span class="number">13</span>+<span class="number">0j</span>)</span><br></pre></td></tr></table></figure>
+
+<p>于2-D 阵列，它是矩阵乘积:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">a = [[<span class="number">1</span>, <span class="number">0</span>], [<span class="number">0</span>, <span class="number">1</span>]]</span><br><span class="line">b = [[<span class="number">4</span>, <span class="number">1</span>], [<span class="number">2</span>, <span class="number">2</span>]]</span><br><span class="line">np.dot(a, b)</span><br><span class="line">array([[<span class="number">4</span>, <span class="number">1</span>],</span><br><span class="line">       [<span class="number">2</span>, <span class="number">2</span>]])</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">a = np.arange(<span class="number">3</span>*<span class="number">4</span>*<span class="number">5</span>*<span class="number">6</span>).reshape((<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>))</span><br><span class="line">b = np.arange(<span class="number">3</span>*<span class="number">4</span>*<span class="number">5</span>*<span class="number">6</span>)[::-<span class="number">1</span>].reshape((<span class="number">5</span>,<span class="number">4</span>,<span class="number">6</span>,<span class="number">3</span>))</span><br><span class="line">np.dot(a, b)[<span class="number">2</span>,<span class="number">3</span>,<span class="number">2</span>,<span class="number">1</span>,<span class="number">2</span>,<span class="number">2</span>]</span><br><span class="line"><span class="number">499128</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">sum</span>(a[<span class="number">2</span>,<span class="number">3</span>,<span class="number">2</span>,:] * b[<span class="number">1</span>,<span class="number">2</span>,:,<span class="number">2</span>])</span><br><span class="line"><span class="number">499128</span></span><br></pre></td></tr></table></figure>
+
+
+
+<h1 id="numpy-eye"><a href="#numpy-eye" class="headerlink" title="numpy.eye"></a>numpy.eye</h1><p>numpy.eye(N, M&#x3D;None, k&#x3D;0, dtype&#x3D;&lt;class ‘float’&gt;, order&#x3D;’C’, *, like&#x3D;None)返回一个2-D 数组，其中对角线上为1，其他地方为0。</p>
+<p>参数：</p>
+<ul>
+<li><p>N：int</p>
+<ul>
+<li>输出中的行数。</li>
+</ul>
+</li>
+<li><p>M：int, 可选</p>
+<ul>
+<li>输出中的列数。如果没有，则默认为 N。</li>
+</ul>
+</li>
+<li><p>k：int, 可选</p>
+<ul>
+<li>对角线索引: 0(默认值)表示主对角线，正值表示上对角线，负值表示下对角线。</li>
+</ul>
+</li>
+<li><p>dtype：data-type, 可选</p>
+<ul>
+<li>返回数组的数据类型。</li>
+</ul>
+</li>
+<li><p>order{‘C’, ‘F’}, 可选</p>
+<ul>
+<li>输出应该以行-主序(C-风格)或列-主序(Fortran-风格)的顺序存储在内存中。</li>
+</ul>
+</li>
+<li><p>like：array_like, 可选</p>
+<ul>
+<li>引用对象以允许创建非 NumPy 数组的数组。如果以类似方式传入的类数组支持 _ _ array _ function _ _ protocol，则结果将由其定义。在这种情况下，它确保创建与通过此参数传入的数组对象兼容的数组对象。</li>
+</ul>
+</li>
+</ul>
+<p>返回值：</p>
+<ul>
+<li>I：ndarray of shape (N,M)<ul>
+<li>一个数组，其中所有元素都等于零，除了 k-th 对角线，其值等于1。</li>
+</ul>
+</li>
+</ul>
+<p>示例：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">np.eye(<span class="number">2</span>, dtype=<span class="built_in">int</span>)</span><br><span class="line">array([[<span class="number">1</span>, <span class="number">0</span>],</span><br><span class="line">       [<span class="number">0</span>, <span class="number">1</span>]])</span><br><span class="line"></span><br><span class="line">np.eye(<span class="number">3</span>, k=<span class="number">1</span>)</span><br><span class="line">array([[<span class="number">0.</span>,  <span class="number">1.</span>,  <span class="number">0.</span>],</span><br><span class="line">       [<span class="number">0.</span>,  <span class="number">0.</span>,  <span class="number">1.</span>],</span><br><span class="line">       [<span class="number">0.</span>,  <span class="number">0.</span>,  <span class="number">0.</span>]])</span><br></pre></td></tr></table></figure>
+
+
+
+<h1 id="numpy-linalg-norm-1"><a href="#numpy-linalg-norm-1" class="headerlink" title="numpy.linalg.norm"></a>numpy.linalg.norm</h1><p>linalg.norm(x, ord&#x3D;None, axis&#x3D;None, keepdims&#x3D;False)矩阵或向量范数。</p>
+<p>根据 ord 参数的值，这个函数可以返回八个不同的矩阵范数中的一个，或者无限多个向量范数中的一个(如下所述)。</p>
+<p>参数：</p>
+<ul>
+<li><p>x：array_like</p>
+<ul>
+<li>输入数组。如果坐标轴为“无”，则 x 必须为1-D 或2-D，除非 ord 为“无”。如果两个坐标轴和 ord 都为无，则返回 x.ravel 的2-范数。</li>
+</ul>
+</li>
+<li><p>ord：{non-zero int, inf, -inf, ‘fro’, ‘nuc’}, optional</p>
+<ul>
+<li>Inf 表示 numpy 的 inf 对象，默认值为 Nothing。</li>
+</ul>
+</li>
+<li><p>axis：{None, int, 2-tuple of ints}, optional</p>
+<ul>
+<li>如果坐标轴是一个整数，它指定计算向量范数的 x 轴。如果轴是2-元组，它指定持有2-D 矩阵的轴，并计算这些矩阵的矩阵范数。如果坐标轴为无，则返回向量范数(当 x 为1-D 时)或矩阵范数(当 x 为2-D 时)。默认值为 Nothing。</li>
+</ul>
+</li>
+<li><p>keepdims：bool, optional</p>
+<ul>
+<li>如果设置为 True，则在结果中以尺寸为1的维度保留规范化的轴。使用这个选项，结果将正确地广播到原始的 x。</li>
+</ul>
+</li>
+</ul>
+<p>返回值：</p>
+<ul>
+<li>n：float or ndarray<ul>
+<li>矩阵或向量的范数。</li>
+</ul>
+</li>
+</ul>
+<p>注意：对于 ord &lt; 1的值，严格地说，结果不是数学上的“范数”，但是它仍然可以用于各种数值计算。</p>
+<p>可以计算以下规范：</p>
+<table>
+<thead>
+<tr>
+<th>ord</th>
+<th>norm for matrices</th>
+<th>norm for vectors</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>None</td>
+<td>Frobenius norm</td>
+<td>2-norm</td>
+</tr>
+<tr>
+<td>‘fro’</td>
+<td>Frobenius norm</td>
+<td>–</td>
+</tr>
+<tr>
+<td>‘nuc’</td>
+<td>nuclear norm</td>
+<td>–</td>
+</tr>
+<tr>
+<td>inf</td>
+<td>max(sum(abs(x), axis&#x3D;1))</td>
+<td>max(abs(x))</td>
+</tr>
+<tr>
+<td>-inf</td>
+<td>min(sum(abs(x), axis&#x3D;1))</td>
+<td>min(abs(x))</td>
+</tr>
+<tr>
+<td>0</td>
+<td>–</td>
+<td>sum(x !&#x3D; 0)</td>
+</tr>
+<tr>
+<td>1</td>
+<td>max(sum(abs(x), axis&#x3D;0))</td>
+<td>as below</td>
+</tr>
+<tr>
+<td>-1</td>
+<td>min(sum(abs(x), axis&#x3D;0))</td>
+<td>as below</td>
+</tr>
+<tr>
+<td>2</td>
+<td>2-norm (largest sing. value)</td>
+<td>as below</td>
+</tr>
+<tr>
+<td>-2</td>
+<td>smallest singular value</td>
+<td>as below</td>
+</tr>
+<tr>
+<td>other</td>
+<td>–</td>
+<td>sum(abs(x)<strong>ord)</strong>(1.&#x2F;ord)</td>
+</tr>
+</tbody></table>
+<p>Frobenius 范数由[1]给出:<img src="/images/1234fe88b22ee8b455392610a34380ac.svg"><br>核范数是奇异值的和。Frobenius 和核范数阶都只对矩阵定义，当 x.ndim! &#x3D; 2时会产生一个 ValueError。</p>
+<p>参考文献：[1] G. H. Golub and C. F. Van Loan, Matrix Computations, Baltimore, MD, Johns Hopkins University Press, 1985, pg. 15</p>
+<p>示例：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> numpy <span class="keyword">import</span> linalg <span class="keyword">as</span> LA</span><br><span class="line">a = np.arange(<span class="number">9</span>) - <span class="number">4</span></span><br><span class="line">a</span><br><span class="line">array([-<span class="number">4</span>, -<span class="number">3</span>, -<span class="number">2</span>, ...,  <span class="number">2</span>,  <span class="number">3</span>,  <span class="number">4</span>])</span><br><span class="line"></span><br><span class="line">b = a.reshape((<span class="number">3</span>, <span class="number">3</span>))</span><br><span class="line">b</span><br><span class="line">array([[-<span class="number">4</span>, -<span class="number">3</span>, -<span class="number">2</span>],</span><br><span class="line">       [-<span class="number">1</span>,  <span class="number">0</span>,  <span class="number">1</span>],</span><br><span class="line">       [ <span class="number">2</span>,  <span class="number">3</span>,  <span class="number">4</span>]])</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">LA.norm(a)</span><br><span class="line"><span class="number">7.745966692414834</span></span><br><span class="line">LA.norm(b)</span><br><span class="line"><span class="number">7.745966692414834</span></span><br><span class="line">LA.norm(b, <span class="string">&#x27;fro&#x27;</span>)</span><br><span class="line"><span class="number">7.745966692414834</span></span><br><span class="line">LA.norm(a, np.inf)</span><br><span class="line"><span class="number">4.0</span></span><br><span class="line">LA.norm(b, np.inf)</span><br><span class="line"><span class="number">9.0</span></span><br><span class="line">LA.norm(a, -np.inf)</span><br><span class="line"><span class="number">0.0</span></span><br><span class="line">LA.norm(b, -np.inf)</span><br><span class="line"><span class="number">2.0</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">LA.norm(a, <span class="number">1</span>)</span><br><span class="line"><span class="number">20.0</span></span><br><span class="line">LA.norm(b, <span class="number">1</span>)</span><br><span class="line"><span class="number">7.0</span></span><br><span class="line">LA.norm(a, -<span class="number">1</span>)</span><br><span class="line">-<span class="number">4.6566128774142013e-010</span></span><br><span class="line">LA.norm(b, -<span class="number">1</span>)</span><br><span class="line"><span class="number">6.0</span></span><br><span class="line">LA.norm(a, <span class="number">2</span>)</span><br><span class="line"><span class="number">7.745966692414834</span></span><br><span class="line">LA.norm(b, <span class="number">2</span>)</span><br><span class="line"><span class="number">7.3484692283495345</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">LA.norm(a, -<span class="number">2</span>)</span><br><span class="line"><span class="number">0.0</span></span><br><span class="line">LA.norm(b, -<span class="number">2</span>)</span><br><span class="line"><span class="number">1.8570331885190563e-016</span> <span class="comment"># may vary</span></span><br><span class="line">LA.norm(a, <span class="number">3</span>)</span><br><span class="line"><span class="number">5.8480354764257312</span> <span class="comment"># may vary</span></span><br><span class="line">LA.norm(a, -<span class="number">3</span>)</span><br><span class="line"><span class="number">0.0</span></span><br></pre></td></tr></table></figure>
+
+<p>使用轴参数计算向量范数:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">c = np.array([[ <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>],</span><br><span class="line">              [-<span class="number">1</span>, <span class="number">1</span>, <span class="number">4</span>]])</span><br><span class="line">LA.norm(c, axis=<span class="number">0</span>)</span><br><span class="line">array([ <span class="number">1.41421356</span>,  <span class="number">2.23606798</span>,  <span class="number">5.</span>        ])</span><br><span class="line">LA.norm(c, axis=<span class="number">1</span>)</span><br><span class="line">array([ <span class="number">3.74165739</span>,  <span class="number">4.24264069</span>])</span><br><span class="line">LA.norm(c, <span class="built_in">ord</span>=<span class="number">1</span>, axis=<span class="number">1</span>)</span><br><span class="line">array([ <span class="number">6.</span>,  <span class="number">6.</span>])</span><br></pre></td></tr></table></figure>
+
+<p>使用轴参数计算矩阵范数:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">m = np.arange(<span class="number">8</span>).reshape(<span class="number">2</span>,<span class="number">2</span>,<span class="number">2</span>)</span><br><span class="line">LA.norm(m, axis=(<span class="number">1</span>,<span class="number">2</span>))</span><br><span class="line">array([  <span class="number">3.74165739</span>,  <span class="number">11.22497216</span>])</span><br><span class="line">LA.norm(m[<span class="number">0</span>, :, :]), LA.norm(m[<span class="number">1</span>, :, :])</span><br><span class="line">(<span class="number">3.7416573867739413</span>, <span class="number">11.224972160321824</span>)</span><br></pre></td></tr></table></figure>
+
+
+
+<h1 id="numpy-shape"><a href="#numpy-shape" class="headerlink" title="numpy.shape"></a>numpy.shape</h1><p>numpy.shape(a)返回数组的形状。</p>
+<p>Parameters:</p>
+<ul>
+<li>a：array_like<ul>
+<li>输入数组。</li>
+</ul>
+</li>
+</ul>
+<p>Returns:</p>
+<ul>
+<li>shape：tuple of ints<ul>
+<li>shape tuple的元素给出了相应数组维度的长度。</li>
+</ul>
+</li>
+</ul>
+<p>Examples：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">np.shape(np.eye(<span class="number">3</span>))</span><br><span class="line">(<span class="number">3</span>, <span class="number">3</span>)</span><br><span class="line">np.shape([[<span class="number">1</span>, <span class="number">3</span>]])</span><br><span class="line">(<span class="number">1</span>, <span class="number">2</span>)</span><br><span class="line">np.shape([<span class="number">0</span>])</span><br><span class="line">(<span class="number">1</span>,)</span><br><span class="line">np.shape(<span class="number">0</span>)</span><br><span class="line">()</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">a = np.array([(<span class="number">1</span>, <span class="number">2</span>), (<span class="number">3</span>, <span class="number">4</span>), (<span class="number">5</span>, <span class="number">6</span>)],</span><br><span class="line">             dtype=[(<span class="string">&#x27;x&#x27;</span>, <span class="string">&#x27;i4&#x27;</span>), (<span class="string">&#x27;y&#x27;</span>, <span class="string">&#x27;i4&#x27;</span>)])</span><br><span class="line">np.shape(a)</span><br><span class="line">(<span class="number">3</span>,)</span><br><span class="line">a.shape</span><br><span class="line">(<span class="number">3</span>,)</span><br></pre></td></tr></table></figure>
+
+
+
+<h1 id="numpy-hstack"><a href="#numpy-hstack" class="headerlink" title="numpy.hstack"></a>numpy.hstack</h1><p>numpy.hstack(tup, *, dtype&#x3D;None, casting&#x3D;’same_kind’)按顺序水平堆栈数组(以列为单位)。</p>
+<p>这相当于沿着第二个轴连接，除了沿着第一个轴连接的1-D 数组。重新生成除以 hsplit 的数组。</p>
+<p>这个函数对于最多3维的数组最有意义。例如，对于具有高度(第一轴)、宽度(第二轴)和 r&#x2F;g&#x2F;b 通道(第三轴)的像素数据。函数级联、堆栈和块提供了更通用的堆栈和级联操作。</p>
+<p>Parameters:</p>
+<ul>
+<li><p>tup：sequence of ndarrays</p>
+<ul>
+<li>除了第二个轴之外，所有数组的形状都必须相同，除了可以是任意长度的1-D 数组。</li>
+</ul>
+</li>
+<li><p>dtype：str or dtype</p>
+<ul>
+<li>如果提供，目标数组将具有此 dtype。不能与 out 一起提供。</li>
+<li>.. versionadded:: 1.24</li>
+</ul>
+</li>
+<li><p>casting：{‘no’, ‘equiv’, ‘safe’, ‘same_kind’, ‘unsafe’}, optional</p>
+<ul>
+<li>控制可能发生的数据类型转换。默认为“ same _ kind”。</li>
+<li>.. versionadded:: 1.24</li>
+</ul>
+</li>
+</ul>
+<p>Returns:</p>
+<ul>
+<li>stacked：ndarray<ul>
+<li>通过给定数组堆叠形成的数组。</li>
+</ul>
+</li>
+</ul>
+<p>Examples：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">a = np.array((<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>))</span><br><span class="line">b = np.array((<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>))</span><br><span class="line">np.hstack((a,b))</span><br><span class="line">array([<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>])</span><br><span class="line"></span><br><span class="line">a = np.array([[<span class="number">1</span>],[<span class="number">2</span>],[<span class="number">3</span>]])</span><br><span class="line">b = np.array([[<span class="number">4</span>],[<span class="number">5</span>],[<span class="number">6</span>]])</span><br><span class="line">np.hstack((a,b))</span><br><span class="line">array([[<span class="number">1</span>, <span class="number">4</span>],</span><br><span class="line">       [<span class="number">2</span>, <span class="number">5</span>],</span><br><span class="line">       [<span class="number">3</span>, <span class="number">6</span>]])</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    </div>
+
+    
+    
+    
+        <div class="reward-container">
+  <div></div>
+  <button onclick="var qr = document.getElementById('qr'); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/images/wechatpay.png" alt="SindreYang 微信支付">
+        <p>微信支付</p>
+      </div>
+      
+      <div style="display: inline-block;">
+        <img src="/images/alipay.png" alt="SindreYang 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>SindreYang
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://blog.mviai.com/2025/numpy%E5%AD%A6%E4%B9%A0%E6%8C%87%E5%8D%97/" title="numpy学习指南">http://blog.mviai.com/2025/numpy学习指南/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <span class="exturl" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC9kZWVkLnpo"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</span> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+        
+
+  <div class="followme">
+    <p>欢迎关注我的其它发布渠道</p>
+
+    <div class="social-list">
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="/images/wechat.png">
+            <span class="icon">
+              <i class="fa fa-wechat"></i>
+            </span>
+
+            <span class="label">WeChat</span>
+          </a>
+        </div>
+    </div>
+  </div>
+
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2025/python%E5%AD%A6%E4%B9%A0%E6%8C%87%E5%8D%97/" rel="prev" title="python学习指南">
+      <i class="fa fa-chevron-left"></i> python学习指南
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2025/WinML/" rel="next" title="WinML">
+      WinML <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    
+  <div class="comments">
+    <div id="SOHUCS"></div>
+  </div>
+  
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#numpy-linalg-norm"><span class="nav-number">1.</span> <span class="nav-text">numpy.linalg.norm</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#numpy-argsort"><span class="nav-number">2.</span> <span class="nav-text">numpy.argsort</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#numpy-ravel"><span class="nav-number">3.</span> <span class="nav-text">numpy.ravel</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#numpy-argwhere"><span class="nav-number">4.</span> <span class="nav-text">numpy.argwhere</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#numpy-where"><span class="nav-number">5.</span> <span class="nav-text">numpy.where</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#numpy-nonzero"><span class="nav-number">6.</span> <span class="nav-text">numpy.nonzero</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#numpy-unique"><span class="nav-number">7.</span> <span class="nav-text">numpy.unique</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#numpy-delete"><span class="nav-number">8.</span> <span class="nav-text">numpy.delete</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#numpy-vstack"><span class="nav-number">9.</span> <span class="nav-text">numpy.vstack</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#numpy-ones"><span class="nav-number">10.</span> <span class="nav-text">numpy.ones</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#numpy-zeros"><span class="nav-number">11.</span> <span class="nav-text">numpy.zeros</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#numpy-linalg-inv"><span class="nav-number">12.</span> <span class="nav-text">numpy.linalg.inv</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#numpy-dot"><span class="nav-number">13.</span> <span class="nav-text">numpy.dot</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#numpy-eye"><span class="nav-number">14.</span> <span class="nav-text">numpy.eye</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#numpy-linalg-norm-1"><span class="nav-number">15.</span> <span class="nav-text">numpy.linalg.norm</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#numpy-shape"><span class="nav-number">16.</span> <span class="nav-text">numpy.shape</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#numpy-hstack"><span class="nav-number">17.</span> <span class="nav-text">numpy.hstack</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="SindreYang"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">SindreYang</p>
+  <div class="site-description" itemprop="description">沉淀后我愿意做一个温暖的人。有自己的喜好，有自己的原则，有自己的信仰，不急功近利，不浮夸轻薄，宠辱不惊，淡定安逸，心静如水。------不忘初心，方得始终</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">321</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">72</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL1NpbmRyZVlhbmc=" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;SindreYang"><i class="fa fa-fw fa-github"></i>GitHub</span>
+      </span>
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="bWFpbHRvOnl4QG12aWFpLmNvbQ==" title="E-Mail → mailto:yx@mviai.com"><i class="fa fa-fw fa-envelope"></i>E-Mail</span>
+      </span>
+  </div>
+  <div class="cc-license motion-element" itemprop="license">
+    <span class="exturl cc-opacity" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC9kZWVkLnpo"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+  <div class="languages">
+    <label class="lang-select-label">
+      <i class="fa fa-language"></i>
+      <span>简体中文</span>
+      <i class="fa fa-angle-up" aria-hidden="true"></i>
+    </label>
+    <select class="lang-select" data-canonical="">
+      
+        <option value="zh-CN" data-href="/2025/numpy%E5%AD%A6%E4%B9%A0%E6%8C%87%E5%8D%97/" selected="">
+          简体中文
+        </option>
+      
+        <option value="en" data-href="/en/2025/numpy%E5%AD%A6%E4%B9%A0%E6%8C%87%E5%8D%97/" selected="">
+          English
+        </option>
+      
+    </select>
+  </div>
+
+        
+
+<div class="copyright">
+  
+  &copy; 2018 – 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">SindreYang</span>
+</div><!-- 页面点击小红心 -->
+<script type="text/javascript" src="/js/love.js"></script>
+<!-- 背景波浪 -->
+<script color="0,0,255" opacity="0.5" zIndex="-1" count="99" src="https://cdn.jsdelivr.net/npm/canvas-nest.js@1/dist/canvas-nest.js"></script>
+
+
+<!-- 腾讯企业邮箱 -->
+<style>
+.bizmail_loginpanel {
+    font-size: 12px;
+    width: 300px;
+    height: auto;
+    background: transparent;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.bizmail_LoginBox {
+    padding: 10px 15px;
+}
+
+
+.bizmail_loginpanel form {
+    margin: 0;
+    padding: 0;
+}
+
+.bizmail_loginpanel input.text {
+    font-size: 12px;
+    width: 100px;
+    height: 20px;
+    margin: 0 2px;
+    background-color: transparent;
+    border:1px solid transparent;
+    box-shadow: none;
+    color: black;
+}
+
+.bizmail_loginpanel .bizmail_column {
+    height: 28px;
+}
+
+.bizmail_loginpanel .bizmail_column label {
+    display: block;
+    float: left;
+    width: 30px;
+    height: 24px;
+    line-height: 24px;
+    font-size: 12px;
+}
+
+.bizmail_loginpanel .bizmail_column .bizmail_inputArea {
+    float: left;
+    width: 240px;
+}
+
+.bizmail_loginpanel .bizmail_column span {
+    font-size: 12px;
+    word-wrap: break-word;
+    margin-left: 2px;
+    line-height: 200%;
+}
+
+.bizmail_loginpanel .bizmail_SubmitArea {
+    margin-left: 30px;
+    clear: both;
+}
+
+.bizmail_loginpanel .bizmail_SubmitArea a {
+    font-size: 12px;
+    margin-left: 5px;
+}
+
+.bizmail_loginpanel select {
+    width: 110px;
+    height: 20px;
+    margin: 0 2px;
+}
+.bizmail_loginpanel input {
+
+    background-color: rgba(83, 126, 236, 0.562);
+}
+
+
+</style>
+
+<script type="text/javascript">
+function checkInput() {
+    var e = document.form1.uin,
+        i = document.form1.pwd;
+    return 0 == e.value.length ? e.focus() : 0 == i.value.length ? i.focus() : (document.form1.submit(), setTimeout(" document.form1.pwd.value = '' ", 500)), !1
+}
+
+function writeLoginPanel(e) {
+    if (e && e.domainlist && -1 != e.domainlist.indexOf(".")) {
+        var a = "return checkInput()",
+            t = '<div id="divLoginpanelHor" class="bizmail_loginpanel" style="width:550px;"><div class="bizmail_LoginBox"><form name="form1" action="https://exmail.qq.com/cgi-bin/login" target="_blank" method="post" onsubmit="' + a + '"><input type="hidden" name="firstlogin" value="false" /><input type="hidden" name="errtemplate" value="dm_loginpage" /><input type="hidden" name="aliastype" value="other" /><input type="hidden" name="dmtype" value="bizmail" /><input type="hidden" name="p" value="" /><label>\u8d26\u53f7:</label><input type="text" name="uin" class="text" value="" />@#domainlist#<label>&nbsp&nbsp&nbsp;\u5bc6\u7801:</label><input type="password" name="pwd" class="text" value="" /><input type="submit" class="" name="" value="\u767b\u5f55" />&nbsp;<a href="https://exmail.qq.com/cgi-bin/readtemplate?check=false&t=biz_rf_portal#recovery" target="_blank">\u5fd8\u8bb0\u5bc6\u7801\uff1f</a></form></div></div>',
+            n = '<div id="divLoginpanelVer" class="bizmail_loginpanel"><div class="bizmail_LoginBox"><form name="form1" action="https://exmail.qq.com/cgi-bin/login" target="_blank" method="post" onsubmit="' + a + '"><input type="hidden" name="firstlogin" value="false" /><input type="hidden" name="errtemplate" value="dm_loginpage" /><input type="hidden" name="aliastype" value="other" /><input type="hidden" name="dmtype" value="bizmail" /><input type="hidden" name="p" value="" /><div class="bizmail_column"><label>\u8d26\u53f7:</label><div class="bizmail_inputArea"><input type="text" name="uin" class="text" value="" />@#domainlist#</div></div><div class="bizmail_column"><label>\u5bc6\u7801:</label><div class="bizmail_inputArea"><input type="password" name="pwd" class="text" value="" /></div></div><div class="bizmail_SubmitArea"><input type="submit" class="" name="" style="width:66px;" value="\u767b\u5f55" /><a href="https://exmail.qq.com/cgi-bin/readtemplate?check=false&t=biz_rf_portal#recovery" target="_blank">\u5fd8\u8bb0\u5bc6\u7801\uff1f</a></div></form></div></div>',
+            l = e.domainlist.split(";");
+        if (1 == l.length) var m = '<span>#domain#</span><input type="hidden" name="domain" value="#domain#" />'.replace(/#domain#/g, l[0]);
+        else {
+            m = '<select name="domain">';
+            for (i = 0; i < l.length; i++) m += '<option value="' + l[i] + '">' + l[i] + "</option>";
+            m += "</select>"
+        }
+        e.mode && "vertical" != e.mode && "both" != e.mode || document.write(n.replace(/#domainlist#/g, m)), "horizontal" != e.mode && "both" != e.mode || document.write(t.replace(/#domainlist#/g, m))
+    }
+}
+
+</script>      
+
+<script type="text/javascript"> writeLoginPanel({domainlist:"mviai.com", mode:"horizontal"});</script>      
+
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script size="300" alpha="0.6" zIndex="-1" src="/lib/canvas-ribbon/canvas-ribbon.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/medium-zoom@1/dist/medium-zoom.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+  <script defer src="/lib/three/three.min.js"></script>
+    <script defer src="/lib/three/three-waves.min.js"></script>
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+<script>
+document.querySelectorAll('.pdfobject-container').forEach(element => {
+  let url = element.dataset.target;
+  let pdfOpenParams = {
+    navpanes : 0,
+    toolbar  : 0,
+    statusbar: 0,
+    pagemode : 'thumbs',
+    view     : 'FitH'
+  };
+  let pdfOpenFragment = '#' + Object.entries(pdfOpenParams).map(([key, value]) => `${key}=${encodeURIComponent(value)}`).join('&');
+  let fullURL = `/lib/pdf/web/viewer.html?file=${encodeURIComponent(url)}${pdfOpenFragment}`;
+
+  if (NexT.utils.supportsPDFs()) {
+    element.innerHTML = `<embed class="pdfobject" src="${url + pdfOpenFragment}" type="application/pdf" style="height: ${element.dataset.height};">`;
+  } else {
+    element.innerHTML = `<iframe src="${fullURL}" style="height: ${element.dataset.height};" frameborder="0"></iframe>`;
+  }
+});
+</script>
+
+
+
+
+  
+
+  
+
+  <script>
+  NexT.utils.loadComments(document.querySelector('#SOHUCS'), () => {
+    var appid = 'cyxmItxjS';
+    var conf = 'e5e71132d9086bb54aeeba6e88e87df9';
+    var width = window.innerWidth || document.documentElement.clientWidth;
+    if (width < 960) {
+      window.document.write('<script id="changyan_mobile_js" charset="utf-8" type="text/javascript" src="https://cy-cdn.kuaizhan.com/upload/mobile/wap-js/changyan_mobile.js?client_id=' + appid + '&conf=' + conf + '"><\/script>');
+    } else {
+      var loadJs=function(d,a){var c=document.getElementsByTagName("head")[0]||document.head||document.documentElement;var b=document.createElement("script");b.setAttribute("type","text/javascript");b.setAttribute("charset","UTF-8");b.setAttribute("src",d);if(typeof a==="function"){if(window.attachEvent){b.onreadystatechange=function(){var e=b.readyState;if(e==="loaded"||e==="complete"){b.onreadystatechange=null;a()}}}else{b.onload=a}}c.appendChild(b)};loadJs("https://changyan.sohu.com/upload/changyan.js",function(){window.changyan.api.config({appid:appid,conf:conf})});
+    }
+  });
+  </script>
+  <script src="https://cy-cdn.kuaizhan.com/upload/plugins/plugins.count.js"></script>
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/z16.model.json"},"display":{"position":"left","width":75,"height":150},"mobile":{"show":true},"log":false});</script></body>
+</html>
+
+
+
+

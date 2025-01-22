@@ -1,0 +1,762 @@
+<!DOCTYPE html>
+<html lang="zh-CN,en,default">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" href="/lib/pace/pace-theme-minimal.min.css">
+  <script src="/lib/pace/pace.min.js"></script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"blog.mviai.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":true,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":true,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="自动摘要: 摘要理解：锥形束CT（CBCT）通过减少减少X射线管阴极电流可以减少对患者的辐射，但是这样重建出来的图像的质量会变差。因此，如何提高低剂量CBCT重建图像的质量是一个值得研究的课题。传统的统 ……..">
+<meta property="og:type" content="article">
+<meta property="og:title" content="基于深度学习的CBCT重建方法研究">
+<meta property="og:url" content="http://blog.mviai.com/2025/%E5%9F%BA%E4%BA%8E%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%9A%84CBCT%E9%87%8D%E5%BB%BA%E6%96%B9%E6%B3%95%E7%A0%94%E7%A9%B6/index.html">
+<meta property="og:site_name" content="落叶无痕">
+<meta property="og:description" content="自动摘要: 摘要理解：锥形束CT（CBCT）通过减少减少X射线管阴极电流可以减少对患者的辐射，但是这样重建出来的图像的质量会变差。因此，如何提高低剂量CBCT重建图像的质量是一个值得研究的课题。传统的统 ……..">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20190525121037724.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM5NTk0OTM5,size_16,color_FFFFFF,t_70#id=f2TWh&originHeight=365&originWidth=1006&originalType=binary&ratio=1&rotation=0&showTitle=false&status=done&style=none&title=">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20190525121136730.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM5NTk0OTM5,size_16,color_FFFFFF,t_70#id=iA7fA&originHeight=264&originWidth=988&originalType=binary&ratio=1&rotation=0&showTitle=false&status=done&style=none&title=">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20190525123218371.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM5NTk0OTM5,size_16,color_FFFFFF,t_70#id=bxFBQ&originHeight=288&originWidth=449&originalType=binary&ratio=1&rotation=0&showTitle=false&status=done&style=none&title=">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20190525123735962.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM5NTk0OTM5,size_16,color_FFFFFF,t_70#id=OFKWf&originHeight=210&originWidth=321&originalType=binary&ratio=1&rotation=0&showTitle=false&status=done&style=none&title=">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20190525130023270.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM5NTk0OTM5,size_16,color_FFFFFF,t_70#id=dWqZc&originHeight=406&originWidth=922&originalType=binary&ratio=1&rotation=0&showTitle=false&status=done&style=none&title=">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20190525131745813.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM5NTk0OTM5,size_16,color_FFFFFF,t_70#id=vEbWS&originHeight=371&originWidth=597&originalType=binary&ratio=1&rotation=0&showTitle=false&status=done&style=none&title=">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20190525131848594.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM5NTk0OTM5,size_16,color_FFFFFF,t_70#id=HXz0L&originHeight=225&originWidth=435&originalType=binary&ratio=1&rotation=0&showTitle=false&status=done&style=none&title=">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20190525133511427.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM5NTk0OTM5,size_16,color_FFFFFF,t_70#id=vDfFv&originHeight=237&originWidth=929&originalType=binary&ratio=1&rotation=0&showTitle=false&status=done&style=none&title=">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/2019052513384444.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM5NTk0OTM5,size_16,color_FFFFFF,t_70#id=AtSj4&originHeight=217&originWidth=935&originalType=binary&ratio=1&rotation=0&showTitle=false&status=done&style=none&title=">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20190525134034847.png#id=n31fn&originHeight=70&originWidth=509&originalType=binary&ratio=1&rotation=0&showTitle=false&status=done&style=none&title=">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20190525134334911.png#id=ZTCLv&originHeight=62&originWidth=825&originalType=binary&ratio=1&rotation=0&showTitle=false&status=done&style=none&title=">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20190526114320277.png#id=WsyGh&originHeight=74&originWidth=526&originalType=binary&ratio=1&rotation=0&showTitle=false&status=done&style=none&title=">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20190526114343875.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM5NTk0OTM5,size_16,color_FFFFFF,t_70#id=l3Yaa&originHeight=252&originWidth=978&originalType=binary&ratio=1&rotation=0&showTitle=false&status=done&style=none&title=">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20190526120625624.png#id=VyTQ3&originHeight=79&originWidth=389&originalType=binary&ratio=1&rotation=0&showTitle=false&status=done&style=none&title=">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/2019052612070155.png#id=lVGSd&originHeight=194&originWidth=843&originalType=binary&ratio=1&rotation=0&showTitle=false&status=done&style=none&title=">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20190526121010621.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM5NTk0OTM5,size_16,color_FFFFFF,t_70#id=KPN1M&originHeight=878&originWidth=1076&originalType=binary&ratio=1&rotation=0&showTitle=false&status=done&style=none&title=">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20190526121347929.png#id=UssdY&originHeight=118&originWidth=778&originalType=binary&ratio=1&rotation=0&showTitle=false&status=done&style=none&title=">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20190526121423185.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM5NTk0OTM5,size_16,color_FFFFFF,t_70#id=USZDw&originHeight=323&originWidth=760&originalType=binary&ratio=1&rotation=0&showTitle=false&status=done&style=none&title=">
+<meta property="article:published_time" content="2025-01-22T04:37:41.000Z">
+<meta property="article:modified_time" content="2025-01-22T12:37:41.151Z">
+<meta property="article:author" content="SindreYang">
+<meta property="article:tag" content="生活">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://img-blog.csdnimg.cn/20190525121037724.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM5NTk0OTM5,size_16,color_FFFFFF,t_70#id=f2TWh&originHeight=365&originWidth=1006&originalType=binary&ratio=1&rotation=0&showTitle=false&status=done&style=none&title=">
+
+<link rel="canonical" href="http://blog.mviai.com/2025/%E5%9F%BA%E4%BA%8E%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%9A%84CBCT%E9%87%8D%E5%BB%BA%E6%96%B9%E6%B3%95%E7%A0%94%E7%A9%B6/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>基于深度学习的CBCT重建方法研究 | 落叶无痕</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">落叶无痕</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类<span class="badge">72</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档<span class="badge">321</span></a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+  <span class="exturl github-corner" data-url="aHR0cHM6Ly9naXRodWIuY29tL1NpbmRyZVlhbmc=" title="Follow me on GitHub" aria-label="Follow me on GitHub"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></span>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://blog.mviai.com/2025/%E5%9F%BA%E4%BA%8E%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%9A%84CBCT%E9%87%8D%E5%BB%BA%E6%96%B9%E6%B3%95%E7%A0%94%E7%A9%B6/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="SindreYang">
+      <meta itemprop="description" content="沉淀后我愿意做一个温暖的人。有自己的喜好，有自己的原则，有自己的信仰，不急功近利，不浮夸轻薄，宠辱不惊，淡定安逸，心静如水。------不忘初心，方得始终">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="落叶无痕">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          基于深度学习的CBCT重建方法研究
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2025-01-22 12:37:41 / 修改时间：20:37:41" itemprop="dateCreated datePublished" datetime="2025-01-22T12:37:41+08:00">2025-01-22</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E4%B8%89%E7%BB%B4%E9%87%8D%E5%BB%BA/" itemprop="url" rel="index"><span itemprop="name">三维重建</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">Changyan：</span>
+    
+    
+      <a title="changyan" href="/2025/%E5%9F%BA%E4%BA%8E%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%9A%84CBCT%E9%87%8D%E5%BB%BA%E6%96%B9%E6%B3%95%E7%A0%94%E7%A9%B6/#SOHUCS" itemprop="discussionUrl">
+        <span id="changyan_count_unit" class="post-comments-count hc-comment-count" data-xid="2025/基于深度学习的CBCT重建方法研究/" itemprop="commentCount"></span>
+      </a>
+    
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>自动摘要: 摘要理解：锥形束CT（CBCT）通过减少减少X射线管阴极电流可以减少对患者的辐射，但是这样重建出来的图像的质量会变差。因此，如何提高低剂量CBCT重建图像的质量是一个值得研究的课题。传统的统 ……..</p>
+<span id="more"></span>
+<p>摘要理解：锥形束 CT（CBCT）通过减少减少 X 射线管阴极电流可以减少对患者的辐射，但是这样重建出来的图像的质量会变差。因此，如何提高低剂量 CBCT 重建图像的质量是一个值得研究的课题。传统的统计迭代重建法通过设计不同的正则项来重建，TV 正则项（全变分）能保护边缘和去燥，但是会产生阶梯效应；而 hessian 正则项在抑制阶梯时会让边缘模糊化。</p>
+<p>本文是利用<span class="exturl" data-url="aHR0cHM6Ly9zby5jc2RuLm5ldC9zby9zZWFyY2g/cT0lRTYlQjclQjElRTUlQkElQTYmc3BtPTEwMDEuMjEwMS4zMDAxLjcwMjA=" title="https://so.csdn.net/so/search?q=%E6%B7%B1%E5%BA%A6&spm=1001.2101.3001.7020">深度<i class="fa fa-external-link"></i></span>学习学习潜在的正则项，提出来一种基于卷积神经网络的迭代重建算法，在去除噪声和伪影上有比 TV 更好的效果，在抑制阶梯效应上可以与和 hessian 并提。</p>
+<h2 id="1-绪论"><a href="#1-绪论" class="headerlink" title="1. 绪论"></a>1. 绪论</h2><p><strong>CBCT 优势</strong>：投影数据是二维而不是一维的，重建可以直接得到三维图像，伪影不严重。</p>
+<p><strong>统计迭代算法</strong>：考虑了投影数据的噪声分布特性，对噪声分布建立模型，通过贝叶斯理论和极大似然估计，构建最小二乘目标函数，并利用图像的先验知识构建正则项。正则项的设计对图像质量影响很大。</p>
+<p><strong>深度学习应用于反问题</strong>：一是训练一个端到端神经网络，输入退化的图像，输出高质量的图像。二是用网络改造迭代算法，用网络替换掉迭代算法的一部分，或者用网络替换整个迭代算法。</p>
+<h2 id="2-CBCT-成像基本原理"><a href="#2-CBCT-成像基本原理" class="headerlink" title="2.CBCT 成像基本原理"></a>2.CBCT 成像基本原理</h2><p>（1）文章中给出<img src="https://img-blog.csdnimg.cn/20190525121037724.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM5NTk0OTM5,size_16,color_FFFFFF,t_70#id=f2TWh&originHeight=365&originWidth=1006&originalType=binary&ratio=1&rotation=0&showTitle=false&status=done&style=none&title="><img src="https://img-blog.csdnimg.cn/20190525121136730.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM5NTk0OTM5,size_16,color_FFFFFF,t_70#id=iA7fA&originHeight=264&originWidth=988&originalType=binary&ratio=1&rotation=0&showTitle=false&status=done&style=none&title="></p>
+<p>分析一下这段话的意思根据 Id 和 I0 得到 p，然后 p 是 u 的线积分，测量多组数据得到 p 的分布，然后就可以得到 u 的分布，根据人体组织与 u 的对应关系，就可以根据 u（x，y，z）得到该位置是什么器官。</p>
+<p><strong>百度找到知乎上一些关于 CT 成像的答复****①关于 CT 成像的历史研究</strong></p>
+<p>1917 年，丹麦数学家 J.Rando 从数学上证明：某种物理参量的二维分布函数，由该函数在其定义域内的所有线性积分确定。该研究结果的意义在于：确定一个物理参量，寻找该物理参量的线积分，获得所有方向内的线积分，就能够求得该二维分布函数。</p>
+<p>1961 年，Wiliam H.Oldendorf 采用聚焦成一束的碘 131 放射源完成了著名的旋转位移实验，向人们揭示了获取投影数据的基本原理与方法；</p>
+<p>1963 年，美国的 Allan M.Cormack 以人体组织对 X 线的线性吸收系数为物理参量，用 X 线投影作为人体组织对 X 线线性吸收的线积分，研究出重建图像的数学方法。</p>
+<p>1967~1970 年，英国的 Godfrey Hounsfield 博士提出了体层成像（tomography）的具体方法。此方法需要从单一平面获取 X 线投影的读数，每个 X 线光束通路所获得的投影都可以看做是联立方程组的方程之一，通过解这组联立方程组能获得该平面的图像。</p>
+<p><strong>②关于 CT 成像的原理</strong></p>
+<p>CT 成像的本质是衰减系数成像。搞懂两个东西，你就明白 X 光成像的原理了。</p>
+<ol>
+<li>朗伯比尔定律（Beer-Lambert Law）</li>
+<li>Radon transform (拉东变换)朗伯比尔定律本文已介绍，但是需要注意的是：得出衰减系数，再把不同的衰减系数对应到不同的像素值，就得到 X 光照片了。这就是早期的 X 光成像技术。注意：这里的衰减系数 在 X 光穿透路径上是保持不变的！在均匀的物体中穿透没问题，可在非均匀物体中穿透，由于处处的不等，按照这个公式计算出来的 是路径上所有的 的均值。也就是说计算所得的 不准确。这样的成像效果肯定不会好啦。三维结构被压缩成二维图像，没有空间分辨率，更别谈断层了。那么如何得到物体内部的剖面图像呢？</li>
+</ol>
+<p>需要用到 Radon 变换实际上衰减系数是关于空间位置坐标和能量的函数，相同物质对不同能量的吸收能量也不一样，探测器上面检测到的是该路径上所有物质对 x 光吸收后的结果，路径上具体位置的吸收无从得知，这就需要在图像领域朝着各个方向对图像投影（Randon 变换）<img src="https://img-blog.csdnimg.cn/20190525123218371.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM5NTk0OTM5,size_16,color_FFFFFF,t_70#id=bxFBQ&originHeight=288&originWidth=449&originalType=binary&ratio=1&rotation=0&showTitle=false&status=done&style=none&title="></p>
+<p>如图对图像进行投影（0°，45°，90°），各个方向的投影其实就是计算各个方向上的像素值之和，得到一个向量，把三个方向的投影结果合起来就是投影数据，不同方向得到的向量维数不一样，以最大维数为准，不足用 0 填充，这就是拉东变换。CT 的扫描其实就是，以螺旋 CT 为例，机器会围绕人作旋转运动，把人看着图像，CT 围绕人旋转，那么其发出的 X 光就会从不同角度穿透人体，达到另一面的探测器上。就相当于沿各向求和，这里的和是不同方向上人体对 X 光的吸收作用。探测器就记录下了这个投影数据，后面用来重建人体的三维结构。如何由得到的不同方向投影的数据，恢复得到原始图像呢？<img src="https://img-blog.csdnimg.cn/20190525123735962.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM5NTk0OTM5,size_16,color_FFFFFF,t_70#id=OFKWf&originHeight=210&originWidth=321&originalType=binary&ratio=1&rotation=0&showTitle=false&status=done&style=none&title="></p>
+<p>水平方向，强度为 10 的 X 光穿透物体后，探测器探测到的结果为 5。只从这一点，我们只知道 μ1+μ2&#x3D;10-5&#x3D;5 , 具体μ1，μ2 是多少，无法知晓。但是！从其竖直方向可以得到μ1&#x3D;10-8&#x3D;2，μ2&#x3D;10-7&#x3D;3 。这就像是联立方程解方程组，就像做数独。实际过程中，几百个方向上的投影来解出每个位置的衰减系数。然后一副二维的切片图像就得出了。这就是拉东反变换。</p>
+<p>（2）FDK 等解析类重建算法的突出的优点是计算效率高，重建速度快，但是在解析类算法的推导过程中，方程的导出形式是连续的，而且还要满足投影数据必须完全、分布必须均匀、相邻射线等间隔等一系列条件。而实际中，这些条件很难得到满足，连续方程的离散化实现时也会引入插值误差。这些都会导致重建图像有较大的噪声或者伪影，无法得到较好质量的重建图像。</p>
+<p>（3）迭代算法<img src="https://img-blog.csdnimg.cn/20190525130023270.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM5NTk0OTM5,size_16,color_FFFFFF,t_70#id=dWqZc&originHeight=406&originWidth=922&originalType=binary&ratio=1&rotation=0&showTitle=false&status=done&style=none&title="></p>
+<p>主要会碰到 A 不可逆以及 A 过于庞大不易存储的问题代数重建问题（线性方程组的应用）：这里找到在别人的博文上面对这个问题的介绍：X 射线透视可以得到 3 维对象在 2 维平面上的投影，CT 则通过不同角度的 X 射线得到 3 维对象的多个 2 维投影，并以此重建对象内部的 3 维图像。代数重建方法就是从这些 2 维投影出发，通过求解超定线性方程组，获得对象内部 3 维图像的方法。这里我们考虑一个更简单的模型，从 2 维图像的 1 维投影重建原先的 2 维图像。</p>
+<p>一个长方形图像可以用一个横竖均匀划分的离散网格来覆盖，每个网格对应一个像素，它是该网格上各点像素的均值。这样一个图像就可以用一个矩阵表示，其元素就是图像在一点的灰度值（黑白图像）。下面我们以 3*3 图像为例来说明。</p>
+<p><img src="https://img-blog.csdnimg.cn/20190525131745813.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM5NTk0OTM5,size_16,color_FFFFFF,t_70#id=vEbWS&originHeight=371&originWidth=597&originalType=binary&ratio=1&rotation=0&showTitle=false&status=done&style=none&title="></p>
+<p>每个网格中的数字代表其灰度值，范围在[0,1]内，记 0 表示白，1 表示黑，0.5 为中间的灰色，沿某个方向的投影就将该方向上的灰度值相加（见上图所示）。如果我们不知道网格中的数值，只知道沿竖直方向和水平方向的投影。设网格按第 1 列、第 2 列、第 3 列的顺序排列，为了确定网格中的灰度值，可以建立线性方程组：<img src="https://img-blog.csdnimg.cn/20190525131848594.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM5NTk0OTM5,size_16,color_FFFFFF,t_70#id=HXz0L&originHeight=225&originWidth=435&originalType=binary&ratio=1&rotation=0&showTitle=false&status=done&style=none&title="></p>
+<p>显然该方程组的解是不唯一的，为了重建图像，必须增加投影数量。如我们增加从右上到左下的投影，则方程组将增加 5 个方程，成为超定方程组。考虑到测量误差，可以将超定方程组的近似解作为重建的图像数据。但是在实际情况中在实际情况中，由于噪声的影响，方程组是不相容的，几乎不可能得到唯一解。</p>
+<p>统计迭代法，通过贝叶斯法则得到图像 u 的贝叶斯目标函数：<img src="https://img-blog.csdnimg.cn/20190525133511427.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM5NTk0OTM5,size_16,color_FFFFFF,t_70#id=vDfFv&originHeight=237&originWidth=929&originalType=binary&ratio=1&rotation=0&showTitle=false&status=done&style=none&title="></p>
+<p>由于投影数据的噪声服从高斯分布，因此可以通过投影数据高斯分布的联合概率密度函数<img src="https://img-blog.csdnimg.cn/2019052513384444.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM5NTk0OTM5,size_16,color_FFFFFF,t_70#id=AtSj4&originHeight=217&originWidth=935&originalType=binary&ratio=1&rotation=0&showTitle=false&status=done&style=none&title="></p>
+<p>忽略 2-12 的常数项，可以得到惩罚加权最小二乘模型<img src="https://img-blog.csdnimg.cn/20190525134034847.png#id=n31fn&originHeight=70&originWidth=509&originalType=binary&ratio=1&rotation=0&showTitle=false&status=done&style=none&title="></p>
+<p>根据最大后验概率理论，上式取最小值的解即为待重建的图像 u<img src="https://img-blog.csdnimg.cn/20190525134334911.png#id=ZTCLv&originHeight=62&originWidth=825&originalType=binary&ratio=1&rotation=0&showTitle=false&status=done&style=none&title="></p>
+<p>第一项就是保真项，第二项是正则项</p>
+<h2 id="3-正则项方法"><a href="#3-正则项方法" class="headerlink" title="3. 正则项方法"></a>3. 正则项方法</h2><p>①正则项的设计②TV 正则项和 hessian 正则项TV 正则项<img src="https://img-blog.csdnimg.cn/20190526114320277.png#id=WsyGh&originHeight=74&originWidth=526&originalType=binary&ratio=1&rotation=0&showTitle=false&status=done&style=none&title="></p>
+<p><img src="https://img-blog.csdnimg.cn/20190526114343875.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM5NTk0OTM5,size_16,color_FFFFFF,t_70#id=l3Yaa&originHeight=252&originWidth=978&originalType=binary&ratio=1&rotation=0&showTitle=false&status=done&style=none&title="></p>
+<p>TV 正则项是一种一阶导正则项，它能<strong>有效去除重建图像中的伪影和噪声</strong>—- 而图像中噪声和伪影附近的梯度通常会较大，也就是灰度值与它相邻点的灰度值相差较大，TV 正则项的权值就会较大，相应的会施加较重的惩罚。但是也会有<strong>阶梯效应</strong>—–：因为 TV 正则项是对相邻像素之间的灰度差进行惩罚，对于图像灰度均匀变化的区域来说，这种惩罚力度稍微有点强了，导致相邻像素的灰度值趋向于相等。</p>
+<p>Hessian 正则项</p>
+<p><img src="https://img-blog.csdnimg.cn/20190526120625624.png#id=VyTQ3&originHeight=79&originWidth=389&originalType=binary&ratio=1&rotation=0&showTitle=false&status=done&style=none&title="></p>
+<p><img src="https://img-blog.csdnimg.cn/2019052612070155.png#id=lVGSd&originHeight=194&originWidth=843&originalType=binary&ratio=1&rotation=0&showTitle=false&status=done&style=none&title="></p>
+<p>解释一下，F 范数是矩阵中各项元素的绝对值的平方的总和开根号。<img src="https://img-blog.csdnimg.cn/20190526121010621.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM5NTk0OTM5,size_16,color_FFFFFF,t_70#id=KPN1M&originHeight=878&originWidth=1076&originalType=binary&ratio=1&rotation=0&showTitle=false&status=done&style=none&title="></p>
+<p><img src="https://img-blog.csdnimg.cn/20190526121347929.png#id=UssdY&originHeight=118&originWidth=778&originalType=binary&ratio=1&rotation=0&showTitle=false&status=done&style=none&title="></p>
+<p><img src="https://img-blog.csdnimg.cn/20190526121423185.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM5NTk0OTM5,size_16,color_FFFFFF,t_70#id=USZDw&originHeight=323&originWidth=760&originalType=binary&ratio=1&rotation=0&showTitle=false&status=done&style=none&title="></p>
+<p>可以看到 hessian 惩罚的相邻像素导数的差值，所以可以有效抑制阶梯效应，但是在图像的边缘处二阶导数一般较大，对其惩罚，可能会使边缘模糊。</p>
+<p>这篇文章的学习后半部分需要对深度学习的掌握，下次再介绍。<span class="exturl" data-url="aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM5NTk0OTM5L2FydGljbGUvZGV0YWlscy85MDU0NjEzMg==" title="https://blog.csdn.net/qq_39594939/article/details/90546132">https://blog.csdn.net/qq_39594939&#x2F;article&#x2F;details&#x2F;90546132<i class="fa fa-external-link"></i></span></p>
+
+    </div>
+
+    
+    
+    
+        <div class="reward-container">
+  <div></div>
+  <button onclick="var qr = document.getElementById('qr'); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/images/wechatpay.png" alt="SindreYang 微信支付">
+        <p>微信支付</p>
+      </div>
+      
+      <div style="display: inline-block;">
+        <img src="/images/alipay.png" alt="SindreYang 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>SindreYang
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://blog.mviai.com/2025/%E5%9F%BA%E4%BA%8E%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%9A%84CBCT%E9%87%8D%E5%BB%BA%E6%96%B9%E6%B3%95%E7%A0%94%E7%A9%B6/" title="基于深度学习的CBCT重建方法研究">http://blog.mviai.com/2025/基于深度学习的CBCT重建方法研究/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <span class="exturl" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC9kZWVkLnpo"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</span> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+        
+
+  <div class="followme">
+    <p>欢迎关注我的其它发布渠道</p>
+
+    <div class="social-list">
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="/images/wechat.png">
+            <span class="icon">
+              <i class="fa fa-wechat"></i>
+            </span>
+
+            <span class="label">WeChat</span>
+          </a>
+        </div>
+    </div>
+  </div>
+
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2025/%E5%9F%BA%E4%BA%8E%E7%82%B9%E4%BA%91%E5%AD%A6%E4%B9%A0%E7%9A%84%E8%87%AA%E5%8A%A8%E6%8E%92%E7%89%99V1.0.0/" rel="prev" title="基于点云学习的自动排牙V1">
+      <i class="fa fa-chevron-left"></i> 基于点云学习的自动排牙V1
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2025/%E5%9B%A2%E9%98%9F%E8%A7%84%E8%8C%83%E4%B8%8E%E5%88%B6%E5%BA%A6/" rel="next" title="团队规范与制度">
+      团队规范与制度 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    
+  <div class="comments">
+    <div id="SOHUCS"></div>
+  </div>
+  
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-%E7%BB%AA%E8%AE%BA"><span class="nav-number">1.</span> <span class="nav-text">1. 绪论</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-CBCT-%E6%88%90%E5%83%8F%E5%9F%BA%E6%9C%AC%E5%8E%9F%E7%90%86"><span class="nav-number">2.</span> <span class="nav-text">2.CBCT 成像基本原理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-%E6%AD%A3%E5%88%99%E9%A1%B9%E6%96%B9%E6%B3%95"><span class="nav-number">3.</span> <span class="nav-text">3. 正则项方法</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="SindreYang"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">SindreYang</p>
+  <div class="site-description" itemprop="description">沉淀后我愿意做一个温暖的人。有自己的喜好，有自己的原则，有自己的信仰，不急功近利，不浮夸轻薄，宠辱不惊，淡定安逸，心静如水。------不忘初心，方得始终</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">321</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">72</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL1NpbmRyZVlhbmc=" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;SindreYang"><i class="fa fa-fw fa-github"></i>GitHub</span>
+      </span>
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="bWFpbHRvOnl4QG12aWFpLmNvbQ==" title="E-Mail → mailto:yx@mviai.com"><i class="fa fa-fw fa-envelope"></i>E-Mail</span>
+      </span>
+  </div>
+  <div class="cc-license motion-element" itemprop="license">
+    <span class="exturl cc-opacity" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC9kZWVkLnpo"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+  <div class="languages">
+    <label class="lang-select-label">
+      <i class="fa fa-language"></i>
+      <span>简体中文</span>
+      <i class="fa fa-angle-up" aria-hidden="true"></i>
+    </label>
+    <select class="lang-select" data-canonical="">
+      
+        <option value="zh-CN" data-href="/2025/%E5%9F%BA%E4%BA%8E%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%9A%84CBCT%E9%87%8D%E5%BB%BA%E6%96%B9%E6%B3%95%E7%A0%94%E7%A9%B6/" selected="">
+          简体中文
+        </option>
+      
+        <option value="en" data-href="/en/2025/%E5%9F%BA%E4%BA%8E%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%9A%84CBCT%E9%87%8D%E5%BB%BA%E6%96%B9%E6%B3%95%E7%A0%94%E7%A9%B6/" selected="">
+          English
+        </option>
+      
+    </select>
+  </div>
+
+        
+
+<div class="copyright">
+  
+  &copy; 2018 – 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">SindreYang</span>
+</div><!-- 页面点击小红心 -->
+<script type="text/javascript" src="/js/love.js"></script>
+<!-- 背景波浪 -->
+<script color="0,0,255" opacity="0.5" zIndex="-1" count="99" src="https://cdn.jsdelivr.net/npm/canvas-nest.js@1/dist/canvas-nest.js"></script>
+
+
+<!-- 腾讯企业邮箱 -->
+<style>
+.bizmail_loginpanel {
+    font-size: 12px;
+    width: 300px;
+    height: auto;
+    background: transparent;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.bizmail_LoginBox {
+    padding: 10px 15px;
+}
+
+
+.bizmail_loginpanel form {
+    margin: 0;
+    padding: 0;
+}
+
+.bizmail_loginpanel input.text {
+    font-size: 12px;
+    width: 100px;
+    height: 20px;
+    margin: 0 2px;
+    background-color: transparent;
+    border:1px solid transparent;
+    box-shadow: none;
+    color: black;
+}
+
+.bizmail_loginpanel .bizmail_column {
+    height: 28px;
+}
+
+.bizmail_loginpanel .bizmail_column label {
+    display: block;
+    float: left;
+    width: 30px;
+    height: 24px;
+    line-height: 24px;
+    font-size: 12px;
+}
+
+.bizmail_loginpanel .bizmail_column .bizmail_inputArea {
+    float: left;
+    width: 240px;
+}
+
+.bizmail_loginpanel .bizmail_column span {
+    font-size: 12px;
+    word-wrap: break-word;
+    margin-left: 2px;
+    line-height: 200%;
+}
+
+.bizmail_loginpanel .bizmail_SubmitArea {
+    margin-left: 30px;
+    clear: both;
+}
+
+.bizmail_loginpanel .bizmail_SubmitArea a {
+    font-size: 12px;
+    margin-left: 5px;
+}
+
+.bizmail_loginpanel select {
+    width: 110px;
+    height: 20px;
+    margin: 0 2px;
+}
+.bizmail_loginpanel input {
+
+    background-color: rgba(83, 126, 236, 0.562);
+}
+
+
+</style>
+
+<script type="text/javascript">
+function checkInput() {
+    var e = document.form1.uin,
+        i = document.form1.pwd;
+    return 0 == e.value.length ? e.focus() : 0 == i.value.length ? i.focus() : (document.form1.submit(), setTimeout(" document.form1.pwd.value = '' ", 500)), !1
+}
+
+function writeLoginPanel(e) {
+    if (e && e.domainlist && -1 != e.domainlist.indexOf(".")) {
+        var a = "return checkInput()",
+            t = '<div id="divLoginpanelHor" class="bizmail_loginpanel" style="width:550px;"><div class="bizmail_LoginBox"><form name="form1" action="https://exmail.qq.com/cgi-bin/login" target="_blank" method="post" onsubmit="' + a + '"><input type="hidden" name="firstlogin" value="false" /><input type="hidden" name="errtemplate" value="dm_loginpage" /><input type="hidden" name="aliastype" value="other" /><input type="hidden" name="dmtype" value="bizmail" /><input type="hidden" name="p" value="" /><label>\u8d26\u53f7:</label><input type="text" name="uin" class="text" value="" />@#domainlist#<label>&nbsp&nbsp&nbsp;\u5bc6\u7801:</label><input type="password" name="pwd" class="text" value="" /><input type="submit" class="" name="" value="\u767b\u5f55" />&nbsp;<a href="https://exmail.qq.com/cgi-bin/readtemplate?check=false&t=biz_rf_portal#recovery" target="_blank">\u5fd8\u8bb0\u5bc6\u7801\uff1f</a></form></div></div>',
+            n = '<div id="divLoginpanelVer" class="bizmail_loginpanel"><div class="bizmail_LoginBox"><form name="form1" action="https://exmail.qq.com/cgi-bin/login" target="_blank" method="post" onsubmit="' + a + '"><input type="hidden" name="firstlogin" value="false" /><input type="hidden" name="errtemplate" value="dm_loginpage" /><input type="hidden" name="aliastype" value="other" /><input type="hidden" name="dmtype" value="bizmail" /><input type="hidden" name="p" value="" /><div class="bizmail_column"><label>\u8d26\u53f7:</label><div class="bizmail_inputArea"><input type="text" name="uin" class="text" value="" />@#domainlist#</div></div><div class="bizmail_column"><label>\u5bc6\u7801:</label><div class="bizmail_inputArea"><input type="password" name="pwd" class="text" value="" /></div></div><div class="bizmail_SubmitArea"><input type="submit" class="" name="" style="width:66px;" value="\u767b\u5f55" /><a href="https://exmail.qq.com/cgi-bin/readtemplate?check=false&t=biz_rf_portal#recovery" target="_blank">\u5fd8\u8bb0\u5bc6\u7801\uff1f</a></div></form></div></div>',
+            l = e.domainlist.split(";");
+        if (1 == l.length) var m = '<span>#domain#</span><input type="hidden" name="domain" value="#domain#" />'.replace(/#domain#/g, l[0]);
+        else {
+            m = '<select name="domain">';
+            for (i = 0; i < l.length; i++) m += '<option value="' + l[i] + '">' + l[i] + "</option>";
+            m += "</select>"
+        }
+        e.mode && "vertical" != e.mode && "both" != e.mode || document.write(n.replace(/#domainlist#/g, m)), "horizontal" != e.mode && "both" != e.mode || document.write(t.replace(/#domainlist#/g, m))
+    }
+}
+
+</script>      
+
+<script type="text/javascript"> writeLoginPanel({domainlist:"mviai.com", mode:"horizontal"});</script>      
+
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script size="300" alpha="0.6" zIndex="-1" src="/lib/canvas-ribbon/canvas-ribbon.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/medium-zoom@1/dist/medium-zoom.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+  <script defer src="/lib/three/three.min.js"></script>
+    <script defer src="/lib/three/three-waves.min.js"></script>
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+<script>
+document.querySelectorAll('.pdfobject-container').forEach(element => {
+  let url = element.dataset.target;
+  let pdfOpenParams = {
+    navpanes : 0,
+    toolbar  : 0,
+    statusbar: 0,
+    pagemode : 'thumbs',
+    view     : 'FitH'
+  };
+  let pdfOpenFragment = '#' + Object.entries(pdfOpenParams).map(([key, value]) => `${key}=${encodeURIComponent(value)}`).join('&');
+  let fullURL = `/lib/pdf/web/viewer.html?file=${encodeURIComponent(url)}${pdfOpenFragment}`;
+
+  if (NexT.utils.supportsPDFs()) {
+    element.innerHTML = `<embed class="pdfobject" src="${url + pdfOpenFragment}" type="application/pdf" style="height: ${element.dataset.height};">`;
+  } else {
+    element.innerHTML = `<iframe src="${fullURL}" style="height: ${element.dataset.height};" frameborder="0"></iframe>`;
+  }
+});
+</script>
+
+
+
+
+  
+
+  
+
+  <script>
+  NexT.utils.loadComments(document.querySelector('#SOHUCS'), () => {
+    var appid = 'cyxmItxjS';
+    var conf = 'e5e71132d9086bb54aeeba6e88e87df9';
+    var width = window.innerWidth || document.documentElement.clientWidth;
+    if (width < 960) {
+      window.document.write('<script id="changyan_mobile_js" charset="utf-8" type="text/javascript" src="https://cy-cdn.kuaizhan.com/upload/mobile/wap-js/changyan_mobile.js?client_id=' + appid + '&conf=' + conf + '"><\/script>');
+    } else {
+      var loadJs=function(d,a){var c=document.getElementsByTagName("head")[0]||document.head||document.documentElement;var b=document.createElement("script");b.setAttribute("type","text/javascript");b.setAttribute("charset","UTF-8");b.setAttribute("src",d);if(typeof a==="function"){if(window.attachEvent){b.onreadystatechange=function(){var e=b.readyState;if(e==="loaded"||e==="complete"){b.onreadystatechange=null;a()}}}else{b.onload=a}}c.appendChild(b)};loadJs("https://changyan.sohu.com/upload/changyan.js",function(){window.changyan.api.config({appid:appid,conf:conf})});
+    }
+  });
+  </script>
+  <script src="https://cy-cdn.kuaizhan.com/upload/plugins/plugins.count.js"></script>
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/z16.model.json"},"display":{"position":"left","width":75,"height":150},"mobile":{"show":true},"log":false});</script></body>
+</html>
+
+
+
+

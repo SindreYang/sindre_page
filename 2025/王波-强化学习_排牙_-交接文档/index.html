@@ -1,0 +1,779 @@
+<!DOCTYPE html>
+<html lang="zh-CN,en,default">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" href="/lib/pace/pace-theme-minimal.min.css">
+  <script src="/lib/pace/pace.min.js"></script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"blog.mviai.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":true,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":true,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="自动摘要: 	前言	在入职至今的两个多月中，我主要负责的内容为强化学习排牙			强化学习排牙缺陷	只在二维上完成，角度以及碰撞问题还有缺陷。		后续期望	在三维上完成。		个人遗憾	没有在 ……..">
+<meta property="og:type" content="article">
+<meta property="og:title" content="王波-强化学习_排牙_-交接文档">
+<meta property="og:url" content="http://blog.mviai.com/2025/%E7%8E%8B%E6%B3%A2-%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0_%E6%8E%92%E7%89%99_-%E4%BA%A4%E6%8E%A5%E6%96%87%E6%A1%A3/index.html">
+<meta property="og:site_name" content="落叶无痕">
+<meta property="og:description" content="自动摘要: 	前言	在入职至今的两个多月中，我主要负责的内容为强化学习排牙			强化学习排牙缺陷	只在二维上完成，角度以及碰撞问题还有缺陷。		后续期望	在三维上完成。		个人遗憾	没有在 ……..">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://blog.mviai.com/images/1665368455934-9d306bab-1577-4ad7-b30f-e778157a1cb3.gif">
+<meta property="og:image" content="http://blog.mviai.com/images/1665368455821-c6190c37-89af-4ac4-b6e8-4cbdd50085bc.gif">
+<meta property="og:image" content="http://blog.mviai.com/images/1665368456521-7aaa3196-99ba-43ee-926b-2c28240222b2.gif">
+<meta property="og:image" content="http://blog.mviai.com/images/1663204285441-3a9638a0-5d62-4341-99ac-fb8a811b2746.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1663204263031-deb95e95-4e54-461b-954b-94b46b3529dd.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1663395882691-145659d0-fcc9-49b3-adb2-95bf31316f0f.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1663126268157-2fc02165-8a23-476f-9c34-f5f5b73be1f8.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1663396420971-e6a117ce-6743-47b7-b615-fac6fea36384.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1663396431011-3f9d5a07-6591-4a99-b15b-d2be03fb2921.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1663398973126-2bc51512-6ee4-47f3-9b1f-ad6f968c10c6.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1663126318187-d6b393aa-b52c-482d-95ca-a747358d5ab8.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1663399060909-747567e9-b8c8-48f5-a334-76caabe57de7.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1663126371230-1f6314d9-e24f-4e8e-ba98-4f4737d4c352.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1664258139855-a5b6c742-26fb-4bec-abc8-53ce3447beec.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1664258121251-30ea1aca-97d9-4200-b63d-21968d13be58.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1663398880628-e37ec19d-b0f4-49c4-b555-1d9d254147fe.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1663126587045-601d55bf-75c5-4b41-847d-27f40ff666ff.png">
+<meta property="article:published_time" content="2025-01-22T04:37:41.000Z">
+<meta property="article:modified_time" content="2025-01-22T12:37:41.388Z">
+<meta property="article:author" content="SindreYang">
+<meta property="article:tag" content="生活">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://blog.mviai.com/images/1665368455934-9d306bab-1577-4ad7-b30f-e778157a1cb3.gif">
+
+<link rel="canonical" href="http://blog.mviai.com/2025/%E7%8E%8B%E6%B3%A2-%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0_%E6%8E%92%E7%89%99_-%E4%BA%A4%E6%8E%A5%E6%96%87%E6%A1%A3/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>王波-强化学习_排牙_-交接文档 | 落叶无痕</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">落叶无痕</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类<span class="badge">72</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档<span class="badge">321</span></a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+  <span class="exturl github-corner" data-url="aHR0cHM6Ly9naXRodWIuY29tL1NpbmRyZVlhbmc=" title="Follow me on GitHub" aria-label="Follow me on GitHub"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></span>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://blog.mviai.com/2025/%E7%8E%8B%E6%B3%A2-%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0_%E6%8E%92%E7%89%99_-%E4%BA%A4%E6%8E%A5%E6%96%87%E6%A1%A3/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="SindreYang">
+      <meta itemprop="description" content="沉淀后我愿意做一个温暖的人。有自己的喜好，有自己的原则，有自己的信仰，不急功近利，不浮夸轻薄，宠辱不惊，淡定安逸，心静如水。------不忘初心，方得始终">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="落叶无痕">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          王波-强化学习_排牙_-交接文档
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2025-01-22 12:37:41 / 修改时间：20:37:41" itemprop="dateCreated datePublished" datetime="2025-01-22T12:37:41+08:00">2025-01-22</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E7%A6%BB%E8%81%8C%E4%BA%A4%E6%8E%A5/" itemprop="url" rel="index"><span itemprop="name">离职交接</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">Changyan：</span>
+    
+    
+      <a title="changyan" href="/2025/%E7%8E%8B%E6%B3%A2-%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0_%E6%8E%92%E7%89%99_-%E4%BA%A4%E6%8E%A5%E6%96%87%E6%A1%A3/#SOHUCS" itemprop="discussionUrl">
+        <span id="changyan_count_unit" class="post-comments-count hc-comment-count" data-xid="2025/王波-强化学习_排牙_-交接文档/" itemprop="commentCount"></span>
+      </a>
+    
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>自动摘要: 	前言	在入职至今的两个多月中，我主要负责的内容为强化学习排牙			强化学习排牙缺陷	只在二维上完成，角度以及碰撞问题还有缺陷。		后续期望	在三维上完成。		个人遗憾	没有在 ……..</p>
+<span id="more"></span>
+
+<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>在入职至今的两个多月中，我主要负责的内容为强化学习排牙</p>
+<h2 id="强化学习排牙缺陷"><a href="#强化学习排牙缺陷" class="headerlink" title="强化学习排牙缺陷"></a>强化学习排牙缺陷</h2><p>只在二维上完成，角度以及碰撞问题还有缺陷。</p>
+<h2 id="后续期望"><a href="#后续期望" class="headerlink" title="后续期望"></a>后续期望</h2><p>在三维上完成。</p>
+<h2 id="个人遗憾"><a href="#个人遗憾" class="headerlink" title="个人遗憾"></a>个人遗憾</h2><p>没有在三维上完成</p>
+<h2 id="对AI组的期望"><a href="#对AI组的期望" class="headerlink" title="对AI组的期望"></a>对AI组的期望</h2><p>在入职至今的两个半月中，十分感谢各位组员的指导帮助。从我的工作过程中感受到的，我觉得也许可以改变的一些地方，比如对自己写的函数加一些注释，因为每个项目在后续大多都会有其他的人使用或参与进来，添加一些有效的注释有助于他人的理解与使用，能够有效提高合作效率或是接手项目的效率。若是为了保证代码简洁不便添加的话可以在API文档内添加注意事项，特别是一些对输入数据格式等有要求的函数。最后，希望AI组的各位能完成自己的项目，不留遗憾。</p>
+<h2 id=""><a href="#" class="headerlink" title=""></a></h2><h1 id="相关代码"><a href="#相关代码" class="headerlink" title="相关代码"></a>相关代码</h1><p><span class="exturl" data-url="aHR0cHM6Ly93d3cueXVxdWUuY29tL2F0dGFjaG1lbnRzL3l1cXVlLzAvMjAyMy9weS8yMjIxMDkxOS8xNjc5MDQzODM2Njk1LTMwYzEzNjk5LTFhZTktNDZiMy1iYjc5LTc2ZDcwN2QyNzhjNy5weT9fbGFrZV9jYXJkPSU3QiUyMnNyYyUyMjolMjJodHRwczovL3d3dy55dXF1ZS5jb20vYXR0YWNobWVudHMveXVxdWUvMC8yMDIzL3B5LzIyMjEwOTE5LzE2NzkwNDM4MzY2OTUtMzBjMTM2OTktMWFlOS00NmIzLWJiNzktNzZkNzA3ZDI3OGM3LnB5JTIyLCUyMm5hbWUlMjI6JTIydGVzdDMucHklMjIsJTIyc2l6ZSUyMjoxMDI5MywlMjJleHQlMjI6JTIycHklMjIsJTIyc291cmNlJTIyOiUyMiUyMiwlMjJzdGF0dXMlMjI6JTIyZG9uZSUyMiwlMjJkb3dubG9hZCUyMjp0cnVlLCUyMnR5cGUlMjI6JTIyJTIyLCUyMnRhc2tJZCUyMjolMjJ1YTZmYWNmZWMtYjY3MS00ODk4LTg3MWEtNTg1MmViYjAxMTclMjIsJTIydGFza1R5cGUlMjI6JTIydXBsb2FkJTIyLCUyMl9fc3BhY2luZyUyMjolMjJib3RoJTIyLCUyMmRvd25sb2FkU3JjJTIyOiUyMmh0dHBzOi8vbGFyay1hc3NldHMtcHJvZC1hbGl5dW4ub3NzLWNuLWhhbmd6aG91LmFsaXl1bmNzLmNvbS95dXF1ZS8wLzIwMjIvcHkvMjk2Mzc2NjMvMTY2NTM2ODQ1MTcyMy01NzA4ZmVjNy1jYmQ0LTQxNmMtOWQ1NS1mNTAyOWI3NTE4MDgucHk/T1NTQWNjZXNzS2V5SWQ9TFRBSTRHR2hQSm1RNEhXQ21oREFuNEY1JkV4cGlyZXM9MTY3OTA2MTIwNCZTaWduYXR1cmU9elhOWWc5UEJNbFZWUmtsVS9WR1VWdW9JNGJJPSUyMiwlMjJtb2RlJTIyOiUyMnRpdGxlJTIyLCUyMmlkJTIyOiUyMnViYzg5YmZiNyUyMiwlMjJtYXJnaW4lMjI6JTdCJTIydG9wJTIyOnRydWUsJTIyYm90dG9tJTIyOnRydWUlN0QsJTIyY2FyZCUyMjolMjJmaWxlJTIyJTdE" title="https://www.yuque.com/attachments/yuque/0/2023/py/22210919/1679043836695-30c13699-1ae9-46b3-bb79-76d707d278c7.py?_lake_card=%7B%22src%22:%22https://www.yuque.com/attachments/yuque/0/2023/py/22210919/1679043836695-30c13699-1ae9-46b3-bb79-76d707d278c7.py%22,%22name%22:%22test3.py%22,%22size%22:10293,%22ext%22:%22py%22,%22source%22:%22%22,%22status%22:%22done%22,%22download%22:true,%22type%22:%22%22,%22taskId%22:%22ua6facfec-b671-4898-871a-5852ebb0117%22,%22taskType%22:%22upload%22,%22__spacing%22:%22both%22,%22downloadSrc%22:%22https://lark-assets-prod-aliyun.oss-cn-hangzhou.aliyuncs.com/yuque/0/2022/py/29637663/1665368451723-5708fec7-cbd4-416c-9d55-f5029b751808.py?OSSAccessKeyId=LTAI4GGhPJmQ4HWCmhDAn4F5&Expires=1679061204&Signature=zXNYg9PBMlVVRklU/VGUVuoI4bI=%22,%22mode%22:%22title%22,%22id%22:%22ubc89bfb7%22,%22margin%22:%7B%22top%22:true,%22bottom%22:true%7D,%22card%22:%22file%22%7D">test3.py<i class="fa fa-external-link"></i></span><span class="exturl" data-url="aHR0cHM6Ly93d3cueXVxdWUuY29tL2F0dGFjaG1lbnRzL3l1cXVlLzAvMjAyMy9weS8yMjIxMDkxOS8xNjc5MDQzODM2ODU0LWI3ZjliYWFiLTc3MmQtNDAzYS05ZDJlLWQxYTk4ZDM4M2U5ZS5weT9fbGFrZV9jYXJkPSU3QiUyMnNyYyUyMjolMjJodHRwczovL3d3dy55dXF1ZS5jb20vYXR0YWNobWVudHMveXVxdWUvMC8yMDIzL3B5LzIyMjEwOTE5LzE2NzkwNDM4MzY4NTQtYjdmOWJhYWItNzcyZC00MDNhLTlkMmUtZDFhOThkMzgzZTllLnB5JTIyLCUyMm5hbWUlMjI6JTIydGVzdDQucHklMjIsJTIyc2l6ZSUyMjoyNCwlMjJleHQlMjI6JTIycHklMjIsJTIyc291cmNlJTIyOiUyMiUyMiwlMjJzdGF0dXMlMjI6JTIyZG9uZSUyMiwlMjJkb3dubG9hZCUyMjp0cnVlLCUyMnR5cGUlMjI6JTIyJTIyLCUyMnRhc2tJZCUyMjolMjJ1MmUyODZkNTgtYmZmNy00ZDVkLTllYjgtNTgzYjAyNGQ4MTQlMjIsJTIydGFza1R5cGUlMjI6JTIydXBsb2FkJTIyLCUyMl9fc3BhY2luZyUyMjolMjJib3RoJTIyLCUyMmRvd25sb2FkU3JjJTIyOiUyMmh0dHBzOi8vbGFyay1hc3NldHMtcHJvZC1hbGl5dW4ub3NzLWNuLWhhbmd6aG91LmFsaXl1bmNzLmNvbS95dXF1ZS8wLzIwMjIvcHkvMjk2Mzc2NjMvMTY2NTM2ODQ1MTczNS05NmNkYjVkMS1kMmI5LTRlNDctOTFmZS1hYjYzMjJjNGJmZGEucHk/T1NTQWNjZXNzS2V5SWQ9TFRBSTRHR2hQSm1RNEhXQ21oREFuNEY1JkV4cGlyZXM9MTY3OTA2MTIwNCZTaWduYXR1cmU9cVZpaEJUV0JEWXc5bTFuSHVPeVF1ZzFMNXBRPSUyMiwlMjJtb2RlJTIyOiUyMnRpdGxlJTIyLCUyMmlkJTIyOiUyMnU0NzQyMTM3ZSUyMiwlMjJtYXJnaW4lMjI6JTdCJTIydG9wJTIyOnRydWUsJTIyYm90dG9tJTIyOnRydWUlN0QsJTIyY2FyZCUyMjolMjJmaWxlJTIyJTdE" title="https://www.yuque.com/attachments/yuque/0/2023/py/22210919/1679043836854-b7f9baab-772d-403a-9d2e-d1a98d383e9e.py?_lake_card=%7B%22src%22:%22https://www.yuque.com/attachments/yuque/0/2023/py/22210919/1679043836854-b7f9baab-772d-403a-9d2e-d1a98d383e9e.py%22,%22name%22:%22test4.py%22,%22size%22:24,%22ext%22:%22py%22,%22source%22:%22%22,%22status%22:%22done%22,%22download%22:true,%22type%22:%22%22,%22taskId%22:%22u2e286d58-bff7-4d5d-9eb8-583b024d814%22,%22taskType%22:%22upload%22,%22__spacing%22:%22both%22,%22downloadSrc%22:%22https://lark-assets-prod-aliyun.oss-cn-hangzhou.aliyuncs.com/yuque/0/2022/py/29637663/1665368451735-96cdb5d1-d2b9-4e47-91fe-ab6322c4bfda.py?OSSAccessKeyId=LTAI4GGhPJmQ4HWCmhDAn4F5&Expires=1679061204&Signature=qVihBTWBDYw9m1nHuOyQug1L5pQ=%22,%22mode%22:%22title%22,%22id%22:%22u4742137e%22,%22margin%22:%7B%22top%22:true,%22bottom%22:true%7D,%22card%22:%22file%22%7D">test4.py<i class="fa fa-external-link"></i></span><span class="exturl" data-url="aHR0cHM6Ly93d3cueXVxdWUuY29tL2F0dGFjaG1lbnRzL3l1cXVlLzAvMjAyMy9weS8yMjIxMDkxOS8xNjc5MDQzODM2OTcyLWUxMjc3ZmViLTY4MDktNGNiMS05MjJkLTFhNDhkYzFhOTA4Yi5weT9fbGFrZV9jYXJkPSU3QiUyMnNyYyUyMjolMjJodHRwczovL3d3dy55dXF1ZS5jb20vYXR0YWNobWVudHMveXVxdWUvMC8yMDIzL3B5LzIyMjEwOTE5LzE2NzkwNDM4MzY5NzItZTEyNzdmZWItNjgwOS00Y2IxLTkyMmQtMWE0OGRjMWE5MDhiLnB5JTIyLCUyMm5hbWUlMjI6JTIydGVzdDUucHklMjIsJTIyc2l6ZSUyMjo2ODUxLCUyMmV4dCUyMjolMjJweSUyMiwlMjJzb3VyY2UlMjI6JTIyJTIyLCUyMnN0YXR1cyUyMjolMjJkb25lJTIyLCUyMmRvd25sb2FkJTIyOnRydWUsJTIydHlwZSUyMjolMjIlMjIsJTIydGFza0lkJTIyOiUyMnViNTViOGY4NC03MjkxLTRjYmYtOTYyYy0yN2M4Yzg5ZTRhOSUyMiwlMjJ0YXNrVHlwZSUyMjolMjJ1cGxvYWQlMjIsJTIyX19zcGFjaW5nJTIyOiUyMmJvdGglMjIsJTIyZG93bmxvYWRTcmMlMjI6JTIyaHR0cHM6Ly9sYXJrLWFzc2V0cy1wcm9kLWFsaXl1bi5vc3MtY24taGFuZ3pob3UuYWxpeXVuY3MuY29tL3l1cXVlLzAvMjAyMi9weS8yOTYzNzY2My8xNjY1MzY4NDUzMTkyLTdjNzJiMmIwLTE3NzYtNGNmNi04MTE1LTI3OWI3ODM3OTBmYy5weT9PU1NBY2Nlc3NLZXlJZD1MVEFJNEdHaFBKbVE0SFdDbWhEQW40RjUmRXhwaXJlcz0xNjc5MDYxMjA0JlNpZ25hdHVyZT1JYnVDbTR5MGNPNFBuajNYa2tjREhPSU54dFU9JTIyLCUyMm1vZGUlMjI6JTIydGl0bGUlMjIsJTIyaWQlMjI6JTIydTA3NjVjZGVmJTIyLCUyMm1hcmdpbiUyMjolN0IlMjJ0b3AlMjI6dHJ1ZSwlMjJib3R0b20lMjI6dHJ1ZSU3RCwlMjJjYXJkJTIyOiUyMmZpbGUlMjIlN0Q=" title="https://www.yuque.com/attachments/yuque/0/2023/py/22210919/1679043836972-e1277feb-6809-4cb1-922d-1a48dc1a908b.py?_lake_card=%7B%22src%22:%22https://www.yuque.com/attachments/yuque/0/2023/py/22210919/1679043836972-e1277feb-6809-4cb1-922d-1a48dc1a908b.py%22,%22name%22:%22test5.py%22,%22size%22:6851,%22ext%22:%22py%22,%22source%22:%22%22,%22status%22:%22done%22,%22download%22:true,%22type%22:%22%22,%22taskId%22:%22ub55b8f84-7291-4cbf-962c-27c8c89e4a9%22,%22taskType%22:%22upload%22,%22__spacing%22:%22both%22,%22downloadSrc%22:%22https://lark-assets-prod-aliyun.oss-cn-hangzhou.aliyuncs.com/yuque/0/2022/py/29637663/1665368453192-7c72b2b0-1776-4cf6-8115-279b783790fc.py?OSSAccessKeyId=LTAI4GGhPJmQ4HWCmhDAn4F5&Expires=1679061204&Signature=IbuCm4y0cO4Pnj3XkkcDHOINxtU=%22,%22mode%22:%22title%22,%22id%22:%22u0765cdef%22,%22margin%22:%7B%22top%22:true,%22bottom%22:true%7D,%22card%22:%22file%22%7D">test5.py<i class="fa fa-external-link"></i></span><span class="exturl" data-url="aHR0cHM6Ly93d3cueXVxdWUuY29tL2F0dGFjaG1lbnRzL3l1cXVlLzAvMjAyMy9weS8yMjIxMDkxOS8xNjc5MDQzODM3MTEyLWRjMTNiYWI1LWEwMzMtNDgyNS1hN2FhLWNjM2I1ZDFkYjJhMi5weT9fbGFrZV9jYXJkPSU3QiUyMnNyYyUyMjolMjJodHRwczovL3d3dy55dXF1ZS5jb20vYXR0YWNobWVudHMveXVxdWUvMC8yMDIzL3B5LzIyMjEwOTE5LzE2NzkwNDM4MzcxMTItZGMxM2JhYjUtYTAzMy00ODI1LWE3YWEtY2MzYjVkMWRiMmEyLnB5JTIyLCUyMm5hbWUlMjI6JTIydGVzdDYucHklMjIsJTIyc2l6ZSUyMjo0MTgsJTIyZXh0JTIyOiUyMnB5JTIyLCUyMnNvdXJjZSUyMjolMjIlMjIsJTIyc3RhdHVzJTIyOiUyMmRvbmUlMjIsJTIyZG93bmxvYWQlMjI6dHJ1ZSwlMjJ0eXBlJTIyOiUyMiUyMiwlMjJ0YXNrSWQlMjI6JTIydTRmZDcyMTcxLTU1N2QtNDlmZS1hZDM0LTZkNDI1ZTBhYmM0JTIyLCUyMnRhc2tUeXBlJTIyOiUyMnVwbG9hZCUyMiwlMjJfX3NwYWNpbmclMjI6JTIyYm90aCUyMiwlMjJkb3dubG9hZFNyYyUyMjolMjJodHRwczovL2xhcmstYXNzZXRzLXByb2QtYWxpeXVuLm9zcy1jbi1oYW5nemhvdS5hbGl5dW5jcy5jb20veXVxdWUvMC8yMDIyL3B5LzI5NjM3NjYzLzE2NjUzNjg0NTMxMDktOWIzMzliNjQtNDQ0Ny00MWJmLWI0ZWQtMmUyZjgzYmYyYjc0LnB5P09TU0FjY2Vzc0tleUlkPUxUQUk0R0doUEptUTRIV0NtaERBbjRGNSZFeHBpcmVzPTE2NzkwNjEyMDQmU2lnbmF0dXJlPWR3M21PQVRPODJJOXpJL2haLy9YdXk3TDR0TT0lMjIsJTIybW9kZSUyMjolMjJ0aXRsZSUyMiwlMjJpZCUyMjolMjJ1ZmI1YTBiNWUlMjIsJTIybWFyZ2luJTIyOiU3QiUyMnRvcCUyMjp0cnVlLCUyMmJvdHRvbSUyMjp0cnVlJTdELCUyMmNhcmQlMjI6JTIyZmlsZSUyMiU3RA==" title="https://www.yuque.com/attachments/yuque/0/2023/py/22210919/1679043837112-dc13bab5-a033-4825-a7aa-cc3b5d1db2a2.py?_lake_card=%7B%22src%22:%22https://www.yuque.com/attachments/yuque/0/2023/py/22210919/1679043837112-dc13bab5-a033-4825-a7aa-cc3b5d1db2a2.py%22,%22name%22:%22test6.py%22,%22size%22:418,%22ext%22:%22py%22,%22source%22:%22%22,%22status%22:%22done%22,%22download%22:true,%22type%22:%22%22,%22taskId%22:%22u4fd72171-557d-49fe-ad34-6d425e0abc4%22,%22taskType%22:%22upload%22,%22__spacing%22:%22both%22,%22downloadSrc%22:%22https://lark-assets-prod-aliyun.oss-cn-hangzhou.aliyuncs.com/yuque/0/2022/py/29637663/1665368453109-9b339b64-4447-41bf-b4ed-2e2f83bf2b74.py?OSSAccessKeyId=LTAI4GGhPJmQ4HWCmhDAn4F5&Expires=1679061204&Signature=dw3mOATO82I9zI/hZ//Xuy7L4tM=%22,%22mode%22:%22title%22,%22id%22:%22ufb5a0b5e%22,%22margin%22:%7B%22top%22:true,%22bottom%22:true%7D,%22card%22:%22file%22%7D">test6.py<i class="fa fa-external-link"></i></span><span class="exturl" data-url="aHR0cHM6Ly93d3cueXVxdWUuY29tL2F0dGFjaG1lbnRzL3l1cXVlLzAvMjAyMy9weS8yMjIxMDkxOS8xNjc5MDQzODM3MjEyLTY2OTI2MzQzLWYwNWMtNDNjYy1hZmExLWI3ZjdiZmNiZmQ1Yi5weT9fbGFrZV9jYXJkPSU3QiUyMnNyYyUyMjolMjJodHRwczovL3d3dy55dXF1ZS5jb20vYXR0YWNobWVudHMveXVxdWUvMC8yMDIzL3B5LzIyMjEwOTE5LzE2NzkwNDM4MzcyMTItNjY5MjYzNDMtZjA1Yy00M2NjLWFmYTEtYjdmN2JmY2JmZDViLnB5JTIyLCUyMm5hbWUlMjI6JTIydGVzdDcucHklMjIsJTIyc2l6ZSUyMjo1OTE1LCUyMmV4dCUyMjolMjJweSUyMiwlMjJzb3VyY2UlMjI6JTIyJTIyLCUyMnN0YXR1cyUyMjolMjJkb25lJTIyLCUyMmRvd25sb2FkJTIyOnRydWUsJTIydHlwZSUyMjolMjIlMjIsJTIydGFza0lkJTIyOiUyMnVkZjVjMjg2MC0wMWI1LTQwZDAtYmUwMi0xMGYwNzkyNmY3YSUyMiwlMjJ0YXNrVHlwZSUyMjolMjJ1cGxvYWQlMjIsJTIyX19zcGFjaW5nJTIyOiUyMmJvdGglMjIsJTIyZG93bmxvYWRTcmMlMjI6JTIyaHR0cHM6Ly9sYXJrLWFzc2V0cy1wcm9kLWFsaXl1bi5vc3MtY24taGFuZ3pob3UuYWxpeXVuY3MuY29tL3l1cXVlLzAvMjAyMi9weS8yOTYzNzY2My8xNjY1MzY4NDUzMTAwLWNkZTEyMzU2LWQxYjktNDBkNi05NDAxLTRmMTdlOTFiM2FiMC5weT9PU1NBY2Nlc3NLZXlJZD1MVEFJNEdHaFBKbVE0SFdDbWhEQW40RjUmRXhwaXJlcz0xNjc5MDYxMjA0JlNpZ25hdHVyZT1Rc3EzZzU1QTEzNWxyNTZJQzNUWHk1WEcwdkE9JTIyLCUyMm1vZGUlMjI6JTIydGl0bGUlMjIsJTIyaWQlMjI6JTIydTk0NTg1NjZjJTIyLCUyMm1hcmdpbiUyMjolN0IlMjJ0b3AlMjI6dHJ1ZSwlMjJib3R0b20lMjI6dHJ1ZSU3RCwlMjJjYXJkJTIyOiUyMmZpbGUlMjIlN0Q=" title="https://www.yuque.com/attachments/yuque/0/2023/py/22210919/1679043837212-66926343-f05c-43cc-afa1-b7f7bfcbfd5b.py?_lake_card=%7B%22src%22:%22https://www.yuque.com/attachments/yuque/0/2023/py/22210919/1679043837212-66926343-f05c-43cc-afa1-b7f7bfcbfd5b.py%22,%22name%22:%22test7.py%22,%22size%22:5915,%22ext%22:%22py%22,%22source%22:%22%22,%22status%22:%22done%22,%22download%22:true,%22type%22:%22%22,%22taskId%22:%22udf5c2860-01b5-40d0-be02-10f07926f7a%22,%22taskType%22:%22upload%22,%22__spacing%22:%22both%22,%22downloadSrc%22:%22https://lark-assets-prod-aliyun.oss-cn-hangzhou.aliyuncs.com/yuque/0/2022/py/29637663/1665368453100-cde12356-d1b9-40d6-9401-4f17e91b3ab0.py?OSSAccessKeyId=LTAI4GGhPJmQ4HWCmhDAn4F5&Expires=1679061204&Signature=Qsq3g55A135lr56IC3TXy5XG0vA=%22,%22mode%22:%22title%22,%22id%22:%22u9458566c%22,%22margin%22:%7B%22top%22:true,%22bottom%22:true%7D,%22card%22:%22file%22%7D">test7.py<i class="fa fa-external-link"></i></span><span class="exturl" data-url="aHR0cHM6Ly93d3cueXVxdWUuY29tL2F0dGFjaG1lbnRzL3l1cXVlLzAvMjAyMy9weS8yMjIxMDkxOS8xNjc5MDQzODM3MzY4LTBiYjFiZTkzLWMwODAtNDE2YS04NzM2LTcxNWQwYWFmMWJjOS5weT9fbGFrZV9jYXJkPSU3QiUyMnNyYyUyMjolMjJodHRwczovL3d3dy55dXF1ZS5jb20vYXR0YWNobWVudHMveXVxdWUvMC8yMDIzL3B5LzIyMjEwOTE5LzE2NzkwNDM4MzczNjgtMGJiMWJlOTMtYzA4MC00MTZhLTg3MzYtNzE1ZDBhYWYxYmM5LnB5JTIyLCUyMm5hbWUlMjI6JTIydGVzdDgucHklMjIsJTIyc2l6ZSUyMjo3MzkyLCUyMmV4dCUyMjolMjJweSUyMiwlMjJzb3VyY2UlMjI6JTIyJTIyLCUyMnN0YXR1cyUyMjolMjJkb25lJTIyLCUyMmRvd25sb2FkJTIyOnRydWUsJTIydHlwZSUyMjolMjIlMjIsJTIydGFza0lkJTIyOiUyMnVmYjhlZDU2Yi0xOWIwLTQzYWEtOWY0NC1jNDQ1N2M5NzdjMCUyMiwlMjJ0YXNrVHlwZSUyMjolMjJ1cGxvYWQlMjIsJTIyX19zcGFjaW5nJTIyOiUyMmJvdGglMjIsJTIyZG93bmxvYWRTcmMlMjI6JTIyaHR0cHM6Ly9sYXJrLWFzc2V0cy1wcm9kLWFsaXl1bi5vc3MtY24taGFuZ3pob3UuYWxpeXVuY3MuY29tL3l1cXVlLzAvMjAyMi9weS8yOTYzNzY2My8xNjY1MzY4NDUzMzQ3LTUxNmVhYmZkLTU4NmQtNGI5Yi1hMzhlLTRmMDc4NTRmNDJlZS5weT9PU1NBY2Nlc3NLZXlJZD1MVEFJNEdHaFBKbVE0SFdDbWhEQW40RjUmRXhwaXJlcz0xNjc5MDYxMjA0JlNpZ25hdHVyZT1xR3FtMmVCSEs5bk1ieFhWeEFSTzBqellHS0E9JTIyLCUyMm1vZGUlMjI6JTIydGl0bGUlMjIsJTIyaWQlMjI6JTIydWYxNzUyYzJmJTIyLCUyMm1hcmdpbiUyMjolN0IlMjJ0b3AlMjI6dHJ1ZSwlMjJib3R0b20lMjI6dHJ1ZSU3RCwlMjJjYXJkJTIyOiUyMmZpbGUlMjIlN0Q=" title="https://www.yuque.com/attachments/yuque/0/2023/py/22210919/1679043837368-0bb1be93-c080-416a-8736-715d0aaf1bc9.py?_lake_card=%7B%22src%22:%22https://www.yuque.com/attachments/yuque/0/2023/py/22210919/1679043837368-0bb1be93-c080-416a-8736-715d0aaf1bc9.py%22,%22name%22:%22test8.py%22,%22size%22:7392,%22ext%22:%22py%22,%22source%22:%22%22,%22status%22:%22done%22,%22download%22:true,%22type%22:%22%22,%22taskId%22:%22ufb8ed56b-19b0-43aa-9f44-c4457c977c0%22,%22taskType%22:%22upload%22,%22__spacing%22:%22both%22,%22downloadSrc%22:%22https://lark-assets-prod-aliyun.oss-cn-hangzhou.aliyuncs.com/yuque/0/2022/py/29637663/1665368453347-516eabfd-586d-4b9b-a38e-4f07854f42ee.py?OSSAccessKeyId=LTAI4GGhPJmQ4HWCmhDAn4F5&Expires=1679061204&Signature=qGqm2eBHK9nMbxXVxARO0jzYGKA=%22,%22mode%22:%22title%22,%22id%22:%22uf1752c2f%22,%22margin%22:%7B%22top%22:true,%22bottom%22:true%7D,%22card%22:%22file%22%7D">test8.py<i class="fa fa-external-link"></i></span><span class="exturl" data-url="aHR0cHM6Ly93d3cueXVxdWUuY29tL2F0dGFjaG1lbnRzL3l1cXVlLzAvMjAyMy9weS8yMjIxMDkxOS8xNjc5MDQzODM3NTAwLTRlNTgzYjgwLWUzYjUtNDcwZS1iYTBhLTJhYTA1NmJiMzAwMS5weT9fbGFrZV9jYXJkPSU3QiUyMnNyYyUyMjolMjJodHRwczovL3d3dy55dXF1ZS5jb20vYXR0YWNobWVudHMveXVxdWUvMC8yMDIzL3B5LzIyMjEwOTE5LzE2NzkwNDM4Mzc1MDAtNGU1ODNiODAtZTNiNS00NzBlLWJhMGEtMmFhMDU2YmIzMDAxLnB5JTIyLCUyMm5hbWUlMjI6JTIydGVzdDkucHklMjIsJTIyc2l6ZSUyMjo3NjAzLCUyMmV4dCUyMjolMjJweSUyMiwlMjJzb3VyY2UlMjI6JTIyJTIyLCUyMnN0YXR1cyUyMjolMjJkb25lJTIyLCUyMmRvd25sb2FkJTIyOnRydWUsJTIydHlwZSUyMjolMjIlMjIsJTIydGFza0lkJTIyOiUyMnU3Y2M0NjMyYS04NjIwLTRjZjItYjEzYS1hMTA0Yjc2YTZjYyUyMiwlMjJ0YXNrVHlwZSUyMjolMjJ1cGxvYWQlMjIsJTIyX19zcGFjaW5nJTIyOiUyMmJvdGglMjIsJTIyZG93bmxvYWRTcmMlMjI6JTIyaHR0cHM6Ly9sYXJrLWFzc2V0cy1wcm9kLWFsaXl1bi5vc3MtY24taGFuZ3pob3UuYWxpeXVuY3MuY29tL3l1cXVlLzAvMjAyMi9weS8yOTYzNzY2My8xNjY1MzY4NDUzMjY1LWZmNzNkM2U0LWExZTQtNGQ1Ny05Y2E2LTM3NzRhMGJhNmIxNC5weT9PU1NBY2Nlc3NLZXlJZD1MVEFJNEdHaFBKbVE0SFdDbWhEQW40RjUmRXhwaXJlcz0xNjc5MDYxMjA0JlNpZ25hdHVyZT1ZK3pQQXZyK3RYVTlHYU5SQ1lIYStDWjF5aHM9JTIyLCUyMm1vZGUlMjI6JTIydGl0bGUlMjIsJTIyaWQlMjI6JTIydTJkMjdkMDc4JTIyLCUyMm1hcmdpbiUyMjolN0IlMjJ0b3AlMjI6dHJ1ZSwlMjJib3R0b20lMjI6dHJ1ZSU3RCwlMjJjYXJkJTIyOiUyMmZpbGUlMjIlN0Q=" title="https://www.yuque.com/attachments/yuque/0/2023/py/22210919/1679043837500-4e583b80-e3b5-470e-ba0a-2aa056bb3001.py?_lake_card=%7B%22src%22:%22https://www.yuque.com/attachments/yuque/0/2023/py/22210919/1679043837500-4e583b80-e3b5-470e-ba0a-2aa056bb3001.py%22,%22name%22:%22test9.py%22,%22size%22:7603,%22ext%22:%22py%22,%22source%22:%22%22,%22status%22:%22done%22,%22download%22:true,%22type%22:%22%22,%22taskId%22:%22u7cc4632a-8620-4cf2-b13a-a104b76a6cc%22,%22taskType%22:%22upload%22,%22__spacing%22:%22both%22,%22downloadSrc%22:%22https://lark-assets-prod-aliyun.oss-cn-hangzhou.aliyuncs.com/yuque/0/2022/py/29637663/1665368453265-ff73d3e4-a1e4-4d57-9ca6-3774a0ba6b14.py?OSSAccessKeyId=LTAI4GGhPJmQ4HWCmhDAn4F5&Expires=1679061204&Signature=Y+zPAvr+tXU9GaNRCYHa+CZ1yhs=%22,%22mode%22:%22title%22,%22id%22:%22u2d27d078%22,%22margin%22:%7B%22top%22:true,%22bottom%22:true%7D,%22card%22:%22file%22%7D">test9.py<i class="fa fa-external-link"></i></span><span class="exturl" data-url="aHR0cHM6Ly93d3cueXVxdWUuY29tL2F0dGFjaG1lbnRzL3l1cXVlLzAvMjAyMy9weS8yMjIxMDkxOS8xNjc5MDQzODM3NjI1LTAzZDU5NGFmLWM2ZjQtNDM1Yy1iMDFhLWFiMzhlNjJmODI2Ny5weT9fbGFrZV9jYXJkPSU3QiUyMnNyYyUyMjolMjJodHRwczovL3d3dy55dXF1ZS5jb20vYXR0YWNobWVudHMveXVxdWUvMC8yMDIzL3B5LzIyMjEwOTE5LzE2NzkwNDM4Mzc2MjUtMDNkNTk0YWYtYzZmNC00MzVjLWIwMWEtYWIzOGU2MmY4MjY3LnB5JTIyLCUyMm5hbWUlMjI6JTIydGVzdDEwLnB5JTIyLCUyMnNpemUlMjI6ODY2NCwlMjJleHQlMjI6JTIycHklMjIsJTIyc291cmNlJTIyOiUyMiUyMiwlMjJzdGF0dXMlMjI6JTIyZG9uZSUyMiwlMjJkb3dubG9hZCUyMjp0cnVlLCUyMnR5cGUlMjI6JTIyJTIyLCUyMnRhc2tJZCUyMjolMjJ1MzhkZDAyN2EtMGE5Zi00ODU1LWE3ZTItOWEzMDA5ZDE3ZTklMjIsJTIydGFza1R5cGUlMjI6JTIydXBsb2FkJTIyLCUyMl9fc3BhY2luZyUyMjolMjJib3RoJTIyLCUyMmRvd25sb2FkU3JjJTIyOiUyMmh0dHBzOi8vbGFyay1hc3NldHMtcHJvZC1hbGl5dW4ub3NzLWNuLWhhbmd6aG91LmFsaXl1bmNzLmNvbS95dXF1ZS8wLzIwMjIvcHkvMjk2Mzc2NjMvMTY2NTM2ODQ1MzU0OS04ZjcyY2NkNi1hNGY2LTQxNTgtOWY3YS02OWZjZjU3NWZmMjUucHk/T1NTQWNjZXNzS2V5SWQ9TFRBSTRHR2hQSm1RNEhXQ21oREFuNEY1JkV4cGlyZXM9MTY3OTA2MTIwNCZTaWduYXR1cmU9aU1pZ2NXV2xWRXVzRFdSaDQ0RjVmTEdCRU44PSUyMiwlMjJtb2RlJTIyOiUyMnRpdGxlJTIyLCUyMmlkJTIyOiUyMnU0NDQyZTViYyUyMiwlMjJtYXJnaW4lMjI6JTdCJTIydG9wJTIyOnRydWUsJTIyYm90dG9tJTIyOnRydWUlN0QsJTIyY2FyZCUyMjolMjJmaWxlJTIyJTdE" title="https://www.yuque.com/attachments/yuque/0/2023/py/22210919/1679043837625-03d594af-c6f4-435c-b01a-ab38e62f8267.py?_lake_card=%7B%22src%22:%22https://www.yuque.com/attachments/yuque/0/2023/py/22210919/1679043837625-03d594af-c6f4-435c-b01a-ab38e62f8267.py%22,%22name%22:%22test10.py%22,%22size%22:8664,%22ext%22:%22py%22,%22source%22:%22%22,%22status%22:%22done%22,%22download%22:true,%22type%22:%22%22,%22taskId%22:%22u38dd027a-0a9f-4855-a7e2-9a3009d17e9%22,%22taskType%22:%22upload%22,%22__spacing%22:%22both%22,%22downloadSrc%22:%22https://lark-assets-prod-aliyun.oss-cn-hangzhou.aliyuncs.com/yuque/0/2022/py/29637663/1665368453549-8f72ccd6-a4f6-4158-9f7a-69fcf575ff25.py?OSSAccessKeyId=LTAI4GGhPJmQ4HWCmhDAn4F5&Expires=1679061204&Signature=iMigcWWlVEusDWRh44F5fLGBEN8=%22,%22mode%22:%22title%22,%22id%22:%22u4442e5bc%22,%22margin%22:%7B%22top%22:true,%22bottom%22:true%7D,%22card%22:%22file%22%7D">test10.py<i class="fa fa-external-link"></i></span><span class="exturl" data-url="aHR0cHM6Ly93d3cueXVxdWUuY29tL2F0dGFjaG1lbnRzL3l1cXVlLzAvMjAyMy9weS8yMjIxMDkxOS8xNjc5MDQzODM3ODQxLTc4ZDAzYmVjLTIwZTgtNGNmYS04OTEwLWU4YzFmNjFiMWY0NS5weT9fbGFrZV9jYXJkPSU3QiUyMnNyYyUyMjolMjJodHRwczovL3d3dy55dXF1ZS5jb20vYXR0YWNobWVudHMveXVxdWUvMC8yMDIzL3B5LzIyMjEwOTE5LzE2NzkwNDM4Mzc4NDEtNzhkMDNiZWMtMjBlOC00Y2ZhLTg5MTAtZThjMWY2MWIxZjQ1LnB5JTIyLCUyMm5hbWUlMjI6JTIydGVzdDExLnB5JTIyLCUyMnNpemUlMjI6MzY1NywlMjJleHQlMjI6JTIycHklMjIsJTIyc291cmNlJTIyOiUyMiUyMiwlMjJzdGF0dXMlMjI6JTIyZG9uZSUyMiwlMjJkb3dubG9hZCUyMjp0cnVlLCUyMnR5cGUlMjI6JTIyJTIyLCUyMnRhc2tJZCUyMjolMjJ1Y2VhOTJkYmItNmI3Zi00NjlkLWE2MzctMjczY2Q5NTdmMmYlMjIsJTIydGFza1R5cGUlMjI6JTIydXBsb2FkJTIyLCUyMl9fc3BhY2luZyUyMjolMjJib3RoJTIyLCUyMmRvd25sb2FkU3JjJTIyOiUyMmh0dHBzOi8vbGFyay1hc3NldHMtcHJvZC1hbGl5dW4ub3NzLWNuLWhhbmd6aG91LmFsaXl1bmNzLmNvbS95dXF1ZS8wLzIwMjIvcHkvMjk2Mzc2NjMvMTY2NTM2ODQ1MzY0Ni1jODJiMTA5NS0yYzQzLTQ2YjItOWFiNS1jMGI5NTg0ZGY4NDUucHk/T1NTQWNjZXNzS2V5SWQ9TFRBSTRHR2hQSm1RNEhXQ21oREFuNEY1JkV4cGlyZXM9MTY3OTA2MTIwNCZTaWduYXR1cmU9Y3R4MDBsWW9NV3VRRDNFeWJLWVcvTWtOcUUwPSUyMiwlMjJtb2RlJTIyOiUyMnRpdGxlJTIyLCUyMmlkJTIyOiUyMnVjYTU1OTIwYSUyMiwlMjJtYXJnaW4lMjI6JTdCJTIydG9wJTIyOnRydWUsJTIyYm90dG9tJTIyOnRydWUlN0QsJTIyY2FyZCUyMjolMjJmaWxlJTIyJTdE" title="https://www.yuque.com/attachments/yuque/0/2023/py/22210919/1679043837841-78d03bec-20e8-4cfa-8910-e8c1f61b1f45.py?_lake_card=%7B%22src%22:%22https://www.yuque.com/attachments/yuque/0/2023/py/22210919/1679043837841-78d03bec-20e8-4cfa-8910-e8c1f61b1f45.py%22,%22name%22:%22test11.py%22,%22size%22:3657,%22ext%22:%22py%22,%22source%22:%22%22,%22status%22:%22done%22,%22download%22:true,%22type%22:%22%22,%22taskId%22:%22ucea92dbb-6b7f-469d-a637-273cd957f2f%22,%22taskType%22:%22upload%22,%22__spacing%22:%22both%22,%22downloadSrc%22:%22https://lark-assets-prod-aliyun.oss-cn-hangzhou.aliyuncs.com/yuque/0/2022/py/29637663/1665368453646-c82b1095-2c43-46b2-9ab5-c0b9584df845.py?OSSAccessKeyId=LTAI4GGhPJmQ4HWCmhDAn4F5&Expires=1679061204&Signature=ctx00lYoMWuQD3EybKYW/MkNqE0=%22,%22mode%22:%22title%22,%22id%22:%22uca55920a%22,%22margin%22:%7B%22top%22:true,%22bottom%22:true%7D,%22card%22:%22file%22%7D">test11.py<i class="fa fa-external-link"></i></span><span class="exturl" data-url="aHR0cHM6Ly93d3cueXVxdWUuY29tL2F0dGFjaG1lbnRzL3l1cXVlLzAvMjAyMy9weS8yMjIxMDkxOS8xNjc5MDQzODM3OTc4LTQyNThmYzYwLWVkZjItNDVhZC04Y2JmLTljNDM1OGMzNDBlNC5weT9fbGFrZV9jYXJkPSU3QiUyMnNyYyUyMjolMjJodHRwczovL3d3dy55dXF1ZS5jb20vYXR0YWNobWVudHMveXVxdWUvMC8yMDIzL3B5LzIyMjEwOTE5LzE2NzkwNDM4Mzc5NzgtNDI1OGZjNjAtZWRmMi00NWFkLThjYmYtOWM0MzU4YzM0MGU0LnB5JTIyLCUyMm5hbWUlMjI6JTIydGVzdDEyLnB5JTIyLCUyMnNpemUlMjI6ODI2MywlMjJleHQlMjI6JTIycHklMjIsJTIyc291cmNlJTIyOiUyMiUyMiwlMjJzdGF0dXMlMjI6JTIyZG9uZSUyMiwlMjJkb3dubG9hZCUyMjp0cnVlLCUyMnR5cGUlMjI6JTIyJTIyLCUyMnRhc2tJZCUyMjolMjJ1YzUzMzdjYmEtNDFiMS00OTA1LWIzY2YtODdiZGY2MDUyMjIlMjIsJTIydGFza1R5cGUlMjI6JTIydXBsb2FkJTIyLCUyMl9fc3BhY2luZyUyMjolMjJib3RoJTIyLCUyMmRvd25sb2FkU3JjJTIyOiUyMmh0dHBzOi8vbGFyay1hc3NldHMtcHJvZC1hbGl5dW4ub3NzLWNuLWhhbmd6aG91LmFsaXl1bmNzLmNvbS95dXF1ZS8wLzIwMjIvcHkvMjk2Mzc2NjMvMTY2NTM2ODQ1MzY4MS0zOTg2YzU5Ni02NmRlLTRhNjQtODMyMi0yZWM3ODRiMjExMzAucHk/T1NTQWNjZXNzS2V5SWQ9TFRBSTRHR2hQSm1RNEhXQ21oREFuNEY1JkV4cGlyZXM9MTY3OTA2MTIwNCZTaWduYXR1cmU9Ty8zNnc5QUtOK2RNc2pnRzdwd29RU29DV2VjPSUyMiwlMjJtb2RlJTIyOiUyMnRpdGxlJTIyLCUyMmlkJTIyOiUyMnU1MDU1NzRmOCUyMiwlMjJtYXJnaW4lMjI6JTdCJTIydG9wJTIyOnRydWUsJTIyYm90dG9tJTIyOnRydWUlN0QsJTIyY2FyZCUyMjolMjJmaWxlJTIyJTdE" title="https://www.yuque.com/attachments/yuque/0/2023/py/22210919/1679043837978-4258fc60-edf2-45ad-8cbf-9c4358c340e4.py?_lake_card=%7B%22src%22:%22https://www.yuque.com/attachments/yuque/0/2023/py/22210919/1679043837978-4258fc60-edf2-45ad-8cbf-9c4358c340e4.py%22,%22name%22:%22test12.py%22,%22size%22:8263,%22ext%22:%22py%22,%22source%22:%22%22,%22status%22:%22done%22,%22download%22:true,%22type%22:%22%22,%22taskId%22:%22uc5337cba-41b1-4905-b3cf-87bdf605222%22,%22taskType%22:%22upload%22,%22__spacing%22:%22both%22,%22downloadSrc%22:%22https://lark-assets-prod-aliyun.oss-cn-hangzhou.aliyuncs.com/yuque/0/2022/py/29637663/1665368453681-3986c596-66de-4a64-8322-2ec784b21130.py?OSSAccessKeyId=LTAI4GGhPJmQ4HWCmhDAn4F5&Expires=1679061204&Signature=O/36w9AKN+dMsjgG7pwoQSoCWec=%22,%22mode%22:%22title%22,%22id%22:%22u505574f8%22,%22margin%22:%7B%22top%22:true,%22bottom%22:true%7D,%22card%22:%22file%22%7D">test12.py<i class="fa fa-external-link"></i></span><span class="exturl" data-url="aHR0cHM6Ly93d3cueXVxdWUuY29tL2F0dGFjaG1lbnRzL3l1cXVlLzAvMjAyMy9weS8yMjIxMDkxOS8xNjc5MDQzODM4MTM4LTBmZTY4MjIzLWY1ZjktNDNkYy05YWI1LTZmMzNjMzIwZGNkYS5weT9fbGFrZV9jYXJkPSU3QiUyMnNyYyUyMjolMjJodHRwczovL3d3dy55dXF1ZS5jb20vYXR0YWNobWVudHMveXVxdWUvMC8yMDIzL3B5LzIyMjEwOTE5LzE2NzkwNDM4MzgxMzgtMGZlNjgyMjMtZjVmOS00M2RjLTlhYjUtNmYzM2MzMjBkY2RhLnB5JTIyLCUyMm5hbWUlMjI6JTIydGVzdDEzLnB5JTIyLCUyMnNpemUlMjI6OTAxMCwlMjJleHQlMjI6JTIycHklMjIsJTIyc291cmNlJTIyOiUyMiUyMiwlMjJzdGF0dXMlMjI6JTIyZG9uZSUyMiwlMjJkb3dubG9hZCUyMjp0cnVlLCUyMnR5cGUlMjI6JTIyJTIyLCUyMnRhc2tJZCUyMjolMjJ1ZDNkOTExMjMtZjExYi00MzMzLTg3MWUtZDk3YjRmMWZkYzElMjIsJTIydGFza1R5cGUlMjI6JTIydXBsb2FkJTIyLCUyMl9fc3BhY2luZyUyMjolMjJib3RoJTIyLCUyMmRvd25sb2FkU3JjJTIyOiUyMmh0dHBzOi8vbGFyay1hc3NldHMtcHJvZC1hbGl5dW4ub3NzLWNuLWhhbmd6aG91LmFsaXl1bmNzLmNvbS95dXF1ZS8wLzIwMjIvcHkvMjk2Mzc2NjMvMTY2NTM2ODQ1NDEyMS0wZDIxMDQzNS0yZDI3LTRiZjMtYmU5MC0yZDUyYWUxYTdlM2UucHk/T1NTQWNjZXNzS2V5SWQ9TFRBSTRHR2hQSm1RNEhXQ21oREFuNEY1JkV4cGlyZXM9MTY3OTA2MTIwNCZTaWduYXR1cmU9aFA1cmlRQzNEeEdIYm1scEJVQ2hJcHhQdy9FPSUyMiwlMjJtb2RlJTIyOiUyMnRpdGxlJTIyLCUyMmlkJTIyOiUyMnU1NGYxYmY5NiUyMiwlMjJtYXJnaW4lMjI6JTdCJTIydG9wJTIyOnRydWUsJTIyYm90dG9tJTIyOnRydWUlN0QsJTIyY2FyZCUyMjolMjJmaWxlJTIyJTdE" title="https://www.yuque.com/attachments/yuque/0/2023/py/22210919/1679043838138-0fe68223-f5f9-43dc-9ab5-6f33c320dcda.py?_lake_card=%7B%22src%22:%22https://www.yuque.com/attachments/yuque/0/2023/py/22210919/1679043838138-0fe68223-f5f9-43dc-9ab5-6f33c320dcda.py%22,%22name%22:%22test13.py%22,%22size%22:9010,%22ext%22:%22py%22,%22source%22:%22%22,%22status%22:%22done%22,%22download%22:true,%22type%22:%22%22,%22taskId%22:%22ud3d91123-f11b-4333-871e-d97b4f1fdc1%22,%22taskType%22:%22upload%22,%22__spacing%22:%22both%22,%22downloadSrc%22:%22https://lark-assets-prod-aliyun.oss-cn-hangzhou.aliyuncs.com/yuque/0/2022/py/29637663/1665368454121-0d210435-2d27-4bf3-be90-2d52ae1a7e3e.py?OSSAccessKeyId=LTAI4GGhPJmQ4HWCmhDAn4F5&Expires=1679061204&Signature=hP5riQC3DxGHbmlpBUChIpxPw/E=%22,%22mode%22:%22title%22,%22id%22:%22u54f1bf96%22,%22margin%22:%7B%22top%22:true,%22bottom%22:true%7D,%22card%22:%22file%22%7D">test13.py<i class="fa fa-external-link"></i></span><span class="exturl" data-url="aHR0cHM6Ly93d3cueXVxdWUuY29tL2F0dGFjaG1lbnRzL3l1cXVlLzAvMjAyMy9weS8yMjIxMDkxOS8xNjc5MDQzODM4MzA1LWVlZjgxMjNhLTk0NzItNGQ5Ny05Y2E4LTg2NWM3YjYxNTVkZi5weT9fbGFrZV9jYXJkPSU3QiUyMnNyYyUyMjolMjJodHRwczovL3d3dy55dXF1ZS5jb20vYXR0YWNobWVudHMveXVxdWUvMC8yMDIzL3B5LzIyMjEwOTE5LzE2NzkwNDM4MzgzMDUtZWVmODEyM2EtOTQ3Mi00ZDk3LTljYTgtODY1YzdiNjE1NWRmLnB5JTIyLCUyMm5hbWUlMjI6JTIydGVzdDE0LnB5JTIyLCUyMnNpemUlMjI6OTIzMSwlMjJleHQlMjI6JTIycHklMjIsJTIyc291cmNlJTIyOiUyMiUyMiwlMjJzdGF0dXMlMjI6JTIyZG9uZSUyMiwlMjJkb3dubG9hZCUyMjp0cnVlLCUyMnR5cGUlMjI6JTIyJTIyLCUyMnRhc2tJZCUyMjolMjJ1MDY3Y2E4NTEtOGIwYi00MGFjLTk5NGYtNDFmYWY1ZWZiMDElMjIsJTIydGFza1R5cGUlMjI6JTIydXBsb2FkJTIyLCUyMl9fc3BhY2luZyUyMjolMjJib3RoJTIyLCUyMmRvd25sb2FkU3JjJTIyOiUyMmh0dHBzOi8vbGFyay1hc3NldHMtcHJvZC1hbGl5dW4ub3NzLWNuLWhhbmd6aG91LmFsaXl1bmNzLmNvbS95dXF1ZS8wLzIwMjIvcHkvMjk2Mzc2NjMvMTY2NTM2ODQ1NDg5MC1mZTJlNmMzYy0zYjQwLTRmZDAtOTYxMS1mNDU0ZDgxZTNjYTIucHk/T1NTQWNjZXNzS2V5SWQ9TFRBSTRHR2hQSm1RNEhXQ21oREFuNEY1JkV4cGlyZXM9MTY3OTA2MTIwNCZTaWduYXR1cmU9dHNvOUJqSVBCc0JqRWNBL2djdEhRVkh6OEw4PSUyMiwlMjJtb2RlJTIyOiUyMnRpdGxlJTIyLCUyMmlkJTIyOiUyMnVjODVmMGU1OSUyMiwlMjJtYXJnaW4lMjI6JTdCJTIydG9wJTIyOnRydWUsJTIyYm90dG9tJTIyOnRydWUlN0QsJTIyY2FyZCUyMjolMjJmaWxlJTIyJTdE" title="https://www.yuque.com/attachments/yuque/0/2023/py/22210919/1679043838305-eef8123a-9472-4d97-9ca8-865c7b6155df.py?_lake_card=%7B%22src%22:%22https://www.yuque.com/attachments/yuque/0/2023/py/22210919/1679043838305-eef8123a-9472-4d97-9ca8-865c7b6155df.py%22,%22name%22:%22test14.py%22,%22size%22:9231,%22ext%22:%22py%22,%22source%22:%22%22,%22status%22:%22done%22,%22download%22:true,%22type%22:%22%22,%22taskId%22:%22u067ca851-8b0b-40ac-994f-41faf5efb01%22,%22taskType%22:%22upload%22,%22__spacing%22:%22both%22,%22downloadSrc%22:%22https://lark-assets-prod-aliyun.oss-cn-hangzhou.aliyuncs.com/yuque/0/2022/py/29637663/1665368454890-fe2e6c3c-3b40-4fd0-9611-f454d81e3ca2.py?OSSAccessKeyId=LTAI4GGhPJmQ4HWCmhDAn4F5&Expires=1679061204&Signature=tso9BjIPBsBjEcA/gctHQVHz8L8=%22,%22mode%22:%22title%22,%22id%22:%22uc85f0e59%22,%22margin%22:%7B%22top%22:true,%22bottom%22:true%7D,%22card%22:%22file%22%7D">test14.py<i class="fa fa-external-link"></i></span><span class="exturl" data-url="aHR0cHM6Ly93d3cueXVxdWUuY29tL2F0dGFjaG1lbnRzL3l1cXVlLzAvMjAyMy9weS8yMjIxMDkxOS8xNjc5MDQzODM4NDc4LTVkNDkyMzI5LWVlNmUtNDJhYi04ZTFhLWRiNjhlMTg0MDM4Mi5weT9fbGFrZV9jYXJkPSU3QiUyMnNyYyUyMjolMjJodHRwczovL3d3dy55dXF1ZS5jb20vYXR0YWNobWVudHMveXVxdWUvMC8yMDIzL3B5LzIyMjEwOTE5LzE2NzkwNDM4Mzg0NzgtNWQ0OTIzMjktZWU2ZS00MmFiLThlMWEtZGI2OGUxODQwMzgyLnB5JTIyLCUyMm5hbWUlMjI6JTIydGVzdDE1LnB5JTIyLCUyMnNpemUlMjI6MjMxOSwlMjJleHQlMjI6JTIycHklMjIsJTIyc291cmNlJTIyOiUyMiUyMiwlMjJzdGF0dXMlMjI6JTIyZG9uZSUyMiwlMjJkb3dubG9hZCUyMjp0cnVlLCUyMnR5cGUlMjI6JTIyJTIyLCUyMnRhc2tJZCUyMjolMjJ1MjU3ZDE3YTktYmQ1Mi00NWU0LWFiNzQtMjIyMzQzMjJjNzQlMjIsJTIydGFza1R5cGUlMjI6JTIydXBsb2FkJTIyLCUyMl9fc3BhY2luZyUyMjolMjJib3RoJTIyLCUyMmRvd25sb2FkU3JjJTIyOiUyMmh0dHBzOi8vbGFyay1hc3NldHMtcHJvZC1hbGl5dW4ub3NzLWNuLWhhbmd6aG91LmFsaXl1bmNzLmNvbS95dXF1ZS8wLzIwMjIvcHkvMjk2Mzc2NjMvMTY2NTM2ODQ1NDU1Mi0wYzY2YjUwYS0zZTkyLTQ5ZDYtODM2NC1jZTY0ZmEyMWJkZmMucHk/T1NTQWNjZXNzS2V5SWQ9TFRBSTRHR2hQSm1RNEhXQ21oREFuNEY1JkV4cGlyZXM9MTY3OTA2MTIwNCZTaWduYXR1cmU9UG5sb0U2R0hlZVFDQStxbDI1emN6S1JvOURnPSUyMiwlMjJtb2RlJTIyOiUyMnRpdGxlJTIyLCUyMmlkJTIyOiUyMnViNTg3NDZlMSUyMiwlMjJtYXJnaW4lMjI6JTdCJTIydG9wJTIyOnRydWUsJTIyYm90dG9tJTIyOnRydWUlN0QsJTIyY2FyZCUyMjolMjJmaWxlJTIyJTdE" title="https://www.yuque.com/attachments/yuque/0/2023/py/22210919/1679043838478-5d492329-ee6e-42ab-8e1a-db68e1840382.py?_lake_card=%7B%22src%22:%22https://www.yuque.com/attachments/yuque/0/2023/py/22210919/1679043838478-5d492329-ee6e-42ab-8e1a-db68e1840382.py%22,%22name%22:%22test15.py%22,%22size%22:2319,%22ext%22:%22py%22,%22source%22:%22%22,%22status%22:%22done%22,%22download%22:true,%22type%22:%22%22,%22taskId%22:%22u257d17a9-bd52-45e4-ab74-22234322c74%22,%22taskType%22:%22upload%22,%22__spacing%22:%22both%22,%22downloadSrc%22:%22https://lark-assets-prod-aliyun.oss-cn-hangzhou.aliyuncs.com/yuque/0/2022/py/29637663/1665368454552-0c66b50a-3e92-49d6-8364-ce64fa21bdfc.py?OSSAccessKeyId=LTAI4GGhPJmQ4HWCmhDAn4F5&Expires=1679061204&Signature=PnloE6GHeeQCA+ql25zczKRo9Dg=%22,%22mode%22:%22title%22,%22id%22:%22ub58746e1%22,%22margin%22:%7B%22top%22:true,%22bottom%22:true%7D,%22card%22:%22file%22%7D">test15.py<i class="fa fa-external-link"></i></span><span class="exturl" data-url="aHR0cHM6Ly93d3cueXVxdWUuY29tL2F0dGFjaG1lbnRzL3l1cXVlLzAvMjAyMy9weS8yMjIxMDkxOS8xNjc5MDQzODM4NjYxLTkwMDZjYmUyLWE5MTYtNDNlZi1iMzU5LWNjNmM4ZTkxNmU5Mi5weT9fbGFrZV9jYXJkPSU3QiUyMnNyYyUyMjolMjJodHRwczovL3d3dy55dXF1ZS5jb20vYXR0YWNobWVudHMveXVxdWUvMC8yMDIzL3B5LzIyMjEwOTE5LzE2NzkwNDM4Mzg2NjEtOTAwNmNiZTItYTkxNi00M2VmLWIzNTktY2M2YzhlOTE2ZTkyLnB5JTIyLCUyMm5hbWUlMjI6JTIybWFpbi5weSUyMiwlMjJzaXplJTIyOjY0NjcsJTIyZXh0JTIyOiUyMnB5JTIyLCUyMnNvdXJjZSUyMjolMjIlMjIsJTIyc3RhdHVzJTIyOiUyMmRvbmUlMjIsJTIyZG93bmxvYWQlMjI6dHJ1ZSwlMjJ0eXBlJTIyOiUyMiUyMiwlMjJ0YXNrSWQlMjI6JTIydTk2NGVhMzQ2LTU0MWQtNDYzOS1hOTQ4LThhNjI5MDEwMGUyJTIyLCUyMnRhc2tUeXBlJTIyOiUyMnVwbG9hZCUyMiwlMjJfX3NwYWNpbmclMjI6JTIyYm90aCUyMiwlMjJkb3dubG9hZFNyYyUyMjolMjJodHRwczovL2xhcmstYXNzZXRzLXByb2QtYWxpeXVuLm9zcy1jbi1oYW5nemhvdS5hbGl5dW5jcy5jb20veXVxdWUvMC8yMDIyL3B5LzI5NjM3NjYzLzE2NjUzNjg0NTQ1NjEtODFiYTk2MjktNWI3MC00YjlkLTk3YjYtNjRiNThiY2RkNTRkLnB5P09TU0FjY2Vzc0tleUlkPUxUQUk0R0doUEptUTRIV0NtaERBbjRGNSZFeHBpcmVzPTE2NzkwNjEyMDQmU2lnbmF0dXJlPW1hNzlXaGE2K3hPczZTRXN4SzhNdVc4ZnVoND0lMjIsJTIybW9kZSUyMjolMjJ0aXRsZSUyMiwlMjJpZCUyMjolMjJ1OTgxNWIzMDAlMjIsJTIybWFyZ2luJTIyOiU3QiUyMnRvcCUyMjp0cnVlLCUyMmJvdHRvbSUyMjp0cnVlJTdELCUyMmNhcmQlMjI6JTIyZmlsZSUyMiU3RA==" title="https://www.yuque.com/attachments/yuque/0/2023/py/22210919/1679043838661-9006cbe2-a916-43ef-b359-cc6c8e916e92.py?_lake_card=%7B%22src%22:%22https://www.yuque.com/attachments/yuque/0/2023/py/22210919/1679043838661-9006cbe2-a916-43ef-b359-cc6c8e916e92.py%22,%22name%22:%22main.py%22,%22size%22:6467,%22ext%22:%22py%22,%22source%22:%22%22,%22status%22:%22done%22,%22download%22:true,%22type%22:%22%22,%22taskId%22:%22u964ea346-541d-4639-a948-8a6290100e2%22,%22taskType%22:%22upload%22,%22__spacing%22:%22both%22,%22downloadSrc%22:%22https://lark-assets-prod-aliyun.oss-cn-hangzhou.aliyuncs.com/yuque/0/2022/py/29637663/1665368454561-81ba9629-5b70-4b9d-97b6-64b58bcdd54d.py?OSSAccessKeyId=LTAI4GGhPJmQ4HWCmhDAn4F5&Expires=1679061204&Signature=ma79Wha6+xOs6SEsxK8MuW8fuh4=%22,%22mode%22:%22title%22,%22id%22:%22u9815b300%22,%22margin%22:%7B%22top%22:true,%22bottom%22:true%7D,%22card%22:%22file%22%7D">main.py<i class="fa fa-external-link"></i></span><span class="exturl" data-url="aHR0cHM6Ly93d3cueXVxdWUuY29tL2F0dGFjaG1lbnRzL3l1cXVlLzAvMjAyMy9weS8yMjIxMDkxOS8xNjc5MDQzODM4ODUwLTBhYTQ2ZmRmLTI2MzYtNDQ5ZC04Mzk5LTdiZDkzMWJhNzk5OC5weT9fbGFrZV9jYXJkPSU3QiUyMnNyYyUyMjolMjJodHRwczovL3d3dy55dXF1ZS5jb20vYXR0YWNobWVudHMveXVxdWUvMC8yMDIzL3B5LzIyMjEwOTE5LzE2NzkwNDM4Mzg4NTAtMGFhNDZmZGYtMjYzNi00NDlkLTgzOTktN2JkOTMxYmE3OTk4LnB5JTIyLCUyMm5hbWUlMjI6JTIybWV0aG9kLnB5JTIyLCUyMnNpemUlMjI6ODc4LCUyMmV4dCUyMjolMjJweSUyMiwlMjJzb3VyY2UlMjI6JTIyJTIyLCUyMnN0YXR1cyUyMjolMjJkb25lJTIyLCUyMmRvd25sb2FkJTIyOnRydWUsJTIydHlwZSUyMjolMjIlMjIsJTIydGFza0lkJTIyOiUyMnU4Njg4YzBjMy0yMTBkLTRjNTctOTY5NC1hOWQ2ZTQ0NmU3ZCUyMiwlMjJ0YXNrVHlwZSUyMjolMjJ1cGxvYWQlMjIsJTIyX19zcGFjaW5nJTIyOiUyMmJvdGglMjIsJTIyZG93bmxvYWRTcmMlMjI6JTIyaHR0cHM6Ly9sYXJrLWFzc2V0cy1wcm9kLWFsaXl1bi5vc3MtY24taGFuZ3pob3UuYWxpeXVuY3MuY29tL3l1cXVlLzAvMjAyMi9weS8yOTYzNzY2My8xNjY1MzY4NDU0NjUyLTA2NzRjZDc2LWUwMmQtNDBlMy1iNjM4LTNlMWFiMWY0Nzc4Yy5weT9PU1NBY2Nlc3NLZXlJZD1MVEFJNEdHaFBKbVE0SFdDbWhEQW40RjUmRXhwaXJlcz0xNjc5MDYxMjA0JlNpZ25hdHVyZT0yWGRoVEV6YzB6UERWVzN2ais5L014WEF5K289JTIyLCUyMm1vZGUlMjI6JTIydGl0bGUlMjIsJTIyaWQlMjI6JTIydTkyNTZiNDNmJTIyLCUyMm1hcmdpbiUyMjolN0IlMjJ0b3AlMjI6dHJ1ZSwlMjJib3R0b20lMjI6dHJ1ZSU3RCwlMjJjYXJkJTIyOiUyMmZpbGUlMjIlN0Q=" title="https://www.yuque.com/attachments/yuque/0/2023/py/22210919/1679043838850-0aa46fdf-2636-449d-8399-7bd931ba7998.py?_lake_card=%7B%22src%22:%22https://www.yuque.com/attachments/yuque/0/2023/py/22210919/1679043838850-0aa46fdf-2636-449d-8399-7bd931ba7998.py%22,%22name%22:%22method.py%22,%22size%22:878,%22ext%22:%22py%22,%22source%22:%22%22,%22status%22:%22done%22,%22download%22:true,%22type%22:%22%22,%22taskId%22:%22u8688c0c3-210d-4c57-9694-a9d6e446e7d%22,%22taskType%22:%22upload%22,%22__spacing%22:%22both%22,%22downloadSrc%22:%22https://lark-assets-prod-aliyun.oss-cn-hangzhou.aliyuncs.com/yuque/0/2022/py/29637663/1665368454652-0674cd76-e02d-40e3-b638-3e1ab1f4778c.py?OSSAccessKeyId=LTAI4GGhPJmQ4HWCmhDAn4F5&Expires=1679061204&Signature=2XdhTEzc0zPDVW3vj+9/MxXAy+o=%22,%22mode%22:%22title%22,%22id%22:%22u9256b43f%22,%22margin%22:%7B%22top%22:true,%22bottom%22:true%7D,%22card%22:%22file%22%7D">method.py<i class="fa fa-external-link"></i></span><span class="exturl" data-url="aHR0cHM6Ly93d3cueXVxdWUuY29tL2F0dGFjaG1lbnRzL3l1cXVlLzAvMjAyMy9weS8yMjIxMDkxOS8xNjc5MDQzODM5MDUyLTkxZDBlMDZhLWI1NjUtNDcxZS04OTIxLThkMzJlY2IwMDZlNC5weT9fbGFrZV9jYXJkPSU3QiUyMnNyYyUyMjolMjJodHRwczovL3d3dy55dXF1ZS5jb20vYXR0YWNobWVudHMveXVxdWUvMC8yMDIzL3B5LzIyMjEwOTE5LzE2NzkwNDM4MzkwNTItOTFkMGUwNmEtYjU2NS00NzFlLTg5MjEtOGQzMmVjYjAwNmU0LnB5JTIyLCUyMm5hbWUlMjI6JTIybmV3LnB5JTIyLCUyMnNpemUlMjI6MTE1MCwlMjJleHQlMjI6JTIycHklMjIsJTIyc291cmNlJTIyOiUyMiUyMiwlMjJzdGF0dXMlMjI6JTIyZG9uZSUyMiwlMjJkb3dubG9hZCUyMjp0cnVlLCUyMnR5cGUlMjI6JTIyJTIyLCUyMnRhc2tJZCUyMjolMjJ1YjMxZjc4N2ItZWZmNy00ODdkLThiMjUtNDQyYjMzOTdkZTclMjIsJTIydGFza1R5cGUlMjI6JTIydXBsb2FkJTIyLCUyMl9fc3BhY2luZyUyMjolMjJib3RoJTIyLCUyMmRvd25sb2FkU3JjJTIyOiUyMmh0dHBzOi8vbGFyay1hc3NldHMtcHJvZC1hbGl5dW4ub3NzLWNuLWhhbmd6aG91LmFsaXl1bmNzLmNvbS95dXF1ZS8wLzIwMjIvcHkvMjk2Mzc2NjMvMTY2NTM2ODQ1NTMwOS02NWQ4OTA1MC05ZGJkLTQ4NmUtOGI4MS0wYzQ3MmI0NmE0MmIucHk/T1NTQWNjZXNzS2V5SWQ9TFRBSTRHR2hQSm1RNEhXQ21oREFuNEY1JkV4cGlyZXM9MTY3OTA2MTIwNCZTaWduYXR1cmU9dFRVN2VQWlNlZXkydy9MdTNqbmVESDVwQUlnPSUyMiwlMjJtb2RlJTIyOiUyMnRpdGxlJTIyLCUyMmlkJTIyOiUyMnU3YTA0OWI3ZSUyMiwlMjJtYXJnaW4lMjI6JTdCJTIydG9wJTIyOnRydWUsJTIyYm90dG9tJTIyOnRydWUlN0QsJTIyY2FyZCUyMjolMjJmaWxlJTIyJTdE" title="https://www.yuque.com/attachments/yuque/0/2023/py/22210919/1679043839052-91d0e06a-b565-471e-8921-8d32ecb006e4.py?_lake_card=%7B%22src%22:%22https://www.yuque.com/attachments/yuque/0/2023/py/22210919/1679043839052-91d0e06a-b565-471e-8921-8d32ecb006e4.py%22,%22name%22:%22new.py%22,%22size%22:1150,%22ext%22:%22py%22,%22source%22:%22%22,%22status%22:%22done%22,%22download%22:true,%22type%22:%22%22,%22taskId%22:%22ub31f787b-eff7-487d-8b25-442b3397de7%22,%22taskType%22:%22upload%22,%22__spacing%22:%22both%22,%22downloadSrc%22:%22https://lark-assets-prod-aliyun.oss-cn-hangzhou.aliyuncs.com/yuque/0/2022/py/29637663/1665368455309-65d89050-9dbd-486e-8b81-0c472b46a42b.py?OSSAccessKeyId=LTAI4GGhPJmQ4HWCmhDAn4F5&Expires=1679061204&Signature=tTU7ePZSeey2w/Lu3jneDH5pAIg=%22,%22mode%22:%22title%22,%22id%22:%22u7a049b7e%22,%22margin%22:%7B%22top%22:true,%22bottom%22:true%7D,%22card%22:%22file%22%7D">new.py<i class="fa fa-external-link"></i></span><span class="exturl" data-url="aHR0cHM6Ly93d3cueXVxdWUuY29tL2F0dGFjaG1lbnRzL3l1cXVlLzAvMjAyMy90eHQvMjIyMTA5MTkvMTY3OTA0MzgzOTI0NS03MTEzZGQxYy0yNmNlLTQ4NDMtOWNkMi04YzI1ODIzYmQzODQudHh0P19sYWtlX2NhcmQ9JTdCJTIyc3JjJTIyOiUyMmh0dHBzOi8vd3d3Lnl1cXVlLmNvbS9hdHRhY2htZW50cy95dXF1ZS8wLzIwMjMvdHh0LzIyMjEwOTE5LzE2NzkwNDM4MzkyNDUtNzExM2RkMWMtMjZjZS00ODQzLTljZDItOGMyNTgyM2JkMzg0LnR4dCUyMiwlMjJuYW1lJTIyOiUyMnNvdXJjZS50eHQlMjIsJTIyc2l6ZSUyMjoxMDg1LCUyMmV4dCUyMjolMjJ0eHQlMjIsJTIyc291cmNlJTIyOiUyMiUyMiwlMjJzdGF0dXMlMjI6JTIyZG9uZSUyMiwlMjJkb3dubG9hZCUyMjp0cnVlLCUyMnR5cGUlMjI6JTIydGV4dC9wbGFpbiUyMiwlMjJ0YXNrSWQlMjI6JTIydWMzNTA5Nzc3LTQwMWMtNDA2My1iMGQ3LWYyMDAyYWQwYTVmJTIyLCUyMnRhc2tUeXBlJTIyOiUyMnVwbG9hZCUyMiwlMjJfX3NwYWNpbmclMjI6JTIyYm90aCUyMiwlMjJkb3dubG9hZFNyYyUyMjolMjJodHRwczovL2xhcmstYXNzZXRzLXByb2QtYWxpeXVuLm9zcy1jbi1oYW5nemhvdS5hbGl5dW5jcy5jb20veXVxdWUvMC8yMDIyL3R4dC8yOTYzNzY2My8xNjY1MzY4NDU1Mzg0LTRjYTdjZmI4LThmMzctNGQ0YS1iNWJmLTM3N2U4NGUzZDg4Yy50eHQ/T1NTQWNjZXNzS2V5SWQ9TFRBSTRHR2hQSm1RNEhXQ21oREFuNEY1JkV4cGlyZXM9MTY3OTA2MTIwNCZTaWduYXR1cmU9Q0x1SXBoL2FHQmp4MUpnZmEwY3laZE1NbXlrPSUyMiwlMjJtb2RlJTIyOiUyMnRpdGxlJTIyLCUyMmlkJTIyOiUyMnVlMGVhYzc2OSUyMiwlMjJtYXJnaW4lMjI6JTdCJTIydG9wJTIyOnRydWUsJTIyYm90dG9tJTIyOnRydWUlN0QsJTIyY2FyZCUyMjolMjJmaWxlJTIyJTdE" title="https://www.yuque.com/attachments/yuque/0/2023/txt/22210919/1679043839245-7113dd1c-26ce-4843-9cd2-8c25823bd384.txt?_lake_card=%7B%22src%22:%22https://www.yuque.com/attachments/yuque/0/2023/txt/22210919/1679043839245-7113dd1c-26ce-4843-9cd2-8c25823bd384.txt%22,%22name%22:%22source.txt%22,%22size%22:1085,%22ext%22:%22txt%22,%22source%22:%22%22,%22status%22:%22done%22,%22download%22:true,%22type%22:%22text/plain%22,%22taskId%22:%22uc3509777-401c-4063-b0d7-f2002ad0a5f%22,%22taskType%22:%22upload%22,%22__spacing%22:%22both%22,%22downloadSrc%22:%22https://lark-assets-prod-aliyun.oss-cn-hangzhou.aliyuncs.com/yuque/0/2022/txt/29637663/1665368455384-4ca7cfb8-8f37-4d4a-b5bf-377e84e3d88c.txt?OSSAccessKeyId=LTAI4GGhPJmQ4HWCmhDAn4F5&Expires=1679061204&Signature=CLuIph/aGBjx1Jgfa0cyZdMMmyk=%22,%22mode%22:%22title%22,%22id%22:%22ue0eac769%22,%22margin%22:%7B%22top%22:true,%22bottom%22:true%7D,%22card%22:%22file%22%7D">source.txt<i class="fa fa-external-link"></i></span><span class="exturl" data-url="aHR0cHM6Ly93d3cueXVxdWUuY29tL2F0dGFjaG1lbnRzL3l1cXVlLzAvMjAyMy90eHQvMjIyMTA5MTkvMTY3OTA0MzgzOTM0OS1lMGExY2JhZS05YWJiLTQwYmQtODFhOC00NzQwZjMyMjFhOGYudHh0P19sYWtlX2NhcmQ9JTdCJTIyc3JjJTIyOiUyMmh0dHBzOi8vd3d3Lnl1cXVlLmNvbS9hdHRhY2htZW50cy95dXF1ZS8wLzIwMjMvdHh0LzIyMjEwOTE5LzE2NzkwNDM4MzkzNDktZTBhMWNiYWUtOWFiYi00MGJkLTgxYTgtNDc0MGYzMjIxYThmLnR4dCUyMiwlMjJuYW1lJTIyOiUyMnRhcmdldC50eHQlMjIsJTIyc2l6ZSUyMjoxMDg1LCUyMmV4dCUyMjolMjJ0eHQlMjIsJTIyc291cmNlJTIyOiUyMiUyMiwlMjJzdGF0dXMlMjI6JTIyZG9uZSUyMiwlMjJkb3dubG9hZCUyMjp0cnVlLCUyMnR5cGUlMjI6JTIydGV4dC9wbGFpbiUyMiwlMjJ0YXNrSWQlMjI6JTIydWZiMzk4NDA3LWIzOWEtNDQxYi1iYTk0LTdmNzEyMTQ2NDU2JTIyLCUyMnRhc2tUeXBlJTIyOiUyMnVwbG9hZCUyMiwlMjJfX3NwYWNpbmclMjI6JTIyYm90aCUyMiwlMjJkb3dubG9hZFNyYyUyMjolMjJodHRwczovL2xhcmstYXNzZXRzLXByb2QtYWxpeXVuLm9zcy1jbi1oYW5nemhvdS5hbGl5dW5jcy5jb20veXVxdWUvMC8yMDIyL3R4dC8yOTYzNzY2My8xNjY1MzY4NDU1MjkyLWYxMThiOTljLTNiZTAtNDhkMC04ZDFmLTQ2MjM0ODdmMWJkZi50eHQ/T1NTQWNjZXNzS2V5SWQ9TFRBSTRHR2hQSm1RNEhXQ21oREFuNEY1JkV4cGlyZXM9MTY3OTA2MTIwNCZTaWduYXR1cmU9cFV2ckJoSXJPNFhjSmJybjlXc04vVXBJeG5zPSUyMiwlMjJtb2RlJTIyOiUyMnRpdGxlJTIyLCUyMmlkJTIyOiUyMnVlZDdmNzk4ZiUyMiwlMjJtYXJnaW4lMjI6JTdCJTIydG9wJTIyOnRydWUsJTIyYm90dG9tJTIyOnRydWUlN0QsJTIyY2FyZCUyMjolMjJmaWxlJTIyJTdE" title="https://www.yuque.com/attachments/yuque/0/2023/txt/22210919/1679043839349-e0a1cbae-9abb-40bd-81a8-4740f3221a8f.txt?_lake_card=%7B%22src%22:%22https://www.yuque.com/attachments/yuque/0/2023/txt/22210919/1679043839349-e0a1cbae-9abb-40bd-81a8-4740f3221a8f.txt%22,%22name%22:%22target.txt%22,%22size%22:1085,%22ext%22:%22txt%22,%22source%22:%22%22,%22status%22:%22done%22,%22download%22:true,%22type%22:%22text/plain%22,%22taskId%22:%22ufb398407-b39a-441b-ba94-7f712146456%22,%22taskType%22:%22upload%22,%22__spacing%22:%22both%22,%22downloadSrc%22:%22https://lark-assets-prod-aliyun.oss-cn-hangzhou.aliyuncs.com/yuque/0/2022/txt/29637663/1665368455292-f118b99c-3be0-48d0-8d1f-4623487f1bdf.txt?OSSAccessKeyId=LTAI4GGhPJmQ4HWCmhDAn4F5&Expires=1679061204&Signature=pUvrBhIrO4XcJbrn9WsN/UpIxns=%22,%22mode%22:%22title%22,%22id%22:%22ued7f798f%22,%22margin%22:%7B%22top%22:true,%22bottom%22:true%7D,%22card%22:%22file%22%7D">target.txt<i class="fa fa-external-link"></i></span><span class="exturl" data-url="aHR0cHM6Ly93d3cueXVxdWUuY29tL2F0dGFjaG1lbnRzL3l1cXVlLzAvMjAyMy9weS8yMjIxMDkxOS8xNjc5MDQzODM5NTE0LTMwMzEwOGQ0LTljZWUtNDkzNy1iNTc5LTY5MWExMmJlMDhmYy5weT9fbGFrZV9jYXJkPSU3QiUyMnNyYyUyMjolMjJodHRwczovL3d3dy55dXF1ZS5jb20vYXR0YWNobWVudHMveXVxdWUvMC8yMDIzL3B5LzIyMjEwOTE5LzE2NzkwNDM4Mzk1MTQtMzAzMTA4ZDQtOWNlZS00OTM3LWI1NzktNjkxYTEyYmUwOGZjLnB5JTIyLCUyMm5hbWUlMjI6JTIydGVzdC5weSUyMiwlMjJzaXplJTIyOjEwNSwlMjJleHQlMjI6JTIycHklMjIsJTIyc291cmNlJTIyOiUyMiUyMiwlMjJzdGF0dXMlMjI6JTIyZG9uZSUyMiwlMjJkb3dubG9hZCUyMjp0cnVlLCUyMnR5cGUlMjI6JTIyJTIyLCUyMnRhc2tJZCUyMjolMjJ1ZGIzYzBiM2EtZTdmZi00NDYwLTg1ZjctY2M5NTFmNGJmYWIlMjIsJTIydGFza1R5cGUlMjI6JTIydXBsb2FkJTIyLCUyMl9fc3BhY2luZyUyMjolMjJib3RoJTIyLCUyMmRvd25sb2FkU3JjJTIyOiUyMmh0dHBzOi8vbGFyay1hc3NldHMtcHJvZC1hbGl5dW4ub3NzLWNuLWhhbmd6aG91LmFsaXl1bmNzLmNvbS95dXF1ZS8wLzIwMjIvcHkvMjk2Mzc2NjMvMTY2NTM2ODQ1NTcxNi00Y2M3NWVhMC1iZmExLTRlODktYTA4NS00NTBmMjY5MDg3NjgucHk/T1NTQWNjZXNzS2V5SWQ9TFRBSTRHR2hQSm1RNEhXQ21oREFuNEY1JkV4cGlyZXM9MTY3OTA2MTIwNCZTaWduYXR1cmU9Z2xuc1BYWDA3OXdZVFdsQjlBTDc1QjY1NkNjPSUyMiwlMjJtb2RlJTIyOiUyMnRpdGxlJTIyLCUyMmlkJTIyOiUyMnU4MjBjOGE5YyUyMiwlMjJtYXJnaW4lMjI6JTdCJTIydG9wJTIyOnRydWUsJTIyYm90dG9tJTIyOnRydWUlN0QsJTIyY2FyZCUyMjolMjJmaWxlJTIyJTdE" title="https://www.yuque.com/attachments/yuque/0/2023/py/22210919/1679043839514-303108d4-9cee-4937-b579-691a12be08fc.py?_lake_card=%7B%22src%22:%22https://www.yuque.com/attachments/yuque/0/2023/py/22210919/1679043839514-303108d4-9cee-4937-b579-691a12be08fc.py%22,%22name%22:%22test.py%22,%22size%22:105,%22ext%22:%22py%22,%22source%22:%22%22,%22status%22:%22done%22,%22download%22:true,%22type%22:%22%22,%22taskId%22:%22udb3c0b3a-e7ff-4460-85f7-cc951f4bfab%22,%22taskType%22:%22upload%22,%22__spacing%22:%22both%22,%22downloadSrc%22:%22https://lark-assets-prod-aliyun.oss-cn-hangzhou.aliyuncs.com/yuque/0/2022/py/29637663/1665368455716-4cc75ea0-bfa1-4e89-a085-450f26908768.py?OSSAccessKeyId=LTAI4GGhPJmQ4HWCmhDAn4F5&Expires=1679061204&Signature=glnsPXX079wYTWlB9AL75B656Cc=%22,%22mode%22:%22title%22,%22id%22:%22u820c8a9c%22,%22margin%22:%7B%22top%22:true,%22bottom%22:true%7D,%22card%22:%22file%22%7D">test.py<i class="fa fa-external-link"></i></span></p>
+<p><img src="/images/1665368455934-9d306bab-1577-4ad7-b30f-e778157a1cb3.gif"><br><img src="/images/1665368455821-c6190c37-89af-4ac4-b6e8-4cbdd50085bc.gif"><br><span class="exturl" data-url="aHR0cHM6Ly93d3cueXVxdWUuY29tL2F0dGFjaG1lbnRzL3l1cXVlLzAvMjAyMy9weS8yMjIxMDkxOS8xNjc5MDQzODM5NjU3LWZmMjI3MDVjLTU5ODEtNDA3Yy04ZGE5LWIxYWE0NGI4ZDk1Ni5weT9fbGFrZV9jYXJkPSU3QiUyMnNyYyUyMjolMjJodHRwczovL3d3dy55dXF1ZS5jb20vYXR0YWNobWVudHMveXVxdWUvMC8yMDIzL3B5LzIyMjEwOTE5LzE2NzkwNDM4Mzk2NTctZmYyMjcwNWMtNTk4MS00MDdjLThkYTktYjFhYTQ0YjhkOTU2LnB5JTIyLCUyMm5hbWUlMjI6JTIydGVzdDIucHklMjIsJTIyc2l6ZSUyMjo1MjgzLCUyMmV4dCUyMjolMjJweSUyMiwlMjJzb3VyY2UlMjI6JTIyJTIyLCUyMnN0YXR1cyUyMjolMjJkb25lJTIyLCUyMmRvd25sb2FkJTIyOnRydWUsJTIydHlwZSUyMjolMjIlMjIsJTIydGFza0lkJTIyOiUyMnUzY2ZhZmQ5YS00YTc5LTQyNjMtODQ5NC03ZGIyOThkZmM2OCUyMiwlMjJ0YXNrVHlwZSUyMjolMjJ1cGxvYWQlMjIsJTIyX19zcGFjaW5nJTIyOiUyMmJvdGglMjIsJTIyZG93bmxvYWRTcmMlMjI6JTIyaHR0cHM6Ly9sYXJrLWFzc2V0cy1wcm9kLWFsaXl1bi5vc3MtY24taGFuZ3pob3UuYWxpeXVuY3MuY29tL3l1cXVlLzAvMjAyMi9weS8yOTYzNzY2My8xNjY1MzY4NDU2NTQxLWUyZTkyN2E1LTMxMTUtNGUyMC04NDI2LTlmNTNkMzU3YTU0Mi5weT9PU1NBY2Nlc3NLZXlJZD1MVEFJNEdHaFBKbVE0SFdDbWhEQW40RjUmRXhwaXJlcz0xNjc5MDYxMjA0JlNpZ25hdHVyZT1kNm9xSzJKVHBDVkMyMkgxR1EyM3Z2MjFseVk9JTIyLCUyMm1vZGUlMjI6JTIydGl0bGUlMjIsJTIyaWQlMjI6JTIydWRmNmZjMDliJTIyLCUyMm1hcmdpbiUyMjolN0IlMjJ0b3AlMjI6dHJ1ZSwlMjJib3R0b20lMjI6dHJ1ZSU3RCwlMjJjYXJkJTIyOiUyMmZpbGUlMjIlN0Q=" title="https://www.yuque.com/attachments/yuque/0/2023/py/22210919/1679043839657-ff22705c-5981-407c-8da9-b1aa44b8d956.py?_lake_card=%7B%22src%22:%22https://www.yuque.com/attachments/yuque/0/2023/py/22210919/1679043839657-ff22705c-5981-407c-8da9-b1aa44b8d956.py%22,%22name%22:%22test2.py%22,%22size%22:5283,%22ext%22:%22py%22,%22source%22:%22%22,%22status%22:%22done%22,%22download%22:true,%22type%22:%22%22,%22taskId%22:%22u3cfafd9a-4a79-4263-8494-7db298dfc68%22,%22taskType%22:%22upload%22,%22__spacing%22:%22both%22,%22downloadSrc%22:%22https://lark-assets-prod-aliyun.oss-cn-hangzhou.aliyuncs.com/yuque/0/2022/py/29637663/1665368456541-e2e927a5-3115-4e20-8426-9f53d357a542.py?OSSAccessKeyId=LTAI4GGhPJmQ4HWCmhDAn4F5&Expires=1679061204&Signature=d6oqK2JTpCVC22H1GQ23vv21lyY=%22,%22mode%22:%22title%22,%22id%22:%22udf6fc09b%22,%22margin%22:%7B%22top%22:true,%22bottom%22:true%7D,%22card%22:%22file%22%7D">test2.py<i class="fa fa-external-link"></i></span><img src="/images/1665368456521-7aaa3196-99ba-43ee-926b-2c28240222b2.gif"><br><img src="/images/1663204285441-3a9638a0-5d62-4341-99ac-fb8a811b2746.png"><br><img src="/images/1663204263031-deb95e95-4e54-461b-954b-94b46b3529dd.png"></p>
+<h1 id="实践-杨新补充："><a href="#实践-杨新补充：" class="headerlink" title="实践-杨新补充："></a>实践-杨新补充：</h1><ol>
+<li><strong>2d移动点到目标点</strong><ol>
+<li>目标点可以随机生成也可以由具体数据得到，点的具体移动原理是向离自己最近的点移动，根据两点之间的距离公式计算出每一个原点离所有目标点的距离</li>
+<li>循环遍历每一个点 朝自己最近的目标点移动 如果移动过程中目标点被占领 则在其他目标点中选一个最近的作为新的目标点</li>
+</ol>
+</li>
+</ol>
+<p><img src="/images/1663395882691-145659d0-fcc9-49b3-adb2-95bf31316f0f.png"><br><img src="/images/1663126268157-2fc02165-8a23-476f-9c34-f5f5b73be1f8.png"></p>
+<ol start="2">
+<li><strong>生成包围框</strong><ol>
+<li><p>包围框</p>
+<ol>
+<li><p>包围体是一个简单的几何空间，里面包含着复杂形状的物体。为物体添加包围体的目的是快速的进行碰撞检测或者进行精确的碰撞检测之前进行过滤（即当包围体碰撞，才进行精确碰撞检测和处理）。包围体类型包括球体、轴对齐包围盒（AABB）、有向包围盒（OBB）、8-DOP以及凸壳。如图1所示。</p>
+</li>
+<li><p><img src="/images/1663396420971-e6a117ce-6743-47b7-b615-fac6fea36384.png"></p>
+</li>
+<li><p><img src="/images/1663396431011-3f9d5a07-6591-4a99-b15b-d2be03fb2921.png"></p>
+</li>
+</ol>
+</li>
+<li><p>这里通过中心点根据公式直接得出14个一模一样的矩阵框</p>
+</li>
+</ol>
+</li>
+</ol>
+<p><img src="/images/1663398973126-2bc51512-6ee4-47f3-9b1f-ad6f968c10c6.png"><br><img src="/images/1663126318187-d6b393aa-b52c-482d-95ca-a747358d5ab8.png"></p>
+<ol start="3">
+<li><p><strong>移动包围框到目标点</strong></p>
+<ol>
+<li><p>这里移动包围框是根据中心实时的利用公式去得到新的矩形框四个点的位置</p>
+</li>
+<li><p><img src="/images/1663399060909-747567e9-b8c8-48f5-a334-76caabe57de7.png"></p>
+</li>
+<li><p><img src="/images/1663126371230-1f6314d9-e24f-4e8e-ba98-4f4737d4c352.png"></p>
+</li>
+</ol>
+</li>
+<li><p><strong>解决碰撞</strong></p>
+<ol>
+<li>在二维上碰撞就是两个矩形是否有交集 我们利用shapely这个库 将两个矩形的四个点输入进行即可判断是否有重合</li>
+<li><img src="/images/1664258139855-a5b6c742-26fb-4bec-abc8-53ce3447beec.png"><br><img src="/images/1664258121251-30ea1aca-97d9-4200-b63d-21968d13be58.png"></li>
+</ol>
+</li>
+<li><p><strong>根据新数据使用obb生成包围框</strong></p>
+<ol>
+<li><p><img src="/images/1663398880628-e37ec19d-b0f4-49c4-b555-1d9d254147fe.png"></p>
+</li>
+<li><p><img src="/images/1663126587045-601d55bf-75c5-4b41-847d-27f40ff666ff.png"></p>
+</li>
+</ol>
+</li>
+<li><p><strong>根据真实数据移动包围框</strong></p>
+</li>
+</ol>
+
+    </div>
+
+    
+    
+    
+        <div class="reward-container">
+  <div></div>
+  <button onclick="var qr = document.getElementById('qr'); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/images/wechatpay.png" alt="SindreYang 微信支付">
+        <p>微信支付</p>
+      </div>
+      
+      <div style="display: inline-block;">
+        <img src="/images/alipay.png" alt="SindreYang 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>SindreYang
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://blog.mviai.com/2025/%E7%8E%8B%E6%B3%A2-%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0_%E6%8E%92%E7%89%99_-%E4%BA%A4%E6%8E%A5%E6%96%87%E6%A1%A3/" title="王波-强化学习_排牙_-交接文档">http://blog.mviai.com/2025/王波-强化学习_排牙_-交接文档/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <span class="exturl" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC9kZWVkLnpo"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</span> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+        
+
+  <div class="followme">
+    <p>欢迎关注我的其它发布渠道</p>
+
+    <div class="social-list">
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="/images/wechat.png">
+            <span class="icon">
+              <i class="fa fa-wechat"></i>
+            </span>
+
+            <span class="label">WeChat</span>
+          </a>
+        </div>
+    </div>
+  </div>
+
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2025/%E7%9F%A5%E8%AF%86%E7%82%B9_%E5%85%A8%E5%86%A0%E4%BF%AE%E5%A4%8D%E8%A6%81%E7%82%B9/" rel="prev" title="知识点_全冠修复要点">
+      <i class="fa fa-chevron-left"></i> 知识点_全冠修复要点
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2025/%E6%BB%A4%E6%B3%A2%E5%99%A8%E7%9A%84%E6%84%8F%E4%B9%89/" rel="next" title="滤波器的意义">
+      滤波器的意义 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    
+  <div class="comments">
+    <div id="SOHUCS"></div>
+  </div>
+  
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E6%8E%92%E7%89%99%E7%BC%BA%E9%99%B7"><span class="nav-number">2.</span> <span class="nav-text">强化学习排牙缺陷</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%90%8E%E7%BB%AD%E6%9C%9F%E6%9C%9B"><span class="nav-number">3.</span> <span class="nav-text">后续期望</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%AA%E4%BA%BA%E9%81%97%E6%86%BE"><span class="nav-number">4.</span> <span class="nav-text">个人遗憾</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AF%B9AI%E7%BB%84%E7%9A%84%E6%9C%9F%E6%9C%9B"><span class="nav-number">5.</span> <span class="nav-text">对AI组的期望</span></a></li><li class="nav-item nav-level-2"><a class="nav-link"><span class="nav-number">6.</span> <span class="nav-text"></span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%9B%B8%E5%85%B3%E4%BB%A3%E7%A0%81"><span class="nav-number"></span> <span class="nav-text">相关代码</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%AE%9E%E8%B7%B5-%E6%9D%A8%E6%96%B0%E8%A1%A5%E5%85%85%EF%BC%9A"><span class="nav-number"></span> <span class="nav-text">实践-杨新补充：</span></a></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="SindreYang"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">SindreYang</p>
+  <div class="site-description" itemprop="description">沉淀后我愿意做一个温暖的人。有自己的喜好，有自己的原则，有自己的信仰，不急功近利，不浮夸轻薄，宠辱不惊，淡定安逸，心静如水。------不忘初心，方得始终</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">321</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">72</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL1NpbmRyZVlhbmc=" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;SindreYang"><i class="fa fa-fw fa-github"></i>GitHub</span>
+      </span>
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="bWFpbHRvOnl4QG12aWFpLmNvbQ==" title="E-Mail → mailto:yx@mviai.com"><i class="fa fa-fw fa-envelope"></i>E-Mail</span>
+      </span>
+  </div>
+  <div class="cc-license motion-element" itemprop="license">
+    <span class="exturl cc-opacity" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC9kZWVkLnpo"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+  <div class="languages">
+    <label class="lang-select-label">
+      <i class="fa fa-language"></i>
+      <span>简体中文</span>
+      <i class="fa fa-angle-up" aria-hidden="true"></i>
+    </label>
+    <select class="lang-select" data-canonical="">
+      
+        <option value="zh-CN" data-href="/2025/%E7%8E%8B%E6%B3%A2-%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0_%E6%8E%92%E7%89%99_-%E4%BA%A4%E6%8E%A5%E6%96%87%E6%A1%A3/" selected="">
+          简体中文
+        </option>
+      
+        <option value="en" data-href="/en/2025/%E7%8E%8B%E6%B3%A2-%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0_%E6%8E%92%E7%89%99_-%E4%BA%A4%E6%8E%A5%E6%96%87%E6%A1%A3/" selected="">
+          English
+        </option>
+      
+    </select>
+  </div>
+
+        
+
+<div class="copyright">
+  
+  &copy; 2018 – 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">SindreYang</span>
+</div><!-- 页面点击小红心 -->
+<script type="text/javascript" src="/js/love.js"></script>
+<!-- 背景波浪 -->
+<script color="0,0,255" opacity="0.5" zIndex="-1" count="99" src="https://cdn.jsdelivr.net/npm/canvas-nest.js@1/dist/canvas-nest.js"></script>
+
+
+<!-- 腾讯企业邮箱 -->
+<style>
+.bizmail_loginpanel {
+    font-size: 12px;
+    width: 300px;
+    height: auto;
+    background: transparent;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.bizmail_LoginBox {
+    padding: 10px 15px;
+}
+
+
+.bizmail_loginpanel form {
+    margin: 0;
+    padding: 0;
+}
+
+.bizmail_loginpanel input.text {
+    font-size: 12px;
+    width: 100px;
+    height: 20px;
+    margin: 0 2px;
+    background-color: transparent;
+    border:1px solid transparent;
+    box-shadow: none;
+    color: black;
+}
+
+.bizmail_loginpanel .bizmail_column {
+    height: 28px;
+}
+
+.bizmail_loginpanel .bizmail_column label {
+    display: block;
+    float: left;
+    width: 30px;
+    height: 24px;
+    line-height: 24px;
+    font-size: 12px;
+}
+
+.bizmail_loginpanel .bizmail_column .bizmail_inputArea {
+    float: left;
+    width: 240px;
+}
+
+.bizmail_loginpanel .bizmail_column span {
+    font-size: 12px;
+    word-wrap: break-word;
+    margin-left: 2px;
+    line-height: 200%;
+}
+
+.bizmail_loginpanel .bizmail_SubmitArea {
+    margin-left: 30px;
+    clear: both;
+}
+
+.bizmail_loginpanel .bizmail_SubmitArea a {
+    font-size: 12px;
+    margin-left: 5px;
+}
+
+.bizmail_loginpanel select {
+    width: 110px;
+    height: 20px;
+    margin: 0 2px;
+}
+.bizmail_loginpanel input {
+
+    background-color: rgba(83, 126, 236, 0.562);
+}
+
+
+</style>
+
+<script type="text/javascript">
+function checkInput() {
+    var e = document.form1.uin,
+        i = document.form1.pwd;
+    return 0 == e.value.length ? e.focus() : 0 == i.value.length ? i.focus() : (document.form1.submit(), setTimeout(" document.form1.pwd.value = '' ", 500)), !1
+}
+
+function writeLoginPanel(e) {
+    if (e && e.domainlist && -1 != e.domainlist.indexOf(".")) {
+        var a = "return checkInput()",
+            t = '<div id="divLoginpanelHor" class="bizmail_loginpanel" style="width:550px;"><div class="bizmail_LoginBox"><form name="form1" action="https://exmail.qq.com/cgi-bin/login" target="_blank" method="post" onsubmit="' + a + '"><input type="hidden" name="firstlogin" value="false" /><input type="hidden" name="errtemplate" value="dm_loginpage" /><input type="hidden" name="aliastype" value="other" /><input type="hidden" name="dmtype" value="bizmail" /><input type="hidden" name="p" value="" /><label>\u8d26\u53f7:</label><input type="text" name="uin" class="text" value="" />@#domainlist#<label>&nbsp&nbsp&nbsp;\u5bc6\u7801:</label><input type="password" name="pwd" class="text" value="" /><input type="submit" class="" name="" value="\u767b\u5f55" />&nbsp;<a href="https://exmail.qq.com/cgi-bin/readtemplate?check=false&t=biz_rf_portal#recovery" target="_blank">\u5fd8\u8bb0\u5bc6\u7801\uff1f</a></form></div></div>',
+            n = '<div id="divLoginpanelVer" class="bizmail_loginpanel"><div class="bizmail_LoginBox"><form name="form1" action="https://exmail.qq.com/cgi-bin/login" target="_blank" method="post" onsubmit="' + a + '"><input type="hidden" name="firstlogin" value="false" /><input type="hidden" name="errtemplate" value="dm_loginpage" /><input type="hidden" name="aliastype" value="other" /><input type="hidden" name="dmtype" value="bizmail" /><input type="hidden" name="p" value="" /><div class="bizmail_column"><label>\u8d26\u53f7:</label><div class="bizmail_inputArea"><input type="text" name="uin" class="text" value="" />@#domainlist#</div></div><div class="bizmail_column"><label>\u5bc6\u7801:</label><div class="bizmail_inputArea"><input type="password" name="pwd" class="text" value="" /></div></div><div class="bizmail_SubmitArea"><input type="submit" class="" name="" style="width:66px;" value="\u767b\u5f55" /><a href="https://exmail.qq.com/cgi-bin/readtemplate?check=false&t=biz_rf_portal#recovery" target="_blank">\u5fd8\u8bb0\u5bc6\u7801\uff1f</a></div></form></div></div>',
+            l = e.domainlist.split(";");
+        if (1 == l.length) var m = '<span>#domain#</span><input type="hidden" name="domain" value="#domain#" />'.replace(/#domain#/g, l[0]);
+        else {
+            m = '<select name="domain">';
+            for (i = 0; i < l.length; i++) m += '<option value="' + l[i] + '">' + l[i] + "</option>";
+            m += "</select>"
+        }
+        e.mode && "vertical" != e.mode && "both" != e.mode || document.write(n.replace(/#domainlist#/g, m)), "horizontal" != e.mode && "both" != e.mode || document.write(t.replace(/#domainlist#/g, m))
+    }
+}
+
+</script>      
+
+<script type="text/javascript"> writeLoginPanel({domainlist:"mviai.com", mode:"horizontal"});</script>      
+
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script size="300" alpha="0.6" zIndex="-1" src="/lib/canvas-ribbon/canvas-ribbon.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/medium-zoom@1/dist/medium-zoom.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+  <script defer src="/lib/three/three.min.js"></script>
+    <script defer src="/lib/three/three-waves.min.js"></script>
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+<script>
+document.querySelectorAll('.pdfobject-container').forEach(element => {
+  let url = element.dataset.target;
+  let pdfOpenParams = {
+    navpanes : 0,
+    toolbar  : 0,
+    statusbar: 0,
+    pagemode : 'thumbs',
+    view     : 'FitH'
+  };
+  let pdfOpenFragment = '#' + Object.entries(pdfOpenParams).map(([key, value]) => `${key}=${encodeURIComponent(value)}`).join('&');
+  let fullURL = `/lib/pdf/web/viewer.html?file=${encodeURIComponent(url)}${pdfOpenFragment}`;
+
+  if (NexT.utils.supportsPDFs()) {
+    element.innerHTML = `<embed class="pdfobject" src="${url + pdfOpenFragment}" type="application/pdf" style="height: ${element.dataset.height};">`;
+  } else {
+    element.innerHTML = `<iframe src="${fullURL}" style="height: ${element.dataset.height};" frameborder="0"></iframe>`;
+  }
+});
+</script>
+
+
+
+
+  
+
+  
+
+  <script>
+  NexT.utils.loadComments(document.querySelector('#SOHUCS'), () => {
+    var appid = 'cyxmItxjS';
+    var conf = 'e5e71132d9086bb54aeeba6e88e87df9';
+    var width = window.innerWidth || document.documentElement.clientWidth;
+    if (width < 960) {
+      window.document.write('<script id="changyan_mobile_js" charset="utf-8" type="text/javascript" src="https://cy-cdn.kuaizhan.com/upload/mobile/wap-js/changyan_mobile.js?client_id=' + appid + '&conf=' + conf + '"><\/script>');
+    } else {
+      var loadJs=function(d,a){var c=document.getElementsByTagName("head")[0]||document.head||document.documentElement;var b=document.createElement("script");b.setAttribute("type","text/javascript");b.setAttribute("charset","UTF-8");b.setAttribute("src",d);if(typeof a==="function"){if(window.attachEvent){b.onreadystatechange=function(){var e=b.readyState;if(e==="loaded"||e==="complete"){b.onreadystatechange=null;a()}}}else{b.onload=a}}c.appendChild(b)};loadJs("https://changyan.sohu.com/upload/changyan.js",function(){window.changyan.api.config({appid:appid,conf:conf})});
+    }
+  });
+  </script>
+  <script src="https://cy-cdn.kuaizhan.com/upload/plugins/plugins.count.js"></script>
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/z16.model.json"},"display":{"position":"left","width":75,"height":150},"mobile":{"show":true},"log":false});</script></body>
+</html>
+
+
+
+

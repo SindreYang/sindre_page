@@ -1,0 +1,947 @@
+<!DOCTYPE html>
+<html lang="zh-CN,en,default">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" href="/lib/pace/pace-theme-minimal.min.css">
+  <script src="/lib/pace/pace.min.js"></script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"blog.mviai.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":true,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":true,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="自动摘要: &gt;修订历史		|时间|版本号|修订人|主要修订内容|	|||||	|20220616|1.0 ……..">
+<meta property="og:type" content="article">
+<meta property="og:title" content="AI算法库API-V1">
+<meta property="og:url" content="http://blog.mviai.com/2025/AI%E7%AE%97%E6%B3%95%E5%BA%93API-V1.3.9/index.html">
+<meta property="og:site_name" content="落叶无痕">
+<meta property="og:description" content="自动摘要: &gt;修订历史		|时间|版本号|修订人|主要修订内容|	|||||	|20220616|1.0 ……..">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2025-01-22T04:37:41.000Z">
+<meta property="article:modified_time" content="2025-01-22T12:37:41.471Z">
+<meta property="article:author" content="SindreYang">
+<meta property="article:tag" content="生活">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://blog.mviai.com/2025/AI%E7%AE%97%E6%B3%95%E5%BA%93API-V1.3.9/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>AI算法库API-V1 | 落叶无痕</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">落叶无痕</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类<span class="badge">72</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档<span class="badge">321</span></a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+  <span class="exturl github-corner" data-url="aHR0cHM6Ly9naXRodWIuY29tL1NpbmRyZVlhbmc=" title="Follow me on GitHub" aria-label="Follow me on GitHub"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></span>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://blog.mviai.com/2025/AI%E7%AE%97%E6%B3%95%E5%BA%93API-V1.3.9/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="SindreYang">
+      <meta itemprop="description" content="沉淀后我愿意做一个温暖的人。有自己的喜好，有自己的原则，有自己的信仰，不急功近利，不浮夸轻薄，宠辱不惊，淡定安逸，心静如水。------不忘初心，方得始终">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="落叶无痕">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          AI算法库API-V1
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2025-01-22 12:37:41 / 修改时间：20:37:41" itemprop="dateCreated datePublished" datetime="2025-01-22T12:37:41+08:00">2025-01-22</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/AI%E7%AE%97%E6%B3%95%E5%BA%93/" itemprop="url" rel="index"><span itemprop="name">AI算法库</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">Changyan：</span>
+    
+    
+      <a title="changyan" href="/2025/AI%E7%AE%97%E6%B3%95%E5%BA%93API-V1.3.9/#SOHUCS" itemprop="discussionUrl">
+        <span id="changyan_count_unit" class="post-comments-count hc-comment-count" data-xid="2025/AI算法库API-V1.3.9/" itemprop="commentCount"></span>
+      </a>
+    
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>自动摘要: &gt;<strong>修订历史</strong>		|<strong>时间</strong>|<strong>版本号</strong>|<strong>修订人</strong>|<strong>主要修订内容</strong>|	|||||	|20220616|1.0 ……..</p>
+<span id="more"></span>
+<blockquote>
+<p><strong>修订历史</strong></p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th><strong>时间</strong></th>
+<th><strong>版本号</strong></th>
+<th><strong>修订人</strong></th>
+<th><strong>主要修订内容</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>2022-06-16</td>
+<td>1.0.0</td>
+<td>杨新</td>
+<td>模板设定</td>
+</tr>
+<tr>
+<td>2022-06-16</td>
+<td>1.0.1</td>
+<td>罗依蒙</td>
+<td>整体文档结构安排</td>
+</tr>
+<tr>
+<td>2022-06-17</td>
+<td>1.0.2</td>
+<td>罗依蒙</td>
+<td>文档结构安排调整</td>
+</tr>
+<tr>
+<td>2022-6-18</td>
+<td>1.0.3</td>
+<td>罗依蒙</td>
+<td>文档结构敲定与分牙数据函数开始整合</td>
+</tr>
+<tr>
+<td>2022-6-22</td>
+<td>1.0.4</td>
+<td>罗依蒙</td>
+<td>全冠代码整理</td>
+</tr>
+<tr>
+<td>2022-6-23</td>
+<td>1.0.5</td>
+<td>罗依蒙</td>
+<td>全冠代码整理</td>
+</tr>
+<tr>
+<td>2022-6-25</td>
+<td>1.1.6</td>
+<td>罗依蒙</td>
+<td>全冠代码完善</td>
+</tr>
+<tr>
+<td>2022-6-29</td>
+<td>1.1.7</td>
+<td>罗依蒙</td>
+<td>全冠代码完善与部署类部分代码整理</td>
+</tr>
+<tr>
+<td>2022-7-1</td>
+<td>1.1.8</td>
+<td>罗依蒙</td>
+<td>部署类部分代码整理</td>
+</tr>
+<tr>
+<td>2022-7-4</td>
+<td>1.1.9</td>
+<td>罗依蒙</td>
+<td>部署类部分代码整理</td>
+</tr>
+<tr>
+<td>2022-7-5</td>
+<td>1.1.10</td>
+<td>罗依蒙</td>
+<td>部署类部分代码整理</td>
+</tr>
+<tr>
+<td>2022-7-6</td>
+<td>1.1.11</td>
+<td>罗依蒙</td>
+<td>部署类代码存在的疑问的修正</td>
+</tr>
+<tr>
+<td>2022-7-7</td>
+<td>1.2.12</td>
+<td>罗依蒙</td>
+<td>部署类代码整理完善</td>
+</tr>
+<tr>
+<td>2022-7-8</td>
+<td>1.2.13</td>
+<td>罗依蒙</td>
+<td>现有的分牙代码整理</td>
+</tr>
+<tr>
+<td>2022-7-15</td>
+<td>1.2.14</td>
+<td>罗依蒙</td>
+<td>添加“一键式”目录与FullCrown的run函数</td>
+</tr>
+<tr>
+<td>2022-7-27</td>
+<td>1.2.15</td>
+<td>罗依蒙</td>
+<td>嵌体部分代码整理</td>
+</tr>
+<tr>
+<td>2022-8-1</td>
+<td>1.2.16</td>
+<td>罗依蒙</td>
+<td>嵌体部分代码修改</td>
+</tr>
+<tr>
+<td>2022-8-2</td>
+<td>1.2.17</td>
+<td>罗依蒙</td>
+<td>完善函数注释</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p><strong>算法库链接</strong></p>
+</blockquote>
+<p><span class="exturl" data-url="aHR0cDovLzE5Mi4xNjguMS41NS91cDNkL0FJ" title="http://192.168.1.55/up3d/AI">http://192.168.1.55/up3d/AI<i class="fa fa-external-link"></i></span></p>
+<h2 id=""><a href="#" class="headerlink" title=""></a></h2><h1 id="APIImage-measurement"><a href="#APIImage-measurement" class="headerlink" title="APIImage measurement"></a>APIImage measurement</h1><blockquote>
+<p>蓝色字体是相对于原始代码更改的说明<br>棕色字体是对代码内容的疑问<br>橘色是对代码数据或输入输出注意点的说明</p>
+</blockquote>
+<h1 id="数据处理类-DataProcess"><a href="#数据处理类-DataProcess" class="headerlink" title="数据处理类-DataProcess"></a>数据处理类-DataProcess</h1><blockquote>
+<p>用于数据处理的一些函数，<del>根据数据格式等的不同划分为3D数据处理、2D数据处理、文本数据处理以及图像数据处理。</del>根据业务不同分为全冠数据处理、分牙数据处理</p>
+</blockquote>
+<h2 id="全冠数据处理-FullCrown"><a href="#全冠数据处理-FullCrown" class="headerlink" title="全冠数据处理-FullCrown"></a>全冠数据处理-FullCrown</h2><p>对原始数据进行隐式曲面处理，生成torch需要的数据</p>
+<h3 id="AI-Repair-FullCrown-init-self-user-path-None-torch-path-None-pt-path-None-generate-path-None-batch-size-167800"><a href="#AI-Repair-FullCrown-init-self-user-path-None-torch-path-None-pt-path-None-generate-path-None-batch-size-167800" class="headerlink" title="AI.Repair.FullCrown.init(self,  user_path&#x3D;None, torch_path&#x3D;None, pt_path&#x3D;None, generate_path&#x3D;None,batch_size&#x3D;167800)"></a>AI.Repair.FullCrown.<strong>init</strong>(self,  user_path&#x3D;None, torch_path&#x3D;None, pt_path&#x3D;None, generate_path&#x3D;None,batch_size&#x3D;167800)</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, user_path=<span class="literal">None</span>, torch_path=<span class="literal">None</span> user_path, torch_path, pt_path=<span class="literal">None</span>, generate_path=<span class="literal">None</span>,batch_size=<span class="number">167800</span></span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    定义FullCrown</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    :param user_path: (str)用户数据目录，其目录下的Object与Preparation内的文件名一一对应,默认None</span></span><br><span class="line"><span class="string">    :param torch_path: (str)torch数据输出目录/训练数据目录,默认None</span></span><br><span class="line"><span class="string">    :param pt_path: (str)历史/前一周期训练结果文件,默认None</span></span><br><span class="line"><span class="string">    :param generate_path: (str)推理数据目录,默认None</span></span><br><span class="line"><span class="string">    :param batch_size: (int)批量大小，默认 167800</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="AI-Repair-FullCrown-mesh-split-self-mesh-trimesh-Trimesh-list"><a href="#AI-Repair-FullCrown-mesh-split-self-mesh-trimesh-Trimesh-list" class="headerlink" title="AI.Repair.FullCrown.mesh_split(self,mesh:trimesh.Trimesh)-&gt;list"></a>AI.Repair.FullCrown.mesh_split(self,mesh:trimesh.Trimesh)-&gt;list</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">mesh_split</span>(<span class="params">self, mesh:trimesh.Trimesh</span>)-&gt;<span class="built_in">list</span>:</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    根据连通体，进行分割牙位，注意：只针对南航数据特性</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    :param mesh: (trimesh.Trimesh)含3个连通体的网格数据</span></span><br><span class="line"><span class="string">    :return: ((3,)trimesh.Trimesh)返回从左到右的三个连通体的list</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="AI-Repair-FullCrown-normalize-meshes-self-mesh"><a href="#AI-Repair-FullCrown-normalize-meshes-self-mesh" class="headerlink" title="AI.Repair.FullCrown.normalize_meshes(self,mesh)"></a>AI.Repair.FullCrown.normalize_meshes(self,mesh)</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">normalize_meshes</span>(<span class="params">self, mesh</span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    归一化到[-0.45,0.45]</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    :param mesh: (trimesh.base.Trimesh)需要归一化的原始牙模型</span></span><br><span class="line"><span class="string">    :return: (trimesh.base.Trimesh)归一化后的牙模型</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="AI-Repair-FullCrown-get-mid-self-sources-path-None-target-path-None"><a href="#AI-Repair-FullCrown-get-mid-self-sources-path-None-target-path-None" class="headerlink" title="AI.Repair.FullCrown.get_mid(self,sources_path&#x3D;None, target_path&#x3D;None)"></a>AI.Repair.FullCrown.get_mid(self,sources_path&#x3D;None, target_path&#x3D;None)</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">get_mid</span>(<span class="params">self, sources_path=<span class="literal">None</span>, target_path=<span class="literal">None</span></span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    获取目标模型的中间牙</span></span><br><span class="line"><span class="string">	</span></span><br><span class="line"><span class="string">    :param sources_path: (str)源路径</span></span><br><span class="line"><span class="string">    :param target_path: (str)目标路径</span></span><br><span class="line"><span class="string">    :return: (trimesh.base.Trimesh)中间牙模型</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="AI-Repair-FullCrown-data-process-self-ply-path-str-get-two-teeth-bool-True-resolution-int-32-pcd-samples-num-int-100000-sigma-float-0-1-sources-path-None-np-array"><a href="#AI-Repair-FullCrown-data-process-self-ply-path-str-get-two-teeth-bool-True-resolution-int-32-pcd-samples-num-int-100000-sigma-float-0-1-sources-path-None-np-array" class="headerlink" title="AI.Repair.FullCrown.data_process(self,ply_path: str, get_two_teeth: bool &#x3D; True, resolution:int &#x3D; 32, pcd_samples_num:int&#x3D;100000, sigma:float &#x3D; 0.1, sources_path&#x3D;None) -&gt; np.array"></a>AI.Repair.FullCrown.data_process(self,ply_path: str, get_two_teeth: bool &#x3D; True, resolution:int &#x3D; 32, pcd_samples_num:int&#x3D;100000, sigma:float &#x3D; 0.1, sources_path&#x3D;None) -&gt; np.array</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">data_process</span>(<span class="params">self,ply_path: <span class="built_in">str</span>, get_two_teeth: <span class="built_in">bool</span> = <span class="literal">True</span>, resolution:<span class="built_in">int</span> = <span class="number">32</span>, pcd_samples_num:<span class="built_in">int</span>=<span class="number">100000</span>,</span></span><br><span class="line"><span class="params">                     sigma:<span class="built_in">float</span> = <span class="number">0.1</span>, sources_path=<span class="literal">None</span></span>) -&gt; np.array:</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    处理ply数据</span></span><br><span class="line"><span class="string">    对两颗牙(含中间的基台)的源模型：获取两颗牙(不含中间基台)的数据</span></span><br><span class="line"><span class="string">    对三颗牙的目标模型：目标牙的样本点在其模型上的占用率</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    :param ply_path: (str)ply数据路径</span></span><br><span class="line"><span class="string">    :param get_two_teeth: (bool)是否要通过连通体进行裁剪成两个牙冠</span></span><br><span class="line"><span class="string">    :param resolution: (int)针对两个牙冠（源）体素进行采样的采样率 [32,64,128,256] 默认32</span></span><br><span class="line"><span class="string">    :param pcd_samples_num: (int)生成部位（目标）采样率 [100k,200k,300k,400K] 默认100k</span></span><br><span class="line"><span class="string">    :param sigma: (float)生成部位（目标）边界采样噪声方差 [ [0.1, 0.01]] 默认0.1</span></span><br><span class="line"><span class="string">    :param sources_path: (str)源模型的数据路径，默认None</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    when get_two_teeth==Ture</span></span><br><span class="line"><span class="string">    :return: data: ((n,n,n)bool)处理后的原始牙的体素栅格</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    when get_two_teeth==False</span></span><br><span class="line"><span class="string">    :return: data: ((n,)bool)目标牙的样本点在模型上的占用率</span></span><br><span class="line"><span class="string">    :return: pcd_n: (trimesh.caching.TrackedArray)样本点</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="AI-Repair-FullCrown-process-self-user-path-None-torch-path-None-None"><a href="#AI-Repair-FullCrown-process-self-user-path-None-torch-path-None-None" class="headerlink" title="AI.Repair.FullCrown.process(self,user_path&#x3D;None,torch_path&#x3D;None) -&gt; None:"></a>AI.Repair.FullCrown.process(self,user_path&#x3D;None,torch_path&#x3D;None) -&gt; None:</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">process</span>(<span class="params">self,user_path=<span class="literal">None</span>,torch_path=<span class="literal">None</span></span>) -&gt; <span class="literal">None</span>:</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    对原始数据进行隐式曲面处理，生成torch需要的数据</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    步骤：</span></span><br><span class="line"><span class="string">    1.遍历X目录，载入待修复的牙冠</span></span><br><span class="line"><span class="string">    2.对x1，，Xn 进行均值归一化，并将中间的基台去除（对需求无帮助，即噪声）</span></span><br><span class="line"><span class="string">    3.对y1，，Yn 进行均值归一化</span></span><br><span class="line"><span class="string">    4.对处理的数据打包成pt格，放入指定路径下，方便直接于DataLoader加载数据</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    :param user_path: (str)用户数据目录，其目录下的Object与Preparation内的文件名一一对应，默认None(使用FullCrown对象的user_path)</span></span><br><span class="line"><span class="string">    :param torch_path: (str)torch数据输出目录/训练数据目录，默认None</span></span><br><span class="line"><span class="string">    :return: None</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="AI-Repair-FullCrown-create-bounds-self-min-0-45-max-0-45-res-256"><a href="#AI-Repair-FullCrown-create-bounds-self-min-0-45-max-0-45-res-256" class="headerlink" title="AI.Repair.FullCrown.create_bounds(self,min&#x3D;-0.45, max&#x3D;0.45, res&#x3D;256)"></a>AI.Repair.FullCrown.create_bounds(self,min&#x3D;-0.45, max&#x3D;0.45, res&#x3D;256)</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">create_bounds</span>(<span class="params">self,<span class="built_in">min</span>=-<span class="number">0.45</span>, <span class="built_in">max</span>=<span class="number">0.45</span>, res=<span class="number">256</span></span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    生成边界</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    :param min: (float)最小值，默认-0.45</span></span><br><span class="line"><span class="string">    :param max:  (float)最大值，默认0.45</span></span><br><span class="line"><span class="string">    :param res:  (int)在min到max范围内划分的个数</span></span><br><span class="line"><span class="string">    :return:points_list ((n, 3)float64)有效范围内各个点的坐标集合</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="分牙数据处理-MeshSeg"><a href="#分牙数据处理-MeshSeg" class="headerlink" title="分牙数据处理-MeshSeg"></a>分牙数据处理-MeshSeg</h2><h3 id="AI-MeshSeg-MeshSeg-init-self-dataset-path-batch-size-12-save-path-”MeshSeg-pt”-num-workers-12"><a href="#AI-MeshSeg-MeshSeg-init-self-dataset-path-batch-size-12-save-path-”MeshSeg-pt”-num-workers-12" class="headerlink" title="AI.MeshSeg.MeshSeg.init(self, dataset_path,batch_size&#x3D;12, save_path&#x3D;”MeshSeg.pt”, num_workers&#x3D;12):"></a>AI.MeshSeg.MeshSeg.<strong>init</strong>(self, dataset_path,batch_size&#x3D;12, save_path&#x3D;”MeshSeg.pt”, num_workers&#x3D;12):</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, dataset_path,batch_size=<span class="number">12</span>, save_path=<span class="string">&quot;MeshSeg.pt&quot;</span>, num_workers=<span class="number">12</span></span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    定义MeshSeg</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    :param dataset_path: (str)分牙数据目录</span></span><br><span class="line"><span class="string">    :param batch_size: (int)批量大小，默认12</span></span><br><span class="line"><span class="string">    :param save_path: (str)分牙结果存储，默认&quot;MeshSeg.pt&quot;</span></span><br><span class="line"><span class="string">    :param num_workers: (int)线程数，默认12</span></span><br><span class="line"><span class="string">    :return:None</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="AI-MeshSeg-MeshSeg-dataProcessing-self"><a href="#AI-MeshSeg-MeshSeg-dataProcessing-self" class="headerlink" title="AI.MeshSeg.MeshSeg.dataProcessing(self):"></a>AI.MeshSeg.MeshSeg.dataProcessing(self):</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">dataProcessing</span>(<span class="params">self</span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    数据处理</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    pass</span></span><br><span class="line"><span class="string">     &quot;&quot;&quot;</span></span><br></pre></td></tr></table></figure>
+
+<h1 id="模型搭建类-Building"><a href="#模型搭建类-Building" class="headerlink" title="模型搭建类-Building"></a>模型搭建类-Building</h1><p>按模型形式分为点云&#x2F;网格&#x2F;体素模型、图像模型以及文本模型</p>
+<h2 id="点云模型-PointCloud"><a href="#点云模型-PointCloud" class="headerlink" title="点云模型-PointCloud"></a>点云模型-PointCloud</h2><h2 id="网格模型-Mesh"><a href="#网格模型-Mesh" class="headerlink" title="网格模型-Mesh"></a>网格模型-Mesh</h2><h2 id="体素模型-Voxel"><a href="#体素模型-Voxel" class="headerlink" title="体素模型-Voxel"></a>体素模型-Voxel</h2><h2 id="图像模型-Image"><a href="#图像模型-Image" class="headerlink" title="图像模型-Image"></a>图像模型-Image</h2><h2 id="文本模型-Text"><a href="#文本模型-Text" class="headerlink" title="文本模型-Text"></a>文本模型-Text</h2><h1 id="模型训练类-Training"><a href="#模型训练类-Training" class="headerlink" title="模型训练类-Training"></a>模型训练类-Training</h1><p><del>按训练流程分为数据分割、优化器选择、损失函数选择以及模型保存</del>按业务分为全冠训练、</p>
+<h3 id="AI-Repair-FullCrown-train-self-torch-path-None-pt-path-None-batch-size-1-num-workers-1-start-epoch-0-end-epoch-15000-shuffle-True"><a href="#AI-Repair-FullCrown-train-self-torch-path-None-pt-path-None-batch-size-1-num-workers-1-start-epoch-0-end-epoch-15000-shuffle-True" class="headerlink" title="AI.Repair.FullCrown.train(self, torch_path&#x3D;None, pt_path&#x3D;None,batch_size&#x3D;1,num_workers&#x3D;1,start_epoch&#x3D;0,end_epoch&#x3D;15000,shuffle&#x3D;True):"></a>AI.Repair.FullCrown.train(self, torch_path&#x3D;None, pt_path&#x3D;None,batch_size&#x3D;1,num_workers&#x3D;1,start_epoch&#x3D;0,end_epoch&#x3D;15000,shuffle&#x3D;True):</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">train</span>(<span class="params">self, torch_path=<span class="literal">None</span>, pt_path=<span class="literal">None</span>,batch_size=<span class="number">1</span>,num_workers=<span class="number">1</span>,start_epoch=<span class="number">0</span>,end_epoch=<span class="number">15000</span>,shuffle=<span class="literal">True</span></span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    进行训练</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    :param torch_path: (str)torch数据输出目录/训练数据目录，默认None(使用FullCrown对象的torch_path)</span></span><br><span class="line"><span class="string">    :param pt_path: (str)历史/前一周期训练结果文件，默认None(使用FullCrown对象的pt_path)</span></span><br><span class="line"><span class="string">    :param batch_size: (int)批量大小，默认1</span></span><br><span class="line"><span class="string">    :param num_workers: (int)线程数，默认1</span></span><br><span class="line"><span class="string">    :param start_epoch: (int)训练起始周期，默认0</span></span><br><span class="line"><span class="string">    :param end_epoch: (int)训练结束周期，默认15000</span></span><br><span class="line"><span class="string">    :param shuffle: (bool)是否打乱顺序，默认Ture</span></span><br><span class="line"><span class="string">    :return:None</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="AI-Segmentation-MeshSeg-train-self-num-epochs-2000"><a href="#AI-Segmentation-MeshSeg-train-self-num-epochs-2000" class="headerlink" title="AI.Segmentation.MeshSeg.train(self,num_epochs&#x3D;2000):"></a>AI.Segmentation.MeshSeg.train(self,num_epochs&#x3D;2000):</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">train</span>(<span class="params">self,num_epochs=<span class="number">2000</span></span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    模型训练</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    :param num_epochs: (int)训练周期，默认2000</span></span><br><span class="line"><span class="string">    :return: None</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="AI-DentalInlay-DentalInlay-train-dataroot-None-checkpoints-dir-”C-“-batch-size-8-name-”dental-pix2pix”-model-type-”pix2pix”"><a href="#AI-DentalInlay-DentalInlay-train-dataroot-None-checkpoints-dir-”C-“-batch-size-8-name-”dental-pix2pix”-model-type-”pix2pix”" class="headerlink" title="AI.DentalInlay.DentalInlay.train(dataroot&#x3D;None,,checkpoints_dir&#x3D;”C:\“,batch_size&#x3D;8, name&#x3D;”dental_pix2pix”, model_type&#x3D;”pix2pix”):"></a>AI.DentalInlay.DentalInlay.train(dataroot&#x3D;None,,checkpoints_dir&#x3D;”C:\“,batch_size&#x3D;8, name&#x3D;”dental_pix2pix”, model_type&#x3D;”pix2pix”):</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">train</span>(<span class="params">dataroot=<span class="literal">None</span>,checkpoints_dir=<span class="string">&quot;C:\\&quot;</span>,batch_size=<span class="number">8</span>, name=<span class="string">&quot;dental_pix2pix&quot;</span>, model_type=<span class="string">&quot;pix2pix&quot;</span></span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    实现嵌体生成训练</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    :param dataroot:(str)参与训练的图片目录,默认None</span></span><br><span class="line"><span class="string">    :param checkpoints_dir:(str)生成的pth文件存储的目录，默认&quot;C:\\&quot;</span></span><br><span class="line"><span class="string">    :param batch_size:(int)批量大小，默认8</span></span><br><span class="line"><span class="string">    :param name:(str)训练的模型与样本所存储的文件夹的名称,默认&quot;dental_pix2pix&quot;</span></span><br><span class="line"><span class="string">    :param model_type:(str)模型类型,默认pix2pix</span></span><br><span class="line"><span class="string">    :return:None</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br></pre></td></tr></table></figure>
+<p>原始代码中是每五周期保存一份当前周期的训练结果文件并更新latest_net_D.pth与latest_net_G.pth，由于这样会导致整个文件夹内容过大现仅实现更新训练生成的pth文件存储在：checkpoints_dir&#x2F;name训练过程中的图片存储目录：checkpoints_dir &#x2F; name  + ‘&#x2F;web&#x2F;images’推理生成的html存储目录：checkpoints_dir &#x2F; name  + ‘&#x2F;web’</p>
+<h2 id="数据分割-DataPartition"><a href="#数据分割-DataPartition" class="headerlink" title="数据分割-DataPartition"></a>数据分割-DataPartition</h2><h2 id="优化器选择-Optimizer"><a href="#优化器选择-Optimizer" class="headerlink" title="优化器选择-Optimizer"></a>优化器选择-Optimizer</h2><h2 id="损失函数选择-LossFunction"><a href="#损失函数选择-LossFunction" class="headerlink" title="损失函数选择-LossFunction"></a>损失函数选择-LossFunction</h2><h1 id="推理类-Inference"><a href="#推理类-Inference" class="headerlink" title="推理类-Inference"></a>推理类-Inference</h1><p>按目的分为分割推理、分类推理、生成推理以及检测推理</p>
+<h2 id="分割推理-Segmentation"><a href="#分割推理-Segmentation" class="headerlink" title="分割推理-Segmentation"></a>分割推理-Segmentation</h2><h2 id="分类推理-Classification"><a href="#分类推理-Classification" class="headerlink" title="分类推理-Classification"></a>分类推理-Classification</h2><h2 id="生成推理-Generation"><a href="#生成推理-Generation" class="headerlink" title="生成推理-Generation"></a>生成推理-Generation</h2><h3 id="AI-Repair-FullCrown-generate-pcd-self-mesh-path-out-path"><a href="#AI-Repair-FullCrown-generate-pcd-self-mesh-path-out-path" class="headerlink" title="AI.Repair.FullCrown.generate_pcd(self,mesh_path,out_path)"></a>AI.Repair.FullCrown.generate_pcd(self,mesh_path,out_path)</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">generate_pcd</span>(<span class="params">self,mesh_path,out_path</span>):</span><br><span class="line">	<span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">	实现单份点云模型的生成推理</span></span><br><span class="line"><span class="string">	</span></span><br><span class="line"><span class="string">    :param mesh_path(str): 未修复模型的路径</span></span><br><span class="line"><span class="string">    :param out_path(str): 生成模型的输出路径</span></span><br><span class="line"><span class="string">	:return:None</span></span><br><span class="line"><span class="string">	&quot;&quot;&quot;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="AI-Repair-FullCrown-generate-vol-self-mesh-path-out-path"><a href="#AI-Repair-FullCrown-generate-vol-self-mesh-path-out-path" class="headerlink" title="AI.Repair.FullCrown.generate_vol(self,mesh_path,out_path)"></a>AI.Repair.FullCrown.generate_vol(self,mesh_path,out_path)</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">generate_vol</span>(<span class="params">self,mesh_path,out_path,batch_size=<span class="number">167800</span></span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    实现单份体素模型的生成推理</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    :param mesh_path: (str)未修复模型的路径</span></span><br><span class="line"><span class="string">    :param out_path: (str)生成模型的输出路径</span></span><br><span class="line"><span class="string">    :param batch_size: (int)批量大小，默认167800</span></span><br><span class="line"><span class="string">    :return: None</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="AI-Repair-FullCrown-generate-all-vol-self-generate-path-None-pt-path-None"><a href="#AI-Repair-FullCrown-generate-all-vol-self-generate-path-None-pt-path-None" class="headerlink" title="AI.Repair.FullCrown.generate_all_vol(self,generate_path&#x3D;None,pt_path&#x3D;None):"></a>AI.Repair.FullCrown.generate_all_vol(self,generate_path&#x3D;None,pt_path&#x3D;None):</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">generate_all_vol</span>(<span class="params">self,generate_path=<span class="literal">None</span>,pt_path=<span class="literal">None</span></span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    实现整个目录下模型的生成推理，调用的是generate_vol</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    :param generate_path: (str)推理数据目录，默认None(使用FullCrown对象的generate_path)</span></span><br><span class="line"><span class="string">    :param pt_path: (str)历史/前一周期训练结果文件，默认None(使用FullCrown对象的pt_path)</span></span><br><span class="line"><span class="string">    :return:None</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="AI-DentalInlay-DentalInlay-inference-dataroot-None-checkpoints-dir-”C-“-name-”experiment-name”-direction-”BtoA”"><a href="#AI-DentalInlay-DentalInlay-inference-dataroot-None-checkpoints-dir-”C-“-name-”experiment-name”-direction-”BtoA”" class="headerlink" title="AI.DentalInlay.DentalInlay.inference(dataroot&#x3D;None, checkpoints_dir&#x3D;”C:&#x2F;“,name&#x3D;”experiment_name”,direction&#x3D;”BtoA”):"></a>AI.DentalInlay.DentalInlay.inference(dataroot&#x3D;None, checkpoints_dir&#x3D;”C:&#x2F;“,name&#x3D;”experiment_name”,direction&#x3D;”BtoA”):</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">inference</span>(<span class="params">dataroot=<span class="literal">None</span>, checkpoints_dir=<span class="string">&quot;C:/&quot;</span>,name=<span class="string">&quot;dental_pix2pix&quot;</span>,direction=<span class="string">&quot;BtoA&quot;</span></span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    实现嵌体生成推理，onnx模型生成</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    :param dataroot:(str)参与推理的图片目录</span></span><br><span class="line"><span class="string">    :param checkpoints_dir:(str)训练生成的pth文件存储的目录，默认&quot;C:\\&quot;</span></span><br><span class="line"><span class="string">    :param name:(str)推理的模型所存储的文件夹的名称,默认&quot;dental_pix2pix&quot;</span></span><br><span class="line"><span class="string">    :param direction:(str)推理方向，默认BtoA</span></span><br><span class="line"><span class="string">    :return:None</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br></pre></td></tr></table></figure>
+<p>生成的onnx文件存储目录：checkpoints_dir &#x2F; name推理生成的图片输出目录：’.&#x2F;results_dir&#x2F;‘ +  name + ‘&#x2F;test_last&#x2F;images’推理生成的html输出目录：’.&#x2F;results_dir&#x2F;‘ +  name + ‘&#x2F;test_last’在计算平均SSIM时，原本sum +&#x3D; i，现改为sum +&#x3D; 1</p>
+<h3 id="AI-DentalInlay-DentalInlay-Inference-model-onnx-path-dataroot-None-name-”dental-pix2pix”-direction-”-BtoA”"><a href="#AI-DentalInlay-DentalInlay-Inference-model-onnx-path-dataroot-None-name-”dental-pix2pix”-direction-”-BtoA”" class="headerlink" title="AI.DentalInlay.DentalInlay.Inference_model(onnx_path,dataroot&#x3D;None,name&#x3D;”dental_pix2pix”,direction&#x3D;” BtoA”)"></a>AI.DentalInlay.DentalInlay.Inference_model(onnx_path,dataroot&#x3D;None,name&#x3D;”dental_pix2pix”,direction&#x3D;” BtoA”)</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">Inference_model</span>(<span class="params">checkpoints_dir=<span class="string">&quot;C:/&quot;</span>,dataroot=<span class="literal">None</span>,name=<span class="string">&quot;dental_pix2pix&quot;</span>,direction=<span class="string">&quot; BtoA&quot;</span></span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    利用.onnx模型实现嵌体生成推理</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    :param checkpoints_dir:(str)onnx模型存储的目录，默认&quot;C:\\&quot;</span></span><br><span class="line"><span class="string">    :param dataroot:(str)参与推理的图片目录</span></span><br><span class="line"><span class="string">    :param name:推理的模型所存储的文件夹的名称,默认&quot;dental_pix2pix&quot;</span></span><br><span class="line"><span class="string">    :param direction:(str)推理方向，默认BtoA</span></span><br><span class="line"><span class="string">    :return:None</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br></pre></td></tr></table></figure>
+<p>调用的onnx文件的存储目录：checkpoints_dir &#x2F; name推理生成的图片输出目录: 当前文件所在的目录下</p>
+<h2 id="检测推理-Measurement"><a href="#检测推理-Measurement" class="headerlink" title="检测推理-Measurement"></a>检测推理-Measurement</h2><h1 id="显示类-Show"><a href="#显示类-Show" class="headerlink" title="显示类-Show"></a>显示类-Show</h1><h3 id="AI-Repair-FullCrown-show-self-sources-path-target-path"><a href="#AI-Repair-FullCrown-show-self-sources-path-target-path" class="headerlink" title="AI.Repair.FullCrown.show(self,sources_path,target_path)"></a>AI.Repair.FullCrown.show(self,sources_path,target_path)</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">show</span>(<span class="params">self,sources_path,target_path</span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    实现单份数据的原始数据与推理结果显示</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    :param sources_path: (str)原始地址</span></span><br><span class="line"><span class="string">    :param target_path: (str)修复后模型的地址</span></span><br><span class="line"><span class="string">    :return: None</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="AI-Repair-FullCrown-show-all-self-generate-path-None"><a href="#AI-Repair-FullCrown-show-all-self-generate-path-None" class="headerlink" title="AI.Repair.FullCrown.show_all(self,generate_path&#x3D;None):"></a>AI.Repair.FullCrown.show_all(self,generate_path&#x3D;None):</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">show_all</span>(<span class="params">self,generate_path=<span class="literal">None</span></span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    实现整个地址路径下的所有原始数据与推理结果显示</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    :param generate_path: (str)推理数据目录，默认None(使用FullCrown对象的generate_path)</span></span><br><span class="line"><span class="string">    :return: None</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br></pre></td></tr></table></figure>
+
+<h1 id="一键式-Run"><a href="#一键式-Run" class="headerlink" title="一键式-Run"></a>一键式-Run</h1><h2 id="全冠生成"><a href="#全冠生成" class="headerlink" title="全冠生成"></a>全冠生成</h2><h3 id="AI-Repair-FullCrown-run-self-process-bool-True-train-bool-True-generate-bool-True-show-bool-True"><a href="#AI-Repair-FullCrown-run-self-process-bool-True-train-bool-True-generate-bool-True-show-bool-True" class="headerlink" title="AI.Repair.FullCrown.run(self,process:bool &#x3D; True,train:bool &#x3D; True,generate:bool &#x3D; True,show:bool &#x3D; True):"></a>AI.Repair.FullCrown.run(self,process:bool &#x3D; True,train:bool &#x3D; True,generate:bool &#x3D; True,show:bool &#x3D; True):</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">run</span>(<span class="params">self,process:<span class="built_in">bool</span> = <span class="literal">True</span>,train:<span class="built_in">bool</span> = <span class="literal">True</span>,generate:<span class="built_in">bool</span> = <span class="literal">True</span>,show:<span class="built_in">bool</span> = <span class="literal">True</span></span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    包括训练在内的整个流程实现:数据处理-&gt;训练-&gt;推理-&gt;显示</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    :param process: (bool)是否进行数据处理，默认True</span></span><br><span class="line"><span class="string">    :param train: (bool)是否进行训练，默认True</span></span><br><span class="line"><span class="string">    :param generate: (bool)是否进行模型推理，默认True</span></span><br><span class="line"><span class="string">    :param show: (bool)是否进行显示，默认True</span></span><br><span class="line"><span class="string">    :return: None</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br></pre></td></tr></table></figure>
+
+<h1 id="部署类-Deploy"><a href="#部署类-Deploy" class="headerlink" title="部署类-Deploy"></a>部署类-Deploy</h1><h2 id="自定义的相关工具-Tools"><a href="#自定义的相关工具-Tools" class="headerlink" title="自定义的相关工具-Tools"></a>自定义的相关工具-Tools</h2><h3 id="AI-Deploy-Tools-NpEncoder-default-self-obj"><a href="#AI-Deploy-Tools-NpEncoder-default-self-obj" class="headerlink" title="AI.Deploy.Tools.NpEncoder.default(self, obj)"></a>AI.Deploy.Tools.NpEncoder.default(self, obj)</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">default</span>(<span class="params">self, obj</span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    自定义json编码器</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    :param obj:编译对象</span></span><br><span class="line"><span class="string">    :return:目标格式的对象</span></span><br><span class="line"><span class="string">	&quot;&quot;&quot;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="AI-Deploy-Tools-DictToJson-data-out-path-”out-json”"><a href="#AI-Deploy-Tools-DictToJson-data-out-path-”out-json”" class="headerlink" title="AI.Deploy.Tools.DictToJson(data,out_path&#x3D;”out.json”)"></a>AI.Deploy.Tools.DictToJson(data,out_path&#x3D;”out.json”)</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">DictToJson</span>(<span class="params">data,out_path=<span class="string">&quot;out.json&quot;</span></span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    将字典保存为json格式保存</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    :param data:需要保存的数据</span></span><br><span class="line"><span class="string">    :param out_path: (str)保存地址,默认out.json</span></span><br><span class="line"><span class="string">    :return: None</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="AI-Deploy-Tools-json-to-ply-json-path-str-out-dir"><a href="#AI-Deploy-Tools-json-to-ply-json-path-str-out-dir" class="headerlink" title="AI.Deploy.Tools.json_to_ply(json_path:str,out_dir)"></a>AI.Deploy.Tools.json_to_ply(json_path:str,out_dir)</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">json_to_ply</span>(<span class="params">json_path:<span class="built_in">str</span>,out_dir</span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    将分牙json字典，转发成ply输出</span></span><br><span class="line"><span class="string">    </span></span><br><span class="line"><span class="string">    :param json_path: (str)json字典路径</span></span><br><span class="line"><span class="string">    :param out_dir: (str)ply输出输出路径</span></span><br><span class="line"><span class="string">    :return: None</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="AI-Deploy-Tools-show-json-json-path"><a href="#AI-Deploy-Tools-show-json-json-path" class="headerlink" title="AI.Deploy.Tools.show_json(json_path)"></a>AI.Deploy.Tools.show_json(json_path)</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">show_json</span>(<span class="params">json_path</span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    将json结果进行渲染显示</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    :param json_path: (str)json字典路径</span></span><br><span class="line"><span class="string">    :return: None</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="正畸部署-OrthodonticDeploy"><a href="#正畸部署-OrthodonticDeploy" class="headerlink" title="正畸部署-OrthodonticDeploy"></a>正畸部署-OrthodonticDeploy</h2><h2 id="class-ToothSeg"><a href="#class-ToothSeg" class="headerlink" title="class ToothSeg:"></a>class ToothSeg:</h2><p>调用AI模型进行分牙实现： 数据处理；推理；结果优化;</p>
+<h3 id="AI-Deploy-OrthodonticDeploy-ToothSeg-init-self-mesh-path-model-path-devices-’CPUExecutionProvider’-num-classes-15"><a href="#AI-Deploy-OrthodonticDeploy-ToothSeg-init-self-mesh-path-model-path-devices-’CPUExecutionProvider’-num-classes-15" class="headerlink" title="AI.Deploy.OrthodonticDeploy.ToothSeg.init(self, mesh_path, model_path,devices&#x3D;’CPUExecutionProvider’, num_classes&#x3D;15):"></a>AI.Deploy.OrthodonticDeploy.ToothSeg.<strong>init</strong>(self, mesh_path, model_path,devices&#x3D;’CPUExecutionProvider’, num_classes&#x3D;15):</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, mesh_path, model_path, devices=<span class="string">&#x27;CPUExecutionProvider&#x27;</span>,</span></span><br><span class="line"><span class="params">                 num_classes=<span class="number">15</span></span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    定义ToothSeg</span></span><br><span class="line"><span class="string">	</span></span><br><span class="line"><span class="string">    :param mesh_path:(str)需要分牙的网格的路径</span></span><br><span class="line"><span class="string">    :param model_path:(str)分牙模型的路径</span></span><br><span class="line"><span class="string">    :param devices:(str)模型推理设备,默认&#x27;CPUExecutionProvider&#x27;</span></span><br><span class="line"><span class="string">    :param num_classes:(int)当前模型支持分割类数，默认15</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="AI-Deploy-OrthodonticDeploy-ToothSeg-remove-overlapping-triangles-self-m-trimesh-Trimesh"><a href="#AI-Deploy-OrthodonticDeploy-ToothSeg-remove-overlapping-triangles-self-m-trimesh-Trimesh" class="headerlink" title="AI.Deploy.OrthodonticDeploy.ToothSeg._remove_overlapping_triangles(self,m:  trimesh.Trimesh):"></a>AI.Deploy.OrthodonticDeploy.ToothSeg._remove_overlapping_triangles(self,m:  trimesh.Trimesh):</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">_remove_overlapping_triangles</span>(<span class="params">self,m:  trimesh.Trimesh</span>) -&gt; trimesh.Trimesh:</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    删除重叠的三角面片</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    :param m : (trimesh.Trimesh)需要处理的网格模型</span></span><br><span class="line"><span class="string">    :return cleaned_mesh :(trimesh.Trimesh)清除重叠面片后的网格模型</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br></pre></td></tr></table></figure>
+<p>原注释为“删除重叠的三角面片”，实际是对共面的相邻面进行处理，面片数会增加，则其原本的目的是什么？<a href="/sindre">@sindre(sindre)</a></p>
+<h3 id="AI-Deploy-OrthodonticDeploy-ToothSeg-prepare-self"><a href="#AI-Deploy-OrthodonticDeploy-ToothSeg-prepare-self" class="headerlink" title="AI.Deploy.OrthodonticDeploy.ToothSeg.prepare(self):"></a>AI.Deploy.OrthodonticDeploy.ToothSeg.prepare(self):</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">ToothSeg</span>.prepare(<span class="variable language_">self</span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    实现模型预处理，包括删除离群点与重复面片，</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    :return:None</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br></pre></td></tr></table></figure>
+
+<ol>
+<li>正则化特征[-1,1]的for循环内是正态分布向标准正态分布的转换过程，则原始面片与法线是怎样遵循正态分布的</li>
+<li>A_S&amp;A_L设置的目的</li>
+</ol>
+<h3 id="AI-Deploy-OrthodonticDeploy-ToothSeg-infer-self-model-path"><a href="#AI-Deploy-OrthodonticDeploy-ToothSeg-infer-self-model-path" class="headerlink" title="AI.Deploy.OrthodonticDeploy.ToothSeg.infer(self, model_path):"></a>AI.Deploy.OrthodonticDeploy.ToothSeg.infer(self, model_path):</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">infer</span>(<span class="params">self, model_path</span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    推理</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    :param model_path: (str) 实现推理的模型地址</span></span><br><span class="line"><span class="string">    :return data: ([(1,n,15)float32])完成推理后的结果，其内容包括面片的三个点坐标、重心坐标以及法向量</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="AI-Deploy-OrthodonticDeploy-ToothSeg-optimized-self-tensor-prob-output"><a href="#AI-Deploy-OrthodonticDeploy-ToothSeg-optimized-self-tensor-prob-output" class="headerlink" title="AI.Deploy.OrthodonticDeploy.ToothSeg.optimized(self, tensor_prob_output):"></a>AI.Deploy.OrthodonticDeploy.ToothSeg.optimized(self, tensor_prob_output):</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">optimized</span>(<span class="params">self, tensor_prob_output</span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    推理结果数据优化</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    :param tensor_prob_output: ([(1,n,15)float32])推理结果</span></span><br><span class="line"><span class="string">    :return data: ([(1,n,15)float32])精炼优化后的结果</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span> </span><br></pre></td></tr></table></figure>
+<p><a href="/sindre">@sindre(sindre)</a></p>
+<ol>
+<li>beta的意义，常数（向量内积）取模的意义</li>
+<li>edges的第三个值(权重)的计算方式&#x2F;公式</li>
+<li>is_upper的意义</li>
+<li>267为什么会有零散的面片(nei&#x3D;&#x3D;0)，内含四个是“删除重叠面片”里添的，1-3是正常状态,此处处理的是预处理后的模型。</li>
+</ol>
+<h3 id="AI-Deploy-OrthodonticDeploy-ToothSeg-run-self-json-out-path"><a href="#AI-Deploy-OrthodonticDeploy-ToothSeg-run-self-json-out-path" class="headerlink" title="AI.Deploy.OrthodonticDeploy.ToothSeg.run(self, json_out_path):"></a>AI.Deploy.OrthodonticDeploy.ToothSeg.run(self, json_out_path):</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">run</span>(<span class="params">self, json_out_path</span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">        实现分牙的整个流程</span></span><br><span class="line"><span class="string">        </span></span><br><span class="line"><span class="string">        :param json_out_path:(str)分牙结果的json输出地址</span></span><br><span class="line"><span class="string">        :return:None</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="AI-Deploy-OrthodonticDeploy-ToothSeg-KNN-self-json-path-target-mesh-path-json-out-path"><a href="#AI-Deploy-OrthodonticDeploy-ToothSeg-KNN-self-json-path-target-mesh-path-json-out-path" class="headerlink" title="AI.Deploy.OrthodonticDeploy.ToothSeg.KNN(self, json_path, target_mesh_path, json_out_path):"></a>AI.Deploy.OrthodonticDeploy.ToothSeg.KNN(self, json_path, target_mesh_path, json_out_path):</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">KNN</span>(<span class="params">self, json_path, target_mesh_path, json_out_path</span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    对结果进行knn映射</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    :param json_path: (str)当前分牙json文件</span></span><br><span class="line"><span class="string">    :param target_mesh_path: (str)目标mesh路径</span></span><br><span class="line"><span class="string">    :param json_out_path: (str)结果输出路径</span></span><br><span class="line"><span class="string">    :return: None</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="class-ToothArrange"><a href="#class-ToothArrange" class="headerlink" title="class ToothArrange:"></a>class ToothArrange:</h2><p>调用AI模型进行排牙实现：数据处理；推理；结果优化;</p>
+<h3 id="AI-Deploy-OrthodonticDeploy-ToothArrange-init-self-data-list-out-dir-model-path-”14牙弓-npy”"><a href="#AI-Deploy-OrthodonticDeploy-ToothArrange-init-self-data-list-out-dir-model-path-”14牙弓-npy”" class="headerlink" title="AI.Deploy.OrthodonticDeploy.ToothArrange.init(self, data_list, out_dir, model_path&#x3D;”14牙弓.npy”):"></a>AI.Deploy.OrthodonticDeploy.ToothArrange.<strong>init</strong>(self, data_list, out_dir, model_path&#x3D;”14牙弓.npy”):</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, data_list, out_dir, model_path=<span class="string">&quot;14牙弓.npy&quot;</span></span>):</span><br><span class="line">	<span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    定义ToothArrange</span></span><br><span class="line"><span class="string">    </span></span><br><span class="line"><span class="string">    :param data_list (list): 需要排牙的牙齿teeth_list，文件命名需符合 _tooth_牙位号.ply</span></span><br><span class="line"><span class="string">    :param model_path (str): 目标排牙模型的路径</span></span><br><span class="line"><span class="string">    :param out_dir (str): 排牙后输出目录，默认&quot;14牙弓.npy&quot;</span></span><br><span class="line"><span class="string">		</span></span><br><span class="line"><span class="string">	&quot;&quot;&quot;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="AI-Deploy-OrthodonticDeploy-ToothArrange-prepare-self"><a href="#AI-Deploy-OrthodonticDeploy-ToothArrange-prepare-self" class="headerlink" title="AI.Deploy.OrthodonticDeploy.ToothArrange.prepare(self):"></a>AI.Deploy.OrthodonticDeploy.ToothArrange.prepare(self):</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">prepare</span>(<span class="params">self</span>):</span><br><span class="line">	<span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">	读入原始牙齿模型</span></span><br><span class="line"><span class="string">    </span></span><br><span class="line"><span class="string">    :return: None</span></span><br><span class="line"><span class="string">		</span></span><br><span class="line"><span class="string">	&quot;&quot;&quot;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="AI-Deploy-OrthodonticDeploy-ToothArrange-infer-self"><a href="#AI-Deploy-OrthodonticDeploy-ToothArrange-infer-self" class="headerlink" title="AI.Deploy.OrthodonticDeploy.ToothArrange.infer(self):"></a>AI.Deploy.OrthodonticDeploy.ToothArrange.infer(self):</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">infer</span>(<span class="params">self</span>):</span><br><span class="line">	<span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">	实现排牙</span></span><br><span class="line"><span class="string">    </span></span><br><span class="line"><span class="string">    :return: None</span></span><br><span class="line"><span class="string">		</span></span><br><span class="line"><span class="string">	&quot;&quot;&quot;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="AI-Deploy-OrthodonticDeploy-ToothArrange-optimized-self"><a href="#AI-Deploy-OrthodonticDeploy-ToothArrange-optimized-self" class="headerlink" title="AI.Deploy.OrthodonticDeploy.ToothArrange.optimized(self):"></a>AI.Deploy.OrthodonticDeploy.ToothArrange.optimized(self):</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">optimized</span>(<span class="params">self</span>):</span><br><span class="line">	<span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    结果优化</span></span><br><span class="line"><span class="string">    </span></span><br><span class="line"><span class="string">	pass</span></span><br><span class="line"><span class="string">		</span></span><br><span class="line"><span class="string">	&quot;&quot;&quot;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="AI-Deploy-OrthodonticDeploy-ToothArrange-run-self"><a href="#AI-Deploy-OrthodonticDeploy-ToothArrange-run-self" class="headerlink" title="AI.Deploy.OrthodonticDeploy.ToothArrange.run(self):"></a>AI.Deploy.OrthodonticDeploy.ToothArrange.run(self):</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">run</span>(<span class="params">self</span>):</span><br><span class="line">	<span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    实现排牙的整个流程</span></span><br><span class="line"><span class="string">    </span></span><br><span class="line"><span class="string">    :return: None</span></span><br><span class="line"><span class="string">		</span></span><br><span class="line"><span class="string">	&quot;&quot;&quot;</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="class-GumGen"><a href="#class-GumGen" class="headerlink" title="class GumGen:"></a>class GumGen:</h2><p> 通过模板牙龈进行牙列拟合，从而实现”牙龈生成”</p>
+<h3 id="AI-Deploy-OrthodonticDeploy-GumGen-init-self-teeth-list-gum-path-seg-list"><a href="#AI-Deploy-OrthodonticDeploy-GumGen-init-self-teeth-list-gum-path-seg-list" class="headerlink" title="AI.Deploy.OrthodonticDeploy.GumGen.init(self, teeth_list, gum_path, seg_list):"></a>AI.Deploy.OrthodonticDeploy.GumGen.<strong>init</strong>(self, teeth_list, gum_path, seg_list):</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, teeth_list, gum_path, seg_list</span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    定义GumGen</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    :param teeth_list: list(str)牙齿数据列表，需要 牙位号.ply 结尾</span></span><br><span class="line"><span class="string">    :param gum_path: (str)模板牙龈stl文件的路径</span></span><br><span class="line"><span class="string">    :param seg_list: (str)分割后牙列路径</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="AI-Deploy-OrthodonticDeploy-GumGen-get-teeth-edge-points-self"><a href="#AI-Deploy-OrthodonticDeploy-GumGen-get-teeth-edge-points-self" class="headerlink" title="AI.Deploy.OrthodonticDeploy.GumGen.get_teeth_edge_points(self):"></a>AI.Deploy.OrthodonticDeploy.GumGen.get_teeth_edge_points(self):</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">get_teeth_edge_points</span>(<span class="params">self</span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    获取牙列网格与牙列数据</span></span><br><span class="line"><span class="string">        </span></span><br><span class="line"><span class="string">    :return: None</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="AI-Deploy-OrthodonticDeploy-GumGen-get-gum-edge-points-self"><a href="#AI-Deploy-OrthodonticDeploy-GumGen-get-gum-edge-points-self" class="headerlink" title="AI.Deploy.OrthodonticDeploy.GumGen.get_gum_edge_points(self):"></a>AI.Deploy.OrthodonticDeploy.GumGen.get_gum_edge_points(self):</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">get_gum_edge_points</span>(<span class="params">self</span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    获取牙龈数据</span></span><br><span class="line"><span class="string">        </span></span><br><span class="line"><span class="string">    :return: None</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="AI-Deploy-OrthodonticDeploy-GumGen-fitting-self"><a href="#AI-Deploy-OrthodonticDeploy-GumGen-fitting-self" class="headerlink" title="AI.Deploy.OrthodonticDeploy.GumGen.fitting(self):"></a>AI.Deploy.OrthodonticDeploy.GumGen.fitting(self):</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">fitting</span>(<span class="params">self</span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    原始的牙龈向目标牙进行匹配形变，生成形变后的牙龈网格</span></span><br><span class="line"><span class="string">        </span></span><br><span class="line"><span class="string">    :return: None</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="AI-Deploy-OrthodonticDeploy-GumGen-export-self-out-path"><a href="#AI-Deploy-OrthodonticDeploy-GumGen-export-self-out-path" class="headerlink" title="AI.Deploy.OrthodonticDeploy.GumGen.export(self, out_path):"></a>AI.Deploy.OrthodonticDeploy.GumGen.export(self, out_path):</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">export</span>(<span class="params">self, out_path</span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    实现牙龈生成的整个流程并导出牙齿和牙龈</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    :param out_path: (str)文件输出路径</span></span><br><span class="line"><span class="string">    :return:None</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="AI-Deploy-OrthodonticDeploy-GumGen-show-self"><a href="#AI-Deploy-OrthodonticDeploy-GumGen-show-self" class="headerlink" title="AI.Deploy.OrthodonticDeploy.GumGen.show(self):"></a>AI.Deploy.OrthodonticDeploy.GumGen.show(self):</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">show</span>(<span class="params">self</span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    显示牙齿和牙龈</span></span><br><span class="line"><span class="string">        </span></span><br><span class="line"><span class="string">    :return: None</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="class-Orthodontic"><a href="#class-Orthodontic" class="headerlink" title="class Orthodontic:"></a>class Orthodontic:</h2><p>正畸整个流程实现：数据修复–&gt;分牙–&gt;排牙–&gt;生成牙龈</p>
+<h3 id="AI-Deploy-OrthodonticDeploy-Orthodontic-init-self-mesh-path-model-path-arrange-model"><a href="#AI-Deploy-OrthodonticDeploy-Orthodontic-init-self-mesh-path-model-path-arrange-model" class="headerlink" title="AI.Deploy.OrthodonticDeploy.Orthodontic.init(self, mesh_path, model_path,arrange_model):"></a>AI.Deploy.OrthodonticDeploy.Orthodontic.<strong>init</strong>(self, mesh_path, model_path,arrange_model):</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, mesh_path, model_path,arrange_model</span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    定义Orthodontic</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    :param mesh_path: (str)原始网格模型路径</span></span><br><span class="line"><span class="string">    :param model_path: (str)分牙模型路径</span></span><br><span class="line"><span class="string">    :param arrange_model: (str)标准牙弓线路径</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="AI-Deploy-OrthodonticDeploy-Orthodontic-DataRepair-self"><a href="#AI-Deploy-OrthodonticDeploy-Orthodontic-DataRepair-self" class="headerlink" title="AI.Deploy.OrthodonticDeploy.Orthodontic.DataRepair(self):"></a>AI.Deploy.OrthodonticDeploy.Orthodontic.DataRepair(self):</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">DataRepair</span>(<span class="params">self</span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    数据修复方法</span></span><br><span class="line"><span class="string">        </span></span><br><span class="line"><span class="string">    pass</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="AI-Deploy-OrthodonticDeploy-Orthodontic-ToothSeg-self-out-dir"><a href="#AI-Deploy-OrthodonticDeploy-Orthodontic-ToothSeg-self-out-dir" class="headerlink" title="AI.Deploy.OrthodonticDeploy.Orthodontic.ToothSeg(self, out_dir):"></a>AI.Deploy.OrthodonticDeploy.Orthodontic.ToothSeg(self, out_dir):</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">ToothSeg</span>(<span class="params">self, out_dir</span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    牙齿分割</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    :param out_dir: (str)分牙后单颗牙的输出目录</span></span><br><span class="line"><span class="string">    :return:None</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="AI-Deploy-OrthodonticDeploy-Orthodontic-ToothArrange-self-out-dir"><a href="#AI-Deploy-OrthodonticDeploy-Orthodontic-ToothArrange-self-out-dir" class="headerlink" title="AI.Deploy.OrthodonticDeploy.Orthodontic.ToothArrange(self, out_dir):"></a>AI.Deploy.OrthodonticDeploy.Orthodontic.ToothArrange(self, out_dir):</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">ToothArrange</span>(<span class="params">self, arrange_out_dir</span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    牙齿排列</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    :param arrange_out_dir:(str)排牙后输出目录</span></span><br><span class="line"><span class="string">    :return:None</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="AI-Deploy-OrthodonticDeploy-Orthodontic-GumsGen-self-gum-out-dir"><a href="#AI-Deploy-OrthodonticDeploy-Orthodontic-GumsGen-self-gum-out-dir" class="headerlink" title="AI.Deploy.OrthodonticDeploy.Orthodontic.GumsGen(self, gum_out_dir):"></a>AI.Deploy.OrthodonticDeploy.Orthodontic.GumsGen(self, gum_out_dir):</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">GumsGen</span>(<span class="params">self, gum_out_dir</span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    牙龈生成</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    :param gum_out_dir: (str)牙龈生成后输出目录</span></span><br><span class="line"><span class="string">    :return:None</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="AI-Deploy-OrthodonticDeploy-Orthodontic-run-self-gum-out-dir-arrange-out-dir-seg-out-dir"><a href="#AI-Deploy-OrthodonticDeploy-Orthodontic-run-self-gum-out-dir-arrange-out-dir-seg-out-dir" class="headerlink" title="AI.Deploy.OrthodonticDeploy.Orthodontic.run(self, gum_out_dir, arrange_out_dir, seg_out_dir):"></a>AI.Deploy.OrthodonticDeploy.Orthodontic.run(self, gum_out_dir, arrange_out_dir, seg_out_dir):</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">run</span>(<span class="params">self, seg_out_dir, arrange_out_dir, gum_out_dir</span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    实现正畸整个流程</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    :param seg_out_dir: (str)分牙后单颗牙的输出目录</span></span><br><span class="line"><span class="string">    :param arrange_out_dir: (str)排牙后输出目录</span></span><br><span class="line"><span class="string">    :param gum_out_dir: (str)牙龈生成后输出目录</span></span><br><span class="line"><span class="string">    :return:None</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="AI-Deploy-OrthodonticDeploy-Orthodontic-ShowSeg-self"><a href="#AI-Deploy-OrthodonticDeploy-Orthodontic-ShowSeg-self" class="headerlink" title="AI.Deploy.OrthodonticDeploy.Orthodontic.ShowSeg(self):"></a>AI.Deploy.OrthodonticDeploy.Orthodontic.ShowSeg(self):</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">ShowSeg</span>(<span class="params">self</span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    显示分牙结果</span></span><br><span class="line"><span class="string">        </span></span><br><span class="line"><span class="string">    pass</span></span><br><span class="line"><span class="string">    </span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="AI-Deploy-OrthodonticDeploy-Orthodontic-ShowArrange-self"><a href="#AI-Deploy-OrthodonticDeploy-Orthodontic-ShowArrange-self" class="headerlink" title="AI.Deploy.OrthodonticDeploy.Orthodontic.ShowArrange(self):"></a>AI.Deploy.OrthodonticDeploy.Orthodontic.ShowArrange(self):</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">ShowArrange</span>(<span class="params">self</span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    显示排牙结果</span></span><br><span class="line"><span class="string">        </span></span><br><span class="line"><span class="string">    pass</span></span><br><span class="line"><span class="string">    </span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br></pre></td></tr></table></figure>
+
+    </div>
+
+    
+    
+    
+        <div class="reward-container">
+  <div></div>
+  <button onclick="var qr = document.getElementById('qr'); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/images/wechatpay.png" alt="SindreYang 微信支付">
+        <p>微信支付</p>
+      </div>
+      
+      <div style="display: inline-block;">
+        <img src="/images/alipay.png" alt="SindreYang 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>SindreYang
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://blog.mviai.com/2025/AI%E7%AE%97%E6%B3%95%E5%BA%93API-V1.3.9/" title="AI算法库API-V1">http://blog.mviai.com/2025/AI算法库API-V1.3.9/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <span class="exturl" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC9kZWVkLnpo"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</span> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+        
+
+  <div class="followme">
+    <p>欢迎关注我的其它发布渠道</p>
+
+    <div class="social-list">
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="/images/wechat.png">
+            <span class="icon">
+              <i class="fa fa-wechat"></i>
+            </span>
+
+            <span class="label">WeChat</span>
+          </a>
+        </div>
+    </div>
+  </div>
+
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2025/AI%E7%AE%97%E6%B3%95%E5%BA%93%E4%BD%93%E9%AA%8C%E8%A1%A8/" rel="prev" title="AI算法库体验表">
+      <i class="fa fa-chevron-left"></i> AI算法库体验表
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2025/AI%E7%AE%97%E6%B3%95%E5%B7%A5%E7%A8%8B%E5%B8%88--%E5%B0%8F%E6%B5%8B%E8%AF%952/" rel="next" title="AI算法工程师--小测试2">
+      AI算法工程师--小测试2 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    
+  <div class="comments">
+    <div id="SOHUCS"></div>
+  </div>
+  
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link"><span class="nav-number">1.</span> <span class="nav-text"></span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#APIImage-measurement"><span class="nav-number"></span> <span class="nav-text">APIImage measurement</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86%E7%B1%BB-DataProcess"><span class="nav-number"></span> <span class="nav-text">数据处理类-DataProcess</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%A8%E5%86%A0%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86-FullCrown"><span class="nav-number">1.</span> <span class="nav-text">全冠数据处理-FullCrown</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#AI-Repair-FullCrown-init-self-user-path-None-torch-path-None-pt-path-None-generate-path-None-batch-size-167800"><span class="nav-number">1.1.</span> <span class="nav-text">AI.Repair.FullCrown.init(self,  user_path&#x3D;None, torch_path&#x3D;None, pt_path&#x3D;None, generate_path&#x3D;None,batch_size&#x3D;167800)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#AI-Repair-FullCrown-mesh-split-self-mesh-trimesh-Trimesh-list"><span class="nav-number">1.2.</span> <span class="nav-text">AI.Repair.FullCrown.mesh_split(self,mesh:trimesh.Trimesh)-&gt;list</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#AI-Repair-FullCrown-normalize-meshes-self-mesh"><span class="nav-number">1.3.</span> <span class="nav-text">AI.Repair.FullCrown.normalize_meshes(self,mesh)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#AI-Repair-FullCrown-get-mid-self-sources-path-None-target-path-None"><span class="nav-number">1.4.</span> <span class="nav-text">AI.Repair.FullCrown.get_mid(self,sources_path&#x3D;None, target_path&#x3D;None)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#AI-Repair-FullCrown-data-process-self-ply-path-str-get-two-teeth-bool-True-resolution-int-32-pcd-samples-num-int-100000-sigma-float-0-1-sources-path-None-np-array"><span class="nav-number">1.5.</span> <span class="nav-text">AI.Repair.FullCrown.data_process(self,ply_path: str, get_two_teeth: bool &#x3D; True, resolution:int &#x3D; 32, pcd_samples_num:int&#x3D;100000, sigma:float &#x3D; 0.1, sources_path&#x3D;None) -&gt; np.array</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#AI-Repair-FullCrown-process-self-user-path-None-torch-path-None-None"><span class="nav-number">1.6.</span> <span class="nav-text">AI.Repair.FullCrown.process(self,user_path&#x3D;None,torch_path&#x3D;None) -&gt; None:</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#AI-Repair-FullCrown-create-bounds-self-min-0-45-max-0-45-res-256"><span class="nav-number">1.7.</span> <span class="nav-text">AI.Repair.FullCrown.create_bounds(self,min&#x3D;-0.45, max&#x3D;0.45, res&#x3D;256)</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%88%86%E7%89%99%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86-MeshSeg"><span class="nav-number">2.</span> <span class="nav-text">分牙数据处理-MeshSeg</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#AI-MeshSeg-MeshSeg-init-self-dataset-path-batch-size-12-save-path-%E2%80%9DMeshSeg-pt%E2%80%9D-num-workers-12"><span class="nav-number">2.1.</span> <span class="nav-text">AI.MeshSeg.MeshSeg.init(self, dataset_path,batch_size&#x3D;12, save_path&#x3D;”MeshSeg.pt”, num_workers&#x3D;12):</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#AI-MeshSeg-MeshSeg-dataProcessing-self"><span class="nav-number">2.2.</span> <span class="nav-text">AI.MeshSeg.MeshSeg.dataProcessing(self):</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%A8%A1%E5%9E%8B%E6%90%AD%E5%BB%BA%E7%B1%BB-Building"><span class="nav-number"></span> <span class="nav-text">模型搭建类-Building</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%82%B9%E4%BA%91%E6%A8%A1%E5%9E%8B-PointCloud"><span class="nav-number">1.</span> <span class="nav-text">点云模型-PointCloud</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BD%91%E6%A0%BC%E6%A8%A1%E5%9E%8B-Mesh"><span class="nav-number">2.</span> <span class="nav-text">网格模型-Mesh</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%93%E7%B4%A0%E6%A8%A1%E5%9E%8B-Voxel"><span class="nav-number">3.</span> <span class="nav-text">体素模型-Voxel</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9B%BE%E5%83%8F%E6%A8%A1%E5%9E%8B-Image"><span class="nav-number">4.</span> <span class="nav-text">图像模型-Image</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%96%87%E6%9C%AC%E6%A8%A1%E5%9E%8B-Text"><span class="nav-number">5.</span> <span class="nav-text">文本模型-Text</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%A8%A1%E5%9E%8B%E8%AE%AD%E7%BB%83%E7%B1%BB-Training"><span class="nav-number"></span> <span class="nav-text">模型训练类-Training</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#AI-Repair-FullCrown-train-self-torch-path-None-pt-path-None-batch-size-1-num-workers-1-start-epoch-0-end-epoch-15000-shuffle-True"><span class="nav-number">0.1.</span> <span class="nav-text">AI.Repair.FullCrown.train(self, torch_path&#x3D;None, pt_path&#x3D;None,batch_size&#x3D;1,num_workers&#x3D;1,start_epoch&#x3D;0,end_epoch&#x3D;15000,shuffle&#x3D;True):</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#AI-Segmentation-MeshSeg-train-self-num-epochs-2000"><span class="nav-number">0.2.</span> <span class="nav-text">AI.Segmentation.MeshSeg.train(self,num_epochs&#x3D;2000):</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#AI-DentalInlay-DentalInlay-train-dataroot-None-checkpoints-dir-%E2%80%9DC-%E2%80%9C-batch-size-8-name-%E2%80%9Ddental-pix2pix%E2%80%9D-model-type-%E2%80%9Dpix2pix%E2%80%9D"><span class="nav-number">0.3.</span> <span class="nav-text">AI.DentalInlay.DentalInlay.train(dataroot&#x3D;None,,checkpoints_dir&#x3D;”C:\“,batch_size&#x3D;8, name&#x3D;”dental_pix2pix”, model_type&#x3D;”pix2pix”):</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E5%88%86%E5%89%B2-DataPartition"><span class="nav-number">1.</span> <span class="nav-text">数据分割-DataPartition</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BC%98%E5%8C%96%E5%99%A8%E9%80%89%E6%8B%A9-Optimizer"><span class="nav-number">2.</span> <span class="nav-text">优化器选择-Optimizer</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8D%9F%E5%A4%B1%E5%87%BD%E6%95%B0%E9%80%89%E6%8B%A9-LossFunction"><span class="nav-number">3.</span> <span class="nav-text">损失函数选择-LossFunction</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%8E%A8%E7%90%86%E7%B1%BB-Inference"><span class="nav-number"></span> <span class="nav-text">推理类-Inference</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%88%86%E5%89%B2%E6%8E%A8%E7%90%86-Segmentation"><span class="nav-number">1.</span> <span class="nav-text">分割推理-Segmentation</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%88%86%E7%B1%BB%E6%8E%A8%E7%90%86-Classification"><span class="nav-number">2.</span> <span class="nav-text">分类推理-Classification</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%94%9F%E6%88%90%E6%8E%A8%E7%90%86-Generation"><span class="nav-number">3.</span> <span class="nav-text">生成推理-Generation</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#AI-Repair-FullCrown-generate-pcd-self-mesh-path-out-path"><span class="nav-number">3.1.</span> <span class="nav-text">AI.Repair.FullCrown.generate_pcd(self,mesh_path,out_path)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#AI-Repair-FullCrown-generate-vol-self-mesh-path-out-path"><span class="nav-number">3.2.</span> <span class="nav-text">AI.Repair.FullCrown.generate_vol(self,mesh_path,out_path)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#AI-Repair-FullCrown-generate-all-vol-self-generate-path-None-pt-path-None"><span class="nav-number">3.3.</span> <span class="nav-text">AI.Repair.FullCrown.generate_all_vol(self,generate_path&#x3D;None,pt_path&#x3D;None):</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#AI-DentalInlay-DentalInlay-inference-dataroot-None-checkpoints-dir-%E2%80%9DC-%E2%80%9C-name-%E2%80%9Dexperiment-name%E2%80%9D-direction-%E2%80%9DBtoA%E2%80%9D"><span class="nav-number">3.4.</span> <span class="nav-text">AI.DentalInlay.DentalInlay.inference(dataroot&#x3D;None, checkpoints_dir&#x3D;”C:&#x2F;“,name&#x3D;”experiment_name”,direction&#x3D;”BtoA”):</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#AI-DentalInlay-DentalInlay-Inference-model-onnx-path-dataroot-None-name-%E2%80%9Ddental-pix2pix%E2%80%9D-direction-%E2%80%9D-BtoA%E2%80%9D"><span class="nav-number">3.5.</span> <span class="nav-text">AI.DentalInlay.DentalInlay.Inference_model(onnx_path,dataroot&#x3D;None,name&#x3D;”dental_pix2pix”,direction&#x3D;” BtoA”)</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A3%80%E6%B5%8B%E6%8E%A8%E7%90%86-Measurement"><span class="nav-number">4.</span> <span class="nav-text">检测推理-Measurement</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%98%BE%E7%A4%BA%E7%B1%BB-Show"><span class="nav-number"></span> <span class="nav-text">显示类-Show</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#AI-Repair-FullCrown-show-self-sources-path-target-path"><span class="nav-number">0.1.</span> <span class="nav-text">AI.Repair.FullCrown.show(self,sources_path,target_path)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#AI-Repair-FullCrown-show-all-self-generate-path-None"><span class="nav-number">0.2.</span> <span class="nav-text">AI.Repair.FullCrown.show_all(self,generate_path&#x3D;None):</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%B8%80%E9%94%AE%E5%BC%8F-Run"><span class="nav-number"></span> <span class="nav-text">一键式-Run</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%A8%E5%86%A0%E7%94%9F%E6%88%90"><span class="nav-number">1.</span> <span class="nav-text">全冠生成</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#AI-Repair-FullCrown-run-self-process-bool-True-train-bool-True-generate-bool-True-show-bool-True"><span class="nav-number">1.1.</span> <span class="nav-text">AI.Repair.FullCrown.run(self,process:bool &#x3D; True,train:bool &#x3D; True,generate:bool &#x3D; True,show:bool &#x3D; True):</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%83%A8%E7%BD%B2%E7%B1%BB-Deploy"><span class="nav-number"></span> <span class="nav-text">部署类-Deploy</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%87%AA%E5%AE%9A%E4%B9%89%E7%9A%84%E7%9B%B8%E5%85%B3%E5%B7%A5%E5%85%B7-Tools"><span class="nav-number">1.</span> <span class="nav-text">自定义的相关工具-Tools</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#AI-Deploy-Tools-NpEncoder-default-self-obj"><span class="nav-number">1.1.</span> <span class="nav-text">AI.Deploy.Tools.NpEncoder.default(self, obj)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#AI-Deploy-Tools-DictToJson-data-out-path-%E2%80%9Dout-json%E2%80%9D"><span class="nav-number">1.2.</span> <span class="nav-text">AI.Deploy.Tools.DictToJson(data,out_path&#x3D;”out.json”)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#AI-Deploy-Tools-json-to-ply-json-path-str-out-dir"><span class="nav-number">1.3.</span> <span class="nav-text">AI.Deploy.Tools.json_to_ply(json_path:str,out_dir)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#AI-Deploy-Tools-show-json-json-path"><span class="nav-number">1.4.</span> <span class="nav-text">AI.Deploy.Tools.show_json(json_path)</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%AD%A3%E7%95%B8%E9%83%A8%E7%BD%B2-OrthodonticDeploy"><span class="nav-number">2.</span> <span class="nav-text">正畸部署-OrthodonticDeploy</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#class-ToothSeg"><span class="nav-number">3.</span> <span class="nav-text">class ToothSeg:</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#AI-Deploy-OrthodonticDeploy-ToothSeg-init-self-mesh-path-model-path-devices-%E2%80%99CPUExecutionProvider%E2%80%99-num-classes-15"><span class="nav-number">3.1.</span> <span class="nav-text">AI.Deploy.OrthodonticDeploy.ToothSeg.init(self, mesh_path, model_path,devices&#x3D;’CPUExecutionProvider’, num_classes&#x3D;15):</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#AI-Deploy-OrthodonticDeploy-ToothSeg-remove-overlapping-triangles-self-m-trimesh-Trimesh"><span class="nav-number">3.2.</span> <span class="nav-text">AI.Deploy.OrthodonticDeploy.ToothSeg._remove_overlapping_triangles(self,m:  trimesh.Trimesh):</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#AI-Deploy-OrthodonticDeploy-ToothSeg-prepare-self"><span class="nav-number">3.3.</span> <span class="nav-text">AI.Deploy.OrthodonticDeploy.ToothSeg.prepare(self):</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#AI-Deploy-OrthodonticDeploy-ToothSeg-infer-self-model-path"><span class="nav-number">3.4.</span> <span class="nav-text">AI.Deploy.OrthodonticDeploy.ToothSeg.infer(self, model_path):</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#AI-Deploy-OrthodonticDeploy-ToothSeg-optimized-self-tensor-prob-output"><span class="nav-number">3.5.</span> <span class="nav-text">AI.Deploy.OrthodonticDeploy.ToothSeg.optimized(self, tensor_prob_output):</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#AI-Deploy-OrthodonticDeploy-ToothSeg-run-self-json-out-path"><span class="nav-number">3.6.</span> <span class="nav-text">AI.Deploy.OrthodonticDeploy.ToothSeg.run(self, json_out_path):</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#AI-Deploy-OrthodonticDeploy-ToothSeg-KNN-self-json-path-target-mesh-path-json-out-path"><span class="nav-number">3.7.</span> <span class="nav-text">AI.Deploy.OrthodonticDeploy.ToothSeg.KNN(self, json_path, target_mesh_path, json_out_path):</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#class-ToothArrange"><span class="nav-number">4.</span> <span class="nav-text">class ToothArrange:</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#AI-Deploy-OrthodonticDeploy-ToothArrange-init-self-data-list-out-dir-model-path-%E2%80%9D14%E7%89%99%E5%BC%93-npy%E2%80%9D"><span class="nav-number">4.1.</span> <span class="nav-text">AI.Deploy.OrthodonticDeploy.ToothArrange.init(self, data_list, out_dir, model_path&#x3D;”14牙弓.npy”):</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#AI-Deploy-OrthodonticDeploy-ToothArrange-prepare-self"><span class="nav-number">4.2.</span> <span class="nav-text">AI.Deploy.OrthodonticDeploy.ToothArrange.prepare(self):</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#AI-Deploy-OrthodonticDeploy-ToothArrange-infer-self"><span class="nav-number">4.3.</span> <span class="nav-text">AI.Deploy.OrthodonticDeploy.ToothArrange.infer(self):</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#AI-Deploy-OrthodonticDeploy-ToothArrange-optimized-self"><span class="nav-number">4.4.</span> <span class="nav-text">AI.Deploy.OrthodonticDeploy.ToothArrange.optimized(self):</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#AI-Deploy-OrthodonticDeploy-ToothArrange-run-self"><span class="nav-number">4.5.</span> <span class="nav-text">AI.Deploy.OrthodonticDeploy.ToothArrange.run(self):</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#class-GumGen"><span class="nav-number">5.</span> <span class="nav-text">class GumGen:</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#AI-Deploy-OrthodonticDeploy-GumGen-init-self-teeth-list-gum-path-seg-list"><span class="nav-number">5.1.</span> <span class="nav-text">AI.Deploy.OrthodonticDeploy.GumGen.init(self, teeth_list, gum_path, seg_list):</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#AI-Deploy-OrthodonticDeploy-GumGen-get-teeth-edge-points-self"><span class="nav-number">5.2.</span> <span class="nav-text">AI.Deploy.OrthodonticDeploy.GumGen.get_teeth_edge_points(self):</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#AI-Deploy-OrthodonticDeploy-GumGen-get-gum-edge-points-self"><span class="nav-number">5.3.</span> <span class="nav-text">AI.Deploy.OrthodonticDeploy.GumGen.get_gum_edge_points(self):</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#AI-Deploy-OrthodonticDeploy-GumGen-fitting-self"><span class="nav-number">5.4.</span> <span class="nav-text">AI.Deploy.OrthodonticDeploy.GumGen.fitting(self):</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#AI-Deploy-OrthodonticDeploy-GumGen-export-self-out-path"><span class="nav-number">5.5.</span> <span class="nav-text">AI.Deploy.OrthodonticDeploy.GumGen.export(self, out_path):</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#AI-Deploy-OrthodonticDeploy-GumGen-show-self"><span class="nav-number">5.6.</span> <span class="nav-text">AI.Deploy.OrthodonticDeploy.GumGen.show(self):</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#class-Orthodontic"><span class="nav-number">6.</span> <span class="nav-text">class Orthodontic:</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#AI-Deploy-OrthodonticDeploy-Orthodontic-init-self-mesh-path-model-path-arrange-model"><span class="nav-number">6.1.</span> <span class="nav-text">AI.Deploy.OrthodonticDeploy.Orthodontic.init(self, mesh_path, model_path,arrange_model):</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#AI-Deploy-OrthodonticDeploy-Orthodontic-DataRepair-self"><span class="nav-number">6.2.</span> <span class="nav-text">AI.Deploy.OrthodonticDeploy.Orthodontic.DataRepair(self):</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#AI-Deploy-OrthodonticDeploy-Orthodontic-ToothSeg-self-out-dir"><span class="nav-number">6.3.</span> <span class="nav-text">AI.Deploy.OrthodonticDeploy.Orthodontic.ToothSeg(self, out_dir):</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#AI-Deploy-OrthodonticDeploy-Orthodontic-ToothArrange-self-out-dir"><span class="nav-number">6.4.</span> <span class="nav-text">AI.Deploy.OrthodonticDeploy.Orthodontic.ToothArrange(self, out_dir):</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#AI-Deploy-OrthodonticDeploy-Orthodontic-GumsGen-self-gum-out-dir"><span class="nav-number">6.5.</span> <span class="nav-text">AI.Deploy.OrthodonticDeploy.Orthodontic.GumsGen(self, gum_out_dir):</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#AI-Deploy-OrthodonticDeploy-Orthodontic-run-self-gum-out-dir-arrange-out-dir-seg-out-dir"><span class="nav-number">6.6.</span> <span class="nav-text">AI.Deploy.OrthodonticDeploy.Orthodontic.run(self, gum_out_dir, arrange_out_dir, seg_out_dir):</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#AI-Deploy-OrthodonticDeploy-Orthodontic-ShowSeg-self"><span class="nav-number">6.7.</span> <span class="nav-text">AI.Deploy.OrthodonticDeploy.Orthodontic.ShowSeg(self):</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#AI-Deploy-OrthodonticDeploy-Orthodontic-ShowArrange-self"><span class="nav-number">6.8.</span> <span class="nav-text">AI.Deploy.OrthodonticDeploy.Orthodontic.ShowArrange(self):</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="SindreYang"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">SindreYang</p>
+  <div class="site-description" itemprop="description">沉淀后我愿意做一个温暖的人。有自己的喜好，有自己的原则，有自己的信仰，不急功近利，不浮夸轻薄，宠辱不惊，淡定安逸，心静如水。------不忘初心，方得始终</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">321</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">72</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL1NpbmRyZVlhbmc=" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;SindreYang"><i class="fa fa-fw fa-github"></i>GitHub</span>
+      </span>
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="bWFpbHRvOnl4QG12aWFpLmNvbQ==" title="E-Mail → mailto:yx@mviai.com"><i class="fa fa-fw fa-envelope"></i>E-Mail</span>
+      </span>
+  </div>
+  <div class="cc-license motion-element" itemprop="license">
+    <span class="exturl cc-opacity" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC9kZWVkLnpo"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+  <div class="languages">
+    <label class="lang-select-label">
+      <i class="fa fa-language"></i>
+      <span>简体中文</span>
+      <i class="fa fa-angle-up" aria-hidden="true"></i>
+    </label>
+    <select class="lang-select" data-canonical="">
+      
+        <option value="zh-CN" data-href="/2025/AI%E7%AE%97%E6%B3%95%E5%BA%93API-V1.3.9/" selected="">
+          简体中文
+        </option>
+      
+        <option value="en" data-href="/en/2025/AI%E7%AE%97%E6%B3%95%E5%BA%93API-V1.3.9/" selected="">
+          English
+        </option>
+      
+    </select>
+  </div>
+
+        
+
+<div class="copyright">
+  
+  &copy; 2018 – 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">SindreYang</span>
+</div><!-- 页面点击小红心 -->
+<script type="text/javascript" src="/js/love.js"></script>
+<!-- 背景波浪 -->
+<script color="0,0,255" opacity="0.5" zIndex="-1" count="99" src="https://cdn.jsdelivr.net/npm/canvas-nest.js@1/dist/canvas-nest.js"></script>
+
+
+<!-- 腾讯企业邮箱 -->
+<style>
+.bizmail_loginpanel {
+    font-size: 12px;
+    width: 300px;
+    height: auto;
+    background: transparent;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.bizmail_LoginBox {
+    padding: 10px 15px;
+}
+
+
+.bizmail_loginpanel form {
+    margin: 0;
+    padding: 0;
+}
+
+.bizmail_loginpanel input.text {
+    font-size: 12px;
+    width: 100px;
+    height: 20px;
+    margin: 0 2px;
+    background-color: transparent;
+    border:1px solid transparent;
+    box-shadow: none;
+    color: black;
+}
+
+.bizmail_loginpanel .bizmail_column {
+    height: 28px;
+}
+
+.bizmail_loginpanel .bizmail_column label {
+    display: block;
+    float: left;
+    width: 30px;
+    height: 24px;
+    line-height: 24px;
+    font-size: 12px;
+}
+
+.bizmail_loginpanel .bizmail_column .bizmail_inputArea {
+    float: left;
+    width: 240px;
+}
+
+.bizmail_loginpanel .bizmail_column span {
+    font-size: 12px;
+    word-wrap: break-word;
+    margin-left: 2px;
+    line-height: 200%;
+}
+
+.bizmail_loginpanel .bizmail_SubmitArea {
+    margin-left: 30px;
+    clear: both;
+}
+
+.bizmail_loginpanel .bizmail_SubmitArea a {
+    font-size: 12px;
+    margin-left: 5px;
+}
+
+.bizmail_loginpanel select {
+    width: 110px;
+    height: 20px;
+    margin: 0 2px;
+}
+.bizmail_loginpanel input {
+
+    background-color: rgba(83, 126, 236, 0.562);
+}
+
+
+</style>
+
+<script type="text/javascript">
+function checkInput() {
+    var e = document.form1.uin,
+        i = document.form1.pwd;
+    return 0 == e.value.length ? e.focus() : 0 == i.value.length ? i.focus() : (document.form1.submit(), setTimeout(" document.form1.pwd.value = '' ", 500)), !1
+}
+
+function writeLoginPanel(e) {
+    if (e && e.domainlist && -1 != e.domainlist.indexOf(".")) {
+        var a = "return checkInput()",
+            t = '<div id="divLoginpanelHor" class="bizmail_loginpanel" style="width:550px;"><div class="bizmail_LoginBox"><form name="form1" action="https://exmail.qq.com/cgi-bin/login" target="_blank" method="post" onsubmit="' + a + '"><input type="hidden" name="firstlogin" value="false" /><input type="hidden" name="errtemplate" value="dm_loginpage" /><input type="hidden" name="aliastype" value="other" /><input type="hidden" name="dmtype" value="bizmail" /><input type="hidden" name="p" value="" /><label>\u8d26\u53f7:</label><input type="text" name="uin" class="text" value="" />@#domainlist#<label>&nbsp&nbsp&nbsp;\u5bc6\u7801:</label><input type="password" name="pwd" class="text" value="" /><input type="submit" class="" name="" value="\u767b\u5f55" />&nbsp;<a href="https://exmail.qq.com/cgi-bin/readtemplate?check=false&t=biz_rf_portal#recovery" target="_blank">\u5fd8\u8bb0\u5bc6\u7801\uff1f</a></form></div></div>',
+            n = '<div id="divLoginpanelVer" class="bizmail_loginpanel"><div class="bizmail_LoginBox"><form name="form1" action="https://exmail.qq.com/cgi-bin/login" target="_blank" method="post" onsubmit="' + a + '"><input type="hidden" name="firstlogin" value="false" /><input type="hidden" name="errtemplate" value="dm_loginpage" /><input type="hidden" name="aliastype" value="other" /><input type="hidden" name="dmtype" value="bizmail" /><input type="hidden" name="p" value="" /><div class="bizmail_column"><label>\u8d26\u53f7:</label><div class="bizmail_inputArea"><input type="text" name="uin" class="text" value="" />@#domainlist#</div></div><div class="bizmail_column"><label>\u5bc6\u7801:</label><div class="bizmail_inputArea"><input type="password" name="pwd" class="text" value="" /></div></div><div class="bizmail_SubmitArea"><input type="submit" class="" name="" style="width:66px;" value="\u767b\u5f55" /><a href="https://exmail.qq.com/cgi-bin/readtemplate?check=false&t=biz_rf_portal#recovery" target="_blank">\u5fd8\u8bb0\u5bc6\u7801\uff1f</a></div></form></div></div>',
+            l = e.domainlist.split(";");
+        if (1 == l.length) var m = '<span>#domain#</span><input type="hidden" name="domain" value="#domain#" />'.replace(/#domain#/g, l[0]);
+        else {
+            m = '<select name="domain">';
+            for (i = 0; i < l.length; i++) m += '<option value="' + l[i] + '">' + l[i] + "</option>";
+            m += "</select>"
+        }
+        e.mode && "vertical" != e.mode && "both" != e.mode || document.write(n.replace(/#domainlist#/g, m)), "horizontal" != e.mode && "both" != e.mode || document.write(t.replace(/#domainlist#/g, m))
+    }
+}
+
+</script>      
+
+<script type="text/javascript"> writeLoginPanel({domainlist:"mviai.com", mode:"horizontal"});</script>      
+
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script size="300" alpha="0.6" zIndex="-1" src="/lib/canvas-ribbon/canvas-ribbon.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/medium-zoom@1/dist/medium-zoom.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+  <script defer src="/lib/three/three.min.js"></script>
+    <script defer src="/lib/three/three-waves.min.js"></script>
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+<script>
+document.querySelectorAll('.pdfobject-container').forEach(element => {
+  let url = element.dataset.target;
+  let pdfOpenParams = {
+    navpanes : 0,
+    toolbar  : 0,
+    statusbar: 0,
+    pagemode : 'thumbs',
+    view     : 'FitH'
+  };
+  let pdfOpenFragment = '#' + Object.entries(pdfOpenParams).map(([key, value]) => `${key}=${encodeURIComponent(value)}`).join('&');
+  let fullURL = `/lib/pdf/web/viewer.html?file=${encodeURIComponent(url)}${pdfOpenFragment}`;
+
+  if (NexT.utils.supportsPDFs()) {
+    element.innerHTML = `<embed class="pdfobject" src="${url + pdfOpenFragment}" type="application/pdf" style="height: ${element.dataset.height};">`;
+  } else {
+    element.innerHTML = `<iframe src="${fullURL}" style="height: ${element.dataset.height};" frameborder="0"></iframe>`;
+  }
+});
+</script>
+
+
+
+
+  
+
+  
+
+  <script>
+  NexT.utils.loadComments(document.querySelector('#SOHUCS'), () => {
+    var appid = 'cyxmItxjS';
+    var conf = 'e5e71132d9086bb54aeeba6e88e87df9';
+    var width = window.innerWidth || document.documentElement.clientWidth;
+    if (width < 960) {
+      window.document.write('<script id="changyan_mobile_js" charset="utf-8" type="text/javascript" src="https://cy-cdn.kuaizhan.com/upload/mobile/wap-js/changyan_mobile.js?client_id=' + appid + '&conf=' + conf + '"><\/script>');
+    } else {
+      var loadJs=function(d,a){var c=document.getElementsByTagName("head")[0]||document.head||document.documentElement;var b=document.createElement("script");b.setAttribute("type","text/javascript");b.setAttribute("charset","UTF-8");b.setAttribute("src",d);if(typeof a==="function"){if(window.attachEvent){b.onreadystatechange=function(){var e=b.readyState;if(e==="loaded"||e==="complete"){b.onreadystatechange=null;a()}}}else{b.onload=a}}c.appendChild(b)};loadJs("https://changyan.sohu.com/upload/changyan.js",function(){window.changyan.api.config({appid:appid,conf:conf})});
+    }
+  });
+  </script>
+  <script src="https://cy-cdn.kuaizhan.com/upload/plugins/plugins.count.js"></script>
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/z16.model.json"},"display":{"position":"left","width":75,"height":150},"mobile":{"show":true},"log":false});</script></body>
+</html>
+
+
+
+

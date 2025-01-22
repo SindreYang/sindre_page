@@ -1,0 +1,829 @@
+<!DOCTYPE html>
+<html lang="zh-CN,en,default">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" href="/lib/pace/pace-theme-minimal.min.css">
+  <script src="/lib/pace/pace.min.js"></script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"blog.mviai.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":true,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":true,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="自动摘要: 网格分割算法是三维几何处理算法中的重要算法，具有许多实际应用。[Katzetal.2003]提出了一种新型的层次化网格分割算法，该算法能够将几何模型沿着凹形区域分割成不同的几何部分，并且可以避免 ……..">
+<meta property="og:type" content="article">
+<meta property="og:title" content="基于模糊聚类和最小割的层次化三维网格分割算法（Hierarchical_Mesh_Decomposition）">
+<meta property="og:url" content="http://blog.mviai.com/2025/%E5%9F%BA%E4%BA%8E%E6%A8%A1%E7%B3%8A%E8%81%9A%E7%B1%BB%E5%92%8C%E6%9C%80%E5%B0%8F%E5%89%B2%E7%9A%84%E5%B1%82%E6%AC%A1%E5%8C%96%E4%B8%89%E7%BB%B4%E7%BD%91%E6%A0%BC%E5%88%86%E5%89%B2%E7%AE%97%E6%B3%95%EF%BC%88Hierarchical_Mesh_Decomposition%EF%BC%89/index.html">
+<meta property="og:site_name" content="落叶无痕">
+<meta property="og:description" content="自动摘要: 网格分割算法是三维几何处理算法中的重要算法，具有许多实际应用。[Katzetal.2003]提出了一种新型的层次化网格分割算法，该算法能够将几何模型沿着凹形区域分割成不同的几何部分，并且可以避免 ……..">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://images2015.cnblogs.com/blog/778572/201703/778572-20170327094558420-900775938.jpg#id=QcUKq&originHeight=46&originWidth=299&originalType=binary&ratio=1&rotation=0&showTitle=false&status=done&style=none&title=">
+<meta property="og:image" content="https://images2015.cnblogs.com/blog/778572/201703/778572-20170327094642092-1936976048.jpg#id=au598&originHeight=224&originWidth=504&originalType=binary&ratio=1&rotation=0&showTitle=false&status=done&style=none&title=">
+<meta property="og:image" content="https://images2015.cnblogs.com/blog/778572/201703/778572-20170327094719920-1887902213.jpg#id=FwrFt&originHeight=69&originWidth=688&originalType=binary&ratio=1&rotation=0&showTitle=false&status=done&style=none&title=">
+<meta property="og:image" content="https://images2015.cnblogs.com/blog/778572/201703/778572-20170327094741326-1867142611.jpg#id=E0WOu&originHeight=194&originWidth=574&originalType=binary&ratio=1&rotation=0&showTitle=false&status=done&style=none&title=">
+<meta property="og:image" content="https://images2015.cnblogs.com/blog/778572/201703/778572-20170327094837108-1140291207.jpg#id=AfYoA&originHeight=136&originWidth=394&originalType=binary&ratio=1&rotation=0&showTitle=false&status=done&style=none&title=">
+<meta property="og:image" content="https://images2015.cnblogs.com/blog/778572/201703/778572-20170327094847967-138421687.jpg#id=NAEZM&originHeight=334&originWidth=404&originalType=binary&ratio=1&rotation=0&showTitle=false&status=done&style=none&title=">
+<meta property="og:image" content="https://images2015.cnblogs.com/blog/778572/201703/778572-20170327094912201-1661698410.jpg#id=DAZgW&originHeight=115&originWidth=358&originalType=binary&ratio=1&rotation=0&showTitle=false&status=done&style=none&title=">
+<meta property="og:image" content="https://images2015.cnblogs.com/blog/778572/201703/778572-20170327094956889-1759127519.jpg#id=tUhi4&originHeight=354&originWidth=604&originalType=binary&ratio=1&rotation=0&showTitle=false&status=done&style=none&title=">
+<meta property="og:image" content="https://images2015.cnblogs.com/blog/778572/201703/778572-20170327095035264-659981188.jpg#id=vcoC3&originHeight=350&originWidth=548&originalType=binary&ratio=1&rotation=0&showTitle=false&status=done&style=none&title=">
+<meta property="og:image" content="https://images2015.cnblogs.com/blog/778572/201703/778572-20170327095050154-1070286638.jpg#id=mYTl9&originHeight=400&originWidth=970&originalType=binary&ratio=1&rotation=0&showTitle=false&status=done&style=none&title=">
+<meta property="og:image" content="https://images2015.cnblogs.com/blog/778572/201703/778572-20170327095110342-319599475.jpg#id=mZGCH&originHeight=138&originWidth=461&originalType=binary&ratio=1&rotation=0&showTitle=false&status=done&style=none&title=">
+<meta property="og:image" content="https://images2015.cnblogs.com/blog/778572/201703/778572-20170327095129717-2003091627.jpg#id=qT5Ly&originHeight=224&originWidth=1034&originalType=binary&ratio=1&rotation=0&showTitle=false&status=done&style=none&title=">
+<meta property="og:image" content="https://images2015.cnblogs.com/blog/778572/201703/778572-20170327095229529-1894852716.jpg#id=RqsaQ&originHeight=67&originWidth=180&originalType=binary&ratio=1&rotation=0&showTitle=false&status=done&style=none&title=">
+<meta property="og:image" content="https://images2015.cnblogs.com/blog/778572/201703/778572-20170327095325779-1518974306.jpg#id=mZpbM&originHeight=62&originWidth=128&originalType=binary&ratio=1&rotation=0&showTitle=false&status=done&style=none&title=">
+<meta property="og:image" content="https://images2015.cnblogs.com/blog/778572/201703/778572-20170327100832186-175829669.jpg#id=VyEmh&originHeight=1161&originWidth=2976&originalType=binary&ratio=1&rotation=0&showTitle=false&status=done&style=none&title=">
+<meta property="og:image" content="https://images2015.cnblogs.com/blog/778572/201703/778572-20170327095536795-358769800.jpg#id=ZTFOR&originHeight=39&originWidth=126&originalType=binary&ratio=1&rotation=0&showTitle=false&status=done&style=none&title=">
+<meta property="og:image" content="https://images2015.cnblogs.com/blog/778572/201703/778572-20170327095551076-377498134.jpg#id=VCiII&originHeight=76&originWidth=330&originalType=binary&ratio=1&rotation=0&showTitle=false&status=done&style=none&title=">
+<meta property="og:image" content="https://images2015.cnblogs.com/blog/778572/201703/778572-20170327095603545-182388630.jpg#id=zDeh2&originHeight=306&originWidth=640&originalType=binary&ratio=1&rotation=0&showTitle=false&status=done&style=none&title=">
+<meta property="og:image" content="https://images2015.cnblogs.com/blog/778572/201703/778572-20170327095633983-556661975.jpg#id=llBrf&originHeight=384&originWidth=664&originalType=binary&ratio=1&rotation=0&showTitle=false&status=done&style=none&title=">
+<meta property="og:image" content="https://images2015.cnblogs.com/blog/778572/201703/778572-20170327095725217-659430599.jpg#id=nO5mD&originHeight=384&originWidth=664&originalType=binary&ratio=1&rotation=0&showTitle=false&status=done&style=none&title=">
+<meta property="og:image" content="https://images2015.cnblogs.com/blog/778572/201703/778572-20170327095733483-738151598.jpg#id=Brsy3&originHeight=384&originWidth=665&originalType=binary&ratio=1&rotation=0&showTitle=false&status=done&style=none&title=">
+<meta property="og:image" content="https://images2015.cnblogs.com/blog/778572/201703/778572-20170327095741108-1504396123.jpg#id=E0EXe&originHeight=384&originWidth=665&originalType=binary&ratio=1&rotation=0&showTitle=false&status=done&style=none&title=">
+<meta property="og:image" content="https://images2015.cnblogs.com/blog/778572/201703/778572-20170327095749170-336627989.jpg#id=Tqq2b&originHeight=384&originWidth=665&originalType=binary&ratio=1&rotation=0&showTitle=false&status=done&style=none&title=">
+<meta property="og:image" content="https://images2015.cnblogs.com/blog/778572/201703/778572-20170327095756873-691855182.jpg#id=v6tYs&originHeight=384&originWidth=665&originalType=binary&ratio=1&rotation=0&showTitle=false&status=done&style=none&title=">
+<meta property="og:image" content="https://images2015.cnblogs.com/blog/778572/201703/778572-20170327095807186-506115475.jpg#id=HMZPq&originHeight=384&originWidth=665&originalType=binary&ratio=1&rotation=0&showTitle=false&status=done&style=none&title=">
+<meta property="og:image" content="https://images2015.cnblogs.com/blog/778572/201703/778572-20170327095837404-1311147071.jpg#id=sxxYt&originHeight=53&originWidth=121&originalType=binary&ratio=1&rotation=0&showTitle=false&status=done&style=none&title=">
+<meta property="og:image" content="https://images2015.cnblogs.com/blog/778572/201703/778572-20170327095850045-59140670.jpg#id=txzm7&originHeight=384&originWidth=664&originalType=binary&ratio=1&rotation=0&showTitle=false&status=done&style=none&title=">
+<meta property="og:image" content="https://images2015.cnblogs.com/blog/778572/201703/778572-20170327095937029-752666646.jpg#id=oLeiL&originHeight=384&originWidth=664&originalType=binary&ratio=1&rotation=0&showTitle=false&status=done&style=none&title=">
+<meta property="article:published_time" content="2025-01-22T04:37:39.000Z">
+<meta property="article:modified_time" content="2025-01-22T12:37:39.683Z">
+<meta property="article:author" content="SindreYang">
+<meta property="article:tag" content="生活">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://images2015.cnblogs.com/blog/778572/201703/778572-20170327094558420-900775938.jpg#id=QcUKq&originHeight=46&originWidth=299&originalType=binary&ratio=1&rotation=0&showTitle=false&status=done&style=none&title=">
+
+<link rel="canonical" href="http://blog.mviai.com/2025/%E5%9F%BA%E4%BA%8E%E6%A8%A1%E7%B3%8A%E8%81%9A%E7%B1%BB%E5%92%8C%E6%9C%80%E5%B0%8F%E5%89%B2%E7%9A%84%E5%B1%82%E6%AC%A1%E5%8C%96%E4%B8%89%E7%BB%B4%E7%BD%91%E6%A0%BC%E5%88%86%E5%89%B2%E7%AE%97%E6%B3%95%EF%BC%88Hierarchical_Mesh_Decomposition%EF%BC%89/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>基于模糊聚类和最小割的层次化三维网格分割算法（Hierarchical_Mesh_Decomposition） | 落叶无痕</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">落叶无痕</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类<span class="badge">72</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档<span class="badge">321</span></a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+  <span class="exturl github-corner" data-url="aHR0cHM6Ly9naXRodWIuY29tL1NpbmRyZVlhbmc=" title="Follow me on GitHub" aria-label="Follow me on GitHub"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></span>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://blog.mviai.com/2025/%E5%9F%BA%E4%BA%8E%E6%A8%A1%E7%B3%8A%E8%81%9A%E7%B1%BB%E5%92%8C%E6%9C%80%E5%B0%8F%E5%89%B2%E7%9A%84%E5%B1%82%E6%AC%A1%E5%8C%96%E4%B8%89%E7%BB%B4%E7%BD%91%E6%A0%BC%E5%88%86%E5%89%B2%E7%AE%97%E6%B3%95%EF%BC%88Hierarchical_Mesh_Decomposition%EF%BC%89/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="SindreYang">
+      <meta itemprop="description" content="沉淀后我愿意做一个温暖的人。有自己的喜好，有自己的原则，有自己的信仰，不急功近利，不浮夸轻薄，宠辱不惊，淡定安逸，心静如水。------不忘初心，方得始终">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="落叶无痕">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          基于模糊聚类和最小割的层次化三维网格分割算法（Hierarchical_Mesh_Decomposition）
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2025-01-22 12:37:39 / 修改时间：20:37:39" itemprop="dateCreated datePublished" datetime="2025-01-22T12:37:39+08:00">2025-01-22</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E4%B8%89%E7%BB%B4%E7%BD%91%E6%A0%BC/" itemprop="url" rel="index"><span itemprop="name">三维网格</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">Changyan：</span>
+    
+    
+      <a title="changyan" href="/2025/%E5%9F%BA%E4%BA%8E%E6%A8%A1%E7%B3%8A%E8%81%9A%E7%B1%BB%E5%92%8C%E6%9C%80%E5%B0%8F%E5%89%B2%E7%9A%84%E5%B1%82%E6%AC%A1%E5%8C%96%E4%B8%89%E7%BB%B4%E7%BD%91%E6%A0%BC%E5%88%86%E5%89%B2%E7%AE%97%E6%B3%95%EF%BC%88Hierarchical_Mesh_Decomposition%EF%BC%89/#SOHUCS" itemprop="discussionUrl">
+        <span id="changyan_count_unit" class="post-comments-count hc-comment-count" data-xid="2025/基于模糊聚类和最小割的层次化三维网格分割算法（Hierarchical_Mesh_Decomposition）/" itemprop="commentCount"></span>
+      </a>
+    
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>自动摘要: 网格分割算法是三维几何处理算法中的重要算法，具有许多实际应用。[Katzetal.2003]提出了一种新型的层次化网格分割算法，该算法能够将几何模型沿着凹形区域分割成不同的几何部分，并且可以避免 ……..</p>
+<span id="more"></span>
+<p>网格分割算法是三维几何处理算法中的重要算法，具有许多实际应用。[Katz et al. 2003]提出了一种新型的层次化网格分割算法，该算法能够将几何模型沿着凹形区域分割成不同的几何部分，并且可以避免过度分割以及锯齿形分割边界。算法的核心思想是先利用模糊聚类的方法分割几何模型，并保留分割边界附近的模糊区域，然后利用最小割的方法在模糊区域里寻找准确的分割边界。算法主要包含以下4个步骤：</p>
+<ol>
+<li><p>计算网格中所有相邻面片之间的距离；</p>
+</li>
+<li><p>计算每个面片属于不同分割区域的概率；</p>
+</li>
+<li><p>迭代调整每个面片的概率，直到收敛；</p>
+</li>
+<li><p>在模糊区域里寻找准确的分割边界。</p>
+</li>
+</ol>
+<p>下面以模型二分为例具体介绍上述计算过程，如果模型需要分割成多个部分，可以以此为基础进行层次化分割。</p>
+<h1 id="Step-1："><a href="#Step-1：" class="headerlink" title="Step 1："></a>Step 1：</h1><p>对于相邻面片_fi_和_fj_，定义它们两者之间的测地距离和角度距离（如下图所示）。测地距离为相邻面片质心之间的距离，而角度距离表达式如下：</p>
+<p><img src="https://images2015.cnblogs.com/blog/778572/201703/778572-20170327094558420-900775938.jpg#id=QcUKq&originHeight=46&originWidth=299&originalType=binary&ratio=1&rotation=0&showTitle=false&status=done&style=none&title="></p>
+<p>上式中_αij_为相邻面片之间的二面角，对于凹边η &#x3D; 1，对于凸边η取较小值（例如0.2）。</p>
+<p><img src="https://images2015.cnblogs.com/blog/778572/201703/778572-20170327094642092-1936976048.jpg#id=au598&originHeight=224&originWidth=504&originalType=binary&ratio=1&rotation=0&showTitle=false&status=done&style=none&title="></p>
+<p>图：测地距离和角度距离示意图</p>
+<p>构建网格的对偶图（如下图所示），网格中的每个面片对应对偶图中的一个顶点，同时如果网格中的两个面片相邻，那么对偶图中对应的两个顶点相连。图中边的权重定义为：</p>
+<p><img src="https://images2015.cnblogs.com/blog/778572/201703/778572-20170327094719920-1887902213.jpg#id=FwrFt&originHeight=69&originWidth=688&originalType=binary&ratio=1&rotation=0&showTitle=false&status=done&style=none&title="></p>
+<p>给定网格中任意的两个面片，它们之间的距离等于对偶图中两点之间的最近距离。在预处理阶段，需要计算并记录对偶图中所有顶点之间的最近距离。</p>
+<p><img src="https://images2015.cnblogs.com/blog/778572/201703/778572-20170327094741326-1867142611.jpg#id=E0WOu&originHeight=194&originWidth=574&originalType=binary&ratio=1&rotation=0&showTitle=false&status=done&style=none&title="></p>
+<p>图：网格与对偶网格</p>
+<h1 id="Step-2："><a href="#Step-2：" class="headerlink" title="Step 2："></a>Step 2：</h1><p>选择相距最远的两个面片REPA和REPB作为两个分割区域的种子面片，对于面片_fi_计算其分别属于两个区域的概率，面片_fi_属于区域B的概率为：</p>
+<p><img src="https://images2015.cnblogs.com/blog/778572/201703/778572-20170327094837108-1140291207.jpg#id=AfYoA&originHeight=136&originWidth=394&originalType=binary&ratio=1&rotation=0&showTitle=false&status=done&style=none&title="></p>
+<p>上式表明一个面片距离哪个区域更近，那么其属于哪个区域的概率更大。</p>
+<p><img src="https://images2015.cnblogs.com/blog/778572/201703/778572-20170327094847967-138421687.jpg#id=NAEZM&originHeight=334&originWidth=404&originalType=binary&ratio=1&rotation=0&showTitle=false&status=done&style=none&title="></p>
+<p>图：概率分布图，红色点代表种子面片</p>
+<h1 id="Step-3："><a href="#Step-3：" class="headerlink" title="Step 3："></a>Step 3：</h1><p>利用模糊聚类的方法迭代更新两个区域的种子面片，具体如下：</p>
+<ol>
+<li><p>计算每个面片分别属于两个区域的概率；</p>
+</li>
+<li><p>重新计算种子面片：</p>
+</li>
+</ol>
+<p><img src="https://images2015.cnblogs.com/blog/778572/201703/778572-20170327094912201-1661698410.jpg#id=DAZgW&originHeight=115&originWidth=358&originalType=binary&ratio=1&rotation=0&showTitle=false&status=done&style=none&title="></p>
+<ol start="3">
+<li>迭代上述步骤直到种子面片不再发生变化。</li>
+</ol>
+<p>当迭代收敛之后，可以将网格分为3个区域A，B和C，其中C区域为模糊区域，对应下图b中的红色部分。</p>
+<p>A &#x3D; {<em>fi</em> | PB(<em>fi</em>) &lt; 0.5 – ε}</p>
+<p>B &#x3D; {<em>fi</em> | PB(<em>fi</em>) &gt; 0.5 + ε}</p>
+<p>C &#x3D; {<em>fi</em> | 0.5 – ε ≤ PB(<em>fi</em>) ≤ 0.5 + ε}</p>
+<p><img src="https://images2015.cnblogs.com/blog/778572/201703/778572-20170327094956889-1759127519.jpg#id=tUhi4&originHeight=354&originWidth=604&originalType=binary&ratio=1&rotation=0&showTitle=false&status=done&style=none&title="></p>
+<p><strong>Step 4：</strong></p>
+<p>在模糊区域中利用最小割的方法寻找准确边界，首先需要构建模糊区域的网络s-t图G &#x3D; (V, E)（如下图所示），V和E如下：</p>
+<p>V &#x3D; VC∪VCA∪VCB∪{S,T}</p>
+<p>E &#x3D; EC∪{(S, <em>v</em>), ∀_v_∈VCA}∪{(T, <em>v</em>), ∀_v_∈VCB}∪{_eij_∈E | _i_∈VC, _j_∈{VCA∪VCB}}</p>
+<p>其中VCA和VCB代表对偶图中与VC相连的VA和VB顶点集，而VA, VB, VC为对偶图中A, B, C区域面片所对应的顶点集。</p>
+<p><img src="https://images2015.cnblogs.com/blog/778572/201703/778572-20170327095035264-659981188.jpg#id=vcoC3&originHeight=350&originWidth=548&originalType=binary&ratio=1&rotation=0&showTitle=false&status=done&style=none&title="><img src="https://images2015.cnblogs.com/blog/778572/201703/778572-20170327095050154-1070286638.jpg#id=mYTl9&originHeight=400&originWidth=970&originalType=binary&ratio=1&rotation=0&showTitle=false&status=done&style=none&title="></p>
+<p>s-t图中边的容量定义为：</p>
+<p><img src="https://images2015.cnblogs.com/blog/778572/201703/778572-20170327095110342-319599475.jpg#id=mZGCH&originHeight=138&originWidth=461&originalType=binary&ratio=1&rotation=0&showTitle=false&status=done&style=none&title="></p>
+<p>根据上述定义，网络图最小割的结果对应网格中模糊区域内二面角最大的分割边界。</p>
+<p>如果模型需要分割成多个部分，可以对每个区域继续进行分割，直到满足终止条件。</p>
+<p><img src="https://images2015.cnblogs.com/blog/778572/201703/778572-20170327095129717-2003091627.jpg#id=qT5Ly&originHeight=224&originWidth=1034&originalType=binary&ratio=1&rotation=0&showTitle=false&status=done&style=none&title="></p>
+<h1 id="参考文献："><a href="#参考文献：" class="headerlink" title="参考文献："></a>参考文献：</h1><p>[1] Sagi Katz and Ayellet Tal. 2003. Hierarchical mesh decomposition using fuzzy clustering and cuts. ACM Trans. Graph. 22, 3 (July 2003), 954-961.</p>
+<p><strong>附录</strong></p>
+<p><strong>K-means算法：</strong></p>
+<p>给定一系列数据样本(<strong>x</strong>1, <strong>x</strong>2, … , <strong>x</strong>n)，其中每个数据都是一个d维向量，K-means聚类算法的目标是将这n个数据样本归类成k(≤n)个簇，并且满足如下最小能量函数：</p>
+<p><img src="https://images2015.cnblogs.com/blog/778572/201703/778572-20170327095229529-1894852716.jpg#id=RqsaQ&originHeight=67&originWidth=180&originalType=binary&ratio=1&rotation=0&showTitle=false&status=done&style=none&title="></p>
+<p>其中<strong>μ</strong>i表示第i个簇Si中数据点的平均值 。</p>
+<p>算法具体步骤：</p>
+<ol>
+<li><p>随机设定k个聚类中心点的初始值<strong>μ</strong>1(0), <strong>μ</strong>2(0), …, <strong>μ</strong>k(0)。</p>
+</li>
+<li><p>将每个数据点归类到离它最近的那个聚类中心点所代表的簇中。</p>
+</li>
+<li><p>重新计算每个簇的聚类中心点<img src="https://images2015.cnblogs.com/blog/778572/201703/778572-20170327095325779-1518974306.jpg#id=mZpbM&originHeight=62&originWidth=128&originalType=binary&ratio=1&rotation=0&showTitle=false&status=done&style=none&title=">。</p>
+</li>
+<li><p>重复第二步，直到迭代到最大步数或者前后两次能量函数的差值小于设定的阈值为止。</p>
+</li>
+</ol>
+<p><strong>K-medoids算法：</strong></p>
+<p>K-medoids算法是K-means算法的一个变种，两者不一样的地方在于聚类中心点的选取。在K-means算法中，我们将中心点取为当前簇中所有数据点的平均值，而在K-medoids算法中，我们从当前簇中选取一个点作为聚类中心点，它满足到当前簇中其他所有点的距离之和最小。</p>
+<p>在某些情况下，K-medoids聚类算法的结果要优于K-means算法，如下图所示，但从K-means算法变到K-medoids算法，时间复杂度会增加许多：K-means算法中计算聚类中心点只要求一个平均值O(N)即可，而在K-medoids算法中则需要枚举每个点，并求出它到所有其他点的距离之和，复杂度为 O(N2)。</p>
+<p><img src="https://images2015.cnblogs.com/blog/778572/201703/778572-20170327100832186-175829669.jpg#id=VyEmh&originHeight=1161&originWidth=2976&originalType=binary&ratio=1&rotation=0&showTitle=false&status=done&style=none&title="></p>
+<p>图：在相同的数据和初始条件下，K-means算法（1a - 1f）的结果陷入局部最优解，而K-medoids算法（2a – 2h）的结果更加合理</p>
+<p><strong>Max-flow&#x2F;Min-cut算法</strong></p>
+<p>图论中一个常见的问题是网络图中两个节点之间的最大流是多少？这个问题具有重要的现实意义，例如交通工程师希望知道两个城市之间道路的最大通行能力是多少，因为这个信息将决定如何扩建道路，最大流问题的数学描述如下：</p>
+<p><img src="https://images2015.cnblogs.com/blog/778572/201703/778572-20170327095536795-358769800.jpg#id=ZTFOR&originHeight=39&originWidth=126&originalType=binary&ratio=1&rotation=0&showTitle=false&status=done&style=none&title="></p>
+<p>s.t. <img src="https://images2015.cnblogs.com/blog/778572/201703/778572-20170327095551076-377498134.jpg#id=VCiII&originHeight=76&originWidth=330&originalType=binary&ratio=1&rotation=0&showTitle=false&status=done&style=none&title="></p>
+<p>解决最大流问题的一个经典方法是Ford＆Fulkerson算法，其方法如下：</p>
+<p><img src="https://images2015.cnblogs.com/blog/778572/201703/778572-20170327095603545-182388630.jpg#id=zDeh2&originHeight=306&originWidth=640&originalType=binary&ratio=1&rotation=0&showTitle=false&status=done&style=none&title="></p>
+<p>我们以下图为例，解释Ford＆Fulkerson算法的求解过程。网络图中边上方的标签代表该条边的最大容量，例如边AB上方靠近节点A的标签代表从节点A到节点B的最大容量，而靠近B节点的标签代表从节点B到节点A的最大容量。</p>
+<p><img src="https://images2015.cnblogs.com/blog/778572/201703/778572-20170327095633983-556661975.jpg#id=llBrf&originHeight=384&originWidth=664&originalType=binary&ratio=1&rotation=0&showTitle=false&status=done&style=none&title="></p>
+<p>求解从节点A到节点G的最大流，首先需要在当前网络图中寻找从节点A到节点G的路径，接着建立残余网络图，即从当前网络图中减去该路径上的最大流量，然后重复上述步骤直到网络图中不存在从节点A到节点G的路径为止。</p>
+<p><img src="https://images2015.cnblogs.com/blog/778572/201703/778572-20170327095725217-659430599.jpg#id=nO5mD&originHeight=384&originWidth=664&originalType=binary&ratio=1&rotation=0&showTitle=false&status=done&style=none&title="><img src="https://images2015.cnblogs.com/blog/778572/201703/778572-20170327095733483-738151598.jpg#id=Brsy3&originHeight=384&originWidth=665&originalType=binary&ratio=1&rotation=0&showTitle=false&status=done&style=none&title="></p>
+<p><img src="https://images2015.cnblogs.com/blog/778572/201703/778572-20170327095741108-1504396123.jpg#id=E0EXe&originHeight=384&originWidth=665&originalType=binary&ratio=1&rotation=0&showTitle=false&status=done&style=none&title="><img src="https://images2015.cnblogs.com/blog/778572/201703/778572-20170327095749170-336627989.jpg#id=Tqq2b&originHeight=384&originWidth=665&originalType=binary&ratio=1&rotation=0&showTitle=false&status=done&style=none&title="></p>
+<p><img src="https://images2015.cnblogs.com/blog/778572/201703/778572-20170327095756873-691855182.jpg#id=v6tYs&originHeight=384&originWidth=665&originalType=binary&ratio=1&rotation=0&showTitle=false&status=done&style=none&title="></p>
+<p>通过上述方法可以发现当算法终止时，可以寻找得到5条从节点A到节点G的路径，所以该网络图的最大流值为4+3+4+2+1&#x3D;14。而最大流的网络图如下：</p>
+<p><img src="https://images2015.cnblogs.com/blog/778572/201703/778572-20170327095807186-506115475.jpg#id=HMZPq&originHeight=384&originWidth=665&originalType=binary&ratio=1&rotation=0&showTitle=false&status=done&style=none&title="></p>
+<p>最大流问题与最小割问题密切相关，网络图中的割是指网络图中一些边的集合，当网络图中移除这些边时能够导致网络流中断，而最小割就是指所有割中权重之和最小的一个割，下图给出了网络图中一些割集的情况。最小割问题的数学描述如下：</p>
+<p><img src="https://images2015.cnblogs.com/blog/778572/201703/778572-20170327095837404-1311147071.jpg#id=sxxYt&originHeight=53&originWidth=121&originalType=binary&ratio=1&rotation=0&showTitle=false&status=done&style=none&title="></p>
+<p><img src="https://images2015.cnblogs.com/blog/778572/201703/778572-20170327095850045-59140670.jpg#id=txzm7&originHeight=384&originWidth=664&originalType=binary&ratio=1&rotation=0&showTitle=false&status=done&style=none&title="></p>
+<p>最大流&#x2F;最小割定理指出，网络图中从源点到汇点的最大流值等于网络图中的最小割值。但真正问题是最小割的边在网络图中的位置，因为假如交通工程师决定扩展道路，那需要知道该扩展哪些道路。可以想象扩展那些最大流值还未达到最大容量的那些边是毫无意思的，而那些最大流值已达到最大容量的边才是我们关心的，也就是最小割的位置。</p>
+<p><img src="https://images2015.cnblogs.com/blog/778572/201703/778572-20170327095937029-752666646.jpg#id=oLeiL&originHeight=384&originWidth=664&originalType=binary&ratio=1&rotation=0&showTitle=false&status=done&style=none&title="></p>
+<p>本文为原创，转载请注明出处：<span class="exturl" data-url="aHR0cDovL3d3dy5jbmJsb2dzLmNvbS9zaHVzaGVu" title="http://www.cnblogs.com/shushen">http://www.cnblogs.com/shushen<i class="fa fa-external-link"></i></span>。</p>
+<p><strong>参考：</strong></p>
+<p><span class="exturl" data-url="aHR0cHM6Ly9lbi53aWtpcGVkaWEub3JnL3dpa2kvSy1tZWFuc19jbHVzdGVyaW5n" title="https://en.wikipedia.org/wiki/K-means_clustering">https://en.wikipedia.org/wiki/K-means_clustering<i class="fa fa-external-link"></i></span></p>
+<p><span class="exturl" data-url="aHR0cHM6Ly9lbi53aWtpcGVkaWEub3JnL3dpa2kvSy1tZWRvaWRz" title="https://en.wikipedia.org/wiki/K-medoids">https://en.wikipedia.org/wiki/K-medoids<i class="fa fa-external-link"></i></span></p>
+<p><span class="exturl" data-url="aHR0cDovL2Jsb2cucGx1c2tpZC5vcmcvP3BhZ2VfaWQ9Nzg=" title="http://blog.pluskid.org/?page_id=78">http://blog.pluskid.org/?page_id&#x3D;78<i class="fa fa-external-link"></i></span></p>
+<p><span class="exturl" data-url="aHR0cDovL3d3dy5zY2UuY2FybGV0b24uY2EvZmFjdWx0eS9jaGlubmVjay9wby9DaGFwdGVyOS5wZGY=" title="http://www.sce.carleton.ca/faculty/chinneck/po/Chapter9.pdf">http://www.sce.carleton.ca/faculty/chinneck/po/Chapter9.pdf<i class="fa fa-external-link"></i></span></p>
+
+    </div>
+
+    
+    
+    
+        <div class="reward-container">
+  <div></div>
+  <button onclick="var qr = document.getElementById('qr'); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/images/wechatpay.png" alt="SindreYang 微信支付">
+        <p>微信支付</p>
+      </div>
+      
+      <div style="display: inline-block;">
+        <img src="/images/alipay.png" alt="SindreYang 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>SindreYang
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://blog.mviai.com/2025/%E5%9F%BA%E4%BA%8E%E6%A8%A1%E7%B3%8A%E8%81%9A%E7%B1%BB%E5%92%8C%E6%9C%80%E5%B0%8F%E5%89%B2%E7%9A%84%E5%B1%82%E6%AC%A1%E5%8C%96%E4%B8%89%E7%BB%B4%E7%BD%91%E6%A0%BC%E5%88%86%E5%89%B2%E7%AE%97%E6%B3%95%EF%BC%88Hierarchical_Mesh_Decomposition%EF%BC%89/" title="基于模糊聚类和最小割的层次化三维网格分割算法（Hierarchical_Mesh_Decomposition）">http://blog.mviai.com/2025/基于模糊聚类和最小割的层次化三维网格分割算法（Hierarchical_Mesh_Decomposition）/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <span class="exturl" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC9kZWVkLnpo"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</span> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+        
+
+  <div class="followme">
+    <p>欢迎关注我的其它发布渠道</p>
+
+    <div class="social-list">
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="/images/wechat.png">
+            <span class="icon">
+              <i class="fa fa-wechat"></i>
+            </span>
+
+            <span class="label">WeChat</span>
+          </a>
+        </div>
+    </div>
+  </div>
+
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2025/%E5%A6%82%E4%BD%95%E7%94%9F%E6%88%90OBB%EF%BC%88OrientedboundingBox%EF%BC%89%E6%96%B9%E5%90%91%E5%8C%85%E5%9B%B4%E7%9B%92/" rel="prev" title="如何生成OBB（OrientedboundingBox）方向包围盒">
+      <i class="fa fa-chevron-left"></i> 如何生成OBB（OrientedboundingBox）方向包围盒
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2025/%E5%9B%BE%E5%BD%A2%E5%AD%A6%E8%BD%AF%E4%BB%B6%E5%AF%BC%E8%88%AA/" rel="next" title="图形学软件导航">
+      图形学软件导航 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    
+  <div class="comments">
+    <div id="SOHUCS"></div>
+  </div>
+  
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Step-1%EF%BC%9A"><span class="nav-number">1.</span> <span class="nav-text">Step 1：</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Step-2%EF%BC%9A"><span class="nav-number">2.</span> <span class="nav-text">Step 2：</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Step-3%EF%BC%9A"><span class="nav-number">3.</span> <span class="nav-text">Step 3：</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%8F%82%E8%80%83%E6%96%87%E7%8C%AE%EF%BC%9A"><span class="nav-number">4.</span> <span class="nav-text">参考文献：</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="SindreYang"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">SindreYang</p>
+  <div class="site-description" itemprop="description">沉淀后我愿意做一个温暖的人。有自己的喜好，有自己的原则，有自己的信仰，不急功近利，不浮夸轻薄，宠辱不惊，淡定安逸，心静如水。------不忘初心，方得始终</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">321</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">72</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL1NpbmRyZVlhbmc=" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;SindreYang"><i class="fa fa-fw fa-github"></i>GitHub</span>
+      </span>
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="bWFpbHRvOnl4QG12aWFpLmNvbQ==" title="E-Mail → mailto:yx@mviai.com"><i class="fa fa-fw fa-envelope"></i>E-Mail</span>
+      </span>
+  </div>
+  <div class="cc-license motion-element" itemprop="license">
+    <span class="exturl cc-opacity" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC9kZWVkLnpo"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+  <div class="languages">
+    <label class="lang-select-label">
+      <i class="fa fa-language"></i>
+      <span>简体中文</span>
+      <i class="fa fa-angle-up" aria-hidden="true"></i>
+    </label>
+    <select class="lang-select" data-canonical="">
+      
+        <option value="zh-CN" data-href="/2025/%E5%9F%BA%E4%BA%8E%E6%A8%A1%E7%B3%8A%E8%81%9A%E7%B1%BB%E5%92%8C%E6%9C%80%E5%B0%8F%E5%89%B2%E7%9A%84%E5%B1%82%E6%AC%A1%E5%8C%96%E4%B8%89%E7%BB%B4%E7%BD%91%E6%A0%BC%E5%88%86%E5%89%B2%E7%AE%97%E6%B3%95%EF%BC%88Hierarchical_Mesh_Decomposition%EF%BC%89/" selected="">
+          简体中文
+        </option>
+      
+        <option value="en" data-href="/en/2025/%E5%9F%BA%E4%BA%8E%E6%A8%A1%E7%B3%8A%E8%81%9A%E7%B1%BB%E5%92%8C%E6%9C%80%E5%B0%8F%E5%89%B2%E7%9A%84%E5%B1%82%E6%AC%A1%E5%8C%96%E4%B8%89%E7%BB%B4%E7%BD%91%E6%A0%BC%E5%88%86%E5%89%B2%E7%AE%97%E6%B3%95%EF%BC%88Hierarchical_Mesh_Decomposition%EF%BC%89/" selected="">
+          English
+        </option>
+      
+    </select>
+  </div>
+
+        
+
+<div class="copyright">
+  
+  &copy; 2018 – 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">SindreYang</span>
+</div><!-- 页面点击小红心 -->
+<script type="text/javascript" src="/js/love.js"></script>
+<!-- 背景波浪 -->
+<script color="0,0,255" opacity="0.5" zIndex="-1" count="99" src="https://cdn.jsdelivr.net/npm/canvas-nest.js@1/dist/canvas-nest.js"></script>
+
+
+<!-- 腾讯企业邮箱 -->
+<style>
+.bizmail_loginpanel {
+    font-size: 12px;
+    width: 300px;
+    height: auto;
+    background: transparent;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.bizmail_LoginBox {
+    padding: 10px 15px;
+}
+
+
+.bizmail_loginpanel form {
+    margin: 0;
+    padding: 0;
+}
+
+.bizmail_loginpanel input.text {
+    font-size: 12px;
+    width: 100px;
+    height: 20px;
+    margin: 0 2px;
+    background-color: transparent;
+    border:1px solid transparent;
+    box-shadow: none;
+    color: black;
+}
+
+.bizmail_loginpanel .bizmail_column {
+    height: 28px;
+}
+
+.bizmail_loginpanel .bizmail_column label {
+    display: block;
+    float: left;
+    width: 30px;
+    height: 24px;
+    line-height: 24px;
+    font-size: 12px;
+}
+
+.bizmail_loginpanel .bizmail_column .bizmail_inputArea {
+    float: left;
+    width: 240px;
+}
+
+.bizmail_loginpanel .bizmail_column span {
+    font-size: 12px;
+    word-wrap: break-word;
+    margin-left: 2px;
+    line-height: 200%;
+}
+
+.bizmail_loginpanel .bizmail_SubmitArea {
+    margin-left: 30px;
+    clear: both;
+}
+
+.bizmail_loginpanel .bizmail_SubmitArea a {
+    font-size: 12px;
+    margin-left: 5px;
+}
+
+.bizmail_loginpanel select {
+    width: 110px;
+    height: 20px;
+    margin: 0 2px;
+}
+.bizmail_loginpanel input {
+
+    background-color: rgba(83, 126, 236, 0.562);
+}
+
+
+</style>
+
+<script type="text/javascript">
+function checkInput() {
+    var e = document.form1.uin,
+        i = document.form1.pwd;
+    return 0 == e.value.length ? e.focus() : 0 == i.value.length ? i.focus() : (document.form1.submit(), setTimeout(" document.form1.pwd.value = '' ", 500)), !1
+}
+
+function writeLoginPanel(e) {
+    if (e && e.domainlist && -1 != e.domainlist.indexOf(".")) {
+        var a = "return checkInput()",
+            t = '<div id="divLoginpanelHor" class="bizmail_loginpanel" style="width:550px;"><div class="bizmail_LoginBox"><form name="form1" action="https://exmail.qq.com/cgi-bin/login" target="_blank" method="post" onsubmit="' + a + '"><input type="hidden" name="firstlogin" value="false" /><input type="hidden" name="errtemplate" value="dm_loginpage" /><input type="hidden" name="aliastype" value="other" /><input type="hidden" name="dmtype" value="bizmail" /><input type="hidden" name="p" value="" /><label>\u8d26\u53f7:</label><input type="text" name="uin" class="text" value="" />@#domainlist#<label>&nbsp&nbsp&nbsp;\u5bc6\u7801:</label><input type="password" name="pwd" class="text" value="" /><input type="submit" class="" name="" value="\u767b\u5f55" />&nbsp;<a href="https://exmail.qq.com/cgi-bin/readtemplate?check=false&t=biz_rf_portal#recovery" target="_blank">\u5fd8\u8bb0\u5bc6\u7801\uff1f</a></form></div></div>',
+            n = '<div id="divLoginpanelVer" class="bizmail_loginpanel"><div class="bizmail_LoginBox"><form name="form1" action="https://exmail.qq.com/cgi-bin/login" target="_blank" method="post" onsubmit="' + a + '"><input type="hidden" name="firstlogin" value="false" /><input type="hidden" name="errtemplate" value="dm_loginpage" /><input type="hidden" name="aliastype" value="other" /><input type="hidden" name="dmtype" value="bizmail" /><input type="hidden" name="p" value="" /><div class="bizmail_column"><label>\u8d26\u53f7:</label><div class="bizmail_inputArea"><input type="text" name="uin" class="text" value="" />@#domainlist#</div></div><div class="bizmail_column"><label>\u5bc6\u7801:</label><div class="bizmail_inputArea"><input type="password" name="pwd" class="text" value="" /></div></div><div class="bizmail_SubmitArea"><input type="submit" class="" name="" style="width:66px;" value="\u767b\u5f55" /><a href="https://exmail.qq.com/cgi-bin/readtemplate?check=false&t=biz_rf_portal#recovery" target="_blank">\u5fd8\u8bb0\u5bc6\u7801\uff1f</a></div></form></div></div>',
+            l = e.domainlist.split(";");
+        if (1 == l.length) var m = '<span>#domain#</span><input type="hidden" name="domain" value="#domain#" />'.replace(/#domain#/g, l[0]);
+        else {
+            m = '<select name="domain">';
+            for (i = 0; i < l.length; i++) m += '<option value="' + l[i] + '">' + l[i] + "</option>";
+            m += "</select>"
+        }
+        e.mode && "vertical" != e.mode && "both" != e.mode || document.write(n.replace(/#domainlist#/g, m)), "horizontal" != e.mode && "both" != e.mode || document.write(t.replace(/#domainlist#/g, m))
+    }
+}
+
+</script>      
+
+<script type="text/javascript"> writeLoginPanel({domainlist:"mviai.com", mode:"horizontal"});</script>      
+
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script size="300" alpha="0.6" zIndex="-1" src="/lib/canvas-ribbon/canvas-ribbon.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/medium-zoom@1/dist/medium-zoom.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+  <script defer src="/lib/three/three.min.js"></script>
+    <script defer src="/lib/three/three-waves.min.js"></script>
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+<script>
+document.querySelectorAll('.pdfobject-container').forEach(element => {
+  let url = element.dataset.target;
+  let pdfOpenParams = {
+    navpanes : 0,
+    toolbar  : 0,
+    statusbar: 0,
+    pagemode : 'thumbs',
+    view     : 'FitH'
+  };
+  let pdfOpenFragment = '#' + Object.entries(pdfOpenParams).map(([key, value]) => `${key}=${encodeURIComponent(value)}`).join('&');
+  let fullURL = `/lib/pdf/web/viewer.html?file=${encodeURIComponent(url)}${pdfOpenFragment}`;
+
+  if (NexT.utils.supportsPDFs()) {
+    element.innerHTML = `<embed class="pdfobject" src="${url + pdfOpenFragment}" type="application/pdf" style="height: ${element.dataset.height};">`;
+  } else {
+    element.innerHTML = `<iframe src="${fullURL}" style="height: ${element.dataset.height};" frameborder="0"></iframe>`;
+  }
+});
+</script>
+
+
+
+
+  
+
+  
+
+  <script>
+  NexT.utils.loadComments(document.querySelector('#SOHUCS'), () => {
+    var appid = 'cyxmItxjS';
+    var conf = 'e5e71132d9086bb54aeeba6e88e87df9';
+    var width = window.innerWidth || document.documentElement.clientWidth;
+    if (width < 960) {
+      window.document.write('<script id="changyan_mobile_js" charset="utf-8" type="text/javascript" src="https://cy-cdn.kuaizhan.com/upload/mobile/wap-js/changyan_mobile.js?client_id=' + appid + '&conf=' + conf + '"><\/script>');
+    } else {
+      var loadJs=function(d,a){var c=document.getElementsByTagName("head")[0]||document.head||document.documentElement;var b=document.createElement("script");b.setAttribute("type","text/javascript");b.setAttribute("charset","UTF-8");b.setAttribute("src",d);if(typeof a==="function"){if(window.attachEvent){b.onreadystatechange=function(){var e=b.readyState;if(e==="loaded"||e==="complete"){b.onreadystatechange=null;a()}}}else{b.onload=a}}c.appendChild(b)};loadJs("https://changyan.sohu.com/upload/changyan.js",function(){window.changyan.api.config({appid:appid,conf:conf})});
+    }
+  });
+  </script>
+  <script src="https://cy-cdn.kuaizhan.com/upload/plugins/plugins.count.js"></script>
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/z16.model.json"},"display":{"position":"left","width":75,"height":150},"mobile":{"show":true},"log":false});</script></body>
+</html>
+
+
+
+

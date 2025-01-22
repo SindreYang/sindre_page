@@ -1,0 +1,1042 @@
+<!DOCTYPE html>
+<html lang="zh-CN,en,default">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" href="/lib/pace/pace-theme-minimal.min.css">
+  <script src="/lib/pace/pace.min.js"></script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"blog.mviai.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":true,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":true,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="自动摘要: 	安装		pipinstallopen3d				几何学	本教程演示了点云的基本用法。			可视化点云	本教程的第一部分读取点云并将其可视化。	&#96;&#96;&#96;	importop ……..">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Open3d学习指南">
+<meta property="og:url" content="http://blog.mviai.com/2025/Open3d%E5%AD%A6%E4%B9%A0%E6%8C%87%E5%8D%97/index.html">
+<meta property="og:site_name" content="落叶无痕">
+<meta property="og:description" content="自动摘要: 	安装		pipinstallopen3d				几何学	本教程演示了点云的基本用法。			可视化点云	本教程的第一部分读取点云并将其可视化。	&#96;&#96;&#96;	importop ……..">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://blog.mviai.com/images/1666662967543-d863d334-a21b-42ad-86d9-9bbe4eeb89c1.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1666663715930-a3cf1401-4606-407a-9aea-fdd10e2aad2c.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1666664612071-e850b3cf-7d10-4f23-8c00-ef3f7d60c7c4.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1666667411572-3ec5c166-a2d5-4ef3-bd95-ca6e7a7074e2.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1666667673896-fcaf26e2-8a9d-4875-b6e8-c96de30119b3.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1666668345994-49b33521-4c9d-4f9c-bc4a-d33276375a5f.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1666668911160-f069efb3-206b-439c-9f1b-1b887739c550.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1666669695607-b9a055ac-489e-4c01-8a6a-3dcb3d7989b4.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1666682117008-a90fb4b6-b54a-4998-9daf-0a18a6f6ac7f.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1666684528984-63aefff3-a4ba-47c8-8899-77a8837f5b76.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1666685916054-f87941bc-df54-46f1-8a87-99a76c47d477.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1666686640183-f0c7129c-e08f-4d60-b66c-48400f31b3d9.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1666688727641-0b276126-5e11-453a-ad9d-969489799cd6.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1666689274831-cf890069-d434-455b-b864-416631bc2b64.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1666690459101-d2e881b8-bc5c-4593-a387-6ffcb3c9ccae.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1666690757696-9a916a63-00d6-4198-9ce4-2de2c37361a7.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1666754910457-9fca56cb-873e-48f8-b178-56c7ebbf8ead.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1666754934979-a8fd863c-c0a7-492d-b13b-097616fee443.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1666754952517-752974ea-2bc6-444f-95d5-e2ce5f48f4e8.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1666754973418-a0721b80-e693-4560-9b2b-40c8325c3456.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1666754992570-53598df9-a411-42cd-ac06-afb4a90afff7.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1666755013260-0480caaa-be0a-429f-9816-82db62c4b531.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1666764154892-1a8c8ca5-6765-40fa-9eee-aad11d4458ec.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1666764176228-13306116-27e4-48d5-a397-a44fc41d5db0.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1666764200860-2bae5e02-da29-42a4-8099-95b7ad1eb2c8.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1666764299735-9407581b-1bbd-48a8-990a-1149d8f1366b.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1666764983861-441407ee-3693-4d5a-b07b-cce95215cbf9.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1666765007562-5a5e07af-273b-4327-b278-f744e03f12a2.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1666765676360-05b9fa3d-12af-43b2-9899-207d88a49c0e.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1666765701331-8a614766-26ce-4ae8-9de9-ede223107ad4.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1666766785517-77381489-e4de-4cd1-a85e-c129eec946b6.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1666766796833-c49c94b3-16ee-4a93-98a3-124d01892a56.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1666766958518-ab26eb65-a65d-469c-8cdf-2c26fc223565.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1666766972514-c9adda04-928e-4d6c-8cb4-bbec49280eac.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1666767973343-3d5f33f1-b883-40d8-a366-eac4e656c476.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1666767981629-fe4898c1-c8d8-4c34-9b23-bb11b430eebb.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1666768051974-b2950d30-2c7b-4810-8886-7aa2820e6e5b.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1666768060823-36cc8c49-5f51-4f34-b703-b56be26e71f0.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1666771178495-80ef7a70-f02b-43ea-8c43-b45e4de3ad0f.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1666771186020-3903d935-70aa-4918-8d68-a53d00555b7b.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1666771591080-5c0184f6-fd34-4171-853c-cece18baa399.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1666771620652-4e88196d-b051-47fb-8b17-0bedfe4c1d27.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1666771922298-9e814b07-7ac8-4670-81e8-edf30c64cc6c.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1666771950154-2370ccc8-a880-46c8-8fd3-a1e0155dc20a.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1666773289083-3237f192-7aff-480a-a3a6-39fe05745d5d.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1666773349774-b87611be-7f0e-4af7-b115-6ce5fdbc2960.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1666773380975-46b337be-60d6-4e65-a715-03b20a0e0130.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1666774150033-9f7048a0-c499-4ae2-aecf-7cf89021c4f2.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1666774248670-2bb1ee7e-a1cb-4a23-8606-4f0fcedbbcd3.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1666776209825-3c760fd3-5f3e-4fe4-a192-f951ad5c636b.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1666778014393-4ceaffbc-c2cc-4abb-8597-8c5fb0138e64.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1666778468919-b85b836f-0433-4c05-99d0-a05143ab8fe9.png">
+<meta property="article:published_time" content="2025-01-22T04:37:41.000Z">
+<meta property="article:modified_time" content="2025-01-22T12:37:41.561Z">
+<meta property="article:author" content="SindreYang">
+<meta property="article:tag" content="生活">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://blog.mviai.com/images/1666662967543-d863d334-a21b-42ad-86d9-9bbe4eeb89c1.png">
+
+<link rel="canonical" href="http://blog.mviai.com/2025/Open3d%E5%AD%A6%E4%B9%A0%E6%8C%87%E5%8D%97/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>Open3d学习指南 | 落叶无痕</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">落叶无痕</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类<span class="badge">72</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档<span class="badge">321</span></a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+  <span class="exturl github-corner" data-url="aHR0cHM6Ly9naXRodWIuY29tL1NpbmRyZVlhbmc=" title="Follow me on GitHub" aria-label="Follow me on GitHub"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></span>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://blog.mviai.com/2025/Open3d%E5%AD%A6%E4%B9%A0%E6%8C%87%E5%8D%97/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="SindreYang">
+      <meta itemprop="description" content="沉淀后我愿意做一个温暖的人。有自己的喜好，有自己的原则，有自己的信仰，不急功近利，不浮夸轻薄，宠辱不惊，淡定安逸，心静如水。------不忘初心，方得始终">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="落叶无痕">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Open3d学习指南
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2025-01-22 12:37:41 / 修改时间：20:37:41" itemprop="dateCreated datePublished" datetime="2025-01-22T12:37:41+08:00">2025-01-22</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%88%86%E5%89%B2%E5%9F%B9%E8%AE%AD%E8%AE%A1%E5%88%92/" itemprop="url" rel="index"><span itemprop="name">分割培训计划</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">Changyan：</span>
+    
+    
+      <a title="changyan" href="/2025/Open3d%E5%AD%A6%E4%B9%A0%E6%8C%87%E5%8D%97/#SOHUCS" itemprop="discussionUrl">
+        <span id="changyan_count_unit" class="post-comments-count hc-comment-count" data-xid="2025/Open3d学习指南/" itemprop="commentCount"></span>
+      </a>
+    
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>自动摘要: 	安装	<code>	pipinstallopen3d	</code>			几何学	本教程演示了点云的基本用法。			可视化点云	本教程的第一部分读取点云并将其可视化。	&#96;&#96;&#96;	importop ……..</p>
+<span id="more"></span>
+
+<h1 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h1><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip install open3d</span><br></pre></td></tr></table></figure>
+
+
+<h1 id="几何学"><a href="#几何学" class="headerlink" title="几何学"></a>几何学</h1><p>本教程演示了点云的基本用法。</p>
+<h2 id="可视化点云"><a href="#可视化点云" class="headerlink" title="可视化点云"></a>可视化点云</h2><p>本教程的第一部分读取点云并将其可视化。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">import open3d as o3d</span><br><span class="line">import numpy as np</span><br><span class="line"></span><br><span class="line">print(&#x27;加载一个ply点云，打印它，渲染它&#x27;)</span><br><span class="line">ply_point_cloud = o3d.data.PLYPointCloud()</span><br><span class="line">pcd = o3d.io.read_point_cloud(ply_point_cloud.path)</span><br><span class="line">print(pcd)</span><br><span class="line">print(np.asarray(pcd.points))</span><br><span class="line">o3d.visualization.draw_geometries([pcd],zoom=0.3412,front=[0.4257,-0.2125,-0.8795],</span><br><span class="line">                                  lookat=[2.6172,2.0475,1.532],up=[-0.0694,-0.9768,0.2024])</span><br></pre></td></tr></table></figure>
+<p>输出结果：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">加载一个ply点云，打印它，渲染它</span><br><span class="line">[Open3D INFO] Downloading https://github.com/isl-org/open3d_downloads/releases/download/20220201-data/fragment.ply</span><br><span class="line">[Open3D INFO] Downloaded to C:\Users\sy/open3d_data/download/PLYPointCloud/fragment.ply</span><br><span class="line">PointCloud with 196133 points.</span><br><span class="line">[[0.65234375 0.84686458 2.37890625]</span><br><span class="line"> [0.65234375 0.83984375 2.38430572]</span><br><span class="line"> [0.66737998 0.83984375 2.37890625]</span><br><span class="line"> ...</span><br><span class="line"> [2.00839925 2.39453125 1.88671875]</span><br><span class="line"> [2.00390625 2.39488506 1.88671875]</span><br><span class="line"> [2.00390625 2.39453125 1.88793314]]</span><br></pre></td></tr></table></figure>
+<p><img src="/images/1666662967543-d863d334-a21b-42ad-86d9-9bbe4eeb89c1.png"><br>它看起来像一个密集的表面，但它实际上是一个渲染为表面的点云。GUI 支持各种键盘功能。例如，’-‘ 键减小了点（表面）的大小。</p>
+<p>open3d.ioread_point_cloud(filename,format&#x3D;auto,remove_nan_points&#x3D;False,remove_infinite_points&#x3D;False,print_progress&#x3D;False)函数功能：read_point_cloud从文件中读取点云。它尝试根据扩展名解码文件。有关支持的文件类型列表，请参阅<span class="exturl" data-url="aHR0cDovL3d3dy5vcGVuM2Qub3JnL2RvY3MvcmVsZWFzZS90dXRvcmlhbC9nZW9tZXRyeS9maWxlX2lvLmh0bWw=" title="http://www.open3d.org/docs/release/tutorial/geometry/file_io.html">文件 IO<i class="fa fa-external-link"></i></span>。参数：</p>
+<ul>
+<li>filename(str)：文件路径；</li>
+<li>format(str,optional,default&#x3D;auto)：输入文件的格式。如果未指定或设置为auto，则从文件扩展名推断格式；</li>
+<li>remove_nan_points(bool,optional,default&#x3D;False)：如果为真，所有包含NaN的点都会从PointCloud中移除；</li>
+<li>remove_infinite_points(bool,optional,default&#x3D;False)：如果为真，则从PointCloud中删除所有包含无限值的点。</li>
+<li>print_progress(bool,optional,default&#x3D;False)：如果设置为True，则会在控制台中显示进度条。</li>
+</ul>
+<p>返回值：open3d.geometry.PointCloud</p>
+<p>draw_geometries(geometry_list,window_name&#x3D;’Open3D’,width&#x3D;1920,height&#x3D;1080,left&#x3D;50,top&#x3D;50,point_show_normal&#x3D;False,mesh_show_wireframe&#x3D;False,mesh_show_back_face&#x3D;False,lookat,up,front,zoom)函数功能：draw_geometries可视化点云。使用鼠标&#x2F;触控板从不同的视点查看几何图形。参数：</p>
+<ul>
+<li>geometry_list(List[open3d.geometry.Geometry])：要可视化的几何图形列表；</li>
+<li>window_name(str,optional,default&#x3D;’Open3D’)：可视化窗口的显示主题；</li>
+<li>width(int,optional,default&#x3D;1920)：可视化窗口的宽度；</li>
+<li>height(int,optional,default&#x3D;1080)：可视化窗口的高度；</li>
+<li>left(int,optional,defalult&#x3D;50)：可视化窗口的左边距；</li>
+<li>top(int,optional,default&#x3D;50)：可视化窗口的上边距；</li>
+<li>point_show_normal(bool,optional,default&#x3D;False)：如果设置为True，则可视化点法线；</li>
+<li>mesh_show_wireframe(bool,optional,default&#x3D;False)：如果设置为True，则可视化网格线框；</li>
+<li>mesh_show_back_face(bool,optional,default&#x3D;False)：也可视化网格三角形的背面；</li>
+<li>lookat(numpy.ndarray[numpy.float64[3,1]])：相机的观察向量；</li>
+<li>up(numpy.ndarray[numpy.float64[3,1]])：相机的向上向量；</li>
+<li>front(numpy.ndarray[numpy.float64[3,1]])：相机的前向量。</li>
+<li>zoom(float)：相机的变焦；</li>
+</ul>
+<h2 id="体素缩减采样"><a href="#体素缩减采样" class="headerlink" title="体素缩减采样"></a>体素缩减采样</h2><p>体素缩减采样使用规则的体素网格从输入点云创建均匀的缩减采样点云。它通常用作许多点云处理任务的预处理步骤。该算法分两步运行：</p>
+<ul>
+<li>点被桶入体素中；</li>
+<li>每个被占用的体素通过平均内部的所有点来生成一个点，即一个体素只表示一个点。<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">import open3d as o3d</span><br><span class="line"></span><br><span class="line">print(&#x27;以0.05的体素对点云进行下采样&#x27;)</span><br><span class="line">ply_point_cloud = o3d.data.PLYPointCloud()</span><br><span class="line">pcd = o3d.io.read_point_cloud(ply_point_cloud.path)</span><br><span class="line">downpcd = pcd.voxel_down_sample(voxel_size=0.05)</span><br><span class="line">o3d.visualization.draw_geometries([downpcd],zoom=0.3412,front=[0.4257,-0.2125,-0.8795],</span><br><span class="line">                                  lookat=[2.6172,2.0475,1.532],up=[-0.0694,-0.9768,0.2024])</span><br></pre></td></tr></table></figure>
+输出结果：<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">以0.05的体素对点云进行下采样</span><br></pre></td></tr></table></figure>
+<img src="/images/1666663715930-a3cf1401-4606-407a-9aea-fdd10e2aad2c.png"></li>
+</ul>
+<h2 id="顶点法向估计"><a href="#顶点法向估计" class="headerlink" title="顶点法向估计"></a>顶点法向估计</h2><p>点云的另一个基本操作是点正态估计。按下N可查看点法线。该键 “-，+” 可用于控制法向长度。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">import open3d as o3d</span><br><span class="line"></span><br><span class="line">print(&#x27;重新计算下采样点云的法线&#x27;)</span><br><span class="line">ply_point_cloud = o3d.data.PLYPointCloud()</span><br><span class="line">pcd = o3d.io.read_point_cloud(ply_point_cloud.path)</span><br><span class="line">downpcd = pcd.voxel_down_sample(voxel_size=0.05)</span><br><span class="line">downpcd.estimate_normals(</span><br><span class="line">    search_param=o3d.geometry.KDTreeSearchParamHybrid(radius=0.1,max_nn=30)</span><br><span class="line">)</span><br><span class="line">o3d.visualization.draw_geometries([downpcd],zoom=0.3412,front=[0.4257,-0.2125,-0.8795],</span><br><span class="line">                                  lookat=[2.6172,2.0475,1.532],up=[-0.0694,-0.9768,0.2024],</span><br><span class="line">                                  point_show_normal=True)</span><br></pre></td></tr></table></figure>
+<p>输出结果：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">重新计算下采样点云的法线</span><br></pre></td></tr></table></figure>
+<p><img src="/images/1666664612071-e850b3cf-7d10-4f23-8c00-ef3f7d60c7c4.png"></p>
+<p>Open3d.geometry.PointCloud：estimate_normals(self,search_param&#x3D;KDTreeSearchParamKNN with knn&#x3D;30,fast_normal_computon&#x3D;True)函数功能：estimate_normals计算每个点法向的函数，该函数查找相邻点并使用协方差分析计算相邻点的主轴。参数：</p>
+<ul>
+<li>search_param(open3d.geometry.KDTreeSearchParam,option,default&#x3D;KDTreeSearchParamKNN with knn&#x3D;30)：用于邻域搜索的KDTree搜索参数。</li>
+<li>fast_normal_computation(bool,optional,default&#x3D;True)：如果为真，则正态估计使用非迭代方法从协方差矩阵中提取特征向量。这更快，但数值不稳定。</li>
+</ul>
+<p>KDTreeSearchParamHybrid该函数采用类的实例作为参数。radius &#x3D; 0.1和max_nn &#x3D; 30这两个关键参数指定搜索半径和最大最近邻。它具有10cm的搜索半径，最多只能考虑30个邻居，以节省计算时间。 功能：KDTreeSearchParamHybrid混合KNN和半径搜索的KDTree搜索参数。</p>
+<p><strong>注意</strong>：协方差分析算法生成两个相反的方向作为正态候选项。在不知道几何图形的全局结构的情况下，两者都可能是正确的。这称为正常方向问题。Open3D 尝试将法线定向为与原始法线对齐（如果存在）。否则，Open3D 会进行随机猜测。进一步的方向函数，例如，如果方向是一个问题，则需要调用orient_normals_to_align_with_direction和orient_normals_towards_camera_location。</p>
+<h2 id="估计顶点法向"><a href="#估计顶点法向" class="headerlink" title="估计顶点法向"></a>估计顶点法向</h2><p>估计的法向量可以从 downpcd 的法向量中检索出来。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">import open3d as o3d</span><br><span class="line"></span><br><span class="line">print(&#x27;打印第0个点的法向量&#x27;)</span><br><span class="line">ply_point_cloud = o3d.data.PLYPointCloud()</span><br><span class="line">pcd = o3d.io.read_point_cloud(ply_point_cloud.path)</span><br><span class="line">downpcd = pcd.voxel_down_sample(voxel_size=0.05)</span><br><span class="line">print(downpcd.normals[0])</span><br></pre></td></tr></table></figure>
+<p>输出结果：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">打印第0个点的法向量</span><br><span class="line">[ 0.89445022  0.02628609 -0.15662958]</span><br></pre></td></tr></table></figure>
+
+<p>要查看其他变量，请使用help(downpcd)。可以使用np.asarray将法向量变换为 numpy 数组。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">import open3d as o3d</span><br><span class="line">import numpy as np</span><br><span class="line"></span><br><span class="line">print(&#x27;打印前10点的法向量&#x27;)</span><br><span class="line">ply_point_cloud = o3d.data.PLYPointCloud()</span><br><span class="line">pcd = o3d.io.read_point_cloud(ply_point_cloud.path)</span><br><span class="line">downpcd = pcd.voxel_down_sample(voxel_size=0.05)</span><br><span class="line">print(np.asarray(downpcd.normals)[:10,:])</span><br></pre></td></tr></table></figure>
+<p>输出结果：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">打印前10点的法向量</span><br><span class="line">[[ 8.94450224e-01  2.62860943e-02 -1.56629584e-01]</span><br><span class="line"> [-3.13758548e-01  3.55896414e-02 -9.44423441e-01]</span><br><span class="line"> [-1.47776814e-01  6.17785521e-02 -9.19603061e-01]</span><br><span class="line"> [-5.09037352e-01 -2.12256503e-01 -7.93828250e-01]</span><br><span class="line"> [-2.65132504e-01  1.45827847e-02 -9.55608159e-01]</span><br><span class="line"> [-2.99585901e-02 -9.84751935e-01 -6.62941613e-03]</span><br><span class="line"> [ 8.94761360e-01 -6.20907552e-02  3.21312763e-01]</span><br><span class="line"> [ 7.64649808e-01  6.31591329e-02  5.80496031e-01]</span><br><span class="line"> [-3.03514555e-03 -9.98822002e-01 -2.93296441e-02]</span><br><span class="line"> [-2.83795584e-01  1.87381510e-05 -9.48635019e-01]]</span><br></pre></td></tr></table></figure>
+
+
+<h2 id="裁剪点云"><a href="#裁剪点云" class="headerlink" title="裁剪点云"></a>裁剪点云</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">import open3d as o3d</span><br><span class="line"></span><br><span class="line">print(&#x27;加载一个多边形体积并使用它裁剪原始点云&#x27;)</span><br><span class="line">demo_crop_data = o3d.data.DemoCropPointCloud()</span><br><span class="line">pcd = o3d.io.read_point_cloud(demo_crop_data.point_cloud_path)</span><br><span class="line">vol = o3d.visualization.read_selection_polygon_volume(demo_crop_data.cropped_json_path)</span><br><span class="line">chair = vol.crop_point_cloud(pcd)</span><br><span class="line">o3d.visualization.draw_geometries([chair],zoom=0.7,front=[0.5439,-0.2333,-0.8060],</span><br><span class="line">                                 lookat=[2.4615,2.1331,1.338],up=[-0.1781,-0.9708,0.1608])</span><br></pre></td></tr></table></figure>
+<p>输出结果：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">加载一个多边形体积并使用它裁剪原始点云</span><br></pre></td></tr></table></figure>
+<p><img src="/images/1666667411572-3ec5c166-a2d5-4ef3-bd95-ca6e7a7074e2.png"></p>
+<p>class：open3d.data.DemoCropPointCloud介绍：DemoCropPointCloud的数据类包含点云和cropped.json（保存的选定多边形体积文件）。该数据集在Open3D中用于点云裁剪演示。<strong>init</strong>(self:open3d.cpu.pybind.data.DemoCropPointCloud,data_root:str&#x3D;“”)-&gt;None属性：</p>
+<ul>
+<li>cropped_json_path：保存的选定多边形体积文件的路径；</li>
+<li>data_root：获取数据根目录。数据根在构建时设置或自动确定；</li>
+<li>download_dir：获取下载目录的绝对路径。即${data_root}&#x2F;${download_prefix}&#x2F;${prefix}；</li>
+<li>extract_dir：获取提取目录的绝对路径。即${data_root}&#x2F;${extract_prefix}&#x2F;${prefix}；</li>
+<li>point_cloud_path：示例点云的路径；</li>
+<li>prefix：获取数据集的前缀；</li>
+<li>read_selection_polygon_volume读取指定多边形选择区域的 json 文件，vol.crop_point_cloud(pcd)裁剪点云的函数， 过滤掉点，只剩下椅子了。</li>
+</ul>
+<h2 id="绘制点云"><a href="#绘制点云" class="headerlink" title="绘制点云"></a>绘制点云</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">import open3d as o3d</span><br><span class="line"></span><br><span class="line">print(&#x27;给椅子上色&#x27;)</span><br><span class="line">demo_crop_data = o3d.data.DemoCropPointCloud()</span><br><span class="line">pcd = o3d.io.read_point_cloud(demo_crop_data.point_cloud_path)</span><br><span class="line">vol = o3d.visualization.read_selection_polygon_volume(demo_crop_data.cropped_json_path)</span><br><span class="line">chair = vol.crop_point_cloud(pcd)</span><br><span class="line">chair.paint_uniform_color([1,0.706,0])</span><br><span class="line">o3d.visualization.draw_geometries([chair],zoom=0.7,front=[0.5439,-0.2333,-0.8060],</span><br><span class="line">                                 lookat=[2.4615,2.1331,1.338],up=[-0.1781,-0.9708,0.1608])</span><br></pre></td></tr></table></figure>
+<p>输出结果：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">给椅子上色</span><br></pre></td></tr></table></figure>
+<p><img src="/images/1666667673896-fcaf26e2-8a9d-4875-b6e8-c96de30119b3.png"><br>paint_uniform_color将所有点绘制为统一的颜色，颜色位于 RGB 空间 [0， 1] 范围内。</p>
+<h2 id="点云距离"><a href="#点云距离" class="headerlink" title="点云距离"></a>点云距离</h2><p>Open3D 提供了compute_point_cloud_distance方法来计算从源点云到目标点云的距离，即它计算源点云中每个点到目标点云中最近点的距离。</p>
+<p>open3d.geometry.PointCloudcompute_point_cloud_distance(self,target)函数功能：对于源点云中的每个点，计算到目标点云的距离。参数：</p>
+<ul>
+<li>target(open3d.geometry.PointCloud)：目标点云</li>
+</ul>
+<p>返回值：open3d.utility.DoubleVector</p>
+<p>open3d.geometry.PointCloudselect_by_index(self,indices,invert&#x3D;False)函数功能：从输入点云中选择点到输出点云中的功能参数：</p>
+<ul>
+<li>indices(List[int])：要选择的点的索引；</li>
+<li>invert(bool,optional,default&#x3D;False)：设置为True以反转索引的选择。</li>
+</ul>
+<p>返回值：open3d.geometry.PointCloud</p>
+<p>在下面的示例中，我们使用该函数来计算两个点云之间的差异。请注意，此方法也可用于计算两个点云之间的倒角距离。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">import open3d as o3d</span><br><span class="line">import numpy as np</span><br><span class="line"></span><br><span class="line">demo_crop_data = o3d.data.DemoCropPointCloud()</span><br><span class="line">pcd = o3d.io.read_point_cloud(demo_crop_data.point_cloud_path)</span><br><span class="line">vol = o3d.visualization.read_selection_polygon_volume(demo_crop_data.cropped_json_path)</span><br><span class="line">chair = vol.crop_point_cloud(pcd)</span><br><span class="line"></span><br><span class="line">dists = pcd.compute_point_cloud_distance(chair)</span><br><span class="line">dists = np.asarray(dists)</span><br><span class="line">ind = np.where(dists &gt; 0.01)[0]</span><br><span class="line">pcd_without_chair = pcd.select_by_index(ind)</span><br><span class="line">o3d.visualization.draw_geometries([pcd_without_chair],zoom=0.7,front=[0.5439,-0.2333,-0.8060],</span><br><span class="line">                                 lookat=[2.4615,2.1331,1.338],up=[-0.1781,-0.9708,0.1608])</span><br></pre></td></tr></table></figure>
+<p>输出结果：<img src="/images/1666668345994-49b33521-4c9d-4f9c-bc4a-d33276375a5f.png"></p>
+<h2 id="包围框"><a href="#包围框" class="headerlink" title="包围框"></a>包围框</h2><p>点云几何类型与 Open3D 中的所有其他几何类型一样具有包围框。目前，Open3D 实现了一个PointCloudAxisAlignedBoundingBox和一个OrientedBoundingBox，它也可以用来裁剪几何体。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">import open3d as o3d</span><br><span class="line"></span><br><span class="line">demo_crop_data = o3d.data.DemoCropPointCloud()</span><br><span class="line">pcd = o3d.io.read_point_cloud(demo_crop_data.point_cloud_path)</span><br><span class="line">vol = o3d.visualization.read_selection_polygon_volume(demo_crop_data.cropped_json_path)</span><br><span class="line">chair = vol.crop_point_cloud(pcd)</span><br><span class="line">aabb = chair.get_axis_aligned_bounding_box()</span><br><span class="line">aabb.color = (1,0,0)    #红色线，轴线与世界坐标重合</span><br><span class="line">obb = chair.get_oriented_bounding_box()</span><br><span class="line">obb.color = (0,1,0    #绿色线，有方向的</span><br><span class="line">o3d.visualization.draw_geometries([chair,aabb,obb],zoom=0.7,front=[0.5439,-0.2333,-0.8060],</span><br><span class="line">                                  lookat=[2.4615,2.1331,1.338],up=[-0.1781,-0.9708,0.1608])</span><br></pre></td></tr></table></figure>
+<p>输出结果：<img src="/images/1666668911160-f069efb3-206b-439c-9f1b-1b887739c550.png"></p>
+<p>open3d.geometry.PointCloudget_axis_aligned_bounding_box(self)函数功能：返回几何的轴对齐边界框。参数：无返回值：open3d.geometry.AxisAlignedBoundingBox</p>
+<p>open3d.geometry.PointCloudget_oriented_bounding_box(self:open3d.geometry.Geometry3D,robust:bool&#x3D;False)-&gt;open3d::geometry::OrientedBoundingBox函数功能：返回几何体的定向边界框；基于凸包的PCA计算定向边界框。返回的边界框是最小边界框的近似值。参数：</p>
+<ul>
+<li>robust(bool)：如果设置为True，则使用更健壮的方法，该方法适用于退化情况，但会在点坐标中引入噪声。</li>
+</ul>
+<p>返回值：定向边界框。边界框的方向使得轴相对于主成分是有序的 open3d.geometry.OrientedBoundingBox。</p>
+<h2 id="凸包"><a href="#凸包" class="headerlink" title="凸包"></a>凸包</h2><p>点云的凸壳是包含所有点的最小凸集。Open3D 包含计算点云的凸壳的方法compute_convex_hull。实现基于<span class="exturl" data-url="aHR0cDovL3d3dy5xaHVsbC5vcmcv" title="http://www.qhull.org/">Qhull<i class="fa fa-external-link"></i></span>。在下面的示例代码中，我们首先从网格中对点云进行采样，并计算以三角形网格形式返回的凸壳。然后，我们将凸起的船体可视化为红色LineSet。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">import open3d as o3d</span><br><span class="line"></span><br><span class="line">bunny = o3d.data.BunnyMesh()</span><br><span class="line">mesh = o3d.io.read_triangle_mesh(bunny.path)</span><br><span class="line">mesh.compute_vertex_normals()</span><br><span class="line"></span><br><span class="line">pcl = mesh.sample_points_poisson_disk(number_of_points=2000)    #泊松距离</span><br><span class="line">hull,_ = pcl.compute_convex_hull()</span><br><span class="line">hull_ls = o3d.geometry.LineSet.create_from_triangle_mesh(hull)</span><br><span class="line">hull_ls.paint_uniform_color((1,0,0))</span><br><span class="line">o3d.visualization.draw_geometries([pcl,hull_ls])</span><br></pre></td></tr></table></figure>
+<p>输出结果：<img src="/images/1666669695607-b9a055ac-489e-4c01-8a6a-3dcb3d7989b4.png"></p>
+<p>open3d.ioread_triangle_mesh(filename,enable_post_processing&#x3D;False,print_progress&#x3D;False)函数功能：从文件中读取三角形网格参数：</p>
+<ul>
+<li>filename(str)：文件路径；</li>
+<li>enable_post_processing(bool,optional,default&#x3D;False)：</li>
+<li>print_progress(bool,optional,default&#x3D;False)：如果设置为True，则会在控制台中显示进度条。</li>
+</ul>
+<p>返回值：open3d.geometry.TriangleMesh</p>
+<p>open3d.geometry.TriangleMeshcompute_vertex_normals(self,normalized&#x3D;True)函数功能：计算顶点法线的函数，通常在渲染之前调用参数：normalized(bool,optional,default&#x3D;True)返回值：open3d.geometry.TriangleMesh</p>
+<h2 id="DBSCAN聚类"><a href="#DBSCAN聚类" class="headerlink" title="DBSCAN聚类"></a>DBSCAN聚类</h2><p>给定来自例如深度传感器的点云，我们希望将本地点云集群组合在一起。为此，我们可以使用聚类分析算法。Open3D 实现了 DBSCAN [Ester1996] ，这是一种基于密度的聚类算法。该算法在cluster_dbscan中实现并需要两个参数：eps定义到聚类中邻居的距离，并定义形成聚类所需的最小点数min_points。该函数返回labels，其中标签-1指示噪声。</p>
+<p>class open3d.utility.VerbosityContextManager介绍：用于临时更改Open3D详细级别的上下文管理器；初始：<strong>init</strong>(self:open3d.utility.VerbosityContextManager,level:open3d.utility.VerbosityLevel)-&gt;None：创建具有给定VerbosityLevel的VerbosityContextManager；属性：无</p>
+<p>class open3d.utility.VerbosityLevel介绍：详细级别的枚举类；方法：Debug&#x3D;<span class="exturl" data-url="VmVyYm9zaXR5TGV2ZWwuRGVidWc6Mw==" title="VerbosityLevel.Debug:3">VerbosityLevel.Debug:3<i class="fa fa-external-link"></i></span>    Error&#x3D;&lt; VerbosityLevel.Error:0&gt;    Info&#x3D;&lt; VerbosityLevel.Info:2&gt;    Warning&#x3D;<span class="exturl" data-url="VmVyYm9zaXR5TGV2ZWwuV2FybmluZzox" title="VerbosityLevel.Warning:1">VerbosityLevel.Warning:1<i class="fa fa-external-link"></i></span>属性：value</p>
+<p>open3d.geometry.PointCloudcluster_dbscan(self,eps,min_points,print_progress&#x3D;False)函数功能：根据算法返回点标签列表，-1表示噪声。参数：</p>
+<ul>
+<li>eps(float)：用于查找相邻点的密度函数；</li>
+<li>min_points(int)：形成聚类的最小点数；</li>
+<li>print_progress(bool,optional,default&#x3D;False)：如果为True，则进度会在控制台中可视化。</li>
+</ul>
+<p>class open3d.utility.Vector3dVector介绍：将形状（n，3）的float64 numpy数组转换为Open3D格式。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">import open3d as o3d</span><br><span class="line">import numpy as np</span><br><span class="line">import matplotlib.pyplot as plt</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">ply_point_cloud = o3d.data.PLYPointCloud()</span><br><span class="line">pcd = o3d.io.read_point_cloud(ply_point_cloud.path)</span><br><span class="line"></span><br><span class="line">with o3d.utility.VerbosityContextManager(o3d.utility.VerbosityLevel.Debug) as cm:</span><br><span class="line">    labels = np.array(pcd.cluster_dbscan(eps=0.02,min_points=10,print_progress=True))</span><br><span class="line"></span><br><span class="line">max_label = labels.max()</span><br><span class="line">print(f&#x27;点云有&#123;max_label + 1&#125;类&#x27;)</span><br><span class="line">colors = plt.get_cmap(&#x27;tab20&#x27;)(labels / (max_label if max_label &gt; 0 else 1))</span><br><span class="line">colors[labels &lt; 0] = 0</span><br><span class="line">pcd.colors = o3d.utility.Vector3dVector(colors[:,:3])</span><br><span class="line">o3d.visualization.draw_geometries([pcd],zoom=0.455,front=[-0.4999,-0.1659,-0.8499],</span><br><span class="line">                                  lookat=[2.1813,2.0619,2.0999],up=[0.1204,-0.9852,0.1215])</span><br></pre></td></tr></table></figure>
+<p>输出结果：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">[Open3D DEBUG] Precompute neighbors.</span><br><span class="line">[Open3D DEBUG] Done Precompute neighbors.</span><br><span class="line">[Open3D DEBUG] Compute Clusters</span><br><span class="line">Precompute neighbors.[========================================] 100%</span><br><span class="line">[Open3D DEBUG] Done Compute Clusters: 10</span><br><span class="line">点云有10类</span><br></pre></td></tr></table></figure>
+<p><img src="/images/1666682117008-a90fb4b6-b54a-4998-9daf-0a18a6f6ac7f.png"></p>
+<p>注意：此算法预先计算所有点的 epsilon 半径内的所有邻居。如果所选的 epsilon 太大，这可能需要大量内存。</p>
+<h2 id="RANSAC平面分割"><a href="#RANSAC平面分割" class="headerlink" title="RANSAC平面分割"></a>RANSAC平面分割</h2><p>Open3D 还支持使用 RANSAC 分割来自点云的几何基元。要找到在点云中具有最大支撑的平面，我们可以使用segment_plane。该方法有三个参数：distance_threshold定义了点到估计平面的最大距离，这些距离内的点被认为是内点（inlier），ransac_n定义随机采样以估计平面的点数，以及num_iterations定义随机平面采样和验证的频率。然后，该函数返回(a,b,c,d)平面，以便对于平面上的每个点(x,y,z)，我们都有ax+by+cz+d&#x3D;0 。该函数进一步返回内点的索引列表。</p>
+<p>open3d.geometry.PointCloudsegment_plane(self,distance_threshold,ransac_n,num_iterations,seed&#x3D;None)函数功能：使用RANSAC算法在点云中分割平面参数：</p>
+<ul>
+<li>distance_threshold(float)：一个点与平面模型的最大距离，仍然被认为是一个内点；</li>
+<li>ransac_n(int)：每次迭代中被视为内点的初始点数；</li>
+<li>num_iterations(int)：迭代次数；</li>
+<li>seed(Optional[int],optional,default&#x3D;None)：随机生成器中使用的种子值，设置为None以在每个函数调用中使用随机种子值。</li>
+</ul>
+<p>返回值：Tuple[numpy.ndarray[numpy.float64[4,1]],List[int]]</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">import open3d as o3d</span><br><span class="line"></span><br><span class="line">pcd_point_cloud = o3d.data.PCDPointCloud()</span><br><span class="line">pcd = o3d.io.read_point_cloud(pcd_point_cloud.path)</span><br><span class="line"></span><br><span class="line">plane_model,inliers = pcd.segment_plane(distance_threshold=0.01,ransac_n=3,num_iterations=1000)</span><br><span class="line"></span><br><span class="line">[a,b,c,d] = plane_model</span><br><span class="line">print(f&#x27;平面方程:&#123;a:.2f&#125;x + &#123;b:.2f&#125;y + &#123;c:.2f&#125;z + &#123;d:.2f&#125; = 0&#x27;)</span><br><span class="line"></span><br><span class="line">inlier_cloud = pcd.select_by_index(inliers)</span><br><span class="line">inlier_cloud.paint_uniform_color([1.0,0,0])</span><br><span class="line">outlier_cloud = pcd.select_by_index(inliers,invert=True)</span><br><span class="line">o3d.visualization.draw_geometries([inlier_cloud,outlier_cloud],zoom=0.8,front=[-0.4999,-0.1659,-0.8499],</span><br><span class="line">                                  lookat=[2.1813,2.0619,2.0999],up=[0.1204,-0.9852,0.1215])</span><br></pre></td></tr></table></figure>
+<p>输出结果：<img src="/images/1666684528984-63aefff3-a4ba-47c8-8899-77a8837f5b76.png"></p>
+<h2 id="隐藏点删除"><a href="#隐藏点删除" class="headerlink" title="隐藏点删除"></a>隐藏点删除</h2><p>假设您希望从给定视点渲染点云，但背景中的点会泄漏到前景中，因为它们不会被其他点遮挡。为此，我们可以应用隐藏点删除算法。在Open3D中，<span class="exturl" data-url="aHR0cDovL3d3dy5vcGVuM2Qub3JnL2RvY3MvcmVsZWFzZS90dXRvcmlhbC9yZWZlcmVuY2UuaHRtbCNLYXR6MjAwNw==" title="http://www.open3d.org/docs/release/tutorial/reference.html#Katz2007">[Katz2007]<i class="fa fa-external-link"></i></span>的方法实现了从给定视图近似点云的可见性，而无需表面重建或法线估计。</p>
+<p>class open3d.data.ArmadilloMesh介绍：ArmadilloMesh 的数据类包含来自 Stanford 3D Scanning Repository 的 ArmadilloMesh.ply方法：<strong>init</strong>(self:open3d.data.ArmadilloMesh,data_root:str&#x3D;“”)-&gt;None属性：</p>
+<ul>
+<li>data_root：获取数据根目录。数据根在构建时设置或自动确定；</li>
+<li>download_dir：获取下载路径的绝对路径；</li>
+<li>extract_dir：获取解压目录的绝对路径；</li>
+<li>path：ArmadilloMesh.ply文件的路径；</li>
+<li>prefix：获取数据集的前缀。</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">import open3d as o3d</span><br><span class="line">import numpy as np</span><br><span class="line"></span><br><span class="line">print(&#x27;将网格转换为点云并估计尺寸&#x27;)</span><br><span class="line">armadillo = o3d.data.ArmadilloMesh()</span><br><span class="line">mesh = o3d.io.read_triangle_mesh(armadillo.path)</span><br><span class="line">mesh.compute_vertex_normals()</span><br><span class="line"></span><br><span class="line">pcd = mesh.sample_points_poisson_disk(5000)</span><br><span class="line">diameter = np.linalg.norm(</span><br><span class="line">    np.asarray(pcd.get_max_bound()) - np.asarray(pcd.get_min_bound()))</span><br><span class="line">o3d.visualization.draw_geometries([pcd])</span><br></pre></td></tr></table></figure>
+<p>输出结果：<img src="/images/1666685916054-f87941bc-df54-46f1-8a87-99a76c47d477.png"></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">print(&#x27;定义参数用于删除隐藏点&#x27;)</span><br><span class="line">camera = [0, 0, diameter]</span><br><span class="line">radius = diameter * 100</span><br><span class="line"></span><br><span class="line">print(&#x27;获取从给定视点可见的所有点&#x27;)</span><br><span class="line">_, pt_map = pcd.hidden_point_removal(camera, radius)</span><br><span class="line"></span><br><span class="line">print(&#x27;可视化的结果&#x27;)</span><br><span class="line">pcd = pcd.select_by_index(pt_map)</span><br><span class="line">o3d.visualization.draw_geometries([pcd])</span><br></pre></td></tr></table></figure>
+<p>输出结果：<img src="/images/1666686640183-f0c7129c-e08f-4d60-b66c-48400f31b3d9.png"></p>
+<h1 id="Mesh"><a href="#Mesh" class="headerlink" title="Mesh"></a>Mesh</h1><p><span class="exturl" data-url="aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3UwMTQwNzI4MjcvYXJ0aWNsZS9kZXRhaWxzLzExMjM5OTA1MA==" title="https://blog.csdn.net/u014072827/article/details/112399050">https://blog.csdn.net/u014072827/article/details/112399050<i class="fa fa-external-link"></i></span>Open3D 具有一个称为TriangleMesh的 3D 三角形网格的数据结构。下面的代码显示了如何从ply文件中读取三角形网格并打印其顶点和三角形。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">import open3d as o3d</span><br><span class="line"></span><br><span class="line">print(&#x27;测试网格在open3D&#x27;)</span><br><span class="line">armadillo_mesh = o3d.data.ArmadilloMesh()</span><br><span class="line">mesh = o3d.io.read_triangle_mesh(armadillo_mesh.path)</span><br><span class="line"></span><br><span class="line">knot_mesh = o3d.data.KnotMesh()</span><br><span class="line">mesh = o3d.io.read_triangle_mesh(knot_mesh.path)</span><br><span class="line">print(mesh)</span><br><span class="line">print(&#x27;顶点：&#x27;)</span><br><span class="line">print(np.asarray(mesh.vertices))</span><br><span class="line">print(&#x27;三角：&#x27;)</span><br><span class="line">print(np.asarray(mesh.triangles))</span><br></pre></td></tr></table></figure>
+<p>输出结果：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">测试网格在open3D</span><br><span class="line">[Open3D INFO] Downloading https://github.com/isl-org/open3d_downloads/releases/download/20220201-data/KnotMesh.ply</span><br><span class="line">[Open3D INFO] Downloaded to C:\Users\sy/open3d_data/download/KnotMesh/KnotMesh.ply</span><br><span class="line">TriangleMesh with 1440 points and 2880 triangles.</span><br><span class="line">顶点：</span><br><span class="line">[[  4.51268387  28.68865967 -76.55680847]</span><br><span class="line"> [  7.63622284  35.52046967 -69.78063965]</span><br><span class="line"> [  6.21986008  44.22465134 -64.82303619]</span><br><span class="line"> ...</span><br><span class="line"> [-22.12651634  31.28466606 -87.37570953]</span><br><span class="line"> [-13.91188431  25.4865818  -86.25827026]</span><br><span class="line"> [ -5.27768707  23.36245346 -81.43279266]]</span><br><span class="line">三角：</span><br><span class="line">[[   0   12   13]</span><br><span class="line"> [   0   13    1]</span><br><span class="line"> [   1   13   14]</span><br><span class="line"> ...</span><br><span class="line"> [1438   11 1439]</span><br><span class="line"> [1439   11    0]</span><br><span class="line"> [1439    0 1428]]</span><br><span class="line"></span><br><span class="line">进程已结束,退出代码0</span><br></pre></td></tr></table></figure>
+<p>TriangleMesh类具有一些数据字段，例如vertices和triangles。Open3D 通过numpy提供直接内存访问。</p>
+<h2 id="可视化3D网络"><a href="#可视化3D网络" class="headerlink" title="可视化3D网络"></a>可视化3D网络</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">import open3d as o3d</span><br><span class="line"></span><br><span class="line">armadillo_mesh = o3d.data.ArmadilloMesh()</span><br><span class="line">mesh = o3d.io.read_triangle_mesh(armadillo_mesh.path)</span><br><span class="line"></span><br><span class="line">knot_mesh = o3d.data.KnotMesh()</span><br><span class="line">mesh = o3d.io.read_triangle_mesh(knot_mesh.path)</span><br><span class="line"></span><br><span class="line">print(&#x27;尝试使用网格法线(存在：&#x27; + str(mesh.has_vertex_normals()) + &#x27;) 和颜色（存在：&#x27; +</span><br><span class="line">      str(mesh.has_vertex_colors()) + &#x27;)去渲染网格&#x27;)</span><br><span class="line"></span><br><span class="line">o3d.visualization.draw_geometries([mesh])</span><br><span class="line">print(&#x27;网格没有法线和颜色不美观&#x27;)</span><br></pre></td></tr></table></figure>
+<p>输出结果：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">尝试使用网格法线(存在：False) 和颜色（存在：False)去渲染网格</span><br><span class="line">网格没有法线和颜色不美观</span><br></pre></td></tr></table></figure>
+<p><img src="/images/1666688727641-0b276126-5e11-453a-ad9d-969489799cd6.png"></p>
+<p>可以旋转和移动这个网格，但是由于它是纯灰色的所以看起来不是并不像一个3D图形。这是因为当前网格没有顶点或面的法线。因此，使用统一颜色着色而不是更复杂的Phong着色。</p>
+<h2 id="表面法线估计"><a href="#表面法线估计" class="headerlink" title="表面法线估计"></a>表面法线估计</h2><p>使用曲面法线绘制网格。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">import open3d as o3d</span><br><span class="line"></span><br><span class="line">armadillo_mesh = o3d.data.ArmadilloMesh()</span><br><span class="line">mesh = o3d.io.read_triangle_mesh(armadillo_mesh.path)</span><br><span class="line"></span><br><span class="line">knot_mesh = o3d.data.KnotMesh()</span><br><span class="line">mesh = o3d.io.read_triangle_mesh(knot_mesh.path)</span><br><span class="line">print(&#x27;计算法线和渲染&#x27;)</span><br><span class="line">mesh.compute_vertex_normals()</span><br><span class="line">print(np.asarray(mesh.triangle_normals))</span><br><span class="line">o3d.visualization.draw_geometries([mesh])</span><br></pre></td></tr></table></figure>
+<p>输出结果：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">计算法线和渲染</span><br><span class="line">[[ 0.79164373 -0.53951444  0.28674793]</span><br><span class="line"> [ 0.8319824  -0.53303008  0.15389681]</span><br><span class="line"> [ 0.83488162 -0.09250101  0.54260136]</span><br><span class="line"> ...</span><br><span class="line"> [ 0.16269924 -0.76215917 -0.6266118 ]</span><br><span class="line"> [ 0.52755226 -0.83707495 -0.14489352]</span><br><span class="line"> [ 0.56778973 -0.76467734 -0.30476777]]</span><br><span class="line"></span><br><span class="line">进程已结束,退出代码0</span><br></pre></td></tr></table></figure>
+<p><img src="/images/1666689274831-cf890069-d434-455b-b864-416631bc2b64.png"></p>
+<p>它使用计算compute_vertex_normals和paint_uniform_color作为mesh的成员函数。</p>
+<h2 id="裁剪网格"><a href="#裁剪网格" class="headerlink" title="裁剪网格"></a>裁剪网格</h2><p>通过numpy直接操作网格的triangle和triangle_normals数据域去除一半的曲面。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">import open3d as o3d</span><br><span class="line">import copy</span><br><span class="line">import numpy as np</span><br><span class="line"></span><br><span class="line">print(&#x27;我们只用前半个三角形做一个局部网格&#x27;)</span><br><span class="line">knot_mesh = o3d.data.KnotMesh()</span><br><span class="line">mesh = o3d.io.read_triangle_mesh(knot_mesh.path)</span><br><span class="line">mesh1 = copy.deepcopy(mesh)</span><br><span class="line">mesh1.triangles = o3d.utility.Vector3iVector(np.asarray(mesh1.triangles)[:len(mesh1.triangles) // 2, :])</span><br><span class="line">mesh1.triangle_normals = o3d.utility.Vector3dVector(np.asarray(mesh1.triangle_normals)[:len(mesh1.triangle_normals) // 2, :])</span><br><span class="line">print(mesh1.triangles)</span><br><span class="line">o3d.visualization.draw_geometries([mesh1])</span><br></pre></td></tr></table></figure>
+<p>输出结果：<img src="/images/1666690459101-d2e881b8-bc5c-4593-a387-6ffcb3c9ccae.png"></p>
+<h2 id="渲染网格"><a href="#渲染网格" class="headerlink" title="渲染网格"></a>渲染网格</h2><p>paint_uniform_color给网格涂上统一的颜色。颜色位于 RGB 空间 [0,  1] 范围内。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">import open3d as o3d</span><br><span class="line">import copy</span><br><span class="line"></span><br><span class="line">knot_mesh = o3d.data.KnotMesh()</span><br><span class="line">mesh = o3d.io.read_triangle_mesh(knot_mesh.path)</span><br><span class="line">mesh1 = copy.deepcopy(mesh)</span><br><span class="line"></span><br><span class="line">print(&#x27;渲染网格&#x27;)</span><br><span class="line">mesh1.paint_uniform_color([1,0.706,0])</span><br><span class="line">o3d.visualization.draw_geometries([mesh1])</span><br></pre></td></tr></table></figure>
+<p>输出结果：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">渲染网格</span><br></pre></td></tr></table></figure>
+<p><img src="/images/1666690757696-9a916a63-00d6-4198-9ce4-2de2c37361a7.png"></p>
+<h2 id="网格属性"><a href="#网格属性" class="headerlink" title="网格属性"></a>网格属性</h2><p>三角形网格具有多个可以使用 Open3D 进行测试的属性。一个重要的属性是流形属性，可使用is_edge_manifold去测试网格是否为边缘流形（edge manifold），使用is_vertex_manifold去测试所有顶点是否为流形。如果每个边缘包括一个或两个三角形，则这个三角网格是边缘流形。函数 is _ edge _ Manifold 具有 bool 参数 allow _ boundary _ edge，该参数定义是否允许边界边缘。此外，如果顶点的星形边是边缘流形和边缘连接的话，则三角形网格是顶点流形。比如两个或者更多的面可能只有一个顶点连接而不是通过边。</p>
+<p>另一个属性是自相交测试。如果在一个网格中存在与另一个网格相交的三角形，is_self_intersecting这个函数就会返回true。一个水密网格能够被定义成一个边缘流形，顶点流形和不自交的网格。在Open3D中通过is_watertight接口实现这种检测。</p>
+<p>可以测试一个网格是否为可定向的，即三角形可以以所有法线指向外部的方式定向。这个通过is_orientable实现。</p>
+<p>下面的示例代码测试了这些属性并且可视化。非流形边缘用红色表示，边界边缘用绿色标识，非流形顶点用绿色点，自交的三角形用粉色显示。其中需要open3d_example.py文件，代码如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br><span class="line">205</span><br><span class="line">206</span><br><span class="line">207</span><br><span class="line">208</span><br><span class="line">209</span><br><span class="line">210</span><br><span class="line">211</span><br><span class="line">212</span><br><span class="line">213</span><br><span class="line">214</span><br><span class="line">215</span><br><span class="line">216</span><br><span class="line">217</span><br><span class="line">218</span><br><span class="line">219</span><br><span class="line">220</span><br><span class="line">221</span><br><span class="line">222</span><br><span class="line">223</span><br><span class="line">224</span><br><span class="line">225</span><br><span class="line">226</span><br><span class="line">227</span><br><span class="line">228</span><br><span class="line">229</span><br><span class="line">230</span><br><span class="line">231</span><br><span class="line">232</span><br><span class="line">233</span><br><span class="line">234</span><br><span class="line">235</span><br><span class="line">236</span><br><span class="line">237</span><br><span class="line">238</span><br><span class="line">239</span><br><span class="line">240</span><br><span class="line">241</span><br><span class="line">242</span><br><span class="line">243</span><br><span class="line">244</span><br><span class="line">245</span><br><span class="line">246</span><br><span class="line">247</span><br><span class="line">248</span><br><span class="line">249</span><br><span class="line">250</span><br><span class="line">251</span><br><span class="line">252</span><br><span class="line">253</span><br><span class="line">254</span><br><span class="line">255</span><br><span class="line">256</span><br><span class="line">257</span><br><span class="line">258</span><br><span class="line">259</span><br><span class="line">260</span><br><span class="line">261</span><br><span class="line">262</span><br><span class="line">263</span><br><span class="line">264</span><br><span class="line">265</span><br><span class="line">266</span><br><span class="line">267</span><br><span class="line">268</span><br><span class="line">269</span><br><span class="line">270</span><br><span class="line">271</span><br><span class="line">272</span><br><span class="line">273</span><br><span class="line">274</span><br><span class="line">275</span><br><span class="line">276</span><br><span class="line">277</span><br><span class="line">278</span><br><span class="line">279</span><br><span class="line">280</span><br><span class="line">281</span><br><span class="line">282</span><br><span class="line">283</span><br><span class="line">284</span><br><span class="line">285</span><br><span class="line">286</span><br><span class="line">287</span><br><span class="line">288</span><br><span class="line">289</span><br><span class="line">290</span><br><span class="line">291</span><br><span class="line">292</span><br><span class="line">293</span><br><span class="line">294</span><br><span class="line">295</span><br><span class="line">296</span><br><span class="line">297</span><br><span class="line">298</span><br><span class="line">299</span><br><span class="line">300</span><br><span class="line">301</span><br><span class="line">302</span><br><span class="line">303</span><br><span class="line">304</span><br><span class="line">305</span><br><span class="line">306</span><br><span class="line">307</span><br><span class="line">308</span><br><span class="line">309</span><br><span class="line">310</span><br><span class="line">311</span><br><span class="line">312</span><br><span class="line">313</span><br><span class="line">314</span><br><span class="line">315</span><br><span class="line">316</span><br><span class="line">317</span><br><span class="line">318</span><br><span class="line">319</span><br><span class="line">320</span><br><span class="line">321</span><br><span class="line">322</span><br><span class="line">323</span><br><span class="line">324</span><br><span class="line">325</span><br><span class="line">326</span><br><span class="line">327</span><br><span class="line">328</span><br><span class="line">329</span><br><span class="line">330</span><br><span class="line">331</span><br><span class="line">332</span><br><span class="line">333</span><br><span class="line">334</span><br><span class="line">335</span><br><span class="line">336</span><br><span class="line">337</span><br><span class="line">338</span><br><span class="line">339</span><br><span class="line">340</span><br><span class="line">341</span><br><span class="line">342</span><br><span class="line">343</span><br><span class="line">344</span><br><span class="line">345</span><br><span class="line">346</span><br><span class="line">347</span><br><span class="line">348</span><br><span class="line">349</span><br><span class="line">350</span><br><span class="line">351</span><br><span class="line">352</span><br><span class="line">353</span><br><span class="line">354</span><br><span class="line">355</span><br><span class="line">356</span><br><span class="line">357</span><br><span class="line">358</span><br><span class="line">359</span><br><span class="line">360</span><br><span class="line">361</span><br><span class="line">362</span><br><span class="line">363</span><br><span class="line">364</span><br><span class="line">365</span><br><span class="line">366</span><br><span class="line">367</span><br><span class="line">368</span><br><span class="line">369</span><br><span class="line">370</span><br></pre></td><td class="code"><pre><span class="line"># ----------------------------------------------------------------------------</span><br><span class="line"># -                        Open3D: www.open3d.org                            -</span><br><span class="line"># ----------------------------------------------------------------------------</span><br><span class="line"># The MIT License (MIT)</span><br><span class="line">#</span><br><span class="line"># Copyright (c) 2018-2021 www.open3d.org</span><br><span class="line">#</span><br><span class="line"># Permission is hereby granted, free of charge, to any person obtaining a copy</span><br><span class="line"># of this software and associated documentation files (the &quot;Software&quot;), to deal</span><br><span class="line"># in the Software without restriction, including without limitation the rights</span><br><span class="line"># to use, copy, modify, merge, publish, distribute, sublicense, and/or sell</span><br><span class="line"># copies of the Software, and to permit persons to whom the Software is</span><br><span class="line"># furnished to do so, subject to the following conditions:</span><br><span class="line">#</span><br><span class="line"># The above copyright notice and this permission notice shall be included in</span><br><span class="line"># all copies or substantial portions of the Software.</span><br><span class="line">#</span><br><span class="line"># THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR</span><br><span class="line"># IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,</span><br><span class="line"># FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE</span><br><span class="line"># AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER</span><br><span class="line"># LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING</span><br><span class="line"># FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS</span><br><span class="line"># IN THE SOFTWARE.</span><br><span class="line"># ----------------------------------------------------------------------------</span><br><span class="line"></span><br><span class="line">import open3d as o3d</span><br><span class="line">import numpy as np</span><br><span class="line">import os</span><br><span class="line">import shutil</span><br><span class="line">import sys</span><br><span class="line">import zipfile</span><br><span class="line">from os import listdir, makedirs</span><br><span class="line">from os.path import exists, isfile, join, splitext, dirname, basename</span><br><span class="line">import re</span><br><span class="line">from warnings import warn</span><br><span class="line">import json</span><br><span class="line">import open3d as o3d</span><br><span class="line">import copy</span><br><span class="line"></span><br><span class="line">if (sys.version_info &gt; (3, 0)):</span><br><span class="line">    pyver = 3</span><br><span class="line">    from urllib.request import Request, urlopen</span><br><span class="line">else:</span><br><span class="line">    pyver = 2</span><br><span class="line">    from urllib2 import Request, urlopen</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">def edges_to_lineset(mesh, edges, color):</span><br><span class="line">    ls = o3d.geometry.LineSet()</span><br><span class="line">    ls.points = mesh.vertices</span><br><span class="line">    ls.lines = edges</span><br><span class="line">    ls.paint_uniform_color(color)</span><br><span class="line">    return ls</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">def get_plane_mesh(height=0.2, width=1):</span><br><span class="line">    mesh = o3d.geometry.TriangleMesh(</span><br><span class="line">        vertices=o3d.utility.Vector3dVector(</span><br><span class="line">            np.array(</span><br><span class="line">                [[0, 0, 0], [0, height, 0], [width, height, 0], [width, 0, 0]],</span><br><span class="line">                dtype=np.float32,</span><br><span class="line">            )),</span><br><span class="line">        triangles=o3d.utility.Vector3iVector(np.array([[0, 2, 1], [2, 0, 3]])),</span><br><span class="line">    )</span><br><span class="line">    mesh.compute_vertex_normals()</span><br><span class="line">    return mesh</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">def get_non_manifold_edge_mesh():</span><br><span class="line">    verts = np.array(</span><br><span class="line">        [[-1, 0, 0], [0, 1, 0], [1, 0, 0], [0, -1, 0], [0, 0, 1]],</span><br><span class="line">        dtype=np.float64,</span><br><span class="line">    )</span><br><span class="line">    triangles = np.array([[0, 1, 3], [1, 2, 3], [1, 3, 4]])</span><br><span class="line">    mesh = o3d.geometry.TriangleMesh()</span><br><span class="line">    mesh.vertices = o3d.utility.Vector3dVector(verts)</span><br><span class="line">    mesh.triangles = o3d.utility.Vector3iVector(triangles)</span><br><span class="line">    mesh.compute_vertex_normals()</span><br><span class="line">    mesh.rotate(</span><br><span class="line">        mesh.get_rotation_matrix_from_xyz((np.pi / 4, 0, np.pi / 4)),</span><br><span class="line">        center=mesh.get_center(),</span><br><span class="line">    )</span><br><span class="line">    return mesh</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">def get_non_manifold_vertex_mesh():</span><br><span class="line">    verts = np.array(</span><br><span class="line">        [</span><br><span class="line">            [-1, 0, -1],</span><br><span class="line">            [1, 0, -1],</span><br><span class="line">            [0, 1, -1],</span><br><span class="line">            [0, 0, 0],</span><br><span class="line">            [-1, 0, 1],</span><br><span class="line">            [1, 0, 1],</span><br><span class="line">            [0, 1, 1],</span><br><span class="line">        ],</span><br><span class="line">        dtype=np.float64,</span><br><span class="line">    )</span><br><span class="line">    triangles = np.array([</span><br><span class="line">        [0, 1, 2],</span><br><span class="line">        [0, 1, 3],</span><br><span class="line">        [1, 2, 3],</span><br><span class="line">        [2, 0, 3],</span><br><span class="line">        [4, 5, 6],</span><br><span class="line">        [4, 5, 3],</span><br><span class="line">        [5, 6, 3],</span><br><span class="line">        [4, 6, 3],</span><br><span class="line">    ])</span><br><span class="line">    mesh = o3d.geometry.TriangleMesh()</span><br><span class="line">    mesh.vertices = o3d.utility.Vector3dVector(verts)</span><br><span class="line">    mesh.triangles = o3d.utility.Vector3iVector(triangles)</span><br><span class="line">    mesh.compute_vertex_normals()</span><br><span class="line">    mesh.rotate(</span><br><span class="line">        mesh.get_rotation_matrix_from_xyz((np.pi / 4, 0, np.pi / 4)),</span><br><span class="line">        center=mesh.get_center(),</span><br><span class="line">    )</span><br><span class="line">    return mesh</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">def get_open_box_mesh():</span><br><span class="line">    mesh = o3d.geometry.TriangleMesh.create_box()</span><br><span class="line">    mesh.triangles = o3d.utility.Vector3iVector(np.asarray(mesh.triangles)[:-2])</span><br><span class="line">    mesh.compute_vertex_normals()</span><br><span class="line">    mesh.rotate(</span><br><span class="line">        mesh.get_rotation_matrix_from_xyz((0.8 * np.pi, 0, 0.66 * np.pi)),</span><br><span class="line">        center=mesh.get_center(),</span><br><span class="line">    )</span><br><span class="line">    return mesh</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">def get_intersecting_boxes_mesh():</span><br><span class="line">    mesh0 = o3d.geometry.TriangleMesh.create_box()</span><br><span class="line">    T = np.eye(4)</span><br><span class="line">    T[:, 3] += (0.5, 0.5, 0.5, 0)</span><br><span class="line">    mesh1 = o3d.geometry.TriangleMesh.create_box()</span><br><span class="line">    mesh1.transform(T)</span><br><span class="line">    mesh = mesh0 + mesh1</span><br><span class="line">    mesh.compute_vertex_normals()</span><br><span class="line">    mesh.rotate(</span><br><span class="line">        mesh.get_rotation_matrix_from_xyz((0.7 * np.pi, 0, 0.6 * np.pi)),</span><br><span class="line">        center=mesh.get_center(),</span><br><span class="line">    )</span><br><span class="line">    return mesh</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">def file_downloader(url, out_dir=&quot;.&quot;):</span><br><span class="line">    file_name = url.split(&#x27;/&#x27;)[-1]</span><br><span class="line">    u = urlopen(url)</span><br><span class="line">    f = open(os.path.join(out_dir, file_name), &quot;wb&quot;)</span><br><span class="line">    if pyver == 2:</span><br><span class="line">        meta = u.info()</span><br><span class="line">        file_size = int(meta.getheaders(&quot;Content-Length&quot;)[0])</span><br><span class="line">    elif pyver == 3:</span><br><span class="line">        file_size = int(u.getheader(&quot;Content-Length&quot;))</span><br><span class="line">    print(&quot;Downloading: %s &quot; % file_name)</span><br><span class="line"></span><br><span class="line">    file_size_dl = 0</span><br><span class="line">    block_sz = 8192</span><br><span class="line">    progress = 0</span><br><span class="line">    while True:</span><br><span class="line">        buffer = u.read(block_sz)</span><br><span class="line">        if not buffer:</span><br><span class="line">            break</span><br><span class="line">        file_size_dl += len(buffer)</span><br><span class="line">        f.write(buffer)</span><br><span class="line">        if progress + 10 &lt;= (file_size_dl * 100. / file_size):</span><br><span class="line">            progress = progress + 10</span><br><span class="line">            print(&quot; %.1f / %.1f MB (%.0f %%)&quot; % \</span><br><span class="line">                    (file_size_dl/(1024*1024), file_size/(1024*1024), progress))</span><br><span class="line">    f.close()</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">def unzip_data(path_zip, path_extract_to):</span><br><span class="line">    print(&quot;Unzipping %s&quot; % path_zip)</span><br><span class="line">    zip_ref = zipfile.ZipFile(path_zip, &#x27;r&#x27;)</span><br><span class="line">    zip_ref.extractall(path_extract_to)</span><br><span class="line">    zip_ref.close()</span><br><span class="line">    print(&quot;Extracted to %s&quot; % path_extract_to)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">def sorted_alphanum(file_list_ordered):</span><br><span class="line">    convert = lambda text: int(text) if text.isdigit() else text</span><br><span class="line">    alphanum_key = lambda key: [convert(c) for c in re.split(&#x27;([0-9]+)&#x27;, key)]</span><br><span class="line">    return sorted(file_list_ordered, key=alphanum_key)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">def get_file_list(path, extension=None):</span><br><span class="line">    if extension is None:</span><br><span class="line">        file_list = [path + f for f in listdir(path) if isfile(join(path, f))]</span><br><span class="line">    else:</span><br><span class="line">        file_list = [</span><br><span class="line">            path + f</span><br><span class="line">            for f in listdir(path)</span><br><span class="line">            if isfile(join(path, f)) and splitext(f)[1] == extension</span><br><span class="line">        ]</span><br><span class="line">    file_list = sorted_alphanum(file_list)</span><br><span class="line">    return file_list</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">def add_if_exists(path_dataset, folder_names):</span><br><span class="line">    for folder_name in folder_names:</span><br><span class="line">        if exists(join(path_dataset, folder_name)):</span><br><span class="line">            path = join(path_dataset, folder_name)</span><br><span class="line">            return path</span><br><span class="line">    raise FileNotFoundError(</span><br><span class="line">        f&quot;None of the folders &#123;folder_names&#125; found in &#123;path_dataset&#125;&quot;)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">def read_rgbd_image(color_file, depth_file, convert_rgb_to_intensity, config):</span><br><span class="line">    color = o3d.io.read_image(color_file)</span><br><span class="line">    depth = o3d.io.read_image(depth_file)</span><br><span class="line">    rgbd_image = o3d.geometry.RGBDImage.create_from_color_and_depth(</span><br><span class="line">        color,</span><br><span class="line">        depth,</span><br><span class="line">        depth_scale=config[&quot;depth_scale&quot;],</span><br><span class="line">        depth_trunc=config[&quot;depth_max&quot;],</span><br><span class="line">        convert_rgb_to_intensity=convert_rgb_to_intensity)</span><br><span class="line">    return rgbd_image</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">def get_rgbd_folders(path_dataset):</span><br><span class="line">    path_color = add_if_exists(path_dataset, [&quot;image/&quot;, &quot;rgb/&quot;, &quot;color/&quot;])</span><br><span class="line">    path_depth = join(path_dataset, &quot;depth/&quot;)</span><br><span class="line">    return path_color, path_depth</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">def get_rgbd_file_lists(path_dataset):</span><br><span class="line">    path_color, path_depth = get_rgbd_folders(path_dataset)</span><br><span class="line">    color_files = get_file_list(path_color, &quot;.jpg&quot;) + \</span><br><span class="line">            get_file_list(path_color, &quot;.png&quot;)</span><br><span class="line">    depth_files = get_file_list(path_depth, &quot;.png&quot;)</span><br><span class="line">    return color_files, depth_files</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">def make_clean_folder(path_folder):</span><br><span class="line">    if not exists(path_folder):</span><br><span class="line">        makedirs(path_folder)</span><br><span class="line">    else:</span><br><span class="line">        shutil.rmtree(path_folder)</span><br><span class="line">        makedirs(path_folder)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">def check_folder_structure(path_dataset):</span><br><span class="line">    if isfile(path_dataset) and path_dataset.endswith(&quot;.bag&quot;):</span><br><span class="line">        return</span><br><span class="line">    path_color, path_depth = get_rgbd_folders(path_dataset)</span><br><span class="line">    assert exists(path_depth), \</span><br><span class="line">            &quot;Path %s is not exist!&quot; % path_depth</span><br><span class="line">    assert exists(path_color), \</span><br><span class="line">            &quot;Path %s is not exist!&quot; % path_color</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">def write_poses_to_log(filename, poses):</span><br><span class="line">    with open(filename, &#x27;w&#x27;) as f:</span><br><span class="line">        for i, pose in enumerate(poses):</span><br><span class="line">            f.write(&#x27;&#123;&#125; &#123;&#125; &#123;&#125;\n&#x27;.format(i, i, i + 1))</span><br><span class="line">            f.write(&#x27;&#123;0:.8f&#125; &#123;1:.8f&#125; &#123;2:.8f&#125; &#123;3:.8f&#125;\n&#x27;.format(</span><br><span class="line">                pose[0, 0], pose[0, 1], pose[0, 2], pose[0, 3]))</span><br><span class="line">            f.write(&#x27;&#123;0:.8f&#125; &#123;1:.8f&#125; &#123;2:.8f&#125; &#123;3:.8f&#125;\n&#x27;.format(</span><br><span class="line">                pose[1, 0], pose[1, 1], pose[1, 2], pose[1, 3]))</span><br><span class="line">            f.write(&#x27;&#123;0:.8f&#125; &#123;1:.8f&#125; &#123;2:.8f&#125; &#123;3:.8f&#125;\n&#x27;.format(</span><br><span class="line">                pose[2, 0], pose[2, 1], pose[2, 2], pose[2, 3]))</span><br><span class="line">            f.write(&#x27;&#123;0:.8f&#125; &#123;1:.8f&#125; &#123;2:.8f&#125; &#123;3:.8f&#125;\n&#x27;.format(</span><br><span class="line">                pose[3, 0], pose[3, 1], pose[3, 2], pose[3, 3]))</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">def read_poses_from_log(traj_log):</span><br><span class="line">    import numpy as np</span><br><span class="line"></span><br><span class="line">    trans_arr = []</span><br><span class="line">    with open(traj_log) as f:</span><br><span class="line">        content = f.readlines()</span><br><span class="line"></span><br><span class="line">        # Load .log file.</span><br><span class="line">        for i in range(0, len(content), 5):</span><br><span class="line">            # format %d (src) %d (tgt) %f (fitness)</span><br><span class="line">            data = list(map(float, content[i].strip().split(&#x27; &#x27;)))</span><br><span class="line">            ids = (int(data[0]), int(data[1]))</span><br><span class="line">            fitness = data[2]</span><br><span class="line"></span><br><span class="line">            # format %f x 16</span><br><span class="line">            T_gt = np.array(</span><br><span class="line">                list(map(float, (&#x27;&#x27;.join(</span><br><span class="line">                    content[i + 1:i + 5])).strip().split()))).reshape((4, 4))</span><br><span class="line"></span><br><span class="line">            trans_arr.append(T_gt)</span><br><span class="line"></span><br><span class="line">    return trans_arr</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">flip_transform = [[1, 0, 0, 0], [0, -1, 0, 0], [0, 0, -1, 0], [0, 0, 0, 1]]</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">def draw_geometries_flip(pcds):</span><br><span class="line">    pcds_transform = []</span><br><span class="line">    for pcd in pcds:</span><br><span class="line">        pcd_temp = copy.deepcopy(pcd)</span><br><span class="line">        pcd_temp.transform(flip_transform)</span><br><span class="line">        pcds_transform.append(pcd_temp)</span><br><span class="line">    o3d.visualization.draw_geometries(pcds_transform)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">def draw_registration_result(source, target, transformation):</span><br><span class="line">    source_temp = copy.deepcopy(source)</span><br><span class="line">    target_temp = copy.deepcopy(target)</span><br><span class="line">    source_temp.paint_uniform_color([1, 0.706, 0])</span><br><span class="line">    target_temp.paint_uniform_color([0, 0.651, 0.929])</span><br><span class="line">    source_temp.transform(transformation)</span><br><span class="line">    source_temp.transform(flip_transform)</span><br><span class="line">    target_temp.transform(flip_transform)</span><br><span class="line">    o3d.visualization.draw_geometries([source_temp, target_temp])</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">def draw_registration_result_original_color(source, target, transformation):</span><br><span class="line">    source_temp = copy.deepcopy(source)</span><br><span class="line">    target_temp = copy.deepcopy(target)</span><br><span class="line">    source_temp.transform(transformation)</span><br><span class="line">    source_temp.transform(flip_transform)</span><br><span class="line">    target_temp.transform(flip_transform)</span><br><span class="line">    o3d.visualization.draw_geometries([source_temp, target_temp])</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">class CameraPose:</span><br><span class="line"></span><br><span class="line">    def __init__(self, meta, mat):</span><br><span class="line">        self.metadata = meta</span><br><span class="line">        self.pose = mat</span><br><span class="line"></span><br><span class="line">    def __str__(self):</span><br><span class="line">        return &#x27;Metadata : &#x27; + &#x27; &#x27;.join(map(str, self.metadata)) + &#x27;\n&#x27; + \</span><br><span class="line">            &quot;Pose : &quot; + &quot;\n&quot; + np.array_str(self.pose)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">def read_trajectory(filename):</span><br><span class="line">    traj = []</span><br><span class="line">    with open(filename, &#x27;r&#x27;) as f:</span><br><span class="line">        metastr = f.readline()</span><br><span class="line">        while metastr:</span><br><span class="line">            metadata = list(map(int, metastr.split()))</span><br><span class="line">            mat = np.zeros(shape=(4, 4))</span><br><span class="line">            for i in range(4):</span><br><span class="line">                matstr = f.readline()</span><br><span class="line">                mat[i, :] = np.fromstring(matstr, dtype=float, sep=&#x27; \t&#x27;)</span><br><span class="line">            traj.append(CameraPose(metadata, mat))</span><br><span class="line">            metastr = f.readline()</span><br><span class="line">    return traj</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">def write_trajectory(traj, filename):</span><br><span class="line">    with open(filename, &#x27;w&#x27;) as f:</span><br><span class="line">        for x in traj:</span><br><span class="line">            p = x.pose.tolist()</span><br><span class="line">            f.write(&#x27; &#x27;.join(map(str, x.metadata)) + &#x27;\n&#x27;)</span><br><span class="line">            f.write(&#x27;\n&#x27;.join(</span><br><span class="line">                &#x27; &#x27;.join(map(&#x27;&#123;0:.12f&#125;&#x27;.format, p[i])) for i in range(4)))</span><br><span class="line">            f.write(&#x27;\n&#x27;)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">def initialize_opencv():</span><br><span class="line">    opencv_installed = True</span><br><span class="line">    try:</span><br><span class="line">        import cv2</span><br><span class="line">    except ImportError:</span><br><span class="line">        pass</span><br><span class="line">        print(&quot;OpenCV is not detected. Using Identity as an initial&quot;)</span><br><span class="line">        opencv_installed = False</span><br><span class="line">    if opencv_installed:</span><br><span class="line">        print(&quot;OpenCV is detected. Using ORB + 5pt algorithm&quot;)</span><br><span class="line">    return opencv_installed</span><br></pre></td></tr></table></figure>
+
+<p>示例代码：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br></pre></td><td class="code"><pre><span class="line">import open3d as o3d</span><br><span class="line">import open3d_example as o3dtut</span><br><span class="line">import numpy as np</span><br><span class="line"></span><br><span class="line">def check_properties(name,mesh):</span><br><span class="line">    mesh.compute_vertex_normals()</span><br><span class="line"></span><br><span class="line">    edge_manifold = mesh.is_edge_manifold(allow_boundary_edges=True)</span><br><span class="line">    edge_manifold_boundary = mesh.is_edge_manifold(allow_boundary_edges=False)</span><br><span class="line">    vertex_manifold = mesh.is_vertex_manifold()</span><br><span class="line">    self_intersecting = mesh.is_self_intersecting()</span><br><span class="line">    watertight = mesh.is_watertight()</span><br><span class="line">    orientable = mesh.is_orientable()</span><br><span class="line"></span><br><span class="line">    print(name)</span><br><span class="line">    print(f&#x27;边缘流:        &#123;edge_manifold&#125;&#x27;)</span><br><span class="line">    print(f&#x27;是否允许边界边缘:&#123;edge_manifold_boundary&#125;&#x27;)</span><br><span class="line">    print(f&#x27;顶点流:        &#123;vertex_manifold&#125;&#x27;)</span><br><span class="line">    print(f&#x27;自相交:        &#123;self_intersecting&#125;&#x27;)</span><br><span class="line">    print(f&#x27;水密：         &#123;watertight&#125;&#x27;)</span><br><span class="line">    print(f&#x27;可定向的:       &#123;orientable&#125;&#x27;)</span><br><span class="line"></span><br><span class="line">    geoms = [mesh]</span><br><span class="line">    if not edge_manifold:</span><br><span class="line">        edges = mesh.get_non_manifold_edges(allow_boundary_edges=True)</span><br><span class="line">        geoms.append(o3dtut.edges_to_lineset(mesh,edges,(1,0,0)))</span><br><span class="line">    if not edge_manifold_boundary:</span><br><span class="line">        edges = mesh.get_non_manifold_edges(allow_boundary_edges=False)</span><br><span class="line">        geoms.append(o3dtut.edges_to_lineset(mesh,edges,(0,1,0)))</span><br><span class="line">    if not vertex_manifold:</span><br><span class="line">        verts = np.asarray(mesh.get_non_manifold_vertices())</span><br><span class="line">        pc1 = o3d.geometry.PointCloud(</span><br><span class="line">            points = o3d.utility.Vector3dVector(np.asarray(mesh.vertices)[verts]))</span><br><span class="line">        pc1.paint_uniform_color((0,0,1))</span><br><span class="line">        geoms.append(pc1)</span><br><span class="line">    if self_intersecting:</span><br><span class="line">        intersecting_triangles = np.asarray(mesh.get_self_intersecting_triangles())</span><br><span class="line">        intersecting_triangles = intersecting_triangles[0:1]</span><br><span class="line">        intersecting_triangles = np.unique(intersecting_triangles)    #去重，排序从小到大</span><br><span class="line">        print(&#x27;# visualize self-intersecting triangles&#x27;)</span><br><span class="line">        triangles = np.asarray(mesh.triangles)[intersecting_triangles]</span><br><span class="line">        edges = [np.vstack((triangles[:,1],triangles[:,j]))    #竖直方向叠加</span><br><span class="line">                 for i ,j in [(0,1),(1,2),(2,0)]]</span><br><span class="line">        edges = np.hstack(edges).T    #水平方向叠加</span><br><span class="line">        edges = o3d.utility.Vector2iVector(edges)</span><br><span class="line">        geoms.append(o3dtut.edges_to_lineset(mesh,edges,(1,0,1)))</span><br><span class="line">    o3d.visualization.draw_geometries(geoms,mesh_show_back_face=True)</span><br><span class="line"></span><br><span class="line">knot_mesh_data = o3d.data.KnotMesh()</span><br><span class="line">knot_mesh = o3d.io.read_triangle_mesh(knot_mesh_data.path)</span><br><span class="line">check_properties(&#x27;knotMesh&#x27;,knot_mesh)</span><br><span class="line">check_properties(&#x27;Mobius&#x27;,o3d.geometry.TriangleMesh.create_mobius(twists=1))</span><br><span class="line">check_properties(&#x27;non-manifold edge&#x27;,o3dtut.get_non_manifold_edge_mesh())</span><br><span class="line">check_properties(&#x27;non-manifold vertex&#x27;,o3dtut.get_non_manifold_vertex_mesh())</span><br><span class="line">check_properties(&#x27;open box&#x27;,o3dtut.get_open_box_mesh())</span><br><span class="line">check_properties(&#x27;intersecting_boxes&#x27;,o3dtut.get_intersecting_boxes_mesh())</span><br></pre></td></tr></table></figure>
+<p>输出结果：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">KnotMesh</span><br><span class="line">  edge_manifold:          True</span><br><span class="line">  edge_manifold_boundary: True</span><br><span class="line">  vertex_manifold:        True</span><br><span class="line">  self_intersecting:      False</span><br><span class="line">  watertight:             True</span><br><span class="line">  orientable:             True</span><br></pre></td></tr></table></figure>
+<p><img src="/images/1666754910457-9fca56cb-873e-48f8-b178-56c7ebbf8ead.png"></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">Mobius</span><br><span class="line">  edge_manifold:          True</span><br><span class="line">  edge_manifold_boundary: False</span><br><span class="line">  vertex_manifold:        True</span><br><span class="line">  self_intersecting:      False</span><br><span class="line">  watertight:             False</span><br><span class="line">  orientable:             False</span><br></pre></td></tr></table></figure>
+<p><img src="/images/1666754934979-a8fd863c-c0a7-492d-b13b-097616fee443.png"></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">non-manifold edge</span><br><span class="line">  edge_manifold:          False</span><br><span class="line">  edge_manifold_boundary: False</span><br><span class="line">  vertex_manifold:        True</span><br><span class="line">  self_intersecting:      False</span><br><span class="line">  watertight:             False</span><br><span class="line">  orientable:             True</span><br></pre></td></tr></table></figure>
+<p><img src="/images/1666754952517-752974ea-2bc6-444f-95d5-e2ce5f48f4e8.png"></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">non-manifold vertex</span><br><span class="line">  edge_manifold:          True</span><br><span class="line">  edge_manifold_boundary: True</span><br><span class="line">  vertex_manifold:        False</span><br><span class="line">  self_intersecting:      False</span><br><span class="line">  watertight:             False</span><br><span class="line">  orientable:             True</span><br></pre></td></tr></table></figure>
+<p><img src="/images/1666754973418-a0721b80-e693-4560-9b2b-40c8325c3456.png"></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">open box</span><br><span class="line">  edge_manifold:          True</span><br><span class="line">  edge_manifold_boundary: False</span><br><span class="line">  vertex_manifold:        True</span><br><span class="line">  self_intersecting:      False</span><br><span class="line">  watertight:             False</span><br><span class="line">  orientable:             True</span><br></pre></td></tr></table></figure>
+<p><img src="/images/1666754992570-53598df9-a411-42cd-ac06-afb4a90afff7.png"></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">intersecting_boxes</span><br><span class="line">  edge_manifold:          True</span><br><span class="line">  edge_manifold_boundary: True</span><br><span class="line">  vertex_manifold:        True</span><br><span class="line">  self_intersecting:      True</span><br><span class="line">  watertight:             False</span><br><span class="line">  orientable:             True</span><br><span class="line">  # visualize self-intersecting triangles</span><br></pre></td></tr></table></figure>
+<p><img src="/images/1666755013260-0480caaa-be0a-429f-9816-82db62c4b531.png"></p>
+<h2 id="网格过滤"><a href="#网格过滤" class="headerlink" title="网格过滤"></a>网格过滤</h2><p>Open3d包含许多过滤网格的算法，下面将展示实现的滤波器来平滑噪声三角形网格。</p>
+<h3 id="平均过滤器"><a href="#平均过滤器" class="headerlink" title="平均过滤器"></a>平均过滤器</h3><p>最简单的过滤器是均值滤波器。给定的顶点由相邻顶点的平均值N给出的。公式如下：</p>
+<p>可以使用此过滤器对网格进行降噪，如下面的代码所。filter_smooth_simple函数的参数number_of_iterations用来定义应用于网格的滤波器的频率。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">import numpy as np</span><br><span class="line">import open3d as o3d</span><br><span class="line">print(&#x27;添加噪声的网络&#x27;)</span><br><span class="line">knot_mesh = o3d.data.KnotMesh()</span><br><span class="line">mesh_in = o3d.io.read_triangle_mesh(knot_mesh.path)</span><br><span class="line">vertices = np.asarray((mesh_in.vertices))</span><br><span class="line">noise = 5</span><br><span class="line">vertices += np.random.uniform(0,noise,size=vertices.shape)</span><br><span class="line">mesh_in.vertices = o3d.utility.Vector3dVector(vertices)</span><br><span class="line">mesh_in.compute_vertex_normals()</span><br><span class="line">o3d.visualization.draw_geometries([mesh_in])</span><br><span class="line"></span><br><span class="line">print(&#x27;使用均值滤波器迭代1次&#x27;)</span><br><span class="line">mesh_out = mesh_in.filter_smooth_simple(number_of_iterations = 1)</span><br><span class="line">mesh_out.compute_vertex_normals()</span><br><span class="line">o3d.visualization.draw_geometries([mesh_out])</span><br><span class="line"></span><br><span class="line">print(&#x27;使用均值滤波器迭代5次&#x27;)</span><br><span class="line">mesh_out = mesh_in.filter_smooth_simple(number_of_iterations=5)</span><br><span class="line">mesh_out.compute_vertex_normals()</span><br><span class="line">o3d.visualization.draw_geometries([mesh_out])</span><br></pre></td></tr></table></figure>
+<p>输出结果：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">添加噪声的网络</span><br></pre></td></tr></table></figure>
+<p><img src="/images/1666764154892-1a8c8ca5-6765-40fa-9eee-aad11d4458ec.png"></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">使用均值滤波器迭代1次</span><br></pre></td></tr></table></figure>
+<p><img src="/images/1666764176228-13306116-27e4-48d5-a397-a44fc41d5db0.png"></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">使用均值滤波器迭代5次</span><br></pre></td></tr></table></figure>
+<p><img src="/images/1666764200860-2bae5e02-da29-42a4-8099-95b7ad1eb2c8.png"></p>
+<h3 id="拉普拉斯算子-Laplacian"><a href="#拉普拉斯算子-Laplacian" class="headerlink" title="拉普拉斯算子(Laplacian)"></a>拉普拉斯算子(Laplacian)</h3><p>另一个重要的网格过滤器是拉普拉斯算子，其定义如下：<img src="/images/1666764299735-9407581b-1bbd-48a8-990a-1149d8f1366b.png"><br>其中λ是滤波器的强度，w_{n}是与相邻顶点的距离相关的归一化权重. 这个滤波器的接口是filter_smooth_laplacian，有两个参数： number_of_iterations 和 lambda。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">import open3d as o3d</span><br><span class="line"></span><br><span class="line">print(&#x27;使用拉普拉斯滤波器迭代10次&#x27;)</span><br><span class="line">knot_mesh = o3d.data.KnotMesh()</span><br><span class="line">mesh_in = o3d.io.read_triangle_mesh(knot_mesh.path)</span><br><span class="line">mesh_out = mesh_in.filter_smooth_laplacian(number_of_iterations=10)</span><br><span class="line">mesh_out.compute_vertex_normals()</span><br><span class="line">o3d.visualization.draw_geometries([mesh_out])</span><br><span class="line"></span><br><span class="line">print(&#x27;使用拉普拉斯滤波器迭代50次&#x27;)</span><br><span class="line">mesh_out = mesh_in.filter_smooth_laplacian(number_of_iterations=50)</span><br><span class="line">mesh_out.compute_vertex_normals()</span><br><span class="line">o3d.visualization.draw_geometries([mesh_out])</span><br></pre></td></tr></table></figure>
+<p>输出结果：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">使用拉普拉斯滤波器迭代10次</span><br></pre></td></tr></table></figure>
+<p><img src="/images/1666764983861-441407ee-3693-4d5a-b07b-cce95215cbf9.png"></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">使用拉普拉斯滤波器迭代50次</span><br></pre></td></tr></table></figure>
+<p><img src="/images/1666765007562-5a5e07af-273b-4327-b278-f744e03f12a2.png"></p>
+<h3 id="Taubin滤波器"><a href="#Taubin滤波器" class="headerlink" title="Taubin滤波器"></a>Taubin滤波器</h3><p>均值滤波和Laplacian滤波有一个问题是他们会使三角网格收缩。[Taubin1995] 展示了使用两种不同λ参数的Laplacian滤波器来防止网格收缩。这个滤波器的实现接口是：filter_smooth_taubin。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">import open3d as o3d</span><br><span class="line"></span><br><span class="line">knot_mesh = o3d.data.KnotMesh()</span><br><span class="line">mesh_in = o3d.io.read_triangle_mesh(knot_mesh.path)</span><br><span class="line">print(&#x27;使用Taubin滤波迭代10次&#x27;)</span><br><span class="line">mesh_out = mesh_in.filter_smooth_taubin(number_of_iterations=10)</span><br><span class="line">mesh_out.compute_vertex_normals()</span><br><span class="line">o3d.visualization.draw_geometries([mesh_out])</span><br><span class="line"></span><br><span class="line">print(&#x27;使用Taubin滤波迭代100次&#x27;)</span><br><span class="line">mesh_out = mesh_in.filter_smooth_taubin(number_of_iterations=100)</span><br><span class="line">mesh_out.compute_vertex_normals()</span><br><span class="line">o3d.visualization.draw_geometries([mesh_out])</span><br></pre></td></tr></table></figure>
+<p>输出结果：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">使用Taubin滤波迭代10次</span><br></pre></td></tr></table></figure>
+<p><img src="/images/1666765676360-05b9fa3d-12af-43b2-9899-207d88a49c0e.png"></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">使用Taubin滤波迭代100次</span><br></pre></td></tr></table></figure>
+<p><img src="/images/1666765701331-8a614766-26ce-4ae8-9de9-ede223107ad4.png"></p>
+<h2 id="采样"><a href="#采样" class="headerlink" title="采样"></a>采样</h2><p>Open3d包含了从三角网格中采样点云的功能。最简单的方法是使用sample_points_uniformly函数从三角网格的三维表面均匀采样。参数number_of_points表示从网格中采样的点云的点数。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">import open3d as o3d</span><br><span class="line"></span><br><span class="line">mesh = o3d.geometry.TriangleMesh.create_sphere()</span><br><span class="line">mesh.compute_vertex_normals()</span><br><span class="line">o3d.visualization.draw_geometries([mesh])</span><br><span class="line">pcd = mesh.sample_points_uniformly(number_of_points=500)</span><br><span class="line">o3d.visualization.draw_geometries([pcd])</span><br></pre></td></tr></table></figure>
+<p>输出结果：<img src="/images/1666766785517-77381489-e4de-4cd1-a85e-c129eec946b6.png"><br><img src="/images/1666766796833-c49c94b3-16ee-4a93-98a3-124d01892a56.png"></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">import open3d as o3d</span><br><span class="line"></span><br><span class="line">bunny = o3d.data.BunnyMesh()</span><br><span class="line">mesh = o3d.io.read_triangle_mesh(bunny.path)</span><br><span class="line">mesh.compute_vertex_normals()</span><br><span class="line">o3d.visualization.draw_geometries([mesh])</span><br><span class="line">pcd = mesh.sample_points_uniformly(number_of_points=500)</span><br><span class="line">o3d.visualization.draw_geometries([pcd])</span><br></pre></td></tr></table></figure>
+<p>输出结果：<img src="/images/1666766958518-ab26eb65-a65d-469c-8cdf-2c26fc223565.png"><br><img src="/images/1666766972514-c9adda04-928e-4d6c-8cb4-bbec49280eac.png"></p>
+<p>均匀采样可得到表面上的点簇。泊松盘采样能使采样点均匀的分布。sample_points_poisson_disk实现了该功能。因此该算法从一个采样后的点云开始，移除点以满足采样标准。这个算法支持两个初始点云的选择方法：</p>
+<ol>
+<li>默认通过参数init_factor：首先通过init_factor x number_of_points来从网格中均匀采样点云，之后进行消除。</li>
+<li>可以直接提供一个点云数据给sample_points_poisson_disk函数，之后会进行点云的消除。<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">import open3d as o3d</span><br><span class="line">mesh = o3d.geometry.TriangleMesh.create_sphere()</span><br><span class="line">pcd = mesh.sample_points_poisson_disk(number_of_points=500,init_factor=5)</span><br><span class="line">o3d.visualization.draw_geometries([pcd])</span><br><span class="line"></span><br><span class="line">pcd = mesh.sample_points_uniformly(number_of_points=2500)</span><br><span class="line">pcd = mesh.sample_points_poisson_disk(number_of_points=500,pcl=pcd)</span><br><span class="line">o3d.visualization.draw_geometries([pcd])</span><br></pre></td></tr></table></figure>
+输出结果：<img src="/images/1666767973343-3d5f33f1-b883-40d8-a366-eac4e656c476.png"><br><img src="/images/1666767981629-fe4898c1-c8d8-4c34-9b23-bb11b430eebb.png"></li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">import open3d as o3d</span><br><span class="line"></span><br><span class="line">bunny = o3d.data.BunnyMesh()</span><br><span class="line">mesh = o3d.io.read_triangle_mesh(bunny.path)</span><br><span class="line">pcd = mesh.sample_points_poisson_disk(number_of_points=500,init_factor=5)</span><br><span class="line">o3d.visualization.draw_geometries([pcd])</span><br><span class="line"></span><br><span class="line">pcd = mesh.sample_points_uniformly(number_of_points=2500)</span><br><span class="line">pcd = mesh.sample_points_poisson_disk(number_of_points=500,pcl=pcd)</span><br><span class="line">o3d.visualization.draw_geometries([pcd])</span><br></pre></td></tr></table></figure>
+<p>输出结果：<img src="/images/1666768051974-b2950d30-2c7b-4810-8886-7aa2820e6e5b.png"><br><img src="/images/1666768060823-36cc8c49-5f51-4f34-b703-b56be26e71f0.png"></p>
+<h2 id="网格细分"><a href="#网格细分" class="headerlink" title="网格细分"></a>网格细分</h2><p>网格细分就是把每个三角形划分为更小的三角形。最简单的方式就是，计算三角形每个边的中点，将其划分为四个较小的三角形。这个通过subdivide_midpoint函数实现。3D曲面和面积保持不变但是顶点和三角形的数量增加了。number_of_iterations参数定义了重复细分多少次。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">import open3d as o3d</span><br><span class="line"></span><br><span class="line">mesh = o3d.geometry.TriangleMesh.create_box()</span><br><span class="line">mesh.compute_vertex_normals()</span><br><span class="line">print(f&#x27;网格有&#123;len(mesh.vertices)&#125;个顶点和&#123;len(mesh.triangles)&#125;个三角形&#x27;)</span><br><span class="line">o3d.visualization.draw_geometries([mesh],mesh_show_wireframe=True)</span><br><span class="line">mesh = mesh.subdivide_midpoint(number_of_iterations=1)</span><br><span class="line">print(f&#x27;再分之后有&#123;len(mesh.vertices)&#125;个顶点和&#123;len(mesh.triangles)&#125;个三角形&#x27;)</span><br><span class="line">o3d.visualization.draw_geometries([mesh],mesh_show_wireframe=True)</span><br></pre></td></tr></table></figure>
+<p>输出结果：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">网格有8个顶点和12个三角形</span><br></pre></td></tr></table></figure>
+<p><img src="/images/1666771178495-80ef7a70-f02b-43ea-8c43-b45e4de3ad0f.png"></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">再分之后有26个顶点和48个三角形</span><br></pre></td></tr></table></figure>
+<p><img src="/images/1666771186020-3903d935-70aa-4918-8d68-a53d00555b7b.png"></p>
+<p>Open3d实现了基于[Loop1987]的附加细分方法。该方法基于四次样条曲线，该样条曲线除了在特殊顶点处生成连续的极限曲面外，其他地方都生成连续的极限曲面。这样可以得到更加平滑的拐角。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">import open3d as o3d</span><br><span class="line"></span><br><span class="line">mesh = o3d.geometry.TriangleMesh.create_sphere()</span><br><span class="line">mesh.compute_vertex_normals()</span><br><span class="line">print(f&#x27;网格有&#123;len(mesh.vertices)&#125;个顶点和&#123;len(mesh.triangles)&#125;个三角形&#x27;)</span><br><span class="line">o3d.visualization.draw_geometries([mesh],mesh_show_wireframe=True)</span><br><span class="line">mesh = mesh.subdivide_loop(number_of_iterations=2)</span><br><span class="line">print(f&#x27;再分之后有&#123;len(mesh.vertices)&#125;个顶点和&#123;len(mesh.triangles)&#125;个三角形&#x27;)</span><br><span class="line">o3d.visualization.draw_geometries([mesh],mesh_show_wireframe=True)</span><br></pre></td></tr></table></figure>
+<p>输出结果：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">网格有762个顶点和1520个三角形</span><br></pre></td></tr></table></figure>
+<p><img src="/images/1666771591080-5c0184f6-fd34-4171-853c-cece18baa399.png"></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">再分之后有12162个顶点和24320个三角形</span><br></pre></td></tr></table></figure>
+<p><img src="/images/1666771620652-4e88196d-b051-47fb-8b17-0bedfe4c1d27.png"></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">import open3d as o3d</span><br><span class="line"></span><br><span class="line">knot_mesh = o3d.data.KnotMesh()</span><br><span class="line">mesh = o3d.io.read_triangle_mesh(knot_mesh.path)</span><br><span class="line">mesh.compute_vertex_normals()</span><br><span class="line">print(f&#x27;网格有&#123;len(mesh.vertices)&#125;个顶点和&#123;len(mesh.triangles)&#125;个三角形&#x27;)</span><br><span class="line">o3d.visualization.draw_geometries([mesh],mesh_show_wireframe=True)</span><br><span class="line">mesh = mesh.subdivide_loop(number_of_iterations=2)</span><br><span class="line">print(f&#x27;再分之后有&#123;len(mesh.vertices)&#125;个顶点和&#123;len(mesh.triangles)&#125;个三角形&#x27;)</span><br><span class="line">o3d.visualization.draw_geometries([mesh],mesh_show_wireframe=True)</span><br></pre></td></tr></table></figure>
+<p>输出结果：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">网格有1440个顶点和2880个三角形</span><br></pre></td></tr></table></figure>
+<p><img src="/images/1666771922298-9e814b07-7ac8-4670-81e8-edf30c64cc6c.png"></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">再分之后有23040个顶点和46080个三角形</span><br></pre></td></tr></table></figure>
+<p><img src="/images/1666771950154-2370ccc8-a880-46c8-8fd3-a1e0155dc20a.png"></p>
+<h2 id="网格简化"><a href="#网格简化" class="headerlink" title="网格简化"></a>网格简化</h2><p>有时，我们希望用较少的三角形和顶点表示一个高分辨率网格，但低分辨率网格仍应接近高分辨率网格。为此，Open3D 实现了许多网格简化方法。</p>
+<h3 id="顶点聚类"><a href="#顶点聚类" class="headerlink" title="顶点聚类"></a>顶点聚类</h3><p>顶点聚类的方法是将所有落入给定大小的体素的顶点聚集到单个顶点。函数接口为simplify_vertex_clustering，参数voxel_size设置体素网格大小。contraction定义如何聚集顶点。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">输入网格有35947个顶点和69451个三角形</span><br></pre></td></tr></table></figure>
+<p><img src="/images/1666773289083-3237f192-7aff-480a-a3a6-39fe05745d5d.png"></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">体素有0.004865593749999999个</span><br><span class="line">简化网格之后有3222个顶点和6454个三角形</span><br></pre></td></tr></table></figure>
+<p><img src="/images/1666773349774-b87611be-7f0e-4af7-b115-6ce5fdbc2960.png"></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">体素有0.009731187499999999个</span><br><span class="line">简化网格之后有845个顶点和1724个三角形</span><br></pre></td></tr></table></figure>
+<p><img src="/images/1666773380975-46b337be-60d6-4e65-a715-03b20a0e0130.png"></p>
+<h3 id="网格抽取"><a href="#网格抽取" class="headerlink" title="网格抽取"></a>网格抽取</h3><p>网格细分的另一种方式是逐步执行的网格抽取。我们选择一个使误差度量最小化的三角形并将其删除。重复此过程直到满足指定的三角形数量时停止。Open3D实现了simplify_quadric_decimation接口去最小化误差平方（到相邻平面的距离），参数target_number_of_triangles定义了抽取算法的停止条件。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">输入网格有35947个顶点和69451个三角形</span><br></pre></td></tr></table></figure>
+<p><img src="/images/1666774150033-9f7048a0-c499-4ae2-aecf-7cf89021c4f2.png"></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">简化网格之后有1978个顶点和1700个三角形</span><br></pre></td></tr></table></figure>
+<p><img src="/images/1666774248670-2bb1ee7e-a1cb-4a23-8606-4f0fcedbbcd3.png"></p>
+<h2 id="连通分量"><a href="#连通分量" class="headerlink" title="连通分量"></a>连通分量</h2><p>各种重建方法的结果。 Open3D实现了一个连接组件算法cluster_connected_triangles，该算法将每个三角形分配给一组连接的三角形。 它为每个三角形返回cluster_index中的簇索引，每个簇返回cluster_n_triangles中三角形的数目以及cluster_area中簇的表面积。下面的代码展示cluster_connected_triangles的应用和如何使用它来删除假（spurious）三角形。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">import open3d as o3d</span><br><span class="line">import numpy as np</span><br><span class="line"></span><br><span class="line">print(&#x27;生成数据&#x27;)</span><br><span class="line">bunny = o3d.data.BunnyMesh()</span><br><span class="line">mesh = o3d.io.read_triangle_mesh(bunny.path)</span><br><span class="line">mesh.compute_vertex_normals()</span><br><span class="line"></span><br><span class="line">mesh = mesh.subdivide_midpoint(number_of_iterations=2)</span><br><span class="line">vert = np.asarray(mesh.vertices)</span><br><span class="line">min_vert,max_vert = vert.min(axis=0), vert.max(axis=0)</span><br><span class="line">for _ in range(30):</span><br><span class="line">    cube = o3d.geometry.TriangleMesh.create_box()</span><br><span class="line">    cube.scale(0.005,center=cube.get_center())</span><br><span class="line">    cube.translate(</span><br><span class="line">        (</span><br><span class="line">            np.random.uniform(min_vert[0],max_vert[0]),</span><br><span class="line">            np.random.uniform(min_vert[1],max_vert[1]),</span><br><span class="line">            np.random.uniform(min_vert[2],max_vert[2])</span><br><span class="line">        ),</span><br><span class="line">        relative=False</span><br><span class="line">    )</span><br><span class="line">    mesh += cube</span><br><span class="line">mesh.compute_vertex_normals()</span><br><span class="line">print(&#x27;展示输入网格&#x27;)</span><br><span class="line">o3d.visualization.draw_geometries([mesh])</span><br></pre></td></tr></table></figure>
+<p>输出结果：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">生成数据</span><br><span class="line">展示输入网格</span><br></pre></td></tr></table></figure>
+<p><img src="/images/1666776209825-3c760fd3-5f3e-4fe4-a192-f951ad5c636b.png"></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">import open3d as o3d</span><br><span class="line"></span><br><span class="line">print(&#x27;cluster connected triangles&#x27;)</span><br><span class="line">bunny = o3d.data.BunnyMesh()</span><br><span class="line">mesh = o3d.io.read_triangle_mesh(bunny.path)</span><br><span class="line">with o3d.utility.VerbosityContextManager(o3d.utility.VerbosityLevel.Debug) as cm:</span><br><span class="line">    triangle_clusters,cluster_n_triangles,cluster_area = (mesh.cluster_connected_triangles())</span><br><span class="line"></span><br><span class="line">triangle_clusters = np.asarray((triangle_clusters))</span><br><span class="line">cluster_n_triangles = np.asarray(cluster_n_triangles)</span><br><span class="line">cluster_area = np.asarray(cluster_area)</span><br></pre></td></tr></table></figure>
+<p>输出结果：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">cluster connected triangles</span><br><span class="line">[Open3D DEBUG] [ClusterConnectedTriangles] Compute triangle adjacency</span><br><span class="line">[Open3D DEBUG] [ClusterConnectedTriangles] Done computing triangle adjacency</span><br><span class="line">[Open3D DEBUG] [ClusterConnectedTriangles] Done clustering, #clusters=1</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">import open3d as o3d</span><br><span class="line">import copy</span><br><span class="line"></span><br><span class="line">bunny = o3d.data.BunnyMesh()</span><br><span class="line">mesh = o3d.io.read_triangle_mesh(bunny.path)</span><br><span class="line">with o3d.utility.VerbosityContextManager(o3d.utility.VerbosityLevel.Debug) as cm:</span><br><span class="line">    triangle_clusters,cluster_n_triangles,cluster_area = (mesh.cluster_connected_triangles())</span><br><span class="line"></span><br><span class="line">triangle_clusters = np.asarray((triangle_clusters))</span><br><span class="line">cluster_n_triangles = np.asarray(cluster_n_triangles)</span><br><span class="line">cluster_area = np.asarray(cluster_area)</span><br><span class="line"></span><br><span class="line">print(&#x27;展示删除小簇的网格&#x27;)</span><br><span class="line">mesh_0 = copy.deepcopy(mesh)</span><br><span class="line">triangles_to_remove = cluster_n_triangles[triangle_clusters] &lt; 100</span><br><span class="line">mesh_0.remove_triangles_by_mask(triangles_to_remove)</span><br><span class="line">o3d.visualization.draw_geometries([mesh_0])</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>输出结果：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">展示删除小簇的网格</span><br></pre></td></tr></table></figure>
+<p><img src="/images/1666778014393-4ceaffbc-c2cc-4abb-8597-8c5fb0138e64.png"></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">import open3d as o3d</span><br><span class="line">import copy</span><br><span class="line"></span><br><span class="line">bunny = o3d.data.BunnyMesh()</span><br><span class="line">mesh = o3d.io.read_triangle_mesh(bunny.path)</span><br><span class="line">with o3d.utility.VerbosityContextManager(o3d.utility.VerbosityLevel.Debug) as cm:</span><br><span class="line">    triangle_clusters,cluster_n_triangles,cluster_area = (mesh.cluster_connected_triangles())</span><br><span class="line"></span><br><span class="line">triangle_clusters = np.asarray((triangle_clusters))</span><br><span class="line">cluster_n_triangles = np.asarray(cluster_n_triangles)</span><br><span class="line">cluster_area = np.asarray(cluster_area)</span><br><span class="line"></span><br><span class="line">print(&#x27;展示最大簇&#x27;)</span><br><span class="line">mesh_1 = copy.deepcopy(mesh)</span><br><span class="line">largest_cluster_idx = cluster_n_triangles.argmax()</span><br><span class="line">triangles_to_remove = triangle_clusters != largest_cluster_idx</span><br><span class="line">mesh_1.remove_triangles_by_mask(triangles_to_remove)</span><br><span class="line">o3d.visualization.draw_geometries([mesh_1])</span><br></pre></td></tr></table></figure>
+<p>输出结果：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">展示最大簇</span><br></pre></td></tr></table></figure>
+<p><img src="/images/1666778468919-b85b836f-0433-4c05-99d0-a05143ab8fe9.png"></p>
+
+    </div>
+
+    
+    
+    
+        <div class="reward-container">
+  <div></div>
+  <button onclick="var qr = document.getElementById('qr'); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/images/wechatpay.png" alt="SindreYang 微信支付">
+        <p>微信支付</p>
+      </div>
+      
+      <div style="display: inline-block;">
+        <img src="/images/alipay.png" alt="SindreYang 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>SindreYang
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://blog.mviai.com/2025/Open3d%E5%AD%A6%E4%B9%A0%E6%8C%87%E5%8D%97/" title="Open3d学习指南">http://blog.mviai.com/2025/Open3d学习指南/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <span class="exturl" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC9kZWVkLnpo"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</span> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+        
+
+  <div class="followme">
+    <p>欢迎关注我的其它发布渠道</p>
+
+    <div class="social-list">
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="/images/wechat.png">
+            <span class="icon">
+              <i class="fa fa-wechat"></i>
+            </span>
+
+            <span class="label">WeChat</span>
+          </a>
+        </div>
+    </div>
+  </div>
+
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2025/OpenVino/" rel="prev" title="OpenVino">
+      <i class="fa fa-chevron-left"></i> OpenVino
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2025/OnnxRuntime/" rel="next" title="OnnxRuntime">
+      OnnxRuntime <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    
+  <div class="comments">
+    <div id="SOHUCS"></div>
+  </div>
+  
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%AE%89%E8%A3%85"><span class="nav-number">1.</span> <span class="nav-text">安装</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%87%A0%E4%BD%95%E5%AD%A6"><span class="nav-number">2.</span> <span class="nav-text">几何学</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%AF%E8%A7%86%E5%8C%96%E7%82%B9%E4%BA%91"><span class="nav-number">2.1.</span> <span class="nav-text">可视化点云</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%93%E7%B4%A0%E7%BC%A9%E5%87%8F%E9%87%87%E6%A0%B7"><span class="nav-number">2.2.</span> <span class="nav-text">体素缩减采样</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%A1%B6%E7%82%B9%E6%B3%95%E5%90%91%E4%BC%B0%E8%AE%A1"><span class="nav-number">2.3.</span> <span class="nav-text">顶点法向估计</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BC%B0%E8%AE%A1%E9%A1%B6%E7%82%B9%E6%B3%95%E5%90%91"><span class="nav-number">2.4.</span> <span class="nav-text">估计顶点法向</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%A3%81%E5%89%AA%E7%82%B9%E4%BA%91"><span class="nav-number">2.5.</span> <span class="nav-text">裁剪点云</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BB%98%E5%88%B6%E7%82%B9%E4%BA%91"><span class="nav-number">2.6.</span> <span class="nav-text">绘制点云</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%82%B9%E4%BA%91%E8%B7%9D%E7%A6%BB"><span class="nav-number">2.7.</span> <span class="nav-text">点云距离</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8C%85%E5%9B%B4%E6%A1%86"><span class="nav-number">2.8.</span> <span class="nav-text">包围框</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%87%B8%E5%8C%85"><span class="nav-number">2.9.</span> <span class="nav-text">凸包</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#DBSCAN%E8%81%9A%E7%B1%BB"><span class="nav-number">2.10.</span> <span class="nav-text">DBSCAN聚类</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#RANSAC%E5%B9%B3%E9%9D%A2%E5%88%86%E5%89%B2"><span class="nav-number">2.11.</span> <span class="nav-text">RANSAC平面分割</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%9A%90%E8%97%8F%E7%82%B9%E5%88%A0%E9%99%A4"><span class="nav-number">2.12.</span> <span class="nav-text">隐藏点删除</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Mesh"><span class="nav-number">3.</span> <span class="nav-text">Mesh</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%AF%E8%A7%86%E5%8C%963D%E7%BD%91%E7%BB%9C"><span class="nav-number">3.1.</span> <span class="nav-text">可视化3D网络</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%A1%A8%E9%9D%A2%E6%B3%95%E7%BA%BF%E4%BC%B0%E8%AE%A1"><span class="nav-number">3.2.</span> <span class="nav-text">表面法线估计</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%A3%81%E5%89%AA%E7%BD%91%E6%A0%BC"><span class="nav-number">3.3.</span> <span class="nav-text">裁剪网格</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B8%B2%E6%9F%93%E7%BD%91%E6%A0%BC"><span class="nav-number">3.4.</span> <span class="nav-text">渲染网格</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BD%91%E6%A0%BC%E5%B1%9E%E6%80%A7"><span class="nav-number">3.5.</span> <span class="nav-text">网格属性</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BD%91%E6%A0%BC%E8%BF%87%E6%BB%A4"><span class="nav-number">3.6.</span> <span class="nav-text">网格过滤</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B9%B3%E5%9D%87%E8%BF%87%E6%BB%A4%E5%99%A8"><span class="nav-number">3.6.1.</span> <span class="nav-text">平均过滤器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%8B%89%E6%99%AE%E6%8B%89%E6%96%AF%E7%AE%97%E5%AD%90-Laplacian"><span class="nav-number">3.6.2.</span> <span class="nav-text">拉普拉斯算子(Laplacian)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Taubin%E6%BB%A4%E6%B3%A2%E5%99%A8"><span class="nav-number">3.6.3.</span> <span class="nav-text">Taubin滤波器</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%87%87%E6%A0%B7"><span class="nav-number">3.7.</span> <span class="nav-text">采样</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BD%91%E6%A0%BC%E7%BB%86%E5%88%86"><span class="nav-number">3.8.</span> <span class="nav-text">网格细分</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BD%91%E6%A0%BC%E7%AE%80%E5%8C%96"><span class="nav-number">3.9.</span> <span class="nav-text">网格简化</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%A1%B6%E7%82%B9%E8%81%9A%E7%B1%BB"><span class="nav-number">3.9.1.</span> <span class="nav-text">顶点聚类</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BD%91%E6%A0%BC%E6%8A%BD%E5%8F%96"><span class="nav-number">3.9.2.</span> <span class="nav-text">网格抽取</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%BF%9E%E9%80%9A%E5%88%86%E9%87%8F"><span class="nav-number">3.10.</span> <span class="nav-text">连通分量</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="SindreYang"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">SindreYang</p>
+  <div class="site-description" itemprop="description">沉淀后我愿意做一个温暖的人。有自己的喜好，有自己的原则，有自己的信仰，不急功近利，不浮夸轻薄，宠辱不惊，淡定安逸，心静如水。------不忘初心，方得始终</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">321</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">72</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL1NpbmRyZVlhbmc=" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;SindreYang"><i class="fa fa-fw fa-github"></i>GitHub</span>
+      </span>
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="bWFpbHRvOnl4QG12aWFpLmNvbQ==" title="E-Mail → mailto:yx@mviai.com"><i class="fa fa-fw fa-envelope"></i>E-Mail</span>
+      </span>
+  </div>
+  <div class="cc-license motion-element" itemprop="license">
+    <span class="exturl cc-opacity" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC9kZWVkLnpo"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+  <div class="languages">
+    <label class="lang-select-label">
+      <i class="fa fa-language"></i>
+      <span>简体中文</span>
+      <i class="fa fa-angle-up" aria-hidden="true"></i>
+    </label>
+    <select class="lang-select" data-canonical="">
+      
+        <option value="zh-CN" data-href="/2025/Open3d%E5%AD%A6%E4%B9%A0%E6%8C%87%E5%8D%97/" selected="">
+          简体中文
+        </option>
+      
+        <option value="en" data-href="/en/2025/Open3d%E5%AD%A6%E4%B9%A0%E6%8C%87%E5%8D%97/" selected="">
+          English
+        </option>
+      
+    </select>
+  </div>
+
+        
+
+<div class="copyright">
+  
+  &copy; 2018 – 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">SindreYang</span>
+</div><!-- 页面点击小红心 -->
+<script type="text/javascript" src="/js/love.js"></script>
+<!-- 背景波浪 -->
+<script color="0,0,255" opacity="0.5" zIndex="-1" count="99" src="https://cdn.jsdelivr.net/npm/canvas-nest.js@1/dist/canvas-nest.js"></script>
+
+
+<!-- 腾讯企业邮箱 -->
+<style>
+.bizmail_loginpanel {
+    font-size: 12px;
+    width: 300px;
+    height: auto;
+    background: transparent;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.bizmail_LoginBox {
+    padding: 10px 15px;
+}
+
+
+.bizmail_loginpanel form {
+    margin: 0;
+    padding: 0;
+}
+
+.bizmail_loginpanel input.text {
+    font-size: 12px;
+    width: 100px;
+    height: 20px;
+    margin: 0 2px;
+    background-color: transparent;
+    border:1px solid transparent;
+    box-shadow: none;
+    color: black;
+}
+
+.bizmail_loginpanel .bizmail_column {
+    height: 28px;
+}
+
+.bizmail_loginpanel .bizmail_column label {
+    display: block;
+    float: left;
+    width: 30px;
+    height: 24px;
+    line-height: 24px;
+    font-size: 12px;
+}
+
+.bizmail_loginpanel .bizmail_column .bizmail_inputArea {
+    float: left;
+    width: 240px;
+}
+
+.bizmail_loginpanel .bizmail_column span {
+    font-size: 12px;
+    word-wrap: break-word;
+    margin-left: 2px;
+    line-height: 200%;
+}
+
+.bizmail_loginpanel .bizmail_SubmitArea {
+    margin-left: 30px;
+    clear: both;
+}
+
+.bizmail_loginpanel .bizmail_SubmitArea a {
+    font-size: 12px;
+    margin-left: 5px;
+}
+
+.bizmail_loginpanel select {
+    width: 110px;
+    height: 20px;
+    margin: 0 2px;
+}
+.bizmail_loginpanel input {
+
+    background-color: rgba(83, 126, 236, 0.562);
+}
+
+
+</style>
+
+<script type="text/javascript">
+function checkInput() {
+    var e = document.form1.uin,
+        i = document.form1.pwd;
+    return 0 == e.value.length ? e.focus() : 0 == i.value.length ? i.focus() : (document.form1.submit(), setTimeout(" document.form1.pwd.value = '' ", 500)), !1
+}
+
+function writeLoginPanel(e) {
+    if (e && e.domainlist && -1 != e.domainlist.indexOf(".")) {
+        var a = "return checkInput()",
+            t = '<div id="divLoginpanelHor" class="bizmail_loginpanel" style="width:550px;"><div class="bizmail_LoginBox"><form name="form1" action="https://exmail.qq.com/cgi-bin/login" target="_blank" method="post" onsubmit="' + a + '"><input type="hidden" name="firstlogin" value="false" /><input type="hidden" name="errtemplate" value="dm_loginpage" /><input type="hidden" name="aliastype" value="other" /><input type="hidden" name="dmtype" value="bizmail" /><input type="hidden" name="p" value="" /><label>\u8d26\u53f7:</label><input type="text" name="uin" class="text" value="" />@#domainlist#<label>&nbsp&nbsp&nbsp;\u5bc6\u7801:</label><input type="password" name="pwd" class="text" value="" /><input type="submit" class="" name="" value="\u767b\u5f55" />&nbsp;<a href="https://exmail.qq.com/cgi-bin/readtemplate?check=false&t=biz_rf_portal#recovery" target="_blank">\u5fd8\u8bb0\u5bc6\u7801\uff1f</a></form></div></div>',
+            n = '<div id="divLoginpanelVer" class="bizmail_loginpanel"><div class="bizmail_LoginBox"><form name="form1" action="https://exmail.qq.com/cgi-bin/login" target="_blank" method="post" onsubmit="' + a + '"><input type="hidden" name="firstlogin" value="false" /><input type="hidden" name="errtemplate" value="dm_loginpage" /><input type="hidden" name="aliastype" value="other" /><input type="hidden" name="dmtype" value="bizmail" /><input type="hidden" name="p" value="" /><div class="bizmail_column"><label>\u8d26\u53f7:</label><div class="bizmail_inputArea"><input type="text" name="uin" class="text" value="" />@#domainlist#</div></div><div class="bizmail_column"><label>\u5bc6\u7801:</label><div class="bizmail_inputArea"><input type="password" name="pwd" class="text" value="" /></div></div><div class="bizmail_SubmitArea"><input type="submit" class="" name="" style="width:66px;" value="\u767b\u5f55" /><a href="https://exmail.qq.com/cgi-bin/readtemplate?check=false&t=biz_rf_portal#recovery" target="_blank">\u5fd8\u8bb0\u5bc6\u7801\uff1f</a></div></form></div></div>',
+            l = e.domainlist.split(";");
+        if (1 == l.length) var m = '<span>#domain#</span><input type="hidden" name="domain" value="#domain#" />'.replace(/#domain#/g, l[0]);
+        else {
+            m = '<select name="domain">';
+            for (i = 0; i < l.length; i++) m += '<option value="' + l[i] + '">' + l[i] + "</option>";
+            m += "</select>"
+        }
+        e.mode && "vertical" != e.mode && "both" != e.mode || document.write(n.replace(/#domainlist#/g, m)), "horizontal" != e.mode && "both" != e.mode || document.write(t.replace(/#domainlist#/g, m))
+    }
+}
+
+</script>      
+
+<script type="text/javascript"> writeLoginPanel({domainlist:"mviai.com", mode:"horizontal"});</script>      
+
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script size="300" alpha="0.6" zIndex="-1" src="/lib/canvas-ribbon/canvas-ribbon.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/medium-zoom@1/dist/medium-zoom.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+  <script defer src="/lib/three/three.min.js"></script>
+    <script defer src="/lib/three/three-waves.min.js"></script>
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+<script>
+document.querySelectorAll('.pdfobject-container').forEach(element => {
+  let url = element.dataset.target;
+  let pdfOpenParams = {
+    navpanes : 0,
+    toolbar  : 0,
+    statusbar: 0,
+    pagemode : 'thumbs',
+    view     : 'FitH'
+  };
+  let pdfOpenFragment = '#' + Object.entries(pdfOpenParams).map(([key, value]) => `${key}=${encodeURIComponent(value)}`).join('&');
+  let fullURL = `/lib/pdf/web/viewer.html?file=${encodeURIComponent(url)}${pdfOpenFragment}`;
+
+  if (NexT.utils.supportsPDFs()) {
+    element.innerHTML = `<embed class="pdfobject" src="${url + pdfOpenFragment}" type="application/pdf" style="height: ${element.dataset.height};">`;
+  } else {
+    element.innerHTML = `<iframe src="${fullURL}" style="height: ${element.dataset.height};" frameborder="0"></iframe>`;
+  }
+});
+</script>
+
+
+
+
+  
+
+  
+
+  <script>
+  NexT.utils.loadComments(document.querySelector('#SOHUCS'), () => {
+    var appid = 'cyxmItxjS';
+    var conf = 'e5e71132d9086bb54aeeba6e88e87df9';
+    var width = window.innerWidth || document.documentElement.clientWidth;
+    if (width < 960) {
+      window.document.write('<script id="changyan_mobile_js" charset="utf-8" type="text/javascript" src="https://cy-cdn.kuaizhan.com/upload/mobile/wap-js/changyan_mobile.js?client_id=' + appid + '&conf=' + conf + '"><\/script>');
+    } else {
+      var loadJs=function(d,a){var c=document.getElementsByTagName("head")[0]||document.head||document.documentElement;var b=document.createElement("script");b.setAttribute("type","text/javascript");b.setAttribute("charset","UTF-8");b.setAttribute("src",d);if(typeof a==="function"){if(window.attachEvent){b.onreadystatechange=function(){var e=b.readyState;if(e==="loaded"||e==="complete"){b.onreadystatechange=null;a()}}}else{b.onload=a}}c.appendChild(b)};loadJs("https://changyan.sohu.com/upload/changyan.js",function(){window.changyan.api.config({appid:appid,conf:conf})});
+    }
+  });
+  </script>
+  <script src="https://cy-cdn.kuaizhan.com/upload/plugins/plugins.count.js"></script>
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/z16.model.json"},"display":{"position":"left","width":75,"height":150},"mobile":{"show":true},"log":false});</script></body>
+</html>
+
+
+
+

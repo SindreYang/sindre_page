@@ -1,0 +1,809 @@
+<!DOCTYPE html>
+<html lang="zh-CN,en,default">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" href="/lib/pace/pace-theme-minimal.min.css">
+  <script src="/lib/pace/pace.min.js"></script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"blog.mviai.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":true,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":true,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="自动摘要: 	Torchvision对象检测微调教程	为了充分利用本教程，建议使用此[Colab](https:&#x2F;&#x2F;colab.research.google.com&#x2F;github&#x2F;pytorch&#x2F;tuto ……..">
+<meta property="og:type" content="article">
+<meta property="og:title" content="1">
+<meta property="og:url" content="http://blog.mviai.com/2025/1._%E7%86%9F%E6%82%89pytorch_----__3_%E5%9B%BE%E5%83%8F/index.html">
+<meta property="og:site_name" content="落叶无痕">
+<meta property="og:description" content="自动摘要: 	Torchvision对象检测微调教程	为了充分利用本教程，建议使用此[Colab](https:&#x2F;&#x2F;colab.research.google.com&#x2F;github&#x2F;pytorch&#x2F;tuto ……..">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://blog.mviai.com/images/1665712538667-d45c3456-25f4-4050-a889-dd181f7596b0.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1665713430032-f5208d57-87fa-4d94-8056-9cae7be9682a.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1666074727599-fd6ba1c4-cfca-48db-a057-1e8df24a1cf4.png">
+<meta property="article:published_time" content="2025-01-22T04:37:41.000Z">
+<meta property="article:modified_time" content="2025-01-22T12:37:41.703Z">
+<meta property="article:author" content="SindreYang">
+<meta property="article:tag" content="生活">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://blog.mviai.com/images/1665712538667-d45c3456-25f4-4050-a889-dd181f7596b0.png">
+
+<link rel="canonical" href="http://blog.mviai.com/2025/1._%E7%86%9F%E6%82%89pytorch_----__3_%E5%9B%BE%E5%83%8F/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>1 | 落叶无痕</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">落叶无痕</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类<span class="badge">72</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档<span class="badge">321</span></a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+  <span class="exturl github-corner" data-url="aHR0cHM6Ly9naXRodWIuY29tL1NpbmRyZVlhbmc=" title="Follow me on GitHub" aria-label="Follow me on GitHub"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></span>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://blog.mviai.com/2025/1._%E7%86%9F%E6%82%89pytorch_----__3_%E5%9B%BE%E5%83%8F/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="SindreYang">
+      <meta itemprop="description" content="沉淀后我愿意做一个温暖的人。有自己的喜好，有自己的原则，有自己的信仰，不急功近利，不浮夸轻薄，宠辱不惊，淡定安逸，心静如水。------不忘初心，方得始终">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="落叶无痕">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          1
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2025-01-22 12:37:41 / 修改时间：20:37:41" itemprop="dateCreated datePublished" datetime="2025-01-22T12:37:41+08:00">2025-01-22</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%88%86%E5%89%B2%E5%9F%B9%E8%AE%AD%E8%AE%A1%E5%88%92/" itemprop="url" rel="index"><span itemprop="name">分割培训计划</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">Changyan：</span>
+    
+    
+      <a title="changyan" href="/2025/1._%E7%86%9F%E6%82%89pytorch_----__3_%E5%9B%BE%E5%83%8F/#SOHUCS" itemprop="discussionUrl">
+        <span id="changyan_count_unit" class="post-comments-count hc-comment-count" data-xid="2025/1._熟悉pytorch_----__3_图像/" itemprop="commentCount"></span>
+      </a>
+    
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>自动摘要: 	Torchvision对象检测微调教程	为了充分利用本教程，建议使用此[Colab](<span class="exturl" data-url="aHR0cHM6Ly9jb2xhYi5yZXNlYXJjaC5nb29nbGUuY29tL2dpdGh1Yi9weXRvcmNoL3R1dG8=" title="https://colab.research.google.com/github/pytorch/tuto">https://colab.research.google.com/github/pytorch/tuto<i class="fa fa-external-link"></i></span> ……..</p>
+<span id="more"></span>
+
+<h1 id="Torchvision对象检测微调教程"><a href="#Torchvision对象检测微调教程" class="headerlink" title="Torchvision对象检测微调教程"></a>Torchvision对象检测微调教程</h1><p>为了充分利用本教程，建议使用此 <span class="exturl" data-url="aHR0cHM6Ly9jb2xhYi5yZXNlYXJjaC5nb29nbGUuY29tL2dpdGh1Yi9weXRvcmNoL3R1dG9yaWFscy9ibG9iL2doLXBhZ2VzL19kb3dubG9hZHMvdG9yY2h2aXNpb25fZmluZXR1bmluZ19pbnN0YW5jZV9zZWdtZW50YXRpb24uaXB5bmI=" title="https://colab.research.google.com/github/pytorch/tutorials/blob/gh-pages/_downloads/torchvision_finetuning_instance_segmentation.ipynb">Colab<i class="fa fa-external-link"></i></span> 版本， 这将可以尝试以下信息。</p>
+<p>在本教程将对 <span class="exturl" data-url="aHR0cHM6Ly93d3cuY2lzLnVwZW5uLmVkdS9+anNoaS9wZWRfaHRtbC8=" title="https://www.cis.upenn.edu/~jshi/ped_html/">Penn-Fudan<i class="fa fa-external-link"></i></span> 数据库中的行人检测和分割，使用预训练的 <span class="exturl" data-url="aHR0cHM6Ly9hcnhpdi5vcmcvYWJzLzE3MDMuMDY4NzA=" title="https://arxiv.org/abs/1703.06870">Mask R-CNN<i class="fa fa-external-link"></i></span> 模型进行微调。 此数据库包含 170 个图像和 345 个行人实例，本次将用它来说明如何在torchvision中使用新功能，以便在自定义数据集上训练实例细分模型。</p>
+<h2 id="定义数据集"><a href="#定义数据集" class="headerlink" title="定义数据集"></a>定义数据集</h2><p>用于训练目标检测、实例分割和人员关键点检测的参考脚本可以方便地支持添加新的自定义数据集。  数据集应继承自标准torch.utils.data.Dataset类，并实现__len__和__getitem__。</p>
+<p>唯一需要的特异性是数据集__getitem__应该返回：</p>
+<ul>
+<li>图像：大小为(H, W)的 PIL 图像</li>
+<li>目标：包含以下字段的字典<ul>
+<li>boxes (FloatTensor[N, 4])：[x0, y0, x1, y1]格式的N边界框的坐标，范围从0至W，从0至H；</li>
+<li>labels (Int64Tensor[N])：每个边界框的标签。 0始终代表背景类；</li>
+<li>image_id (Int64Tensor[1])：图像标识符。 它在数据集中的所有图像之间应该是唯一的，并在评估过程中使用；</li>
+<li>area (Tensor[N])：边界框的区域。 在使用 COCO 度量进行评估时，可使用此值来区分小盒子，中盒子和大盒子之间的度量得分。</li>
+<li>iscrowd (UInt8Tensor[N])：在评估期间，将忽略具有 iscrowd&#x3D; True 的实例。</li>
+<li>（可选）masks (UInt8Tensor[N, H, W])：每个对象的分割蒙版</li>
+<li>（可选）keypoints (FloatTensor[N, K, 3])：对于 N 个对象中的每一个，它包含[x, y, visibility]格式的 K 个关键点，用于定义对象。 可见性为 0 (visibility&#x3D;0)表示关键点不可见。 请注意，对于数据扩充，翻转关键点的概念取决于数据表示形式，您可能应该将references&#x2F;detection&#x2F;transforms.py修改为新的关键点表示形式</li>
+</ul>
+</li>
+</ul>
+<p>如果您的模型返回上述方法，他们将使其既可用于培训，也可用于评估，并将使用 pycotools 中的评估脚本，这些脚本可以与 pip install pycotools 一起安装。</p>
+<p>注意：</p>
+<ul>
+<li>安装pycotools之前先要安装vs_BuildTools，如图<img src="/images/1665712538667-d45c3456-25f4-4050-a889-dd181f7596b0.png"><br>。网址：<span class="exturl" data-url="aHR0cHM6Ly92aXN1YWxzdHVkaW8ubWljcm9zb2Z0LmNvbS96aC1oYW5zL3Zpc3VhbC1jcHAtYnVpbGQtdG9vbHMv" title="https://visualstudio.microsoft.com/zh-hans/visual-cpp-build-tools/">https://visualstudio.microsoft.com/zh-hans/visual-cpp-build-tools/<i class="fa fa-external-link"></i></span>，安装的时候选择C++编辑界面就好。</li>
+<li>对于Windows, 请使用<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2dhdXRhbWNoaXRuaXMvY29jb2FwaQ==" title="https://github.com/gautamchitnis/cocoapi">gautamchitnis<i class="fa fa-external-link"></i></span>安装pycocotools，命令如下<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip install git+https://github.com/gautamchitnis/cocoapi.git@cocodataset-master#subdirectory=PythonAPI</span><br></pre></td></tr></table></figure></li>
+</ul>
+<p>关于labels的注解。 该模型将0类作为背景。 如果您的数据集不包含背景类，则labels中不应包含0。 例如，假设您只有猫和狗两类，则可以定义1来表示猫和0代表狗。 因此，例如，如果其中一个图像同时具有两个类，则您的labels张量应类似于[1,2]。</p>
+<p>此外，如果要在训练过程中使用宽高比分组（以便每个批量仅包含具有相似长宽比的图像），则建议您还实现get_height_and_width方法，该方法返回图像的高度和宽度。 如果未提供此方法，我们将通过__getitem__查询数据集的所有元素，这会将图像加载到内存中，并且比提供自定义方法慢。</p>
+<h3 id="为-PennFudan-编写自定义数据集"><a href="#为-PennFudan-编写自定义数据集" class="headerlink" title="为 PennFudan 编写自定义数据集"></a>为 PennFudan 编写自定义数据集</h3><p>让我们为 PennFudan 数据集编写一个数据集。 在<span class="exturl" data-url="aHR0cHM6Ly93d3cuY2lzLnVwZW5uLmVkdS9+anNoaS9wZWRfaHRtbC9QZW5uRnVkYW5QZWQuemlw" title="https://www.cis.upenn.edu/~jshi/ped_html/PennFudanPed.zip">下载并解压缩zip文件<i class="fa fa-external-link"></i></span>之后，我们具有以下文件夹结构：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">PennFudanPed/</span><br><span class="line">  PedMasks/</span><br><span class="line">    FudanPed00001_mask.png</span><br><span class="line">    FudanPed00002_mask.png</span><br><span class="line">    FudanPed00003_mask.png</span><br><span class="line">    FudanPed00004_mask.png</span><br><span class="line">    ...</span><br><span class="line">  PNGImages/</span><br><span class="line">    FudanPed00001.png</span><br><span class="line">    FudanPed00002.png</span><br><span class="line">    FudanPed00003.png</span><br><span class="line">    FudanPed00004.png</span><br></pre></td></tr></table></figure>
+
+<p>这是一对图像和分割掩码的一个示例：<img src="/images/1665713430032-f5208d57-87fa-4d94-8056-9cae7be9682a.png"><br>因此，每个图像都有一个对应的分割蒙版，其中每个颜色对应一个不同的实例。 让我们为此数据集编写一个torch.utils.data.Dataset类。代码下面有注意事项：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br></pre></td><td class="code"><pre><span class="line">import os</span><br><span class="line">import numpy as np</span><br><span class="line">import torch</span><br><span class="line">from PIL import Image</span><br><span class="line"></span><br><span class="line">class PennFudanDataset(torch.utils.data.Dataset):</span><br><span class="line">    def  __init__(self,root,transforms):</span><br><span class="line">        self.root = root</span><br><span class="line">        self.transforms = transforms</span><br><span class="line"></span><br><span class="line">        #加载所有图像文件，对它们进行排序以确保它们对齐</span><br><span class="line">        self.imgs = list(sorted(os.listdir(os.path.join(root,&quot;PNGImages&quot;))))</span><br><span class="line">        self.masks = list(sorted(os.listdir(os.path.join(root,&quot;PedMasks&quot;))))</span><br><span class="line"></span><br><span class="line">    def __getitem__(self, idx):</span><br><span class="line">        #获取图片和掩码</span><br><span class="line">        img_path = os.path.join(self.root,&quot;PNGImages&quot;,self.imgs[idx])</span><br><span class="line">        mask_path = os.path.join(self.root,&quot;PedMasks&quot;,self.masks[idx])</span><br><span class="line">        img = Image.open(img_path).convert(&quot;RGB&quot;)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">        #请注意，我们还没有将掩码转换为 RGB，因为每种颜色对应一个不同的实例，其中 0 是背景</span><br><span class="line">        mask = Image.open(mask_path)</span><br><span class="line">        #将 PIL 图像转换成一个numpy数组</span><br><span class="line">        mask = np.array(mask)</span><br><span class="line"></span><br><span class="line">        #实例被编码为不同的颜色</span><br><span class="line">        obj_ids = np.unique(mask)</span><br><span class="line">        #第一个 id 是背景，所以删除它</span><br><span class="line">        obj_ids = obj_ids[1:]</span><br><span class="line"></span><br><span class="line">        #将颜色编码的掩码拆分为一组二进制掩码</span><br><span class="line">        masks = mask == obj_ids[:,None,None]</span><br><span class="line"></span><br><span class="line">        #得到每个掩码的边界框坐标</span><br><span class="line">        num_objs = len(obj_ids)</span><br><span class="line">        boxes = []</span><br><span class="line">        for i in range(num_objs):</span><br><span class="line">            pos = np.where(masks[i])</span><br><span class="line">            xmin = np.min(pos[1])</span><br><span class="line">            xmax = np.max(pos[1])</span><br><span class="line">            ymin = np.min(pos[0])</span><br><span class="line">            ymax = np.max(pos[0])</span><br><span class="line">            boxes.append([xmin,ymin,xmax,ymax])</span><br><span class="line"></span><br><span class="line">        #把所有东西都变成pytorch张量</span><br><span class="line">        boxes = torch.as_tensor(boxes,dtype=torch.float32)</span><br><span class="line">        #只有一个类</span><br><span class="line">        labels = torch.ones((num_objs,),dtype=torch.int64)</span><br><span class="line">        masks = torch.as_tensor(masks,dtype=torch.uint8)</span><br><span class="line"></span><br><span class="line">        image_id = torch.tensor([idx])</span><br><span class="line">        area = (boxes[:,3] - boxes[:,1]) * (boxes[:,2] - boxes[:,0])</span><br><span class="line"></span><br><span class="line">        #假设所有的实例都不是人群</span><br><span class="line">        iscrowd = torch.zeros((num_objs,),dtype=torch.int64)</span><br><span class="line"></span><br><span class="line">        target = &#123;&#125;</span><br><span class="line">        target[&quot;boxes&quot;] = boxes</span><br><span class="line">        target[&quot;labels&quot;] = labels</span><br><span class="line">        target[&quot;image_id&quot;] = mask</span><br><span class="line">        target[&quot;area&quot;] = area</span><br><span class="line">        target[&quot;iscrowd&quot;] = iscrowd</span><br><span class="line"></span><br><span class="line">        if self.transforms is not None:</span><br><span class="line">            img,target = self.transforms(img,target)</span><br><span class="line"></span><br><span class="line">        return img, target</span><br><span class="line"></span><br><span class="line">    def __len__(self):</span><br><span class="line">        return len(self.imgs)</span><br></pre></td></tr></table></figure>
+
+<p>注意事项：代码中的root的格式为：root &#x3D; ‘C:\Users\sy\Desktop\PennFudanPed’</p>
+<p>代码中会用到PIL库，这个库只支持到python 2.7版本，创建了兼容python 3的版本，叫Pillow，可以通过安装Pillow来使用PIL。Pillow这个库一般在安装Anacanda3的时候就安装了，但是调用的时候依旧用不了，以下是解决办法：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">#卸载已经安装好的pillow</span><br><span class="line">pip uninstall pillow</span><br><span class="line"></span><br><span class="line">#安装Pillow（此处注意，Pillow开头的P要大写！！！）</span><br><span class="line">pip install Pillow</span><br></pre></td></tr></table></figure>
+
+<p>这就是数据集的全部内容。 现在，定义一个可以对该数据集执行预测的模型。</p>
+<h2 id="定义模型"><a href="#定义模型" class="headerlink" title="定义模型"></a>定义模型</h2><p>在本教程中，我们将基于 Faster R-CNN 使用 Mask R-CNN 。 Faster R-CNN 是可预测图像中潜在对象的边界框和类分数的模型。</p>
+<p>Mask R-CNN 在 Faster R-CNN 中增加了一个分支，该分支还可以预测每个实例的分割掩码。</p>
+<h3 id="将预训练模型用于微调"><a href="#将预训练模型用于微调" class="headerlink" title="将预训练模型用于微调"></a>将预训练模型用于微调</h3><p>假设您要从在 COCO 上经过预训练的模型开始，并希望针对您的特定类对其进行微调。 这是一种可行的方法：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">import torchvision</span><br><span class="line">from torchvision.models.detection.faster_rcnn import FastRCNNPredictor</span><br><span class="line"></span><br><span class="line">#装载一个在 COCO 上预先训练好的模型</span><br><span class="line">model = torchvision.models.detection.fasterrcnn_resnet50_fpn(weights = &quot;DEFAULT&quot;)</span><br><span class="line"></span><br><span class="line">#用一个新的分类器替换分类器，它具有用户定义的 num_classes</span><br><span class="line">num_classes = 2     #1 class(person) + 背景</span><br><span class="line"></span><br><span class="line">#获取输入特征数给分类器</span><br><span class="line">in_features = model.roi_heads.box_predictor.cls_score.in_features</span><br><span class="line"></span><br><span class="line">model.roi_heads.box_predictor = FastRCNNPredictor(in_features,num_classes)</span><br></pre></td></tr></table></figure>
+
+
+<h3 id="修改模型以添加其他主干"><a href="#修改模型以添加其他主干" class="headerlink" title="修改模型以添加其他主干"></a>修改模型以添加其他主干</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">import torchvision</span><br><span class="line">from torchvision.models.detection import FasterRCNN</span><br><span class="line">from torchvision.models.detection.rpn import AnchorGenerator</span><br><span class="line"></span><br><span class="line">#加载预训练模型进行分类并仅返回特征</span><br><span class="line">backbone = torchvision.models.mobilenet_v2(weights=&#x27;DEFAULT&#x27;).features</span><br><span class="line"></span><br><span class="line">#FasterRCNN 需要知道骨干网中输出通道的数量。对于mobilenet_v2，它是1280，所以我们需要在这里添加它</span><br><span class="line">backbone.out_channels = 1280</span><br><span class="line"></span><br><span class="line">#让我们让 RPN 每个空间位置生成 5 x 3 个锚点，具有 5 个不同的大小和 3 个不同的纵横比。我们有一个 Tuple[Tuple[int]] 因为每个特征图可能有不同的大小和纵横比</span><br><span class="line">anchor_generator = AnchorGenerator(sizes=((32,64,128,256,512),),aspect_ratios=((0.5,1.0,2.0),))</span><br><span class="line"></span><br><span class="line">#让我们定义我们将用于执行感兴趣区域裁剪的特征图，以及重新缩放后裁剪的大小。如果你的主干返回一个张量，featmap_names 应该是 [0]。</span><br><span class="line"># 更一般地说，主干应该返回一个 OrderedDict[Tensor]，并且在 featmap_names 中您可以选择要使用的特征图。</span><br><span class="line">roi_pooler = torchvision.ops.MultiScaleRoIAlign(featmap_names=[&#x27;0&#x27;],output_size=7,sampling_ratio=2)</span><br><span class="line"></span><br><span class="line">#在 FasterRCNN 模型中把这些碎片组合在一起</span><br><span class="line">model = FasterRCNN(backbone,num_classes=2,rpn_anchor_generator=anchor_generator,box_roi_pool=roi_pooler)</span><br></pre></td></tr></table></figure>
+<p>第一次运行的输出结果，再次运行就没有了：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Downloading: &quot;https://download.pytorch.org/models/mobilenet_v2-7ebf99e0.pth&quot; to C:\Users\sy/.cache\torch\hub\checkpoints\mobilenet_v2-7ebf99e0.pth</span><br><span class="line">100%|██████████| 13.6M/13.6M [00:01&lt;00:00, 7.73MB/s]</span><br></pre></td></tr></table></figure>
+
+
+<h3 id="PennFudan数据集的实例细分模型"><a href="#PennFudan数据集的实例细分模型" class="headerlink" title="PennFudan数据集的实例细分模型"></a>PennFudan数据集的实例细分模型</h3><p>在此案例中，由于数据集非常小，希望从预训练模型中进行微调，因此本次将遵循方法1。这里将使用Mask R-CNN计算实例分割掩码:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">import torchvision</span><br><span class="line">from torchvision.models.detection.faster_rcnn import FastRCNNPredictor</span><br><span class="line">from torchvision.models.detection.mask_rcnn import MaskRCNNPredictor</span><br><span class="line"></span><br><span class="line">def get_model_instance_segmentation(num_classes):</span><br><span class="line">    #加载一个在 COCO 上预训练的实例分割模型</span><br><span class="line">    model = torchvision.models.detection.maskrcnn_resnet50_fpn(weight=&quot;DEFAULT&quot;)</span><br><span class="line"></span><br><span class="line">    #获取分类器的输入特征数</span><br><span class="line">    in_features = model.roi_heads.box_predictor.cls_score.in_features</span><br><span class="line">    print(in_features)</span><br><span class="line">    #用一个新的pre-trained替换预先训练过的pre-trained</span><br><span class="line">    model.roi_heads.box.mask_predictor = FastRCNNPredictor(in_features,num_classes)</span><br><span class="line"></span><br><span class="line">    #获取输入掩码分类器的特征数</span><br><span class="line">    in_features_mask = model.roi_heads.mask_predictor.conv5_mask.in_channels</span><br><span class="line">    hidden_layer = 256</span><br><span class="line"></span><br><span class="line">    #用一个新的替换掩码预测值</span><br><span class="line">    model.roi_heas.mask_predictor = MaskRCNNPredictor(in_features_mask,</span><br><span class="line">                                                      hidden_layer,</span><br><span class="line">                                                      num_classes)</span><br><span class="line">    return model</span><br></pre></td></tr></table></figure>
+
+
+<h2 id="Putting-everything-together"><a href="#Putting-everything-together" class="headerlink" title="Putting everything together"></a>Putting everything together</h2><p>在references&#x2F;detection&#x2F;中，我们提供了许多帮助程序功能来简化训练和评估检测模型。 在这里，我们将使用references&#x2F;detection&#x2F;engine.py，references&#x2F;detection&#x2F;utils.py和references&#x2F;detection&#x2F;transforms.py。 只需将它们复制到您的文件夹中，然后在此处使用它们即可。网址：<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL3B5dG9yY2gvdmlzaW9uL3RyZWUvbWFpbi9yZWZlcmVuY2VzL2RldGVjdGlvbg==" title="https://github.com/pytorch/vision/tree/main/references/detection">https://github.com/pytorch/vision/tree/main/references/detection<i class="fa fa-external-link"></i></span></p>
+<p>写一些辅助函数来进行数据扩充&#x2F;转换：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">import torch</span><br><span class="line">from torchvision import transforms as T</span><br><span class="line"></span><br><span class="line">def get_transform(train):</span><br><span class="line">    transforms = []</span><br><span class="line">    transforms.append(T.PILToTensor())</span><br><span class="line">    transforms.append(T.ConvertImageDtype(torch.float))</span><br><span class="line">    if train:</span><br><span class="line">        transforms.append(T.RandomHorizontalFlip(0.5))</span><br><span class="line">    return T.Compose(transforms)</span><br></pre></td></tr></table></figure>
+
+
+<h2 id="测试forward-方法-可选"><a href="#测试forward-方法-可选" class="headerlink" title="测试forward()方法(可选)"></a>测试forward()方法(可选)</h2><p>在遍历数据集之前，最好先查看模型在训练过程中的期望值以及对样本数据的推断时间。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">import torchvision</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">model = torchvision.models.detection.fasterrcnn_resnet50_fpn(weights=&quot;DEFAULT&quot;)</span><br><span class="line">dataset = PennFudanDataset(&#x27;PennFudanPed&#x27;,get_transform(train=True))</span><br><span class="line">data_loader = torch.utils.data.DataLoader(</span><br><span class="line">    dataset, batch_size=2, shuffle=True, num_workers=4,</span><br><span class="line">    collate_fn=torch.utils.collate_fn)</span><br><span class="line"></span><br><span class="line">images,targets = next(iter(data_loader))</span><br><span class="line">images = list(image for image in images)</span><br><span class="line">targets = [&#123;k: v for k,v in t.items()&#125; for t in targets]</span><br><span class="line">output = model(images,targets)</span><br><span class="line"></span><br><span class="line">model.eval()</span><br><span class="line">x = [torch.rand(3,300,400), torch.rand(3,500,400)]</span><br><span class="line">predictions = model(x)</span><br></pre></td></tr></table></figure>
+
+<p>现在，编写执行训练和验证的main函数：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br></pre></td><td class="code"><pre><span class="line">from engine import train_one_epoch, evaluate</span><br><span class="line">import utils</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">def main():</span><br><span class="line">    # train on the GPU or on the CPU, if a GPU is not available</span><br><span class="line">    device = torch.device(&#x27;cuda&#x27;) if torch.cuda.is_available() else torch.device(&#x27;cpu&#x27;)</span><br><span class="line"></span><br><span class="line">    # our dataset has two classes only - background and person</span><br><span class="line">    num_classes = 2</span><br><span class="line">    # use our dataset and defined transformations</span><br><span class="line">    dataset = PennFudanDataset(&#x27;PennFudanPed&#x27;, get_transform(train=True))</span><br><span class="line">    dataset_test = PennFudanDataset(&#x27;PennFudanPed&#x27;, get_transform(train=False))</span><br><span class="line"></span><br><span class="line">    # split the dataset in train and test set</span><br><span class="line">    indices = torch.randperm(len(dataset)).tolist()</span><br><span class="line">    dataset = torch.utils.data.Subset(dataset, indices[:-50])</span><br><span class="line">    dataset_test = torch.utils.data.Subset(dataset_test, indices[-50:])</span><br><span class="line"></span><br><span class="line">    # define training and validation data loaders</span><br><span class="line">    data_loader = torch.utils.data.DataLoader(</span><br><span class="line">        dataset, batch_size=2, shuffle=True, num_workers=4,</span><br><span class="line">        collate_fn=utils.collate_fn)</span><br><span class="line"></span><br><span class="line">    data_loader_test = torch.utils.data.DataLoader(</span><br><span class="line">        dataset_test, batch_size=1, shuffle=False, num_workers=4,</span><br><span class="line">        collate_fn=utils.collate_fn)</span><br><span class="line"></span><br><span class="line">    # get the model using our helper function</span><br><span class="line">    model = get_model_instance_segmentation(num_classes)</span><br><span class="line"></span><br><span class="line">    # move model to the right device</span><br><span class="line">    model.to(device)</span><br><span class="line"></span><br><span class="line">    # construct an optimizer</span><br><span class="line">    params = [p for p in model.parameters() if p.requires_grad]</span><br><span class="line">    optimizer = torch.optim.SGD(params, lr=0.005,</span><br><span class="line">                                momentum=0.9, weight_decay=0.0005)</span><br><span class="line">    # and a learning rate scheduler</span><br><span class="line">    lr_scheduler = torch.optim.lr_scheduler.StepLR(optimizer,</span><br><span class="line">                                                   step_size=3,</span><br><span class="line">                                                   gamma=0.1)</span><br><span class="line"></span><br><span class="line">    # let&#x27;s train it for 10 epochs</span><br><span class="line">    num_epochs = 10</span><br><span class="line"></span><br><span class="line">    for epoch in range(num_epochs):</span><br><span class="line">        # train for one epoch, printing every 10 iterations</span><br><span class="line">        train_one_epoch(model, optimizer, data_loader, device, epoch, print_freq=10)</span><br><span class="line">        # update the learning rate</span><br><span class="line">        lr_scheduler.step()</span><br><span class="line">        # evaluate on the test dataset</span><br><span class="line">        evaluate(model, data_loader_test, device=device)</span><br><span class="line"></span><br><span class="line">    print(&quot;That&#x27;s it!&quot;)</span><br></pre></td></tr></table></figure>
+
+
+<h2 id="结束语"><a href="#结束语" class="headerlink" title="结束语"></a>结束语</h2><p><span class="exturl" data-url="aHR0cHM6Ly9weXRvcmNoLm9yZy90dXRvcmlhbHMvX3N0YXRpYy90di10cmFpbmluZy1jb2RlLnB5" title="https://pytorch.org/tutorials/_static/tv-training-code.py">在此处<i class="fa fa-external-link"></i></span>下载本教程的完整源文件</p>
+<h1 id="计算机视觉的迁移学习教程"><a href="#计算机视觉的迁移学习教程" class="headerlink" title="计算机视觉的迁移学习教程"></a>计算机视觉的迁移学习教程</h1><p>本教程将学习如何使用迁移学习训练卷积神经网络进行图像分类。 您可以在<span class="exturl" data-url="aHR0cHM6Ly9jczIzMW4uZ2l0aHViLmlvL3RyYW5zZmVyLWxlYXJuaW5nLw==" title="https://cs231n.github.io/transfer-learning/">cs231n 笔记<i class="fa fa-external-link"></i></span>中阅读有关迁移学习的更多信息。</p>
+<p>引用注解：实际上，很少有人从头开始训练整个卷积网络（使用随机初始化），因为拥有足够大小的数据集相对很少。 相反，通常在非常大的数据集上对 ConvNet 进行预训练（例如 ImageNet，其中包含 120 万个具有 1000 个类别的图像），然后将 ConvNet 用作初始化或固定特征提取器以完成感兴趣的任务。</p>
+<p>两个主要的迁移学习方案如下所示：</p>
+<ul>
+<li>卷积网络的微调：代替随机初始化，我们使用经过预训练的网络初始化网络，例如在 imagenet 1000 数据集上进行训练的网络。 其余的训练照常进行。</li>
+<li>作为固定特征提取器的 ConvNet：在这里，我们将冻结除最终全连接层之外的所有网络的权重。 最后一个全连接层将替换为具有随机权重的新层，并且仅训练该层。</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">from __future__ import print_function,division</span><br><span class="line"></span><br><span class="line">import torch</span><br><span class="line">import torch.nn as nn</span><br><span class="line">import torch.optim as optim</span><br><span class="line">from torch.optim import lr_scheduler</span><br><span class="line">import torch.backends.cudnn as cudnn</span><br><span class="line">import numpy as np</span><br><span class="line">import torchvision</span><br><span class="line">from torchvision import datasets,models,transforms</span><br><span class="line">import matplotlib.pyplot as plt</span><br><span class="line">import time</span><br><span class="line">import os</span><br><span class="line">import copy</span><br><span class="line"></span><br><span class="line">print(plt.ion()) #交互式</span><br></pre></td></tr></table></figure>
+<p>输出结果：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;matplotlib.pyplot._IonContext object at 0x000001E0FBBAE640&gt;</span><br></pre></td></tr></table></figure>
+
+
+<h2 id="加载数据"><a href="#加载数据" class="headerlink" title="加载数据"></a>加载数据</h2><p>本次将使用torchvision和torch.utils.data包来加载数据，需要解决的问题是训练一个模型来对蚂蚁和蜜蜂进行分类。我们有大约120张蚂蚁和蜜蜂的训练图像。每个类有 75 个验证图像。通常，这是一个非常小的数据集，如果从头开始训练，则可以对其进行概括。由于我们使用的是迁移学习，我们应该能够很好地泛化。</p>
+<p>此次使用的数据集是图像网格的一个非常小的子集。从<span class="exturl" data-url="aHR0cHM6Ly9kb3dubG9hZC5weXRvcmNoLm9yZy90dXRvcmlhbC9oeW1lbm9wdGVyYV9kYXRhLnppcA==" title="https://download.pytorch.org/tutorial/hymenoptera_data.zip">此处<i class="fa fa-external-link"></i></span>下载数据集并解压到当前目录</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">data_transforms = &#123;</span><br><span class="line">    &#x27;train&#x27;: transforms.Compose([</span><br><span class="line">        transforms.RandomResizedCrop(224),</span><br><span class="line">        transforms.RandomHorizontalFlip(),</span><br><span class="line">        transforms.ToTensor(),</span><br><span class="line">        transforms.Normalize([0.485,0.456,0.406],[0.229,0.224,0.225])</span><br><span class="line">    ]),</span><br><span class="line">    &#x27;val&#x27;: transforms.Compose([</span><br><span class="line">        transforms.Resize(256),</span><br><span class="line">        transforms.CenterCrop(224),</span><br><span class="line">        transforms.ToTensor(),</span><br><span class="line">        transforms.Normalize([0.485,0.456,0.406],[0.229,0.224,0.225])</span><br><span class="line">    ]),</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">data_dir = &#x27;data/hymenoptera_data&#x27;</span><br><span class="line"></span><br><span class="line">image_datasets = &#123;x: datasets.ImageFolder(os.path.join(data_dir, x),</span><br><span class="line">                                          data_transforms[x])</span><br><span class="line">                  for x in [&#x27;train&#x27;,&#x27;val&#x27;]&#125;</span><br><span class="line">dataloaders = &#123;x: torch.utils.data.DataLoader(image_datasets[x],batch_size=4,shuffle=True,num_workers=4)</span><br><span class="line">               for x in [&#x27;train&#x27;,&#x27;val&#x27;]&#125;</span><br><span class="line"></span><br><span class="line">dataset_sizes = &#123;x:len(image_datasets[x]) for x in [&#x27;train&#x27;,&#x27;val&#x27;]&#125;</span><br><span class="line">class_names = image_datasets[&#x27;train&#x27;].classes</span><br><span class="line"></span><br><span class="line">device = torch.device(&#x27;cuda:0&#x27; if torch.cuda.is_available() else &#x27;cpu&#x27;)</span><br></pre></td></tr></table></figure>
+
+
+<h3 id="可视化一些图像"><a href="#可视化一些图像" class="headerlink" title="可视化一些图像"></a>可视化一些图像</h3><p>函数imshow()代码块一定要放在 ‘<strong>main</strong>‘函数内调用否则会出问题：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">def imshow(inp, title=None):</span><br><span class="line">    inp = inp.numpy().transpose((1, 2, 0))</span><br><span class="line">    mean = np.array([0.485, 0.456, 0.406])</span><br><span class="line">    std = np.array([0.229, 0.224, 0.225])</span><br><span class="line">    inp = std * inp + mean</span><br><span class="line">    inp = np.clip(inp, 0, 1)</span><br><span class="line">    plt.imshow(inp)</span><br><span class="line">    if title is not None:</span><br><span class="line">        plt.title(title)</span><br><span class="line">    plt.pause(0.001)  # 暂停一会儿更新</span><br><span class="line">if __name__ == &#x27;__main__&#x27;:</span><br><span class="line">    # 得到一批训练数据</span><br><span class="line">    input,classes  = next(iter(dataloaders[&#x27;train&#x27;]))</span><br><span class="line">    out = torchvision.utils.make_grid(input)</span><br><span class="line">    imshow(out,title=[class_names[x] for x in classes])</span><br></pre></td></tr></table></figure>
+<p>输出结果是一张图片：<img src="/images/1666074727599-fd6ba1c4-cfca-48db-a057-1e8df24a1cf4.png"></p>
+<h2 id="训练模型"><a href="#训练模型" class="headerlink" title="训练模型"></a>训练模型</h2><p>现在编写一个常规函数来训练模型，说明：</p>
+<ul>
+<li>安排学习率</li>
+<li>保存最佳模型</li>
+</ul>
+<p>以下，参数scheduler是来自torch.optim.lr_scheduler的 LR 调度器对象。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br></pre></td><td class="code"><pre><span class="line">def train_model(model,criterion,optimizer,scheduler,num_epochs=25):</span><br><span class="line">    since = time.time()</span><br><span class="line"></span><br><span class="line">    bast_model_wts = copy.deepcopy(model.state_dict())</span><br><span class="line">    best_acc = 0.0</span><br><span class="line"></span><br><span class="line">    for epoch in range(num_epochs):</span><br><span class="line">        print(f&#x27;Epoch &#123;epoch&#125;/&#123;num_epochs - 1&#125;&#x27;)</span><br><span class="line">        print(&#x27;-&#x27; * 10)</span><br><span class="line"></span><br><span class="line">        #每个epoch都有一个训练和验证阶段</span><br><span class="line">        for phase in [&#x27;train&#x27;,&#x27;val&#x27;]:</span><br><span class="line">            if phase == &#x27;train&#x27;:</span><br><span class="line">                model.train()    #将模型设置为训练模式</span><br><span class="line">            else:</span><br><span class="line">                model.eval()     #将模型设置为验证模式</span><br><span class="line"></span><br><span class="line">            running_loss = 0.0</span><br><span class="line">            running_corrects = 0</span><br><span class="line"></span><br><span class="line">            #遍历数据</span><br><span class="line">            for input, labels in dataloaders[phase]:</span><br><span class="line">                inputs = input.to(device)</span><br><span class="line">                labels = labels.to(device)</span><br><span class="line"></span><br><span class="line">                optimizer.zero_grad()</span><br><span class="line"></span><br><span class="line">                with torch.set_grad_enabled(phase == &#x27;train&#x27;):</span><br><span class="line">                    outputs = model(inputs)</span><br><span class="line">                    _, preds = torch.max(outputs,1)    #这里的_表示这个值不重要用_表示</span><br><span class="line">                    loss = criterion(outputs,labels)</span><br><span class="line"></span><br><span class="line">                    #仅在训练阶段进行逆向 + 优化</span><br><span class="line">                    if phase == &#x27;train&#x27;:</span><br><span class="line">                        loss.backward()</span><br><span class="line">                        optimizer.step()</span><br><span class="line"></span><br><span class="line">                #统计</span><br><span class="line">                running_loss += loss.item() * inputs.size(0)</span><br><span class="line">                running_corrects += torch.sum(preds == labels.data)</span><br><span class="line">            if phase == &#x27;train&#x27;:</span><br><span class="line">                scheduler.step()</span><br><span class="line"></span><br><span class="line">            epoch_loss = running_loss / dataset_sizes[phase]</span><br><span class="line">            epoch_acc = running_corrects.double() / dataset_sizes[phase]</span><br><span class="line"></span><br><span class="line">            print(f&#x27;&#123;phase&#125; Loss: &#123;epoch_loss:.4f&#125; Acc:&#123;epoch_acc:.4f&#125;&#x27;)</span><br><span class="line"></span><br><span class="line">            # deep copy the model</span><br><span class="line">            if phase == &#x27;val&#x27; and epoch_acc &gt; best_acc:</span><br><span class="line">                best_acc = epoch_acc</span><br><span class="line">                best_model_wts = copy.deepcopy(model.state_dict())</span><br><span class="line"></span><br><span class="line">        print()</span><br><span class="line"></span><br><span class="line">    time_elapsed = time.time() - since</span><br><span class="line">    print(f&#x27;training complete in &#123;time_elapsed // 60:.0f&#125;m &#123;time_elapsed % 60:.0f&#125;s&#x27;)</span><br><span class="line">    print(f&#x27;bast val Acc: &#123;best_acc:4f&#125;&#x27;)</span><br><span class="line"></span><br><span class="line">    #获取最佳模型权重</span><br><span class="line">    model.load_state_dict(best_model_wts)</span><br><span class="line">    return model</span><br></pre></td></tr></table></figure>
+
+
+<h3 id="可视化模型预测"><a href="#可视化模型预测" class="headerlink" title="可视化模型预测"></a>可视化模型预测</h3><p>通用函数，显示一些图像的预测：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">def visualize_model(model,num_images=6):</span><br><span class="line">    was_training = model.training</span><br><span class="line">    model.eval()</span><br><span class="line">    images_so_far = 0</span><br><span class="line">    fig = plt.figure()</span><br><span class="line"></span><br><span class="line">    with torch.no_grad():</span><br><span class="line">        for i,(inputs,labels) in enumerate(dataloaders[&#x27;val&#x27;]):</span><br><span class="line">            inputs = inputs.to(device)</span><br><span class="line">            labels = labels.to(device)</span><br><span class="line"></span><br><span class="line">            outputs = model(inputs)</span><br><span class="line">            _,preds = torch.max(outputs,1)</span><br><span class="line"></span><br><span class="line">            for j in range(inputs.size()[0]):</span><br><span class="line">                images_so_far += 1</span><br><span class="line">                ax = plt.subplot(num_images//2, 2, images_so_far)</span><br><span class="line">                ax.axis(&#x27;off&#x27;)</span><br><span class="line">                ax.set_title(f&#x27;predicted: &#123;class_names[preds[j]]&#125;&#x27;)</span><br><span class="line">                imshow(inputs.cpu().data[j])</span><br><span class="line"></span><br><span class="line">                if images_so_far == num_images:</span><br><span class="line">                    model.train(mode=was_training)</span><br><span class="line">                    return</span><br><span class="line">        model.train(model=was_training)</span><br></pre></td></tr></table></figure>
+
+
+<h2 id="微调-ConvNet"><a href="#微调-ConvNet" class="headerlink" title="微调 ConvNet"></a>微调 ConvNet</h2><p>加载预训练的模型并重置最终的全连接层。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">model_ft = models.resnet18(pretrained=True)</span><br><span class="line">num_ftrs = model_ft.fc.in_features</span><br><span class="line"></span><br><span class="line">#这里每个输出样本的大小被设置为2。</span><br><span class="line">#另外,它可以通用于nn.Linear(num_ftrs, len(class_names))</span><br><span class="line"></span><br><span class="line">model_ft.fc = nn.Linear(num_ftrs,2)</span><br><span class="line"></span><br><span class="line">model_ft = model_ft.to(device)</span><br><span class="line"></span><br><span class="line">criterion = nn.CrossEntropyLoss()</span><br><span class="line"></span><br><span class="line">#所有参数都在进行优化</span><br><span class="line">optimizer_ft = optim.SGD(model_ft.parameters(),lr=0.001,momentum=0.9)</span><br><span class="line"></span><br><span class="line">#每7个纪元衰减 LR 的因子为0.1</span><br><span class="line">exp_lr_scheduler = lr_scheduler.StepLR(optimizer_ft,step_size=7,gamma=0.1)</span><br></pre></td></tr></table></figure>
+<p>输出结果，只有第一次运行时会下载：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">C:\ProgramData\Anaconda3\lib\site-packages\torchvision\models\_utils.py:208: UserWarning: The parameter &#x27;pretrained&#x27; is deprecated since 0.13 and will be removed in 0.15, please use &#x27;weights&#x27; instead.</span><br><span class="line">  warnings.warn(</span><br><span class="line">C:\ProgramData\Anaconda3\lib\site-packages\torchvision\models\_utils.py:223: UserWarning: Arguments other than a weight enum or `None` for &#x27;weights&#x27; are deprecated since 0.13 and will be removed in 0.15. The current behavior is equivalent to passing `weights=ResNet18_Weights.IMAGENET1K_V1`. You can also use `weights=ResNet18_Weights.DEFAULT` to get the most up-to-date weights.</span><br><span class="line">  warnings.warn(msg)</span><br><span class="line">Downloading: &quot;https://download.pytorch.org/models/resnet18-f37072fd.pth&quot; to C:\Users\sy/.cache\torch\hub\checkpoints\resnet18-f37072fd.pth</span><br><span class="line">100%|██████████| 44.7M/44.7M [00:04&lt;00:00, 11.5MB/s]</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+    </div>
+
+    
+    
+    
+        <div class="reward-container">
+  <div></div>
+  <button onclick="var qr = document.getElementById('qr'); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/images/wechatpay.png" alt="SindreYang 微信支付">
+        <p>微信支付</p>
+      </div>
+      
+      <div style="display: inline-block;">
+        <img src="/images/alipay.png" alt="SindreYang 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>SindreYang
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://blog.mviai.com/2025/1._%E7%86%9F%E6%82%89pytorch_----__3_%E5%9B%BE%E5%83%8F/" title="1">http://blog.mviai.com/2025/1._熟悉pytorch_----__3_图像/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <span class="exturl" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC9kZWVkLnpo"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</span> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+        
+
+  <div class="followme">
+    <p>欢迎关注我的其它发布渠道</p>
+
+    <div class="social-list">
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="/images/wechat.png">
+            <span class="icon">
+              <i class="fa fa-wechat"></i>
+            </span>
+
+            <span class="label">WeChat</span>
+          </a>
+        </div>
+    </div>
+  </div>
+
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2025/1._%E7%86%9F%E6%82%89pytorch_----__4_%E5%B0%8F%E8%AE%B0/" rel="prev" title="1">
+      <i class="fa fa-chevron-left"></i> 1
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2025/1._%E7%86%9F%E6%82%89pytorch_----__2_pytorch%E7%A4%BA%E4%BE%8B/" rel="next" title="1">
+      1 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    
+  <div class="comments">
+    <div id="SOHUCS"></div>
+  </div>
+  
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Torchvision%E5%AF%B9%E8%B1%A1%E6%A3%80%E6%B5%8B%E5%BE%AE%E8%B0%83%E6%95%99%E7%A8%8B"><span class="nav-number">1.</span> <span class="nav-text">Torchvision对象检测微调教程</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%9A%E4%B9%89%E6%95%B0%E6%8D%AE%E9%9B%86"><span class="nav-number">1.1.</span> <span class="nav-text">定义数据集</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%BA-PennFudan-%E7%BC%96%E5%86%99%E8%87%AA%E5%AE%9A%E4%B9%89%E6%95%B0%E6%8D%AE%E9%9B%86"><span class="nav-number">1.1.1.</span> <span class="nav-text">为 PennFudan 编写自定义数据集</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%9A%E4%B9%89%E6%A8%A1%E5%9E%8B"><span class="nav-number">1.2.</span> <span class="nav-text">定义模型</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B0%86%E9%A2%84%E8%AE%AD%E7%BB%83%E6%A8%A1%E5%9E%8B%E7%94%A8%E4%BA%8E%E5%BE%AE%E8%B0%83"><span class="nav-number">1.2.1.</span> <span class="nav-text">将预训练模型用于微调</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BF%AE%E6%94%B9%E6%A8%A1%E5%9E%8B%E4%BB%A5%E6%B7%BB%E5%8A%A0%E5%85%B6%E4%BB%96%E4%B8%BB%E5%B9%B2"><span class="nav-number">1.2.2.</span> <span class="nav-text">修改模型以添加其他主干</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#PennFudan%E6%95%B0%E6%8D%AE%E9%9B%86%E7%9A%84%E5%AE%9E%E4%BE%8B%E7%BB%86%E5%88%86%E6%A8%A1%E5%9E%8B"><span class="nav-number">1.2.3.</span> <span class="nav-text">PennFudan数据集的实例细分模型</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Putting-everything-together"><span class="nav-number">1.3.</span> <span class="nav-text">Putting everything together</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B5%8B%E8%AF%95forward-%E6%96%B9%E6%B3%95-%E5%8F%AF%E9%80%89"><span class="nav-number">1.4.</span> <span class="nav-text">测试forward()方法(可选)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BB%93%E6%9D%9F%E8%AF%AD"><span class="nav-number">1.5.</span> <span class="nav-text">结束语</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%AE%A1%E7%AE%97%E6%9C%BA%E8%A7%86%E8%A7%89%E7%9A%84%E8%BF%81%E7%A7%BB%E5%AD%A6%E4%B9%A0%E6%95%99%E7%A8%8B"><span class="nav-number">2.</span> <span class="nav-text">计算机视觉的迁移学习教程</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8A%A0%E8%BD%BD%E6%95%B0%E6%8D%AE"><span class="nav-number">2.1.</span> <span class="nav-text">加载数据</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%AF%E8%A7%86%E5%8C%96%E4%B8%80%E4%BA%9B%E5%9B%BE%E5%83%8F"><span class="nav-number">2.1.1.</span> <span class="nav-text">可视化一些图像</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%AE%AD%E7%BB%83%E6%A8%A1%E5%9E%8B"><span class="nav-number">2.2.</span> <span class="nav-text">训练模型</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%AF%E8%A7%86%E5%8C%96%E6%A8%A1%E5%9E%8B%E9%A2%84%E6%B5%8B"><span class="nav-number">2.2.1.</span> <span class="nav-text">可视化模型预测</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BE%AE%E8%B0%83-ConvNet"><span class="nav-number">2.3.</span> <span class="nav-text">微调 ConvNet</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="SindreYang"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">SindreYang</p>
+  <div class="site-description" itemprop="description">沉淀后我愿意做一个温暖的人。有自己的喜好，有自己的原则，有自己的信仰，不急功近利，不浮夸轻薄，宠辱不惊，淡定安逸，心静如水。------不忘初心，方得始终</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">321</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">72</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL1NpbmRyZVlhbmc=" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;SindreYang"><i class="fa fa-fw fa-github"></i>GitHub</span>
+      </span>
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="bWFpbHRvOnl4QG12aWFpLmNvbQ==" title="E-Mail → mailto:yx@mviai.com"><i class="fa fa-fw fa-envelope"></i>E-Mail</span>
+      </span>
+  </div>
+  <div class="cc-license motion-element" itemprop="license">
+    <span class="exturl cc-opacity" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC9kZWVkLnpo"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+  <div class="languages">
+    <label class="lang-select-label">
+      <i class="fa fa-language"></i>
+      <span>简体中文</span>
+      <i class="fa fa-angle-up" aria-hidden="true"></i>
+    </label>
+    <select class="lang-select" data-canonical="">
+      
+        <option value="zh-CN" data-href="/2025/1._%E7%86%9F%E6%82%89pytorch_----__3_%E5%9B%BE%E5%83%8F/" selected="">
+          简体中文
+        </option>
+      
+        <option value="en" data-href="/en/2025/1._%E7%86%9F%E6%82%89pytorch_----__3_%E5%9B%BE%E5%83%8F/" selected="">
+          English
+        </option>
+      
+    </select>
+  </div>
+
+        
+
+<div class="copyright">
+  
+  &copy; 2018 – 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">SindreYang</span>
+</div><!-- 页面点击小红心 -->
+<script type="text/javascript" src="/js/love.js"></script>
+<!-- 背景波浪 -->
+<script color="0,0,255" opacity="0.5" zIndex="-1" count="99" src="https://cdn.jsdelivr.net/npm/canvas-nest.js@1/dist/canvas-nest.js"></script>
+
+
+<!-- 腾讯企业邮箱 -->
+<style>
+.bizmail_loginpanel {
+    font-size: 12px;
+    width: 300px;
+    height: auto;
+    background: transparent;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.bizmail_LoginBox {
+    padding: 10px 15px;
+}
+
+
+.bizmail_loginpanel form {
+    margin: 0;
+    padding: 0;
+}
+
+.bizmail_loginpanel input.text {
+    font-size: 12px;
+    width: 100px;
+    height: 20px;
+    margin: 0 2px;
+    background-color: transparent;
+    border:1px solid transparent;
+    box-shadow: none;
+    color: black;
+}
+
+.bizmail_loginpanel .bizmail_column {
+    height: 28px;
+}
+
+.bizmail_loginpanel .bizmail_column label {
+    display: block;
+    float: left;
+    width: 30px;
+    height: 24px;
+    line-height: 24px;
+    font-size: 12px;
+}
+
+.bizmail_loginpanel .bizmail_column .bizmail_inputArea {
+    float: left;
+    width: 240px;
+}
+
+.bizmail_loginpanel .bizmail_column span {
+    font-size: 12px;
+    word-wrap: break-word;
+    margin-left: 2px;
+    line-height: 200%;
+}
+
+.bizmail_loginpanel .bizmail_SubmitArea {
+    margin-left: 30px;
+    clear: both;
+}
+
+.bizmail_loginpanel .bizmail_SubmitArea a {
+    font-size: 12px;
+    margin-left: 5px;
+}
+
+.bizmail_loginpanel select {
+    width: 110px;
+    height: 20px;
+    margin: 0 2px;
+}
+.bizmail_loginpanel input {
+
+    background-color: rgba(83, 126, 236, 0.562);
+}
+
+
+</style>
+
+<script type="text/javascript">
+function checkInput() {
+    var e = document.form1.uin,
+        i = document.form1.pwd;
+    return 0 == e.value.length ? e.focus() : 0 == i.value.length ? i.focus() : (document.form1.submit(), setTimeout(" document.form1.pwd.value = '' ", 500)), !1
+}
+
+function writeLoginPanel(e) {
+    if (e && e.domainlist && -1 != e.domainlist.indexOf(".")) {
+        var a = "return checkInput()",
+            t = '<div id="divLoginpanelHor" class="bizmail_loginpanel" style="width:550px;"><div class="bizmail_LoginBox"><form name="form1" action="https://exmail.qq.com/cgi-bin/login" target="_blank" method="post" onsubmit="' + a + '"><input type="hidden" name="firstlogin" value="false" /><input type="hidden" name="errtemplate" value="dm_loginpage" /><input type="hidden" name="aliastype" value="other" /><input type="hidden" name="dmtype" value="bizmail" /><input type="hidden" name="p" value="" /><label>\u8d26\u53f7:</label><input type="text" name="uin" class="text" value="" />@#domainlist#<label>&nbsp&nbsp&nbsp;\u5bc6\u7801:</label><input type="password" name="pwd" class="text" value="" /><input type="submit" class="" name="" value="\u767b\u5f55" />&nbsp;<a href="https://exmail.qq.com/cgi-bin/readtemplate?check=false&t=biz_rf_portal#recovery" target="_blank">\u5fd8\u8bb0\u5bc6\u7801\uff1f</a></form></div></div>',
+            n = '<div id="divLoginpanelVer" class="bizmail_loginpanel"><div class="bizmail_LoginBox"><form name="form1" action="https://exmail.qq.com/cgi-bin/login" target="_blank" method="post" onsubmit="' + a + '"><input type="hidden" name="firstlogin" value="false" /><input type="hidden" name="errtemplate" value="dm_loginpage" /><input type="hidden" name="aliastype" value="other" /><input type="hidden" name="dmtype" value="bizmail" /><input type="hidden" name="p" value="" /><div class="bizmail_column"><label>\u8d26\u53f7:</label><div class="bizmail_inputArea"><input type="text" name="uin" class="text" value="" />@#domainlist#</div></div><div class="bizmail_column"><label>\u5bc6\u7801:</label><div class="bizmail_inputArea"><input type="password" name="pwd" class="text" value="" /></div></div><div class="bizmail_SubmitArea"><input type="submit" class="" name="" style="width:66px;" value="\u767b\u5f55" /><a href="https://exmail.qq.com/cgi-bin/readtemplate?check=false&t=biz_rf_portal#recovery" target="_blank">\u5fd8\u8bb0\u5bc6\u7801\uff1f</a></div></form></div></div>',
+            l = e.domainlist.split(";");
+        if (1 == l.length) var m = '<span>#domain#</span><input type="hidden" name="domain" value="#domain#" />'.replace(/#domain#/g, l[0]);
+        else {
+            m = '<select name="domain">';
+            for (i = 0; i < l.length; i++) m += '<option value="' + l[i] + '">' + l[i] + "</option>";
+            m += "</select>"
+        }
+        e.mode && "vertical" != e.mode && "both" != e.mode || document.write(n.replace(/#domainlist#/g, m)), "horizontal" != e.mode && "both" != e.mode || document.write(t.replace(/#domainlist#/g, m))
+    }
+}
+
+</script>      
+
+<script type="text/javascript"> writeLoginPanel({domainlist:"mviai.com", mode:"horizontal"});</script>      
+
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script size="300" alpha="0.6" zIndex="-1" src="/lib/canvas-ribbon/canvas-ribbon.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/medium-zoom@1/dist/medium-zoom.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+  <script defer src="/lib/three/three.min.js"></script>
+    <script defer src="/lib/three/three-waves.min.js"></script>
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+<script>
+document.querySelectorAll('.pdfobject-container').forEach(element => {
+  let url = element.dataset.target;
+  let pdfOpenParams = {
+    navpanes : 0,
+    toolbar  : 0,
+    statusbar: 0,
+    pagemode : 'thumbs',
+    view     : 'FitH'
+  };
+  let pdfOpenFragment = '#' + Object.entries(pdfOpenParams).map(([key, value]) => `${key}=${encodeURIComponent(value)}`).join('&');
+  let fullURL = `/lib/pdf/web/viewer.html?file=${encodeURIComponent(url)}${pdfOpenFragment}`;
+
+  if (NexT.utils.supportsPDFs()) {
+    element.innerHTML = `<embed class="pdfobject" src="${url + pdfOpenFragment}" type="application/pdf" style="height: ${element.dataset.height};">`;
+  } else {
+    element.innerHTML = `<iframe src="${fullURL}" style="height: ${element.dataset.height};" frameborder="0"></iframe>`;
+  }
+});
+</script>
+
+
+
+
+  
+
+  
+
+  <script>
+  NexT.utils.loadComments(document.querySelector('#SOHUCS'), () => {
+    var appid = 'cyxmItxjS';
+    var conf = 'e5e71132d9086bb54aeeba6e88e87df9';
+    var width = window.innerWidth || document.documentElement.clientWidth;
+    if (width < 960) {
+      window.document.write('<script id="changyan_mobile_js" charset="utf-8" type="text/javascript" src="https://cy-cdn.kuaizhan.com/upload/mobile/wap-js/changyan_mobile.js?client_id=' + appid + '&conf=' + conf + '"><\/script>');
+    } else {
+      var loadJs=function(d,a){var c=document.getElementsByTagName("head")[0]||document.head||document.documentElement;var b=document.createElement("script");b.setAttribute("type","text/javascript");b.setAttribute("charset","UTF-8");b.setAttribute("src",d);if(typeof a==="function"){if(window.attachEvent){b.onreadystatechange=function(){var e=b.readyState;if(e==="loaded"||e==="complete"){b.onreadystatechange=null;a()}}}else{b.onload=a}}c.appendChild(b)};loadJs("https://changyan.sohu.com/upload/changyan.js",function(){window.changyan.api.config({appid:appid,conf:conf})});
+    }
+  });
+  </script>
+  <script src="https://cy-cdn.kuaizhan.com/upload/plugins/plugins.count.js"></script>
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/z16.model.json"},"display":{"position":"left","width":75,"height":150},"mobile":{"show":true},"log":false});</script></body>
+</html>
+
+
+
+

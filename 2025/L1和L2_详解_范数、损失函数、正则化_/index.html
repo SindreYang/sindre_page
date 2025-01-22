@@ -1,0 +1,788 @@
+<!DOCTYPE html>
+<html lang="zh-CN,en,default">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" href="/lib/pace/pace-theme-minimal.min.css">
+  <script src="/lib/pace/pace.min.js"></script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"blog.mviai.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":true,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":true,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="自动摘要: 	链接：https:&#x2F;&#x2F;zhuanlan.zhihu.com&#x2F;p&#x2F;137073968		易混概念		对于一些常见的距离先做一个简单的说明			欧式距离		假设![](..&#x2F;..&#x2F;images ……..">
+<meta property="og:type" content="article">
+<meta property="og:title" content="L1和L2_详解_范数、损失函数、正则化_">
+<meta property="og:url" content="http://blog.mviai.com/2025/L1%E5%92%8CL2_%E8%AF%A6%E8%A7%A3_%E8%8C%83%E6%95%B0%E3%80%81%E6%8D%9F%E5%A4%B1%E5%87%BD%E6%95%B0%E3%80%81%E6%AD%A3%E5%88%99%E5%8C%96_/index.html">
+<meta property="og:site_name" content="落叶无痕">
+<meta property="og:description" content="自动摘要: 	链接：https:&#x2F;&#x2F;zhuanlan.zhihu.com&#x2F;p&#x2F;137073968		易混概念		对于一些常见的距离先做一个简单的说明			欧式距离		假设![](..&#x2F;..&#x2F;images ……..">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://blog.mviai.com/images/94e79ad0c1aabeafef9e2fc4af6adf66.svg">
+<meta property="og:image" content="http://blog.mviai.com/images/6204886f5cc39a4b860ea98a7e95af1d.svg">
+<meta property="og:image" content="http://blog.mviai.com/images/49edbd8a78f4efe7b13d148a1649447b.svg">
+<meta property="og:image" content="http://blog.mviai.com/images/9e34b08f0c25b508c7f3116e45b40935.svg">
+<meta property="og:image" content="http://blog.mviai.com/images/94e79ad0c1aabeafef9e2fc4af6adf66.svg">
+<meta property="og:image" content="http://blog.mviai.com/images/f8949c60b0f7eaca721a3e89b9f99f34.svg">
+<meta property="og:image" content="http://blog.mviai.com/images/32866acd413db74ab5e7ba3da6531f96.svg">
+<meta property="og:image" content="http://blog.mviai.com/images/db75c45f9f96cb7e16708837c9b0f09f.svg">
+<meta property="og:image" content="http://blog.mviai.com/images/e29cb1f4dbe644cf070c5f6abf88f81a.svg">
+<meta property="og:image" content="http://blog.mviai.com/images/54507b6bac465d8afb0e218ccbf31b59.svg">
+<meta property="og:image" content="http://blog.mviai.com/images/53311c735301e624629f3c3b05411509.svg">
+<meta property="og:image" content="http://blog.mviai.com/images/6df08f3bb4b2358a5e17b8a68dede43c.svg">
+<meta property="og:image" content="http://blog.mviai.com/images/54507b6bac465d8afb0e218ccbf31b59.svg">
+<meta property="og:image" content="http://blog.mviai.com/images/53311c735301e624629f3c3b05411509.svg">
+<meta property="og:image" content="http://blog.mviai.com/images/0cdc4d0a75e6d807bc504c4efa08c46e.svg">
+<meta property="og:image" content="http://blog.mviai.com/images/c9b08ae6d9fed72562880f75720531bc.svg">
+<meta property="og:image" content="https://pic2.zhimg.com/v2-b1bd7c5ea5c6de5ce8967fd71b4970dd_b.jpg#id=Ti6HS&originHeight=220&originWidth=266&originalType=binary&ratio=1&rotation=0&showTitle=false&status=done&style=none&title=">
+<meta property="og:image" content="http://blog.mviai.com/images/e9dbd4bb7c31d31a4a1d184b92229bd7.svg">
+<meta property="og:image" content="http://blog.mviai.com/images/e520c061a407db472027709bf3f73290.svg">
+<meta property="og:image" content="http://blog.mviai.com/images/e0d2fd0145c89b1e306f9dd0c10d6cc0.svg">
+<meta property="og:image" content="http://blog.mviai.com/images/c9b08ae6d9fed72562880f75720531bc.svg">
+<meta property="og:image" content="http://blog.mviai.com/images/6afb534c3f75d4706f83ae98ea452dc0.svg">
+<meta property="og:image" content="http://blog.mviai.com/images/e5e0ca942c45888c21b6da75a71aff52.svg">
+<meta property="og:image" content="http://blog.mviai.com/images/d99fd2df7b5f652a4b7fc593fb9df750.svg">
+<meta property="og:image" content="http://blog.mviai.com/images/7483c6745bb07f292eba02b3a9b55c26.svg">
+<meta property="og:image" content="http://blog.mviai.com/images/2cb6fb619b470de3b07876ce8ba08494.svg">
+<meta property="og:image" content="http://blog.mviai.com/images/a20f8051867929834a89a710ec58b70f.svg">
+<meta property="og:image" content="http://blog.mviai.com/images/18050cad2714e9f6011abc123c850306.svg">
+<meta property="og:image" content="http://blog.mviai.com/images/2ca77871929a79f2c57dc4a5c27ba03c.svg">
+<meta property="og:image" content="http://blog.mviai.com/images/d99fd2df7b5f652a4b7fc593fb9df750.svg">
+<meta property="og:image" content="http://blog.mviai.com/images/c9b08ae6d9fed72562880f75720531bc.svg">
+<meta property="og:image" content="https://pic1.zhimg.com/v2-a99ab0ab8f53a502f2916cca55e1c0bc_b.jpg#id=RN6hq&originHeight=267&originWidth=429&originalType=binary&ratio=1&rotation=0&showTitle=false&status=done&style=none&title=">
+<meta property="og:image" content="http://blog.mviai.com/images/ac611fc6e43401346d7dcad09ae9a31c.svg">
+<meta property="og:image" content="https://pic1.zhimg.com/v2-0ade9fad55b28fd15b7b89d174e76b48_b.jpg#id=YotgE&originHeight=271&originWidth=431&originalType=binary&ratio=1&rotation=0&showTitle=false&status=done&style=none&title=">
+<meta property="og:image" content="http://blog.mviai.com/images/c9b08ae6d9fed72562880f75720531bc.svg">
+<meta property="og:image" content="https://pic4.zhimg.com/v2-ff7085ba6a46eebbd434c73460121f4f_b.jpg#id=jQrDe&originHeight=272&originWidth=427&originalType=binary&ratio=1&rotation=0&showTitle=false&status=done&style=none&title=">
+<meta property="og:image" content="http://blog.mviai.com/images/cb45639c840a1a4ed202c840b55b5e7f.svg">
+<meta property="og:image" content="http://blog.mviai.com/images/24acf9346a993198716150adf53b7a22.svg">
+<meta property="og:image" content="http://blog.mviai.com/images/3dc069fba97f6363b1525ed60a3fcc25.svg">
+<meta property="og:image" content="http://blog.mviai.com/images/106df8ab9f6647f5808c63b6dd9a017a.svg">
+<meta property="og:image" content="http://blog.mviai.com/images/e520c061a407db472027709bf3f73290.svg">
+<meta property="og:image" content="http://blog.mviai.com/images/cb45639c840a1a4ed202c840b55b5e7f.svg">
+<meta property="og:image" content="http://blog.mviai.com/images/106df8ab9f6647f5808c63b6dd9a017a.svg">
+<meta property="og:image" content="http://blog.mviai.com/images/106df8ab9f6647f5808c63b6dd9a017a.svg">
+<meta property="og:image" content="http://blog.mviai.com/images/ee574556c6e31108f67c15f5cde383a0.svg">
+<meta property="article:published_time" content="2025-01-22T04:37:41.000Z">
+<meta property="article:modified_time" content="2025-01-22T12:37:41.310Z">
+<meta property="article:author" content="SindreYang">
+<meta property="article:tag" content="生活">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://blog.mviai.com/images/94e79ad0c1aabeafef9e2fc4af6adf66.svg">
+
+<link rel="canonical" href="http://blog.mviai.com/2025/L1%E5%92%8CL2_%E8%AF%A6%E8%A7%A3_%E8%8C%83%E6%95%B0%E3%80%81%E6%8D%9F%E5%A4%B1%E5%87%BD%E6%95%B0%E3%80%81%E6%AD%A3%E5%88%99%E5%8C%96_/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>L1和L2_详解_范数、损失函数、正则化_ | 落叶无痕</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">落叶无痕</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类<span class="badge">72</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档<span class="badge">321</span></a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+  <span class="exturl github-corner" data-url="aHR0cHM6Ly9naXRodWIuY29tL1NpbmRyZVlhbmc=" title="Follow me on GitHub" aria-label="Follow me on GitHub"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></span>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://blog.mviai.com/2025/L1%E5%92%8CL2_%E8%AF%A6%E8%A7%A3_%E8%8C%83%E6%95%B0%E3%80%81%E6%8D%9F%E5%A4%B1%E5%87%BD%E6%95%B0%E3%80%81%E6%AD%A3%E5%88%99%E5%8C%96_/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="SindreYang">
+      <meta itemprop="description" content="沉淀后我愿意做一个温暖的人。有自己的喜好，有自己的原则，有自己的信仰，不急功近利，不浮夸轻薄，宠辱不惊，淡定安逸，心静如水。------不忘初心，方得始终">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="落叶无痕">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          L1和L2_详解_范数、损失函数、正则化_
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2025-01-22 12:37:41 / 修改时间：20:37:41" itemprop="dateCreated datePublished" datetime="2025-01-22T12:37:41+08:00">2025-01-22</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">机器学习</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">Changyan：</span>
+    
+    
+      <a title="changyan" href="/2025/L1%E5%92%8CL2_%E8%AF%A6%E8%A7%A3_%E8%8C%83%E6%95%B0%E3%80%81%E6%8D%9F%E5%A4%B1%E5%87%BD%E6%95%B0%E3%80%81%E6%AD%A3%E5%88%99%E5%8C%96_/#SOHUCS" itemprop="discussionUrl">
+        <span id="changyan_count_unit" class="post-comments-count hc-comment-count" data-xid="2025/L1和L2_详解_范数、损失函数、正则化_/" itemprop="commentCount"></span>
+      </a>
+    
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>自动摘要: 	链接：<span class="exturl" data-url="aHR0cHM6Ly96aHVhbmxhbi56aGlodS5jb20vcC8xMzcwNzM5Njg=" title="https://zhuanlan.zhihu.com/p/137073968">https://zhuanlan.zhihu.com/p/137073968<i class="fa fa-external-link"></i></span>		易混概念		对于一些常见的距离先做一个简单的说明			欧式距离		假设![](..&#x2F;..&#x2F;images ……..</p>
+<span id="more"></span>
+
+<p>链接：<span class="exturl" data-url="aHR0cHM6Ly96aHVhbmxhbi56aGlodS5jb20vcC8xMzcwNzM5Njg=" title="https://zhuanlan.zhihu.com/p/137073968">https://zhuanlan.zhihu.com/p/137073968<i class="fa fa-external-link"></i></span></p>
+<h1 id="易混概念"><a href="#易混概念" class="headerlink" title="易混概念"></a>易混概念</h1><p>对于一些常见的距离先做一个简单的说明</p>
+<h2 id="欧式距离"><a href="#欧式距离" class="headerlink" title="欧式距离"></a>欧式距离</h2><p>假设<img src="/images/94e79ad0c1aabeafef9e2fc4af6adf66.svg"><br> 和<img src="/images/6204886f5cc39a4b860ea98a7e95af1d.svg"><br>都是一个n维的向量，即 <img src="/images/49edbd8a78f4efe7b13d148a1649447b.svg"></p>
+<p>则欧氏距离： <img src="/images/9e34b08f0c25b508c7f3116e45b40935.svg"></p>
+<h2 id="L2范数"><a href="#L2范数" class="headerlink" title="L2范数"></a>L2范数</h2><p>假设<img src="/images/94e79ad0c1aabeafef9e2fc4af6adf66.svg"><br>是n维的特征<img src="/images/f8949c60b0f7eaca721a3e89b9f99f34.svg"></p>
+<p>L2范数： <img src="/images/32866acd413db74ab5e7ba3da6531f96.svg"></p>
+<h2 id="闵可夫斯基距离"><a href="#闵可夫斯基距离" class="headerlink" title="闵可夫斯基距离"></a>闵可夫斯基距离</h2><p>这里的p值是一个变量，当p&#x3D;2的时候就得到了欧氏距离。</p>
+<p><img src="/images/db75c45f9f96cb7e16708837c9b0f09f.svg"></p>
+<h2 id="曼哈顿距离"><a href="#曼哈顿距离" class="headerlink" title="曼哈顿距离"></a>曼哈顿距离</h2><p>来源于美国纽约市曼哈顿区，因为曼哈顿是方方正正的。</p>
+<p><img src="/images/e29cb1f4dbe644cf070c5f6abf88f81a.svg"></p>
+<h1 id="损失函数"><a href="#损失函数" class="headerlink" title="损失函数"></a>损失函数</h1><p>L1和L2都可以做损失函数使用。</p>
+<h2 id="L2损失函数"><a href="#L2损失函数" class="headerlink" title="L2损失函数"></a>L2损失函数</h2><p>L2范数损失函数，也被称为最小平方误差（LSE）。它是把目标值 <img src="/images/54507b6bac465d8afb0e218ccbf31b59.svg"><br> 与估计值 <img src="/images/53311c735301e624629f3c3b05411509.svg"><br> 的差值的平方和最小化。一般回归问题会使用此损失，<strong>离群点</strong>对次损失影响较大。</p>
+<p><img src="/images/6df08f3bb4b2358a5e17b8a68dede43c.svg"></p>
+<h2 id="L1损失函数"><a href="#L1损失函数" class="headerlink" title="L1损失函数"></a>L1损失函数</h2><p>也被称为最小绝对值偏差（LAD），绝对值损失函数（LAE）。总的说来，它是把目标值 <img src="/images/54507b6bac465d8afb0e218ccbf31b59.svg"><br>与估计值 <img src="/images/53311c735301e624629f3c3b05411509.svg"><br> 的绝对差值的总和最小化。</p>
+<p><img src="/images/0cdc4d0a75e6d807bc504c4efa08c46e.svg"></p>
+<h2 id="二者对比"><a href="#二者对比" class="headerlink" title="二者对比"></a>二者对比</h2><p>L1损失函数相比于L2损失函数的 **鲁棒性 **更好。</p>
+<p>因为L2范数将误差平方化（如果误差大于1，则误差会放大很多），模型的误差会比L1范数大的多，因此模型会对这种类型的样本更加敏感，这就需要调整模型来最小化误差。但是很大可能这种类型的样本是一个异常值，模型就需要调整以适应这种异常值，那么就导致训练模型的方向偏离目标了。</p>
+<h1 id="正则化"><a href="#正则化" class="headerlink" title="正则化"></a>正则化</h1><h2 id="正则化为什么可以避免过拟合？"><a href="#正则化为什么可以避免过拟合？" class="headerlink" title="正则化为什么可以避免过拟合？"></a>正则化为什么可以避免过拟合？</h2><p>正规化是防止过拟合的一种重要技巧。</p>
+<p>正则化通过<strong>降低模型的复杂性</strong>， 缓解过拟合。过拟合发生的情况，拟合函数的系数往往非常大，为什么？</p>
+<p>如下图所示，就是过拟合的情况，拟合函数考虑到了每一个样本点，最终形成的拟合函数波动很大，也就是<strong>在某些很小的区间里，函数值的变化很剧烈</strong>。这就意味着函数在某些小区间里的<strong>系数</strong>非常大，就是模型中的<img src="/images/c9b08ae6d9fed72562880f75720531bc.svg"><br>会很大。</p>
+<p><img src="https://pic2.zhimg.com/v2-b1bd7c5ea5c6de5ce8967fd71b4970dd_b.jpg#id=Ti6HS&originHeight=220&originWidth=266&originalType=binary&ratio=1&rotation=0&showTitle=false&status=done&style=none&title="></p>
+<h2 id="L1正则"><a href="#L1正则" class="headerlink" title="L1正则"></a>L1正则</h2><p>L1正则常被用来进行特征选择，主要原因在于L1正则化会使得较多的参数为0，从而产生稀疏解，我们可以将0对应的特征遗弃，进而用来选择特征。一定程度上L1正则也可以防止模型过拟合。</p>
+<p>假设<img src="/images/e9dbd4bb7c31d31a4a1d184b92229bd7.svg"><br> 是未加正则项的损失， <img src="/images/e520c061a407db472027709bf3f73290.svg"><br> 是一个超参，控制正则化项的大小。</p>
+<p>对应的损失函数： <img src="/images/e0d2fd0145c89b1e306f9dd0c10d6cc0.svg"></p>
+<h2 id="L2正则"><a href="#L2正则" class="headerlink" title="L2正则"></a>L2正则</h2><p>主要用来防止模型过拟合，直观上理解就是L2正则化是对于大数值的权重向量进行严厉惩罚。鼓励参数是较小值，如果 <img src="/images/c9b08ae6d9fed72562880f75720531bc.svg"><br>小于1，那么 <img src="/images/6afb534c3f75d4706f83ae98ea452dc0.svg"><br> 会更小。</p>
+<p>对应的损失函数：<img src="/images/e5e0ca942c45888c21b6da75a71aff52.svg"></p>
+<h2 id="为什么L1会产生稀疏解"><a href="#为什么L1会产生稀疏解" class="headerlink" title="为什么L1会产生稀疏解"></a>为什么L1会产生稀疏解</h2><p>稀疏性：很多参数值为0。</p>
+<h3 id="梯度的方式："><a href="#梯度的方式：" class="headerlink" title="梯度的方式："></a>梯度的方式：</h3><p>对其中的一个参数 <img src="/images/d99fd2df7b5f652a4b7fc593fb9df750.svg"><br> 计算梯度，其他参数同理， <img src="/images/7483c6745bb07f292eba02b3a9b55c26.svg"><br> 是步进， <img src="/images/2cb6fb619b470de3b07876ce8ba08494.svg"><br>是符号函数</p>
+<p><img src="/images/a20f8051867929834a89a710ec58b70f.svg"><br>。</p>
+<h3 id="L1的梯度："><a href="#L1的梯度：" class="headerlink" title="L1的梯度："></a>L1的梯度：</h3><p><img src="/images/18050cad2714e9f6011abc123c850306.svg"></p>
+<h3 id="L2的梯度："><a href="#L2的梯度：" class="headerlink" title="L2的梯度："></a>L2的梯度：</h3><p><img src="/images/2ca77871929a79f2c57dc4a5c27ba03c.svg"></p>
+<p>当 <img src="/images/d99fd2df7b5f652a4b7fc593fb9df750.svg"><br> 小于1的时候，L2的惩罚项会越来越小，而L1还是会非常大，所以L1会使参数为0，而L2很难。</p>
+<p><strong>2）图形的方式：</strong></p>
+<p>损失函数L与参数 <img src="/images/c9b08ae6d9fed72562880f75720531bc.svg"><br>的关系图，绿点是最优点。</p>
+<p><img src="https://pic1.zhimg.com/v2-a99ab0ab8f53a502f2916cca55e1c0bc_b.jpg#id=RN6hq&originHeight=267&originWidth=429&originalType=binary&ratio=1&rotation=0&showTitle=false&status=done&style=none&title="></p>
+<p>如果加上L2正则，损失函数L为 <img src="/images/ac611fc6e43401346d7dcad09ae9a31c.svg"><br>，对应的函数是蓝线，最优点是黄点。</p>
+<p><img src="https://pic1.zhimg.com/v2-0ade9fad55b28fd15b7b89d174e76b48_b.jpg#id=YotgE&originHeight=271&originWidth=431&originalType=binary&ratio=1&rotation=0&showTitle=false&status=done&style=none&title="></p>
+<p>如果是加上L1损失，那么损失函数L是 <img src="/images/c9b08ae6d9fed72562880f75720531bc.svg"><br> 变为0。</p>
+<p><img src="https://pic4.zhimg.com/v2-ff7085ba6a46eebbd434c73460121f4f_b.jpg#id=jQrDe&originHeight=272&originWidth=427&originalType=binary&ratio=1&rotation=0&showTitle=false&status=done&style=none&title="></p>
+<p>两种正则化，能不能将最优的参数变为0，取决于最原始的损失函数在<strong>0点处的导数</strong>，如果原始损失函数在0点处的导数<img src="/images/cb45639c840a1a4ed202c840b55b5e7f.svg"><br>不为0，则加上L2正则化项 <img src="/images/24acf9346a993198716150adf53b7a22.svg"><br>之后，导数依然不为0,说明在0这点不是极值点，最优值不在w&#x3D;0处。</p>
+<p>而施加 <img src="/images/3dc069fba97f6363b1525ed60a3fcc25.svg"><br>正则项时，<strong>导数在</strong><img src="/images/106df8ab9f6647f5808c63b6dd9a017a.svg"><br>** 这点不可导**。不可导点是否是极值点，就是看不可导点左右的单调性。单调性可以通过这个点左、右两侧的导数符号判断，导数符号相同则不是极值点，左侧导数正，右侧导数负，则是极大值，左侧导数负，右侧导数正，极小值。</p>
+<p>根据极值点判断原则， <img src="/images/e520c061a407db472027709bf3f73290.svg"><br> 大于<img src="/images/cb45639c840a1a4ed202c840b55b5e7f.svg"><br>, 那么左侧导数小于0， <img src="/images/106df8ab9f6647f5808c63b6dd9a017a.svg"><br>右侧导数 <img src="/images/106df8ab9f6647f5808c63b6dd9a017a.svg"><br>就会变成一个极小值点，所以<img src="/images/ee574556c6e31108f67c15f5cde383a0.svg"><br>经常会把参数变为0，产生稀疏解。</p>
+
+    </div>
+
+    
+    
+    
+        <div class="reward-container">
+  <div></div>
+  <button onclick="var qr = document.getElementById('qr'); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/images/wechatpay.png" alt="SindreYang 微信支付">
+        <p>微信支付</p>
+      </div>
+      
+      <div style="display: inline-block;">
+        <img src="/images/alipay.png" alt="SindreYang 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>SindreYang
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://blog.mviai.com/2025/L1%E5%92%8CL2_%E8%AF%A6%E8%A7%A3_%E8%8C%83%E6%95%B0%E3%80%81%E6%8D%9F%E5%A4%B1%E5%87%BD%E6%95%B0%E3%80%81%E6%AD%A3%E5%88%99%E5%8C%96_/" title="L1和L2_详解_范数、损失函数、正则化_">http://blog.mviai.com/2025/L1和L2_详解_范数、损失函数、正则化_/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <span class="exturl" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC9kZWVkLnpo"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</span> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+        
+
+  <div class="followme">
+    <p>欢迎关注我的其它发布渠道</p>
+
+    <div class="social-list">
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="/images/wechat.png">
+            <span class="icon">
+              <i class="fa fa-wechat"></i>
+            </span>
+
+            <span class="label">WeChat</span>
+          </a>
+        </div>
+    </div>
+  </div>
+
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2025/MMSegmentation%E6%A1%86%E6%9E%B6%E7%AE%80%E5%8D%95%E4%BD%BF%E7%94%A8-30min/" rel="prev" title="MMSegmentation框架简单使用-30min">
+      <i class="fa fa-chevron-left"></i> MMSegmentation框架简单使用-30min
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2025/Git%E7%9A%84Q_A/" rel="next" title="Git的Q_A">
+      Git的Q_A <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    
+  <div class="comments">
+    <div id="SOHUCS"></div>
+  </div>
+  
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%98%93%E6%B7%B7%E6%A6%82%E5%BF%B5"><span class="nav-number">1.</span> <span class="nav-text">易混概念</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%AC%A7%E5%BC%8F%E8%B7%9D%E7%A6%BB"><span class="nav-number">1.1.</span> <span class="nav-text">欧式距离</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#L2%E8%8C%83%E6%95%B0"><span class="nav-number">1.2.</span> <span class="nav-text">L2范数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%97%B5%E5%8F%AF%E5%A4%AB%E6%96%AF%E5%9F%BA%E8%B7%9D%E7%A6%BB"><span class="nav-number">1.3.</span> <span class="nav-text">闵可夫斯基距离</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9B%BC%E5%93%88%E9%A1%BF%E8%B7%9D%E7%A6%BB"><span class="nav-number">1.4.</span> <span class="nav-text">曼哈顿距离</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%8D%9F%E5%A4%B1%E5%87%BD%E6%95%B0"><span class="nav-number">2.</span> <span class="nav-text">损失函数</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#L2%E6%8D%9F%E5%A4%B1%E5%87%BD%E6%95%B0"><span class="nav-number">2.1.</span> <span class="nav-text">L2损失函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#L1%E6%8D%9F%E5%A4%B1%E5%87%BD%E6%95%B0"><span class="nav-number">2.2.</span> <span class="nav-text">L1损失函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%8C%E8%80%85%E5%AF%B9%E6%AF%94"><span class="nav-number">2.3.</span> <span class="nav-text">二者对比</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%AD%A3%E5%88%99%E5%8C%96"><span class="nav-number">3.</span> <span class="nav-text">正则化</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%AD%A3%E5%88%99%E5%8C%96%E4%B8%BA%E4%BB%80%E4%B9%88%E5%8F%AF%E4%BB%A5%E9%81%BF%E5%85%8D%E8%BF%87%E6%8B%9F%E5%90%88%EF%BC%9F"><span class="nav-number">3.1.</span> <span class="nav-text">正则化为什么可以避免过拟合？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#L1%E6%AD%A3%E5%88%99"><span class="nav-number">3.2.</span> <span class="nav-text">L1正则</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#L2%E6%AD%A3%E5%88%99"><span class="nav-number">3.3.</span> <span class="nav-text">L2正则</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88L1%E4%BC%9A%E4%BA%A7%E7%94%9F%E7%A8%80%E7%96%8F%E8%A7%A3"><span class="nav-number">3.4.</span> <span class="nav-text">为什么L1会产生稀疏解</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A2%AF%E5%BA%A6%E7%9A%84%E6%96%B9%E5%BC%8F%EF%BC%9A"><span class="nav-number">3.4.1.</span> <span class="nav-text">梯度的方式：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#L1%E7%9A%84%E6%A2%AF%E5%BA%A6%EF%BC%9A"><span class="nav-number">3.4.2.</span> <span class="nav-text">L1的梯度：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#L2%E7%9A%84%E6%A2%AF%E5%BA%A6%EF%BC%9A"><span class="nav-number">3.4.3.</span> <span class="nav-text">L2的梯度：</span></a></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="SindreYang"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">SindreYang</p>
+  <div class="site-description" itemprop="description">沉淀后我愿意做一个温暖的人。有自己的喜好，有自己的原则，有自己的信仰，不急功近利，不浮夸轻薄，宠辱不惊，淡定安逸，心静如水。------不忘初心，方得始终</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">321</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">72</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL1NpbmRyZVlhbmc=" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;SindreYang"><i class="fa fa-fw fa-github"></i>GitHub</span>
+      </span>
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="bWFpbHRvOnl4QG12aWFpLmNvbQ==" title="E-Mail → mailto:yx@mviai.com"><i class="fa fa-fw fa-envelope"></i>E-Mail</span>
+      </span>
+  </div>
+  <div class="cc-license motion-element" itemprop="license">
+    <span class="exturl cc-opacity" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC9kZWVkLnpo"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+  <div class="languages">
+    <label class="lang-select-label">
+      <i class="fa fa-language"></i>
+      <span>简体中文</span>
+      <i class="fa fa-angle-up" aria-hidden="true"></i>
+    </label>
+    <select class="lang-select" data-canonical="">
+      
+        <option value="zh-CN" data-href="/2025/L1%E5%92%8CL2_%E8%AF%A6%E8%A7%A3_%E8%8C%83%E6%95%B0%E3%80%81%E6%8D%9F%E5%A4%B1%E5%87%BD%E6%95%B0%E3%80%81%E6%AD%A3%E5%88%99%E5%8C%96_/" selected="">
+          简体中文
+        </option>
+      
+        <option value="en" data-href="/en/2025/L1%E5%92%8CL2_%E8%AF%A6%E8%A7%A3_%E8%8C%83%E6%95%B0%E3%80%81%E6%8D%9F%E5%A4%B1%E5%87%BD%E6%95%B0%E3%80%81%E6%AD%A3%E5%88%99%E5%8C%96_/" selected="">
+          English
+        </option>
+      
+    </select>
+  </div>
+
+        
+
+<div class="copyright">
+  
+  &copy; 2018 – 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">SindreYang</span>
+</div><!-- 页面点击小红心 -->
+<script type="text/javascript" src="/js/love.js"></script>
+<!-- 背景波浪 -->
+<script color="0,0,255" opacity="0.5" zIndex="-1" count="99" src="https://cdn.jsdelivr.net/npm/canvas-nest.js@1/dist/canvas-nest.js"></script>
+
+
+<!-- 腾讯企业邮箱 -->
+<style>
+.bizmail_loginpanel {
+    font-size: 12px;
+    width: 300px;
+    height: auto;
+    background: transparent;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.bizmail_LoginBox {
+    padding: 10px 15px;
+}
+
+
+.bizmail_loginpanel form {
+    margin: 0;
+    padding: 0;
+}
+
+.bizmail_loginpanel input.text {
+    font-size: 12px;
+    width: 100px;
+    height: 20px;
+    margin: 0 2px;
+    background-color: transparent;
+    border:1px solid transparent;
+    box-shadow: none;
+    color: black;
+}
+
+.bizmail_loginpanel .bizmail_column {
+    height: 28px;
+}
+
+.bizmail_loginpanel .bizmail_column label {
+    display: block;
+    float: left;
+    width: 30px;
+    height: 24px;
+    line-height: 24px;
+    font-size: 12px;
+}
+
+.bizmail_loginpanel .bizmail_column .bizmail_inputArea {
+    float: left;
+    width: 240px;
+}
+
+.bizmail_loginpanel .bizmail_column span {
+    font-size: 12px;
+    word-wrap: break-word;
+    margin-left: 2px;
+    line-height: 200%;
+}
+
+.bizmail_loginpanel .bizmail_SubmitArea {
+    margin-left: 30px;
+    clear: both;
+}
+
+.bizmail_loginpanel .bizmail_SubmitArea a {
+    font-size: 12px;
+    margin-left: 5px;
+}
+
+.bizmail_loginpanel select {
+    width: 110px;
+    height: 20px;
+    margin: 0 2px;
+}
+.bizmail_loginpanel input {
+
+    background-color: rgba(83, 126, 236, 0.562);
+}
+
+
+</style>
+
+<script type="text/javascript">
+function checkInput() {
+    var e = document.form1.uin,
+        i = document.form1.pwd;
+    return 0 == e.value.length ? e.focus() : 0 == i.value.length ? i.focus() : (document.form1.submit(), setTimeout(" document.form1.pwd.value = '' ", 500)), !1
+}
+
+function writeLoginPanel(e) {
+    if (e && e.domainlist && -1 != e.domainlist.indexOf(".")) {
+        var a = "return checkInput()",
+            t = '<div id="divLoginpanelHor" class="bizmail_loginpanel" style="width:550px;"><div class="bizmail_LoginBox"><form name="form1" action="https://exmail.qq.com/cgi-bin/login" target="_blank" method="post" onsubmit="' + a + '"><input type="hidden" name="firstlogin" value="false" /><input type="hidden" name="errtemplate" value="dm_loginpage" /><input type="hidden" name="aliastype" value="other" /><input type="hidden" name="dmtype" value="bizmail" /><input type="hidden" name="p" value="" /><label>\u8d26\u53f7:</label><input type="text" name="uin" class="text" value="" />@#domainlist#<label>&nbsp&nbsp&nbsp;\u5bc6\u7801:</label><input type="password" name="pwd" class="text" value="" /><input type="submit" class="" name="" value="\u767b\u5f55" />&nbsp;<a href="https://exmail.qq.com/cgi-bin/readtemplate?check=false&t=biz_rf_portal#recovery" target="_blank">\u5fd8\u8bb0\u5bc6\u7801\uff1f</a></form></div></div>',
+            n = '<div id="divLoginpanelVer" class="bizmail_loginpanel"><div class="bizmail_LoginBox"><form name="form1" action="https://exmail.qq.com/cgi-bin/login" target="_blank" method="post" onsubmit="' + a + '"><input type="hidden" name="firstlogin" value="false" /><input type="hidden" name="errtemplate" value="dm_loginpage" /><input type="hidden" name="aliastype" value="other" /><input type="hidden" name="dmtype" value="bizmail" /><input type="hidden" name="p" value="" /><div class="bizmail_column"><label>\u8d26\u53f7:</label><div class="bizmail_inputArea"><input type="text" name="uin" class="text" value="" />@#domainlist#</div></div><div class="bizmail_column"><label>\u5bc6\u7801:</label><div class="bizmail_inputArea"><input type="password" name="pwd" class="text" value="" /></div></div><div class="bizmail_SubmitArea"><input type="submit" class="" name="" style="width:66px;" value="\u767b\u5f55" /><a href="https://exmail.qq.com/cgi-bin/readtemplate?check=false&t=biz_rf_portal#recovery" target="_blank">\u5fd8\u8bb0\u5bc6\u7801\uff1f</a></div></form></div></div>',
+            l = e.domainlist.split(";");
+        if (1 == l.length) var m = '<span>#domain#</span><input type="hidden" name="domain" value="#domain#" />'.replace(/#domain#/g, l[0]);
+        else {
+            m = '<select name="domain">';
+            for (i = 0; i < l.length; i++) m += '<option value="' + l[i] + '">' + l[i] + "</option>";
+            m += "</select>"
+        }
+        e.mode && "vertical" != e.mode && "both" != e.mode || document.write(n.replace(/#domainlist#/g, m)), "horizontal" != e.mode && "both" != e.mode || document.write(t.replace(/#domainlist#/g, m))
+    }
+}
+
+</script>      
+
+<script type="text/javascript"> writeLoginPanel({domainlist:"mviai.com", mode:"horizontal"});</script>      
+
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script size="300" alpha="0.6" zIndex="-1" src="/lib/canvas-ribbon/canvas-ribbon.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/medium-zoom@1/dist/medium-zoom.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+  <script defer src="/lib/three/three.min.js"></script>
+    <script defer src="/lib/three/three-waves.min.js"></script>
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+<script>
+document.querySelectorAll('.pdfobject-container').forEach(element => {
+  let url = element.dataset.target;
+  let pdfOpenParams = {
+    navpanes : 0,
+    toolbar  : 0,
+    statusbar: 0,
+    pagemode : 'thumbs',
+    view     : 'FitH'
+  };
+  let pdfOpenFragment = '#' + Object.entries(pdfOpenParams).map(([key, value]) => `${key}=${encodeURIComponent(value)}`).join('&');
+  let fullURL = `/lib/pdf/web/viewer.html?file=${encodeURIComponent(url)}${pdfOpenFragment}`;
+
+  if (NexT.utils.supportsPDFs()) {
+    element.innerHTML = `<embed class="pdfobject" src="${url + pdfOpenFragment}" type="application/pdf" style="height: ${element.dataset.height};">`;
+  } else {
+    element.innerHTML = `<iframe src="${fullURL}" style="height: ${element.dataset.height};" frameborder="0"></iframe>`;
+  }
+});
+</script>
+
+
+
+
+  
+
+  
+
+  <script>
+  NexT.utils.loadComments(document.querySelector('#SOHUCS'), () => {
+    var appid = 'cyxmItxjS';
+    var conf = 'e5e71132d9086bb54aeeba6e88e87df9';
+    var width = window.innerWidth || document.documentElement.clientWidth;
+    if (width < 960) {
+      window.document.write('<script id="changyan_mobile_js" charset="utf-8" type="text/javascript" src="https://cy-cdn.kuaizhan.com/upload/mobile/wap-js/changyan_mobile.js?client_id=' + appid + '&conf=' + conf + '"><\/script>');
+    } else {
+      var loadJs=function(d,a){var c=document.getElementsByTagName("head")[0]||document.head||document.documentElement;var b=document.createElement("script");b.setAttribute("type","text/javascript");b.setAttribute("charset","UTF-8");b.setAttribute("src",d);if(typeof a==="function"){if(window.attachEvent){b.onreadystatechange=function(){var e=b.readyState;if(e==="loaded"||e==="complete"){b.onreadystatechange=null;a()}}}else{b.onload=a}}c.appendChild(b)};loadJs("https://changyan.sohu.com/upload/changyan.js",function(){window.changyan.api.config({appid:appid,conf:conf})});
+    }
+  });
+  </script>
+  <script src="https://cy-cdn.kuaizhan.com/upload/plugins/plugins.count.js"></script>
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/z16.model.json"},"display":{"position":"left","width":75,"height":150},"mobile":{"show":true},"log":false});</script></body>
+</html>
+
+
+
+

@@ -1,0 +1,809 @@
+<!DOCTYPE html>
+<html lang="zh-CN,en,default">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" href="/lib/pace/pace-theme-minimal.min.css">
+  <script src="/lib/pace/pace.min.js"></script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"blog.mviai.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":true,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":true,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="自动摘要: 			11月5日	参与：AI算法 ……..">
+<meta property="og:type" content="article">
+<meta property="og:title" content="3D嵌体修复-当前问题迭代">
+<meta property="og:url" content="http://blog.mviai.com/2025/3D%E5%B5%8C%E4%BD%93%E4%BF%AE%E5%A4%8D-%E5%BD%93%E5%89%8D%E9%97%AE%E9%A2%98%E8%BF%AD%E4%BB%A3/index.html">
+<meta property="og:site_name" content="落叶无痕">
+<meta property="og:description" content="自动摘要: 			11月5日	参与：AI算法 ……..">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://blog.mviai.com/images/1636168717833200db995c61e4eb29b6aff4ab70868aa.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1636168717833-200db995-c61e-4eb2-9b6a-ff4ab70868aa.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1636349197149-843e9913-34a4-4cff-8c8a-d5f5122499e0.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1636349261202-f3514500-e889-4784-a7f6-211fc1500025.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1636349340115-bd5b62d4-2161-41f3-91aa-ed18eb3d8e86.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1636349346100-00a920ea-cc38-4495-bf41-ec72d6106447.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1636697954079-05ec057e-ae53-4ee8-af44-b1274806de7d.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1636697993313-c7918e5e-768c-450f-b9a1-7aed3c8c5af8.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1636698016727-8c7b53b2-c580-4dbf-8b52-f808b2d96871.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1636698646438-dc85c47c-558e-400e-ad5d-8b294396ad42.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1636698646350-2190775e-e27c-4557-9a65-2d62ce41ac8a.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1636698708893-a4ef3be4-237e-472f-9669-a45e88477d6e.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1636698708887-cc262a7b-c9a2-463f-93b5-c5eccb7b145c.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1636699023421-4e977363-3a12-4b43-960f-bf63047ef0d5.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1636699023666-5236674d-c0a0-4e81-b503-56b3e4acc558.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1636699083517-976efd52-5880-401a-b6a1-20f0ea34473b.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1636699084139-15a49e7f-f5df-4901-9a80-2598cf3c2173.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1636699235587-58aee38f-9a0d-4853-9f9e-5599a6e2acb2.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1636699235583-6d026872-1273-4806-ab85-89ce84bd64db.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1636699186082-7c3b1a04-3831-4131-bbc7-b6e1e8188227.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1636699186053-c23e02b1-1280-4f3b-9fc4-5a290636c806.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1636699300486-b5a07a94-4b49-48ca-b4ce-e8e84f45fd42.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1636699300527-21fd47f6-5bc5-4f9c-8cd8-cf6d87da6a27.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1636759076617-13c7433d-2360-4362-964a-725478fc09f7.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1636759085550-e550cba5-28c6-45dd-9ac6-652d6cceecf8.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1636759103890-fdbc2e45-a305-4f2d-8884-1d0427dbfd1b.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1636759114419-2bbce558-f7d7-4e3a-a032-4863d0cc6b50.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1636759116517-8457883b-a29e-4e06-88ae-9f133c2fec92.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1636759149495-ca51a9bc-c5d9-4647-b8be-a9bf2be516f3.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1636759154096-49ace81b-7314-4199-a806-77c6adc9711a.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1636759157149-700fb9e8-58b0-4b8d-999f-7d5f05d6c28f.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1636759160525-e3025801-4fb4-4a9c-8752-27e3f307e590.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1636759163429-7c402a09-dc82-4e54-bb46-6bf9f6915454.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1636759174952-ef118cfd-65c1-43ef-85dd-28cb19157f53.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1636759178830-8f80225c-7317-44ce-b2b0-ad49f689c797.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1636759182149-d62474ec-df47-4a2e-a4b1-48396cf38da1.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1636759185917-d034b332-0eac-43cf-8f50-9b602c44dc87.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1636759188034-60a81593-374b-49c3-9992-bb33959d932c.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1636759199156-c504f17f-14ff-4f2b-a557-dd240917b31f.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1636759202951-7d12753d-6b70-4002-ae83-c761d079b05f.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1636759206490-6353d09a-3889-4d72-a158-b0a5bfebae4d.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1636759214930-1396dd58-4a65-40a6-a879-e02072fcb69c.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1636759217825-62544922-69fb-423e-8e01-70f3beb0f364.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1636759227457-cb98301d-9979-4720-9ec9-41fc0bbbe69a.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1636759231549-bd1c0467-55e9-4281-a0b9-38edd1119640.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1636759235415-7d2da83b-df50-4839-9ace-e75349912247.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1636759238333-f2dfa3ba-50c0-485b-a3b4-1656aa555cdb.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1636759240479-82388963-9305-4182-9615-464257f226c0.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1636759250091-808344d9-a4ca-47e1-a639-2e088ba3a418.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1636759252809-46ecd3d2-f258-4911-b5d3-3372ebc3bb4b.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1636759256000-b64ed71c-8360-4380-9046-14be34ea3bdb.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1636759261267-93bb8682-3abe-4ca5-9461-4119deb1c778.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1636759263361-48f4bc39-de99-4542-8e8c-edaeac013767.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1636759271898-76d39967-9b47-415c-beb3-68d78a9239be.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1636759275235-8ec9dc6c-59ca-49f9-a8cc-eb80086d196d.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1636759278216-bce1715a-3c97-413a-920c-ba9e206a5156.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1636759283457-e37f5395-3291-4f56-9bd7-25318db9492e.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1636759286542-f4edbc70-0bc3-480f-91e5-c6ec7c015142.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1636759297509-c63e3bf2-d2a9-48b2-8f18-fdf7b819148c.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1636759301294-9fdc1b7c-d340-4d58-9c75-a1e535f57c15.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1636759305480-64dd67ec-f4ca-4ae1-b008-7cce303df33a.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1636759310136-3da62c2b-4583-4b50-a866-69da45b7fc98.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1636759330522-32b4f4e8-9682-4044-b46d-e56c27b1322e.png">
+<meta property="article:published_time" content="2025-01-22T04:37:41.000Z">
+<meta property="article:modified_time" content="2025-01-22T12:37:41.374Z">
+<meta property="article:author" content="SindreYang">
+<meta property="article:tag" content="生活">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://blog.mviai.com/images/1636168717833200db995c61e4eb29b6aff4ab70868aa.png">
+
+<link rel="canonical" href="http://blog.mviai.com/2025/3D%E5%B5%8C%E4%BD%93%E4%BF%AE%E5%A4%8D-%E5%BD%93%E5%89%8D%E9%97%AE%E9%A2%98%E8%BF%AD%E4%BB%A3/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>3D嵌体修复-当前问题迭代 | 落叶无痕</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">落叶无痕</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类<span class="badge">72</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档<span class="badge">321</span></a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+  <span class="exturl github-corner" data-url="aHR0cHM6Ly9naXRodWIuY29tL1NpbmRyZVlhbmc=" title="Follow me on GitHub" aria-label="Follow me on GitHub"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></span>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://blog.mviai.com/2025/3D%E5%B5%8C%E4%BD%93%E4%BF%AE%E5%A4%8D-%E5%BD%93%E5%89%8D%E9%97%AE%E9%A2%98%E8%BF%AD%E4%BB%A3/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="SindreYang">
+      <meta itemprop="description" content="沉淀后我愿意做一个温暖的人。有自己的喜好，有自己的原则，有自己的信仰，不急功近利，不浮夸轻薄，宠辱不惊，淡定安逸，心静如水。------不忘初心，方得始终">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="落叶无痕">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          3D嵌体修复-当前问题迭代
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2025-01-22 12:37:41 / 修改时间：20:37:41" itemprop="dateCreated datePublished" datetime="2025-01-22T12:37:41+08:00">2025-01-22</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%9C%AA%E6%95%B4%E7%90%86%E6%96%87%E6%A1%A3/" itemprop="url" rel="index"><span itemprop="name">未整理文档</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">Changyan：</span>
+    
+    
+      <a title="changyan" href="/2025/3D%E5%B5%8C%E4%BD%93%E4%BF%AE%E5%A4%8D-%E5%BD%93%E5%89%8D%E9%97%AE%E9%A2%98%E8%BF%AD%E4%BB%A3/#SOHUCS" itemprop="discussionUrl">
+        <span id="changyan_count_unit" class="post-comments-count hc-comment-count" data-xid="2025/3D嵌体修复-当前问题迭代/" itemprop="commentCount"></span>
+      </a>
+    
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>自动摘要: 	<img src="/../../images/1636168717833200db995c61e4eb29b6aff4ab70868aa.png" alt="下载.png">		11月5日	参与：AI算法 ……..</p>
+<span id="more"></span>
+
+<h2 id=""><a href="#" class="headerlink" title=""></a><img src="/images/1636168717833-200db995-c61e-4eb2-9b6a-ff4ab70868aa.png"></h2><h2 id="11月5日"><a href="#11月5日" class="headerlink" title="11月5日"></a>11月5日</h2><p>参与：AI算法、几何算法、产品、项目 </p>
+<h3 id="一、准备后牙嵌体数据-全牙弓-吴小燕"><a href="#一、准备后牙嵌体数据-全牙弓-吴小燕" class="headerlink" title="一、准备后牙嵌体数据(全牙弓)@吴小燕"></a>一、准备后牙嵌体数据(全牙弓)@吴小燕</h3><p>准备Raw数据 </p>
+<h3 id="二、裁剪获得满足AI嵌体约束的数据-？"><a href="#二、裁剪获得满足AI嵌体约束的数据-？" class="headerlink" title="二、裁剪获得满足AI嵌体约束的数据@？"></a>二、裁剪获得满足AI嵌体约束的数据@？</h3><p>样本 人工准备 截取数据@吴小燕 只有2颗牙的数据 不删除牙弓的数据，但删除一部分底座 自动截取 输出工作：@陈冬灵 </p>
+<h3 id="三、生成深度图（记录坐标系、参数P）-邹"><a href="#三、生成深度图（记录坐标系、参数P）-邹" class="headerlink" title="三、生成深度图（记录坐标系、参数P）@邹"></a>三、生成深度图（记录坐标系、参数P）@邹</h3><h3 id="四、推理-邹"><a href="#四、推理-邹" class="headerlink" title="四、推理@邹"></a>四、推理@邹</h3><h3 id="五、输出推理结果-邹"><a href="#五、输出推理结果-邹" class="headerlink" title="五、输出推理结果@邹"></a>五、输出推理结果@邹</h3><p>深度图@邹 点云化（用P进行点云化），发现Noise，<strong>记录问题</strong>@邹、张 变换坐标系或配准@邹 三角化，根据重叠率裁剪，Remesh，Refine@陈珏 输出DL.Outer </p>
+<h3 id="六、真正的嵌体拼接"><a href="#六、真正的嵌体拼接" class="headerlink" title="六、真正的嵌体拼接"></a>六、真正的嵌体拼接</h3><p>根据已有间隙层，对DL.Outer再裁剪@陈冬灵 拼接@郭策 </p>
+<h3 id="测试的环节"><a href="#测试的环节" class="headerlink" title="测试的环节"></a>测试的环节</h3><p>1、测试数据，及测试按约束裁剪后的数据 上合 下合 后牙（） Inlay, Onlay 2、测试生成的深度图 3、测试推理能不能输出数据，数据是否有效，测试深度图、生成的点云等 性能、硬件、软件环境 这是测试组的工作</p>
+<h2 id="11月6日（自测反馈）"><a href="#11月6日（自测反馈）" class="headerlink" title="11月6日（自测反馈）"></a>11月6日（自测反馈）</h2><h3 id="一、点云噪声"><a href="#一、点云噪声" class="headerlink" title="一、点云噪声"></a>一、点云噪声</h3><p>1、C++转换数据问题&#x3D;&#x3D;&gt;对比libtorch,pytorch深度图；2、深度图还原点云&#x3D;&#x3D;&gt;阈值过滤；3、训练模型问题，基于图片数据训练，int–推理float–输出int&#x3D;&#x3D;&gt;修改训练模型，直接float训练，C++转numpy；&#x3D;&#x3D;&gt;输入数据转int，输出数据转int；</p>
+<h3 id="二、点云裁剪是否可行"><a href="#二、点云裁剪是否可行" class="headerlink" title="二、点云裁剪是否可行"></a>二、点云裁剪是否可行</h3><p>考虑到点云重建的裁剪问题，以及之后嵌体拼接的重叠裁剪问题，有哪些信息可将修复体点云提取出，在此基础上进行重建；<strong>影响：</strong>**</p>
+<h3 id="三、DL训练输出修复体方案是否可行"><a href="#三、DL训练输出修复体方案是否可行" class="headerlink" title="三、DL训练输出修复体方案是否可行"></a>三、DL训练输出修复体方案是否可行</h3><p>输出不再是多颗牙的深度图，是贴合间隙的修复体深度图；</p>
+<h2 id="11月8日（会议讨论）"><a href="#11月8日（会议讨论）" class="headerlink" title="11月8日（会议讨论）"></a>11月8日（会议讨论）</h2><h3 id="一、深度图生成效果"><a href="#一、深度图生成效果" class="headerlink" title="一、深度图生成效果"></a>一、深度图生成效果</h3><p>深度图生成效果影响因素：咬合方向、深度图生成参数（当前 gama &#x3D; 0.5f， h &#x3D; 7.0f）；</p>
+<p><strong>任务：<strong><strong>1、计算片段模型咬合方向@陈；</strong></strong>2、测试计算牙尖方向算法；****2、测试不同的深度图参数（gama &#x3D; 1.5 h &#x3D; 7.0）；</strong></p>
+<h3 id="二、C-libtorch误差"><a href="#二、C-libtorch误差" class="headerlink" title="二、C++ libtorch误差"></a>二、C++ libtorch误差</h3><p>C++封装后推理输出的深度图（vector<float> &#x3D;&#x3D;&gt;opencv.png）与python推理输出的深度图略不同，说明有误差；<img src="/images/1636349197149-843e9913-34a4-4cff-8c8a-d5f5122499e0.png"><br>可能原因：1）封装后输出的tensor与python输出tensor不一致&#x3D;&gt;需对比两个tensor数据；2）原训练模型是针对int型数据，C++封装版输入为float型；</p>
+<p><strong>任务：****1、对比pytorch\libtorch的tensor数据；</strong></p>
+<h3 id="三、点云化噪声"><a href="#三、点云化噪声" class="headerlink" title="三、点云化噪声"></a>三、点云化噪声</h3><p>在C++版推理输出后，会有趋近于0的像素，对该情况进行了阈值过滤，之后再进行点云化，所以在点云中出现的噪声，在深度图中的像素值均大于阈值（&#x3D;1）；</p>
+<p><img src="/images/1636349261202-f3514500-e889-4784-a7f6-211fc1500025.png"></p>
+<h3 id="四、推理输出深度图的噪声，条纹，模糊"><a href="#四、推理输出深度图的噪声，条纹，模糊" class="headerlink" title="四、推理输出深度图的噪声，条纹，模糊"></a>四、推理输出深度图的噪声，条纹，模糊</h3><p>可见在输出深度图中，输入深度图中未与牙齿连接的地方也出现了像素值，并且牙齿区域有条纹产生，该情况在C++封装版和python版中都有出现；可能原因：模型推理不够完善；<img src="/images/1636349340115-bd5b62d4-2161-41f3-91aa-ed18eb3d8e86.png"><br>                                      <img src="/images/1636349346100-00a920ea-cc38-4495-bf41-ec72d6106447.png"></p>
+<h3 id="五、倒凹问题"><a href="#五、倒凹问题" class="headerlink" title="五、倒凹问题"></a>五、倒凹问题</h3><h3 id="六、任务"><a href="#六、任务" class="headerlink" title="六、任务"></a>六、任务</h3><p><strong>1、测试计算牙尖方向算法；<strong><strong>2、测试深度图参数gama &#x3D; 1.5, h &#x3D; 7.0；</strong></strong>3、对比pytorch\libtorch的tensor数据；</strong></p>
+<h2 id="11月12日-测试反馈"><a href="#11月12日-测试反馈" class="headerlink" title="11月12日(测试反馈)"></a>11月12日(测试反馈)</h2><h3 id="一、模型影响缺失牙深度图效果"><a href="#一、模型影响缺失牙深度图效果" class="headerlink" title="一、模型影响缺失牙深度图效果"></a>一、模型影响缺失牙深度图效果</h3><p>尖牙（近中）、磨牙、磨牙（远中）＃34嵌体 近中</p>
+<p><img src="/images/1636697954079-05ec057e-ae53-4ee8-af44-b1274806de7d.png"><br><img src="/images/1636697993313-c7918e5e-768c-450f-b9a1-7aed3c8c5af8.png"><br><img src="/images/1636698016727-8c7b53b2-c580-4dbf-8b52-f808b2d96871.png"></p>
+<h3 id="二、推理输出修复区域不完整"><a href="#二、推理输出修复区域不完整" class="headerlink" title="二、推理输出修复区域不完整"></a>二、推理输出修复区域不完整</h3><p>缺失区域只有小部分修补或未修补；＃27嵌体 近中　　　　　　<img src="/images/1636698646438-dc85c47c-558e-400e-ad5d-8b294396ad42.png"><br>　　　　　　　<img src="/images/1636698646350-2190775e-e27c-4557-9a65-2d62ce41ac8a.png"><br>　　　＃35嵌体 远中　　　　<img src="/images/1636698708893-a4ef3be4-237e-472f-9669-a45e88477d6e.png"><br>　　　　　　　<img src="/images/1636698708887-cc262a7b-c9a2-463f-93b5-c5eccb7b145c.png"></p>
+<h3 id="三、推理输出模糊"><a href="#三、推理输出模糊" class="headerlink" title="三、推理输出模糊"></a>三、推理输出模糊</h3><p>牙齿周围、邻牙模糊＃16嵌体2 近中　　　　　　<img src="/images/1636699023421-4e977363-3a12-4b43-960f-bf63047ef0d5.png"><br>　　　　　　　　<img src="/images/1636699023666-5236674d-c0a0-4e81-b503-56b3e4acc558.png"><br>＃36嵌体 远中　　　　　　<img src="/images/1636699083517-976efd52-5880-401a-b6a1-20f0ea34473b.png"><br>　　　　　　　　<img src="/images/1636699084139-15a49e7f-f5df-4901-9a80-2598cf3c2173.png"></p>
+<p>修复牙齿花纹模糊，重建后效果不佳＃16嵌体1 十字</p>
+<p>　　<img src="/images/1636699235587-58aee38f-9a0d-4853-9f9e-5599a6e2acb2.png"><br>　　　　　　　　<img src="/images/1636699235583-6d026872-1273-4806-ab85-89ce84bd64db.png"><br>调整深度图中牙齿位置后　　<img src="/images/1636699186082-7c3b1a04-3831-4131-bbc7-b6e1e8188227.png"><br>　　　　　　　　<img src="/images/1636699186053-c23e02b1-1280-4f3b-9fc4-5a290636c806.png"><br>＃36嵌体1 舌侧</p>
+<p>　　<img src="/images/1636699300486-b5a07a94-4b49-48ca-b4ce-e8e84f45fd42.png"><br>　　　　　　　　<img src="/images/1636699300527-21fd47f6-5bc5-4f9c-8cd8-cf6d87da6a27.png"></p>
+<h2 id="11月12日-会议讨论"><a href="#11月12日-会议讨论" class="headerlink" title="11月12日(会议讨论)"></a>11月12日(会议讨论)</h2><p>0、有效的深度图（1）位置正（2）有模型的区域，有深度</p>
+<p>1、模型计算完成咬合方向后，需要按OBB把位置摆正，一定要AABB对齐，要基于栅格生成深度图</p>
+<p>2、咬合方向的计算目前是不完善的。因为基于OBB的计算，没有参考倒凹。注意：集成后，应该立即叫相关人员看集成的结果</p>
+<p>3、生成的深度图（有效区域）有黑色，需要调整h或gramma值，去生成有效的深度图。（1）h是否按讨论的方法，把模型顶到box的顶部。提供一定的样本，找出一个经验值h。（2）倒凹的影响（3）是否可以把h做为动态的。使其输出有效的深度图。</p>
+<p>4、嵌体的修复形态五花八门，限定在后磨牙（1）吴小燕提供样本，邹挑数据。（2）有目的的测试</p>
+<p>5、三颗牙不在同一个平面，不可能通过一个h生成有效的深度图（1）把这三颗牙，分成三颗牙。计算每一个的方向，生成三个深度图，再去合并。（2）把这3颗牙变换同一个平面，生成深度图。</p>
+<p>6、深度图有噪点（1）判断h值是否有问题（2）判断模型是否有问题（3）判断深度图生成代码是否有问题</p>
+<p>需要做的处理1、方向摆正—邹2、咬合方向的计算—陈冬灵3、噪声原因：找合适的h等参数—张新霞4、高嵌体是否需要更多的样本，去训练？是否区分不同的牙位去训练？5、找一份嵌体数据，（1）处理：把损坏区域用塑形工具抹平，推理（2）对比不抹平与抹平的推理效果。</p>
+<h2 id="11月13日（测试反馈）"><a href="#11月13日（测试反馈）" class="headerlink" title="11月13日（测试反馈）"></a>11月13日（测试反馈）</h2><p><strong>所有采用的gama值为1.5，H值视模型情况手动设定，尽量选择能使缺失部位像素值不为0的H。由图可见，竖版比横板噪声少些，但依旧存在远处噪声，牙花纹路不清晰，生成不完整等问题（供参考）。****PS：点云位置略高是因为更新H值后，在还原点云时未设置对应的H值，导致错位，仅对点云位置有影响，对形态无影响。</strong></p>
+<h3 id="16嵌体1-位置调整"><a href="#16嵌体1-位置调整" class="headerlink" title="#16嵌体1_位置调整"></a><strong>#16嵌体1_位置调整</strong></h3><h4 id="H-10-0"><a href="#H-10-0" class="headerlink" title="H &#x3D; 10.0"></a><strong>H &#x3D; 10.0</strong></h4><p><img src="/images/1636759076617-13c7433d-2360-4362-964a-725478fc09f7.png"><br><img src="/images/1636759085550-e550cba5-28c6-45dd-9ac6-652d6cceecf8.png"><br><img src="/images/1636759103890-fdbc2e45-a305-4f2d-8884-1d0427dbfd1b.png"><br><img src="/images/1636759114419-2bbce558-f7d7-4e3a-a032-4863d0cc6b50.png"><br><img src="/images/1636759116517-8457883b-a29e-4e06-88ae-9f133c2fec92.png"></p>
+<h4 id="H-8-0"><a href="#H-8-0" class="headerlink" title="H&#x3D;8.0"></a><strong>H&#x3D;8.0</strong></h4><p><img src="/images/1636759149495-ca51a9bc-c5d9-4647-b8be-a9bf2be516f3.png"><br><img src="/images/1636759154096-49ace81b-7314-4199-a806-77c6adc9711a.png"><br><img src="/images/1636759157149-700fb9e8-58b0-4b8d-999f-7d5f05d6c28f.png"><br><img src="/images/1636759160525-e3025801-4fb4-4a9c-8752-27e3f307e590.png"><br><img src="/images/1636759163429-7c402a09-dc82-4e54-bb46-6bf9f6915454.png"></p>
+<h3 id="27嵌体近中"><a href="#27嵌体近中" class="headerlink" title="27嵌体近中"></a><strong>27嵌体近中</strong></h3><h4 id="H-10"><a href="#H-10" class="headerlink" title="H&#x3D;10"></a><strong>H&#x3D;10</strong></h4><p><img src="/images/1636759174952-ef118cfd-65c1-43ef-85dd-28cb19157f53.png"><br><img src="/images/1636759178830-8f80225c-7317-44ce-b2b0-ad49f689c797.png"><br><img src="/images/1636759182149-d62474ec-df47-4a2e-a4b1-48396cf38da1.png"><br><img src="/images/1636759185917-d034b332-0eac-43cf-8f50-9b602c44dc87.png"><br><img src="/images/1636759188034-60a81593-374b-49c3-9992-bb33959d932c.png"></p>
+<h4 id="H-12"><a href="#H-12" class="headerlink" title="H&#x3D;12"></a><strong>H&#x3D;12</strong></h4><p><img src="/images/1636759199156-c504f17f-14ff-4f2b-a557-dd240917b31f.png"><br><img src="/images/1636759202951-7d12753d-6b70-4002-ae83-c761d079b05f.png"><br><img src="/images/1636759206490-6353d09a-3889-4d72-a158-b0a5bfebae4d.png"><br><img src="/images/1636759214930-1396dd58-4a65-40a6-a879-e02072fcb69c.png"><br><img src="/images/1636759217825-62544922-69fb-423e-8e01-70f3beb0f364.png"></p>
+<h4 id="H-12-竖版"><a href="#H-12-竖版" class="headerlink" title="H&#x3D;12 (竖版)"></a><strong>H&#x3D;12 (竖版)</strong></h4><p><img src="/images/1636759227457-cb98301d-9979-4720-9ec9-41fc0bbbe69a.png"><br><img src="/images/1636759231549-bd1c0467-55e9-4281-a0b9-38edd1119640.png"><br><img src="/images/1636759235415-7d2da83b-df50-4839-9ace-e75349912247.png"><br><img src="/images/1636759238333-f2dfa3ba-50c0-485b-a3b4-1656aa555cdb.png"><br><img src="/images/1636759240479-82388963-9305-4182-9615-464257f226c0.png"></p>
+<h3 id="36嵌体1-舌侧"><a href="#36嵌体1-舌侧" class="headerlink" title="#36嵌体1 舌侧"></a><strong>#36嵌体1 舌侧</strong></h3><h4 id="H-9"><a href="#H-9" class="headerlink" title="H&#x3D;9"></a><strong>H&#x3D;9</strong></h4><p><img src="/images/1636759250091-808344d9-a4ca-47e1-a639-2e088ba3a418.png"><br><img src="/images/1636759252809-46ecd3d2-f258-4911-b5d3-3372ebc3bb4b.png"><br><img src="/images/1636759256000-b64ed71c-8360-4380-9046-14be34ea3bdb.png"><br><img src="/images/1636759261267-93bb8682-3abe-4ca5-9461-4119deb1c778.png"><br><img src="/images/1636759263361-48f4bc39-de99-4542-8e8c-edaeac013767.png"></p>
+<h3 id="36嵌体-远中"><a href="#36嵌体-远中" class="headerlink" title="#36嵌体 远中"></a><strong>#36嵌体 远中</strong></h3><h4 id="H-11"><a href="#H-11" class="headerlink" title="H&#x3D;11"></a><strong>H&#x3D;11</strong></h4><p><img src="/images/1636759271898-76d39967-9b47-415c-beb3-68d78a9239be.png"><br><img src="/images/1636759275235-8ec9dc6c-59ca-49f9-a8cc-eb80086d196d.png"><br><img src="/images/1636759278216-bce1715a-3c97-413a-920c-ba9e206a5156.png"><br><img src="/images/1636759283457-e37f5395-3291-4f56-9bd7-25318db9492e.png"><br><img src="/images/1636759286542-f4edbc70-0bc3-480f-91e5-c6ec7c015142.png"></p>
+<h4 id="H-12-1"><a href="#H-12-1" class="headerlink" title="H&#x3D;12"></a><strong>H&#x3D;12</strong></h4><p><img src="/images/1636759297509-c63e3bf2-d2a9-48b2-8f18-fdf7b819148c.png"><br><img src="/images/1636759301294-9fdc1b7c-d340-4d58-9c75-a1e535f57c15.png"><br><img src="/images/1636759305480-64dd67ec-f4ca-4ae1-b008-7cce303df33a.png"><br><img src="/images/1636759310136-3da62c2b-4583-4b50-a866-69da45b7fc98.png"><br><img src="/images/1636759330522-32b4f4e8-9682-4044-b46d-e56c27b1322e.png"></p>
+<h2 id="11月15日（会议讨论）"><a href="#11月15日（会议讨论）" class="headerlink" title="11月15日（会议讨论）"></a>11月15日（会议讨论）</h2><h3 id="1、在训练中分析深度图对模型的影响，深度图需要大量试错才能确定；"><a href="#1、在训练中分析深度图对模型的影响，深度图需要大量试错才能确定；" class="headerlink" title="1、在训练中分析深度图对模型的影响，深度图需要大量试错才能确定；"></a>1、在训练中分析深度图对模型的影响，深度图需要大量试错才能确定；</h3><pre><code>--&gt;深度图影响问题，H，gamma值；		--&gt;输出工具，toothmarker，只调整H,gamma，参数；@邹		--&gt;深度图命名与输入数据命名一致；@TODO		
+</code></pre>
+<h3 id="2、数据输入影响；"><a href="#2、数据输入影响；" class="headerlink" title="2、数据输入影响；"></a>2、数据输入影响；</h3><pre><code>--&gt;数据要求：		--&gt;论文数据，36号；			--&gt;张与杨确定libtorch,pythorch模型版本匹配；			--&gt;提供用于训练、测试、输出的数据；@张			--&gt;测试张提供的数据（一面、二面、四面），libtorch与pytorch达到相同效果；@邹		--&gt;测试我们数据的36号牙效果；@朱		--&gt;我们数据X6号牙齿；@朱		--&gt;我们数据其他牙位牙齿；@朱	--&gt;数据匹配，我们的数据与训练数据的差别，用于训练的模型，顶	部微薄一层，我们的数据是整个牙			齿；		
+</code></pre>
+<h3 id="3、确定以上两个，才能找到合适的深度图参数，才能对训练模型进一步改进；"><a href="#3、确定以上两个，才能找到合适的深度图参数，才能对训练模型进一步改进；" class="headerlink" title="3、确定以上两个，才能找到合适的深度图参数，才能对训练模型进一步改进；"></a>3、确定以上两个，才能找到合适的深度图参数，才能对训练模型进一步改进；</h3>
+    </div>
+
+    
+    
+    
+        <div class="reward-container">
+  <div></div>
+  <button onclick="var qr = document.getElementById('qr'); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/images/wechatpay.png" alt="SindreYang 微信支付">
+        <p>微信支付</p>
+      </div>
+      
+      <div style="display: inline-block;">
+        <img src="/images/alipay.png" alt="SindreYang 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>SindreYang
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://blog.mviai.com/2025/3D%E5%B5%8C%E4%BD%93%E4%BF%AE%E5%A4%8D-%E5%BD%93%E5%89%8D%E9%97%AE%E9%A2%98%E8%BF%AD%E4%BB%A3/" title="3D嵌体修复-当前问题迭代">http://blog.mviai.com/2025/3D嵌体修复-当前问题迭代/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <span class="exturl" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC9kZWVkLnpo"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</span> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+        
+
+  <div class="followme">
+    <p>欢迎关注我的其它发布渠道</p>
+
+    <div class="social-list">
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="/images/wechat.png">
+            <span class="icon">
+              <i class="fa fa-wechat"></i>
+            </span>
+
+            <span class="label">WeChat</span>
+          </a>
+        </div>
+    </div>
+  </div>
+
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2025/4._%E7%86%9F%E6%82%89_HTML5_%E6%A0%87%E7%AD%BE/" rel="prev" title="4">
+      <i class="fa fa-chevron-left"></i> 4
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2025/3DWeb%E5%9F%B9%E8%AE%AD%E8%AE%A1%E5%88%92/" rel="next" title="3DWeb培训计划">
+      3DWeb培训计划 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    
+  <div class="comments">
+    <div id="SOHUCS"></div>
+  </div>
+  
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link"><span class="nav-number">1.</span> <span class="nav-text"></span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#11%E6%9C%885%E6%97%A5"><span class="nav-number">2.</span> <span class="nav-text">11月5日</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%80%E3%80%81%E5%87%86%E5%A4%87%E5%90%8E%E7%89%99%E5%B5%8C%E4%BD%93%E6%95%B0%E6%8D%AE-%E5%85%A8%E7%89%99%E5%BC%93-%E5%90%B4%E5%B0%8F%E7%87%95"><span class="nav-number">2.1.</span> <span class="nav-text">一、准备后牙嵌体数据(全牙弓)@吴小燕</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BA%8C%E3%80%81%E8%A3%81%E5%89%AA%E8%8E%B7%E5%BE%97%E6%BB%A1%E8%B6%B3AI%E5%B5%8C%E4%BD%93%E7%BA%A6%E6%9D%9F%E7%9A%84%E6%95%B0%E6%8D%AE-%EF%BC%9F"><span class="nav-number">2.2.</span> <span class="nav-text">二、裁剪获得满足AI嵌体约束的数据@？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%89%E3%80%81%E7%94%9F%E6%88%90%E6%B7%B1%E5%BA%A6%E5%9B%BE%EF%BC%88%E8%AE%B0%E5%BD%95%E5%9D%90%E6%A0%87%E7%B3%BB%E3%80%81%E5%8F%82%E6%95%B0P%EF%BC%89-%E9%82%B9"><span class="nav-number">2.3.</span> <span class="nav-text">三、生成深度图（记录坐标系、参数P）@邹</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9B%9B%E3%80%81%E6%8E%A8%E7%90%86-%E9%82%B9"><span class="nav-number">2.4.</span> <span class="nav-text">四、推理@邹</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BA%94%E3%80%81%E8%BE%93%E5%87%BA%E6%8E%A8%E7%90%86%E7%BB%93%E6%9E%9C-%E9%82%B9"><span class="nav-number">2.5.</span> <span class="nav-text">五、输出推理结果@邹</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%AD%E3%80%81%E7%9C%9F%E6%AD%A3%E7%9A%84%E5%B5%8C%E4%BD%93%E6%8B%BC%E6%8E%A5"><span class="nav-number">2.6.</span> <span class="nav-text">六、真正的嵌体拼接</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B5%8B%E8%AF%95%E7%9A%84%E7%8E%AF%E8%8A%82"><span class="nav-number">2.7.</span> <span class="nav-text">测试的环节</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#11%E6%9C%886%E6%97%A5%EF%BC%88%E8%87%AA%E6%B5%8B%E5%8F%8D%E9%A6%88%EF%BC%89"><span class="nav-number">3.</span> <span class="nav-text">11月6日（自测反馈）</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%80%E3%80%81%E7%82%B9%E4%BA%91%E5%99%AA%E5%A3%B0"><span class="nav-number">3.1.</span> <span class="nav-text">一、点云噪声</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BA%8C%E3%80%81%E7%82%B9%E4%BA%91%E8%A3%81%E5%89%AA%E6%98%AF%E5%90%A6%E5%8F%AF%E8%A1%8C"><span class="nav-number">3.2.</span> <span class="nav-text">二、点云裁剪是否可行</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%89%E3%80%81DL%E8%AE%AD%E7%BB%83%E8%BE%93%E5%87%BA%E4%BF%AE%E5%A4%8D%E4%BD%93%E6%96%B9%E6%A1%88%E6%98%AF%E5%90%A6%E5%8F%AF%E8%A1%8C"><span class="nav-number">3.3.</span> <span class="nav-text">三、DL训练输出修复体方案是否可行</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#11%E6%9C%888%E6%97%A5%EF%BC%88%E4%BC%9A%E8%AE%AE%E8%AE%A8%E8%AE%BA%EF%BC%89"><span class="nav-number">4.</span> <span class="nav-text">11月8日（会议讨论）</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%80%E3%80%81%E6%B7%B1%E5%BA%A6%E5%9B%BE%E7%94%9F%E6%88%90%E6%95%88%E6%9E%9C"><span class="nav-number">4.1.</span> <span class="nav-text">一、深度图生成效果</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BA%8C%E3%80%81C-libtorch%E8%AF%AF%E5%B7%AE"><span class="nav-number">4.2.</span> <span class="nav-text">二、C++ libtorch误差</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%89%E3%80%81%E7%82%B9%E4%BA%91%E5%8C%96%E5%99%AA%E5%A3%B0"><span class="nav-number">4.3.</span> <span class="nav-text">三、点云化噪声</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9B%9B%E3%80%81%E6%8E%A8%E7%90%86%E8%BE%93%E5%87%BA%E6%B7%B1%E5%BA%A6%E5%9B%BE%E7%9A%84%E5%99%AA%E5%A3%B0%EF%BC%8C%E6%9D%A1%E7%BA%B9%EF%BC%8C%E6%A8%A1%E7%B3%8A"><span class="nav-number">4.4.</span> <span class="nav-text">四、推理输出深度图的噪声，条纹，模糊</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BA%94%E3%80%81%E5%80%92%E5%87%B9%E9%97%AE%E9%A2%98"><span class="nav-number">4.5.</span> <span class="nav-text">五、倒凹问题</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%AD%E3%80%81%E4%BB%BB%E5%8A%A1"><span class="nav-number">4.6.</span> <span class="nav-text">六、任务</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#11%E6%9C%8812%E6%97%A5-%E6%B5%8B%E8%AF%95%E5%8F%8D%E9%A6%88"><span class="nav-number">5.</span> <span class="nav-text">11月12日(测试反馈)</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%80%E3%80%81%E6%A8%A1%E5%9E%8B%E5%BD%B1%E5%93%8D%E7%BC%BA%E5%A4%B1%E7%89%99%E6%B7%B1%E5%BA%A6%E5%9B%BE%E6%95%88%E6%9E%9C"><span class="nav-number">5.1.</span> <span class="nav-text">一、模型影响缺失牙深度图效果</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BA%8C%E3%80%81%E6%8E%A8%E7%90%86%E8%BE%93%E5%87%BA%E4%BF%AE%E5%A4%8D%E5%8C%BA%E5%9F%9F%E4%B8%8D%E5%AE%8C%E6%95%B4"><span class="nav-number">5.2.</span> <span class="nav-text">二、推理输出修复区域不完整</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%89%E3%80%81%E6%8E%A8%E7%90%86%E8%BE%93%E5%87%BA%E6%A8%A1%E7%B3%8A"><span class="nav-number">5.3.</span> <span class="nav-text">三、推理输出模糊</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#11%E6%9C%8812%E6%97%A5-%E4%BC%9A%E8%AE%AE%E8%AE%A8%E8%AE%BA"><span class="nav-number">6.</span> <span class="nav-text">11月12日(会议讨论)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#11%E6%9C%8813%E6%97%A5%EF%BC%88%E6%B5%8B%E8%AF%95%E5%8F%8D%E9%A6%88%EF%BC%89"><span class="nav-number">7.</span> <span class="nav-text">11月13日（测试反馈）</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#16%E5%B5%8C%E4%BD%931-%E4%BD%8D%E7%BD%AE%E8%B0%83%E6%95%B4"><span class="nav-number">7.1.</span> <span class="nav-text">#16嵌体1_位置调整</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#H-10-0"><span class="nav-number">7.1.1.</span> <span class="nav-text">H &#x3D; 10.0</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#H-8-0"><span class="nav-number">7.1.2.</span> <span class="nav-text">H&#x3D;8.0</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#27%E5%B5%8C%E4%BD%93%E8%BF%91%E4%B8%AD"><span class="nav-number">7.2.</span> <span class="nav-text">27嵌体近中</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#H-10"><span class="nav-number">7.2.1.</span> <span class="nav-text">H&#x3D;10</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#H-12"><span class="nav-number">7.2.2.</span> <span class="nav-text">H&#x3D;12</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#H-12-%E7%AB%96%E7%89%88"><span class="nav-number">7.2.3.</span> <span class="nav-text">H&#x3D;12 (竖版)</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#36%E5%B5%8C%E4%BD%931-%E8%88%8C%E4%BE%A7"><span class="nav-number">7.3.</span> <span class="nav-text">#36嵌体1 舌侧</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#H-9"><span class="nav-number">7.3.1.</span> <span class="nav-text">H&#x3D;9</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#36%E5%B5%8C%E4%BD%93-%E8%BF%9C%E4%B8%AD"><span class="nav-number">7.4.</span> <span class="nav-text">#36嵌体 远中</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#H-11"><span class="nav-number">7.4.1.</span> <span class="nav-text">H&#x3D;11</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#H-12-1"><span class="nav-number">7.4.2.</span> <span class="nav-text">H&#x3D;12</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#11%E6%9C%8815%E6%97%A5%EF%BC%88%E4%BC%9A%E8%AE%AE%E8%AE%A8%E8%AE%BA%EF%BC%89"><span class="nav-number">8.</span> <span class="nav-text">11月15日（会议讨论）</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1%E3%80%81%E5%9C%A8%E8%AE%AD%E7%BB%83%E4%B8%AD%E5%88%86%E6%9E%90%E6%B7%B1%E5%BA%A6%E5%9B%BE%E5%AF%B9%E6%A8%A1%E5%9E%8B%E7%9A%84%E5%BD%B1%E5%93%8D%EF%BC%8C%E6%B7%B1%E5%BA%A6%E5%9B%BE%E9%9C%80%E8%A6%81%E5%A4%A7%E9%87%8F%E8%AF%95%E9%94%99%E6%89%8D%E8%83%BD%E7%A1%AE%E5%AE%9A%EF%BC%9B"><span class="nav-number">8.1.</span> <span class="nav-text">1、在训练中分析深度图对模型的影响，深度图需要大量试错才能确定；</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2%E3%80%81%E6%95%B0%E6%8D%AE%E8%BE%93%E5%85%A5%E5%BD%B1%E5%93%8D%EF%BC%9B"><span class="nav-number">8.2.</span> <span class="nav-text">2、数据输入影响；</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3%E3%80%81%E7%A1%AE%E5%AE%9A%E4%BB%A5%E4%B8%8A%E4%B8%A4%E4%B8%AA%EF%BC%8C%E6%89%8D%E8%83%BD%E6%89%BE%E5%88%B0%E5%90%88%E9%80%82%E7%9A%84%E6%B7%B1%E5%BA%A6%E5%9B%BE%E5%8F%82%E6%95%B0%EF%BC%8C%E6%89%8D%E8%83%BD%E5%AF%B9%E8%AE%AD%E7%BB%83%E6%A8%A1%E5%9E%8B%E8%BF%9B%E4%B8%80%E6%AD%A5%E6%94%B9%E8%BF%9B%EF%BC%9B"><span class="nav-number">8.3.</span> <span class="nav-text">3、确定以上两个，才能找到合适的深度图参数，才能对训练模型进一步改进；</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="SindreYang"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">SindreYang</p>
+  <div class="site-description" itemprop="description">沉淀后我愿意做一个温暖的人。有自己的喜好，有自己的原则，有自己的信仰，不急功近利，不浮夸轻薄，宠辱不惊，淡定安逸，心静如水。------不忘初心，方得始终</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">321</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">72</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL1NpbmRyZVlhbmc=" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;SindreYang"><i class="fa fa-fw fa-github"></i>GitHub</span>
+      </span>
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="bWFpbHRvOnl4QG12aWFpLmNvbQ==" title="E-Mail → mailto:yx@mviai.com"><i class="fa fa-fw fa-envelope"></i>E-Mail</span>
+      </span>
+  </div>
+  <div class="cc-license motion-element" itemprop="license">
+    <span class="exturl cc-opacity" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC9kZWVkLnpo"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+  <div class="languages">
+    <label class="lang-select-label">
+      <i class="fa fa-language"></i>
+      <span>简体中文</span>
+      <i class="fa fa-angle-up" aria-hidden="true"></i>
+    </label>
+    <select class="lang-select" data-canonical="">
+      
+        <option value="zh-CN" data-href="/2025/3D%E5%B5%8C%E4%BD%93%E4%BF%AE%E5%A4%8D-%E5%BD%93%E5%89%8D%E9%97%AE%E9%A2%98%E8%BF%AD%E4%BB%A3/" selected="">
+          简体中文
+        </option>
+      
+        <option value="en" data-href="/en/2025/3D%E5%B5%8C%E4%BD%93%E4%BF%AE%E5%A4%8D-%E5%BD%93%E5%89%8D%E9%97%AE%E9%A2%98%E8%BF%AD%E4%BB%A3/" selected="">
+          English
+        </option>
+      
+    </select>
+  </div>
+
+        
+
+<div class="copyright">
+  
+  &copy; 2018 – 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">SindreYang</span>
+</div><!-- 页面点击小红心 -->
+<script type="text/javascript" src="/js/love.js"></script>
+<!-- 背景波浪 -->
+<script color="0,0,255" opacity="0.5" zIndex="-1" count="99" src="https://cdn.jsdelivr.net/npm/canvas-nest.js@1/dist/canvas-nest.js"></script>
+
+
+<!-- 腾讯企业邮箱 -->
+<style>
+.bizmail_loginpanel {
+    font-size: 12px;
+    width: 300px;
+    height: auto;
+    background: transparent;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.bizmail_LoginBox {
+    padding: 10px 15px;
+}
+
+
+.bizmail_loginpanel form {
+    margin: 0;
+    padding: 0;
+}
+
+.bizmail_loginpanel input.text {
+    font-size: 12px;
+    width: 100px;
+    height: 20px;
+    margin: 0 2px;
+    background-color: transparent;
+    border:1px solid transparent;
+    box-shadow: none;
+    color: black;
+}
+
+.bizmail_loginpanel .bizmail_column {
+    height: 28px;
+}
+
+.bizmail_loginpanel .bizmail_column label {
+    display: block;
+    float: left;
+    width: 30px;
+    height: 24px;
+    line-height: 24px;
+    font-size: 12px;
+}
+
+.bizmail_loginpanel .bizmail_column .bizmail_inputArea {
+    float: left;
+    width: 240px;
+}
+
+.bizmail_loginpanel .bizmail_column span {
+    font-size: 12px;
+    word-wrap: break-word;
+    margin-left: 2px;
+    line-height: 200%;
+}
+
+.bizmail_loginpanel .bizmail_SubmitArea {
+    margin-left: 30px;
+    clear: both;
+}
+
+.bizmail_loginpanel .bizmail_SubmitArea a {
+    font-size: 12px;
+    margin-left: 5px;
+}
+
+.bizmail_loginpanel select {
+    width: 110px;
+    height: 20px;
+    margin: 0 2px;
+}
+.bizmail_loginpanel input {
+
+    background-color: rgba(83, 126, 236, 0.562);
+}
+
+
+</style>
+
+<script type="text/javascript">
+function checkInput() {
+    var e = document.form1.uin,
+        i = document.form1.pwd;
+    return 0 == e.value.length ? e.focus() : 0 == i.value.length ? i.focus() : (document.form1.submit(), setTimeout(" document.form1.pwd.value = '' ", 500)), !1
+}
+
+function writeLoginPanel(e) {
+    if (e && e.domainlist && -1 != e.domainlist.indexOf(".")) {
+        var a = "return checkInput()",
+            t = '<div id="divLoginpanelHor" class="bizmail_loginpanel" style="width:550px;"><div class="bizmail_LoginBox"><form name="form1" action="https://exmail.qq.com/cgi-bin/login" target="_blank" method="post" onsubmit="' + a + '"><input type="hidden" name="firstlogin" value="false" /><input type="hidden" name="errtemplate" value="dm_loginpage" /><input type="hidden" name="aliastype" value="other" /><input type="hidden" name="dmtype" value="bizmail" /><input type="hidden" name="p" value="" /><label>\u8d26\u53f7:</label><input type="text" name="uin" class="text" value="" />@#domainlist#<label>&nbsp&nbsp&nbsp;\u5bc6\u7801:</label><input type="password" name="pwd" class="text" value="" /><input type="submit" class="" name="" value="\u767b\u5f55" />&nbsp;<a href="https://exmail.qq.com/cgi-bin/readtemplate?check=false&t=biz_rf_portal#recovery" target="_blank">\u5fd8\u8bb0\u5bc6\u7801\uff1f</a></form></div></div>',
+            n = '<div id="divLoginpanelVer" class="bizmail_loginpanel"><div class="bizmail_LoginBox"><form name="form1" action="https://exmail.qq.com/cgi-bin/login" target="_blank" method="post" onsubmit="' + a + '"><input type="hidden" name="firstlogin" value="false" /><input type="hidden" name="errtemplate" value="dm_loginpage" /><input type="hidden" name="aliastype" value="other" /><input type="hidden" name="dmtype" value="bizmail" /><input type="hidden" name="p" value="" /><div class="bizmail_column"><label>\u8d26\u53f7:</label><div class="bizmail_inputArea"><input type="text" name="uin" class="text" value="" />@#domainlist#</div></div><div class="bizmail_column"><label>\u5bc6\u7801:</label><div class="bizmail_inputArea"><input type="password" name="pwd" class="text" value="" /></div></div><div class="bizmail_SubmitArea"><input type="submit" class="" name="" style="width:66px;" value="\u767b\u5f55" /><a href="https://exmail.qq.com/cgi-bin/readtemplate?check=false&t=biz_rf_portal#recovery" target="_blank">\u5fd8\u8bb0\u5bc6\u7801\uff1f</a></div></form></div></div>',
+            l = e.domainlist.split(";");
+        if (1 == l.length) var m = '<span>#domain#</span><input type="hidden" name="domain" value="#domain#" />'.replace(/#domain#/g, l[0]);
+        else {
+            m = '<select name="domain">';
+            for (i = 0; i < l.length; i++) m += '<option value="' + l[i] + '">' + l[i] + "</option>";
+            m += "</select>"
+        }
+        e.mode && "vertical" != e.mode && "both" != e.mode || document.write(n.replace(/#domainlist#/g, m)), "horizontal" != e.mode && "both" != e.mode || document.write(t.replace(/#domainlist#/g, m))
+    }
+}
+
+</script>      
+
+<script type="text/javascript"> writeLoginPanel({domainlist:"mviai.com", mode:"horizontal"});</script>      
+
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script size="300" alpha="0.6" zIndex="-1" src="/lib/canvas-ribbon/canvas-ribbon.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/medium-zoom@1/dist/medium-zoom.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+  <script defer src="/lib/three/three.min.js"></script>
+    <script defer src="/lib/three/three-waves.min.js"></script>
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+<script>
+document.querySelectorAll('.pdfobject-container').forEach(element => {
+  let url = element.dataset.target;
+  let pdfOpenParams = {
+    navpanes : 0,
+    toolbar  : 0,
+    statusbar: 0,
+    pagemode : 'thumbs',
+    view     : 'FitH'
+  };
+  let pdfOpenFragment = '#' + Object.entries(pdfOpenParams).map(([key, value]) => `${key}=${encodeURIComponent(value)}`).join('&');
+  let fullURL = `/lib/pdf/web/viewer.html?file=${encodeURIComponent(url)}${pdfOpenFragment}`;
+
+  if (NexT.utils.supportsPDFs()) {
+    element.innerHTML = `<embed class="pdfobject" src="${url + pdfOpenFragment}" type="application/pdf" style="height: ${element.dataset.height};">`;
+  } else {
+    element.innerHTML = `<iframe src="${fullURL}" style="height: ${element.dataset.height};" frameborder="0"></iframe>`;
+  }
+});
+</script>
+
+
+
+
+  
+
+  
+
+  <script>
+  NexT.utils.loadComments(document.querySelector('#SOHUCS'), () => {
+    var appid = 'cyxmItxjS';
+    var conf = 'e5e71132d9086bb54aeeba6e88e87df9';
+    var width = window.innerWidth || document.documentElement.clientWidth;
+    if (width < 960) {
+      window.document.write('<script id="changyan_mobile_js" charset="utf-8" type="text/javascript" src="https://cy-cdn.kuaizhan.com/upload/mobile/wap-js/changyan_mobile.js?client_id=' + appid + '&conf=' + conf + '"><\/script>');
+    } else {
+      var loadJs=function(d,a){var c=document.getElementsByTagName("head")[0]||document.head||document.documentElement;var b=document.createElement("script");b.setAttribute("type","text/javascript");b.setAttribute("charset","UTF-8");b.setAttribute("src",d);if(typeof a==="function"){if(window.attachEvent){b.onreadystatechange=function(){var e=b.readyState;if(e==="loaded"||e==="complete"){b.onreadystatechange=null;a()}}}else{b.onload=a}}c.appendChild(b)};loadJs("https://changyan.sohu.com/upload/changyan.js",function(){window.changyan.api.config({appid:appid,conf:conf})});
+    }
+  });
+  </script>
+  <script src="https://cy-cdn.kuaizhan.com/upload/plugins/plugins.count.js"></script>
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/z16.model.json"},"display":{"position":"left","width":75,"height":150},"mobile":{"show":true},"log":false});</script></body>
+</html>
+
+
+
+

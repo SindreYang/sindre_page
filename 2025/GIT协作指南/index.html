@@ -1,0 +1,826 @@
+<!DOCTYPE html>
+<html lang="zh-CN,en,default">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" href="/lib/pace/pace-theme-minimal.min.css">
+  <script src="/lib/pace/pace.min.js"></script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"blog.mviai.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":true,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":true,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="自动摘要: 	Git使用规范		团队开发中，遵循一个合理、清晰的Git使用流程，是非常重要的。			Sec01工作流指南			分支分类		历史分支master:存储了正式发布的历史,为 ……..">
+<meta property="og:type" content="article">
+<meta property="og:title" content="GIT协作指南">
+<meta property="og:url" content="http://blog.mviai.com/2025/GIT%E5%8D%8F%E4%BD%9C%E6%8C%87%E5%8D%97/index.html">
+<meta property="og:site_name" content="落叶无痕">
+<meta property="og:description" content="自动摘要: 	Git使用规范		团队开发中，遵循一个合理、清晰的Git使用流程，是非常重要的。			Sec01工作流指南			分支分类		历史分支master:存储了正式发布的历史,为 ……..">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://blog.mviai.com/images/1634033637434-b7303367-d757-4b5e-881f-ea3bb9afe406.webp">
+<meta property="og:image" content="http://blog.mviai.com/images/1634033659743-e472c1a5-f706-4572-ba8d-35def8d79b65.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1634033673151-928e54ee-d04f-46a5-a159-a5e933131c3a.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1634033726923-ca8a5deb-80c9-4b40-b637-6a77804641cc.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1634033856668-05e88f54-07fb-4a63-a127-616acc816fa9.png">
+<meta property="article:published_time" content="2025-01-22T04:37:41.000Z">
+<meta property="article:modified_time" content="2025-01-22T12:37:41.529Z">
+<meta property="article:author" content="SindreYang">
+<meta property="article:tag" content="生活">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://blog.mviai.com/images/1634033637434-b7303367-d757-4b5e-881f-ea3bb9afe406.webp">
+
+<link rel="canonical" href="http://blog.mviai.com/2025/GIT%E5%8D%8F%E4%BD%9C%E6%8C%87%E5%8D%97/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>GIT协作指南 | 落叶无痕</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">落叶无痕</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类<span class="badge">72</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档<span class="badge">321</span></a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+  <span class="exturl github-corner" data-url="aHR0cHM6Ly9naXRodWIuY29tL1NpbmRyZVlhbmc=" title="Follow me on GitHub" aria-label="Follow me on GitHub"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></span>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://blog.mviai.com/2025/GIT%E5%8D%8F%E4%BD%9C%E6%8C%87%E5%8D%97/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="SindreYang">
+      <meta itemprop="description" content="沉淀后我愿意做一个温暖的人。有自己的喜好，有自己的原则，有自己的信仰，不急功近利，不浮夸轻薄，宠辱不惊，淡定安逸，心静如水。------不忘初心，方得始终">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="落叶无痕">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          GIT协作指南
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2025-01-22 12:37:41 / 修改时间：20:37:41" itemprop="dateCreated datePublished" datetime="2025-01-22T12:37:41+08:00">2025-01-22</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Git%E6%93%8D%E4%BD%9C%E8%A7%84%E8%8C%83/" itemprop="url" rel="index"><span itemprop="name">Git操作规范</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">Changyan：</span>
+    
+    
+      <a title="changyan" href="/2025/GIT%E5%8D%8F%E4%BD%9C%E6%8C%87%E5%8D%97/#SOHUCS" itemprop="discussionUrl">
+        <span id="changyan_count_unit" class="post-comments-count hc-comment-count" data-xid="2025/GIT协作指南/" itemprop="commentCount"></span>
+      </a>
+    
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>自动摘要: 	Git使用规范		团队开发中，遵循一个合理、清晰的Git使用流程，是非常重要的。			Sec01工作流指南			分支分类		历史分支master:存储了正式发布的历史,为 ……..</p>
+<span id="more"></span>
+
+<h1 id="Git-使用规范"><a href="#Git-使用规范" class="headerlink" title="Git 使用规范"></a>Git 使用规范</h1><p>团队开发中，遵循一个合理、清晰的Git使用流程，是非常重要的。</p>
+<h2 id="Sec01-工作流指南"><a href="#Sec01-工作流指南" class="headerlink" title="Sec01 工作流指南"></a>Sec01 工作流指南</h2><h3 id="分支分类"><a href="#分支分类" class="headerlink" title="分支分类"></a>分支分类</h3><ul>
+<li>历史分支master: 存储了正式发布的历史,为主分支(保护分支)，不能直接在master上进行修改代码和提交;develop:作为功能的集成分支,开发完成需要提交测试的功能合并到该分支;</li>
+<li>功能分支feature: 大家根据不同需求创建独立的功能分支，开发完成后合并到develop分支；</li>
+<li>发布分支release: 发布分支，主要用于测试或修复bug。</li>
+<li>维护分支hotfix: 为bug修复分支，需要根据实际情况对已发布的版本进行漏洞修复，必须从master拉取；</li>
+</ul>
+<h3 id="流程图解"><a href="#流程图解" class="headerlink" title="流程图解"></a>流程图解</h3><p>img<img src="/images/1634033637434-b7303367-d757-4b5e-881f-ea3bb9afe406.webp"></p>
+<h2 id="Sec02-命名规范"><a href="#Sec02-命名规范" class="headerlink" title="Sec02 命名规范"></a>Sec02 命名规范</h2><h3 id="分支命名"><a href="#分支命名" class="headerlink" title="分支命名"></a>分支命名</h3><ul>
+<li>功能分支： feature&#x2F;功能名称</li>
+<li>发布分支：release&#x2F;版本号-功能名称-发布日期</li>
+<li>维护分支：hotfix&#x2F;“版本号-问题概述”或”issueid-日期”  (最好使用issue建立问题描述)</li>
+</ul>
+<p>示例： release&#x2F;转投优化-20181111</p>
+<h3 id="常见问题"><a href="#常见问题" class="headerlink" title="常见问题"></a>常见问题</h3><h4 id="分支管理策略"><a href="#分支管理策略" class="headerlink" title="分支管理策略"></a>分支管理策略</h4><h5 id="1-develop为集成开发分支"><a href="#1-develop为集成开发分支" class="headerlink" title="1. develop为集成开发分支"></a>1. develop为集成开发分支</h5><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">提交规则： </span><br><span class="line">自己分支自测完毕；</span><br><span class="line">review通过再合并；</span><br></pre></td></tr></table></figure>
+
+
+<h5 id="2-本地分支管理"><a href="#2-本地分支管理" class="headerlink" title="2. 本地分支管理"></a>2. 本地分支管理</h5><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">本地分支必须从**线上版本节点**checkout();</span><br><span class="line">本地分支要做到勤提交，分小功能提交；</span><br><span class="line">一个功能点一个分支(自己控制)，至少保证保留两个分支：新版本分支、优化分支；</span><br><span class="line">本地分支merge到develop分支时，必须先merge develop到本地分支，自测通过再提交；</span><br></pre></td></tr></table></figure>
+
+
+<h5 id="3-注意事项"><a href="#3-注意事项" class="headerlink" title="3. 注意事项"></a>3. 注意事项</h5><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">开发者相同版本尽量不要修改相同功能，提前划分或协商清楚；</span><br><span class="line">如果修改代码涉及多人功能，提交完毕请及时告知相关人员；</span><br><span class="line">开发者每天更新develop分支内容到本地分支，避免大规模merge; </span><br><span class="line">fixbug分支修改测试完，立即合并到develop上！</span><br></pre></td></tr></table></figure>
+
+
+<h3 id="分支提交流程"><a href="#分支提交流程" class="headerlink" title="分支提交流程"></a>分支提交流程</h3><p>建议使用GitHub Desktop 软件完成以下工作。</p>
+<h4 id="第一步：新建分支"><a href="#第一步：新建分支" class="headerlink" title="第一步：新建分支"></a>第一步：新建分支</h4><p>首先，每次开发新功能，都应该新建一个单独的分支（详情参考<span class="exturl" data-url="aHR0cHM6Ly93d3cucnVhbnlpZmVuZy5jb20vYmxvZy8yMDEyLzA3L2dpdC5odG1s" title="https://www.ruanyifeng.com/blog/2012/07/git.html">《Git分支管理策略》<i class="fa fa-external-link"></i></span>）。<img src="/images/1634033659743-e472c1a5-f706-4572-ba8d-35def8d79b65.png"></p>
+<h4 id="第二步：提交分支commit"><a href="#第二步：提交分支commit" class="headerlink" title="第二步：提交分支commit"></a>第二步：提交分支commit</h4><p>分支修改后，就可以提交commit了。</p>
+<p><img src="/images/1634033673151-928e54ee-d04f-46a5-a159-a5e933131c3a.png"></p>
+<h4 id="第三步：撰写提交信息"><a href="#第三步：撰写提交信息" class="headerlink" title="第三步：撰写提交信息"></a>第三步：撰写提交信息</h4><p>提交commit时，必须给出完整扼要的提交信息。（详情参考Sec03）</p>
+<p>第一行是不超过50个字的提要，然后空一行，罗列出改动原因、主要变动、以及需要注意的问题。最后，提供对应的网址（比如Bug ticket）。</p>
+<h4 id="第四步：与主干同步"><a href="#第四步：与主干同步" class="headerlink" title="第四步：与主干同步"></a>第四步：与主干同步</h4><p>分支的开发过程中，要经常与主干保持同步。</p>
+<p><img src="/images/1634033726923-ca8a5deb-80c9-4b40-b637-6a77804641cc.png"></p>
+<h4 id="第五步：合并commit"><a href="#第五步：合并commit" class="headerlink" title="第五步：合并commit"></a>第五步：合并commit</h4><p>分支开发完成后，很可能有一堆commit，但是合并到主干的时候，往往希望只有一个（或最多两三个）commit，这样不仅清晰，也容易管理。</p>
+<p>那么，怎样才能将多个commit合并呢？这就要用到 git rebase 命令。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git rebase -i origin/master</span><br></pre></td></tr></table></figure>
+
+<p>git rebase命令的i参数表示互动（interactive），这时git会打开一个互动界面，进行下一步操作。互动界面，先列出当前分支最新的几个commit（越下面越新）。每个commit前面有一个操作命令，默认是pick，表示该行commit被选中，要进行rebase操作。</p>
+<p>详情参考<span class="exturl" data-url="aHR0cHM6Ly9yb2JvdHMudGhvdWdodGJvdC5jb20vZ2l0LWludGVyYWN0aXZlLXJlYmFzZS1zcXVhc2gtYW1lbmQtcmV3cml0aW5nLWhpc3Rvcnk=" title="https://robots.thoughtbot.com/git-interactive-rebase-squash-amend-rewriting-history">Tute Costa<i class="fa fa-external-link"></i></span>的例子，来解释怎么合并commit。</p>
+<p>commit的下面是一大堆注释，列出可以使用的命令。</p>
+<blockquote>
+<ul>
+<li>pick：正常选中</li>
+<li>reword：选中，并且修改提交信息；</li>
+<li>edit：选中，rebase时会暂停，允许你修改这个commit（参考<span class="exturl" data-url="aHR0cHM6Ly9zY2hhY29uLmdpdGh1Yi5pby9naXRib29rLzRfaW50ZXJhY3RpdmVfcmViYXNpbmcuaHRtbA==" title="https://schacon.github.io/gitbook/4_interactive_rebasing.html">这里<i class="fa fa-external-link"></i></span>）</li>
+<li>squash：选中，会将当前commit与上一个commit合并</li>
+<li>fixup：与squash相同，但不会保存当前commit的提交信息</li>
+<li>exec：执行其他shell命令</li>
+</ul>
+</blockquote>
+<p>上面这6个命令当中，squash和fixup可以用来合并commit。先把需要合并的commit前面的动词，改成squash（或者s）。</p>
+<p><span class="exturl" data-url="aHR0cHM6Ly9wb255Zm9vLmNvbS9hcnRpY2xlcy9naXQtZ2l0aHViLWhhY2tz" title="https://ponyfoo.com/articles/git-github-hacks">Pony Foo<i class="fa fa-external-link"></i></span>提出另外一种合并commit的简便方法，就是先撤销过去5个commit，然后再建一个新的。这个用法请参考<span class="exturl" data-url="aHR0cHM6Ly9mbGUuZ2l0aHViLmlvL2dpdC10aXAta2VlcC15b3VyLWJyYW5jaC1jbGVhbi13aXRoLWZpeHVwLWFuZC1hdXRvc3F1YXNoLmh0bWw=" title="https://fle.github.io/git-tip-keep-your-branch-clean-with-fixup-and-autosquash.html">这篇文章<i class="fa fa-external-link"></i></span>，这里就不解释了。</p>
+<h4 id="第六步：推送到远程仓库"><a href="#第六步：推送到远程仓库" class="headerlink" title="第六步：推送到远程仓库"></a>第六步：推送到远程仓库</h4><p>合并commit后，就可以推送当前分支到远程仓库了。<img src="/images/1634033856668-05e88f54-07fb-4a63-a127-616acc816fa9.png"><br>git push命令要加上force参数，因为rebase以后，分支历史改变了，跟远程分支不一定兼容，有可能要强行推送（参见<span class="exturl" data-url="aHR0cDovL3dpbGxpLmFtL2Jsb2cvMjAxNC8wOC8xMi90aGUtZGFyay1zaWRlLW9mLXRoZS1mb3JjZS1wdXNoLw==" title="http://willi.am/blog/2014/08/12/the-dark-side-of-the-force-push/">这里<i class="fa fa-external-link"></i></span>）。</p>
+<h4 id="第七步：发出Pull-Request"><a href="#第七步：发出Pull-Request" class="headerlink" title="第七步：发出Pull Request"></a>第七步：发出Pull Request</h4><p>提交到远程仓库以后，就可以发出 Pull Request 到master分支，然后请求别人进行代码review，确认可以合并到master。</p>
+<h2 id="Sec03-提交规范"><a href="#Sec03-提交规范" class="headerlink" title="Sec03 提交规范"></a>Sec03 提交规范</h2><h3 id="Commit"><a href="#Commit" class="headerlink" title="Commit"></a>Commit</h3><p>Commit message一般包括三部分：Header、Body和Footer。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;header&gt;</span><br><span class="line">&lt;BLANK LINE&gt;</span><br><span class="line">&lt;body&gt;</span><br><span class="line">&lt;BLANK LINE&gt;</span><br><span class="line">&lt;footer&gt;</span><br></pre></td></tr></table></figure>
+
+
+<h4 id="Header"><a href="#Header" class="headerlink" title="Header"></a>Header</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;type&gt;(&lt;scope&gt;): &lt;subject&gt;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>type（类型）：用于说明commit的类别，规定为如下几种 <ul>
+<li>feature：新增功能；</li>
+<li>fix：修复bug；</li>
+<li>docs：修改文档；</li>
+<li>refactor：代码重构，未新增任何功能和修复任何bug；</li>
+<li>build：改变构建流程，新增依赖库、工具等（例如webpack修改）；</li>
+<li>style：仅仅修改了空格、缩进等，不改变代码逻辑；</li>
+<li>perf：改善性能和体现的修改；</li>
+<li>chore：非src和test的修改；</li>
+<li>test：测试用例的修改；</li>
+<li>ci：自动化流程配置修改；</li>
+<li>revert：回滚到上一个版本；</li>
+</ul>
+</li>
+<li>scope（范围）：【可选】用于对 commit 提供补充说明，应该为阅读提交日志或者发行版本说明中的提交日志的人有用。例如：修复了”authors blurb”中的某些内容，那么以”authors”作为”scope”是合适的。如果你修改了”landing page”的工作方式，那么使用”landing  page”或者”home”作为”scope”才合适。</li>
+<li>subject（主题）：commit的简要说明，尽量简短，遵循以下准则 <ul>
+<li>描述做的内容，不描述做的状态。即：“修改README”，而不是“README修改完成”</li>
+<li>行尾不需要添加标点符号</li>
+</ul>
+</li>
+</ul>
+<h4 id="Revert-Commits"><a href="#Revert-Commits" class="headerlink" title="Revert Commits"></a>Revert Commits</h4><p>如果想恢复前一个提交，必须使用 <code>revert</code> 类型，后面与被恢复的提交的“Header”相同。提交的主体必须使用正文开始： <code>This reverts commit &lt;hash&gt;.</code>，其中的“hash”是被恢复的提交的 SHA。</p>
+<h4 id="Body"><a href="#Body" class="headerlink" title="Body"></a>Body</h4><p>对本次commit的详细描述，可分多行。遵循以下规则</p>
+<ul>
+<li>描述做的内容，不描述做的状态。即：“修改README”，而不是“README修改完成”</li>
+<li>与前面的行为相比你的修改动机</li>
+</ul>
+<h4 id="Footer"><a href="#Footer" class="headerlink" title="Footer"></a>Footer</h4><p>不兼容变动：需要描述相关信息如果修复了某个Issue的问题，使用“Closes”关键字</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Closes #234</span><br></pre></td></tr></table></figure>
+
+<p>如果需要关闭多个Issue，使用逗号分隔Issue的编号</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Closes #123, #234, #345</span><br></pre></td></tr></table></figure>
+
+<p>如果对某个Issue有影响，但是没有完全修复，使用“Updates”关键字</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Updates #234</span><br></pre></td></tr></table></figure>
+
+
+<h4 id="正确的-Message-格式示例"><a href="#正确的-Message-格式示例" class="headerlink" title="正确的 Message 格式示例"></a>正确的 Message 格式示例</h4><p>New Features</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">feat(monetization): add BestAzon support</span><br><span class="line">feat(Chinese): add better font support for Chinese language</span><br><span class="line">feat(footer): make external links Nofollow</span><br></pre></td></tr></table></figure>
+
+<p>Fixes</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">fix(reST): indents in line blocks is not preserved</span><br><span class="line">fix(gist): embedded Github gist are not laid out correctly</span><br></pre></td></tr></table></figure>
+
+<p>Documentation</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">docs(add): metadata variables</span><br><span class="line">docs(add): release notes for 3.0.0</span><br><span class="line">docs(update): change category of reading-time article</span><br><span class="line">docs(update): set author information</span><br></pre></td></tr></table></figure>
+
+<p>其他杂项</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">chore(livereload): use es2015 syntax for gulp configuration</span><br><span class="line">ci(docs): use sitemap plugin in production only</span><br><span class="line">ci(docs): add default tasks.py file</span><br><span class="line">refactor: move Google and Bing claims to their individual files</span><br></pre></td></tr></table></figure>
+
+
+<h3 id="Merge"><a href="#Merge" class="headerlink" title="Merge"></a>Merge</h3><p>代码合并、master分支操作，请在 git 上提交 merge request,负责人进行代码review后，才能同意合并操作。</p>
+<h3 id="Tag-Version"><a href="#Tag-Version" class="headerlink" title="Tag(Version)"></a>Tag(Version)</h3><p>采用三段式，v版本.里程碑.序号，如v1.2.1</p>
+<ul>
+<li>架构升级或架构重大调整，修改第2位</li>
+<li>新功能上线或者模块大的调整，修改第2位</li>
+<li>bug修复上线，修改第3位</li>
+</ul>
+<h1 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h1><p><span class="exturl" data-url="aHR0cDovL3d3dy5ydWFueWlmZW5nLmNvbS9ibG9nLzIwMTUvMDgvZ2l0LXVzZS1wcm9jZXNzLmh0bWw=" title="http://www.ruanyifeng.com/blog/2015/08/git-use-process.html">Git 使用规范流程<i class="fa fa-external-link"></i></span></p>
+<p><span class="exturl" data-url="aHR0cHM6Ly93d3cucnVhbnlpZmVuZy5jb20vYmxvZy8yMDEyLzA3L2dpdC5odG1s" title="https://www.ruanyifeng.com/blog/2012/07/git.html">Git 分支管理策略<i class="fa fa-external-link"></i></span></p>
+<p><span class="exturl" data-url="aHR0cHM6Ly9lbGVnYW50Lm9uY3Jhc2hyZWJvb3QuY29tL2dpdC1jb21taXQtZ3VpZGVsaW5lcyNoZWFkZXI=" title="https://elegant.oncrashreboot.com/git-commit-guidelines#header">Git Commit Guidelines<i class="fa fa-external-link"></i></span></p>
+<p><span class="exturl" data-url="aHR0cHM6Ly9jaHJpcy5iZWFtcy5pby9wb3N0cy9naXQtY29tbWl0Lw==" title="https://chris.beams.io/posts/git-commit/">How to Write a Git Commit Message<i class="fa fa-external-link"></i></span></p>
+
+    </div>
+
+    
+    
+    
+        <div class="reward-container">
+  <div></div>
+  <button onclick="var qr = document.getElementById('qr'); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/images/wechatpay.png" alt="SindreYang 微信支付">
+        <p>微信支付</p>
+      </div>
+      
+      <div style="display: inline-block;">
+        <img src="/images/alipay.png" alt="SindreYang 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>SindreYang
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://blog.mviai.com/2025/GIT%E5%8D%8F%E4%BD%9C%E6%8C%87%E5%8D%97/" title="GIT协作指南">http://blog.mviai.com/2025/GIT协作指南/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <span class="exturl" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC9kZWVkLnpo"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</span> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+        
+
+  <div class="followme">
+    <p>欢迎关注我的其它发布渠道</p>
+
+    <div class="social-list">
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="/images/wechat.png">
+            <span class="icon">
+              <i class="fa fa-wechat"></i>
+            </span>
+
+            <span class="label">WeChat</span>
+          </a>
+        </div>
+    </div>
+  </div>
+
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2025/Git_%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4%E5%A4%A7%E5%85%A8/" rel="prev" title="Git_常用命令大全">
+      <i class="fa fa-chevron-left"></i> Git_常用命令大全
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2025/CAM%E6%96%99%E7%9B%98%E6%9C%80%E4%BC%98%E6%8E%92%E7%89%88%E9%9C%80%E6%B1%82V1.2.0/" rel="next" title="CAM料盘最优排版需求V1">
+      CAM料盘最优排版需求V1 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    
+  <div class="comments">
+    <div id="SOHUCS"></div>
+  </div>
+  
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Git-%E4%BD%BF%E7%94%A8%E8%A7%84%E8%8C%83"><span class="nav-number">1.</span> <span class="nav-text">Git 使用规范</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Sec01-%E5%B7%A5%E4%BD%9C%E6%B5%81%E6%8C%87%E5%8D%97"><span class="nav-number">1.1.</span> <span class="nav-text">Sec01 工作流指南</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%86%E6%94%AF%E5%88%86%E7%B1%BB"><span class="nav-number">1.1.1.</span> <span class="nav-text">分支分类</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B5%81%E7%A8%8B%E5%9B%BE%E8%A7%A3"><span class="nav-number">1.1.2.</span> <span class="nav-text">流程图解</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Sec02-%E5%91%BD%E5%90%8D%E8%A7%84%E8%8C%83"><span class="nav-number">1.2.</span> <span class="nav-text">Sec02 命名规范</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%86%E6%94%AF%E5%91%BD%E5%90%8D"><span class="nav-number">1.2.1.</span> <span class="nav-text">分支命名</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98"><span class="nav-number">1.2.2.</span> <span class="nav-text">常见问题</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%88%86%E6%94%AF%E7%AE%A1%E7%90%86%E7%AD%96%E7%95%A5"><span class="nav-number">1.2.2.1.</span> <span class="nav-text">分支管理策略</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1-develop%E4%B8%BA%E9%9B%86%E6%88%90%E5%BC%80%E5%8F%91%E5%88%86%E6%94%AF"><span class="nav-number">1.2.2.1.1.</span> <span class="nav-text">1. develop为集成开发分支</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-%E6%9C%AC%E5%9C%B0%E5%88%86%E6%94%AF%E7%AE%A1%E7%90%86"><span class="nav-number">1.2.2.1.2.</span> <span class="nav-text">2. 本地分支管理</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3-%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9"><span class="nav-number">1.2.2.1.3.</span> <span class="nav-text">3. 注意事项</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%86%E6%94%AF%E6%8F%90%E4%BA%A4%E6%B5%81%E7%A8%8B"><span class="nav-number">1.2.3.</span> <span class="nav-text">分支提交流程</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%AC%AC%E4%B8%80%E6%AD%A5%EF%BC%9A%E6%96%B0%E5%BB%BA%E5%88%86%E6%94%AF"><span class="nav-number">1.2.3.1.</span> <span class="nav-text">第一步：新建分支</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%AC%AC%E4%BA%8C%E6%AD%A5%EF%BC%9A%E6%8F%90%E4%BA%A4%E5%88%86%E6%94%AFcommit"><span class="nav-number">1.2.3.2.</span> <span class="nav-text">第二步：提交分支commit</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%AC%AC%E4%B8%89%E6%AD%A5%EF%BC%9A%E6%92%B0%E5%86%99%E6%8F%90%E4%BA%A4%E4%BF%A1%E6%81%AF"><span class="nav-number">1.2.3.3.</span> <span class="nav-text">第三步：撰写提交信息</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%AC%AC%E5%9B%9B%E6%AD%A5%EF%BC%9A%E4%B8%8E%E4%B8%BB%E5%B9%B2%E5%90%8C%E6%AD%A5"><span class="nav-number">1.2.3.4.</span> <span class="nav-text">第四步：与主干同步</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%AC%AC%E4%BA%94%E6%AD%A5%EF%BC%9A%E5%90%88%E5%B9%B6commit"><span class="nav-number">1.2.3.5.</span> <span class="nav-text">第五步：合并commit</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%AC%AC%E5%85%AD%E6%AD%A5%EF%BC%9A%E6%8E%A8%E9%80%81%E5%88%B0%E8%BF%9C%E7%A8%8B%E4%BB%93%E5%BA%93"><span class="nav-number">1.2.3.6.</span> <span class="nav-text">第六步：推送到远程仓库</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%AC%AC%E4%B8%83%E6%AD%A5%EF%BC%9A%E5%8F%91%E5%87%BAPull-Request"><span class="nav-number">1.2.3.7.</span> <span class="nav-text">第七步：发出Pull Request</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Sec03-%E6%8F%90%E4%BA%A4%E8%A7%84%E8%8C%83"><span class="nav-number">1.3.</span> <span class="nav-text">Sec03 提交规范</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Commit"><span class="nav-number">1.3.1.</span> <span class="nav-text">Commit</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Header"><span class="nav-number">1.3.1.1.</span> <span class="nav-text">Header</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Revert-Commits"><span class="nav-number">1.3.1.2.</span> <span class="nav-text">Revert Commits</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Body"><span class="nav-number">1.3.1.3.</span> <span class="nav-text">Body</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Footer"><span class="nav-number">1.3.1.4.</span> <span class="nav-text">Footer</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%AD%A3%E7%A1%AE%E7%9A%84-Message-%E6%A0%BC%E5%BC%8F%E7%A4%BA%E4%BE%8B"><span class="nav-number">1.3.1.5.</span> <span class="nav-text">正确的 Message 格式示例</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Merge"><span class="nav-number">1.3.2.</span> <span class="nav-text">Merge</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Tag-Version"><span class="nav-number">1.3.3.</span> <span class="nav-text">Tag(Version)</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%8F%82%E8%80%83%E6%96%87%E7%8C%AE"><span class="nav-number">2.</span> <span class="nav-text">参考文献</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="SindreYang"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">SindreYang</p>
+  <div class="site-description" itemprop="description">沉淀后我愿意做一个温暖的人。有自己的喜好，有自己的原则，有自己的信仰，不急功近利，不浮夸轻薄，宠辱不惊，淡定安逸，心静如水。------不忘初心，方得始终</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">321</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">72</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL1NpbmRyZVlhbmc=" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;SindreYang"><i class="fa fa-fw fa-github"></i>GitHub</span>
+      </span>
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="bWFpbHRvOnl4QG12aWFpLmNvbQ==" title="E-Mail → mailto:yx@mviai.com"><i class="fa fa-fw fa-envelope"></i>E-Mail</span>
+      </span>
+  </div>
+  <div class="cc-license motion-element" itemprop="license">
+    <span class="exturl cc-opacity" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC9kZWVkLnpo"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+  <div class="languages">
+    <label class="lang-select-label">
+      <i class="fa fa-language"></i>
+      <span>简体中文</span>
+      <i class="fa fa-angle-up" aria-hidden="true"></i>
+    </label>
+    <select class="lang-select" data-canonical="">
+      
+        <option value="zh-CN" data-href="/2025/GIT%E5%8D%8F%E4%BD%9C%E6%8C%87%E5%8D%97/" selected="">
+          简体中文
+        </option>
+      
+        <option value="en" data-href="/en/2025/GIT%E5%8D%8F%E4%BD%9C%E6%8C%87%E5%8D%97/" selected="">
+          English
+        </option>
+      
+    </select>
+  </div>
+
+        
+
+<div class="copyright">
+  
+  &copy; 2018 – 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">SindreYang</span>
+</div><!-- 页面点击小红心 -->
+<script type="text/javascript" src="/js/love.js"></script>
+<!-- 背景波浪 -->
+<script color="0,0,255" opacity="0.5" zIndex="-1" count="99" src="https://cdn.jsdelivr.net/npm/canvas-nest.js@1/dist/canvas-nest.js"></script>
+
+
+<!-- 腾讯企业邮箱 -->
+<style>
+.bizmail_loginpanel {
+    font-size: 12px;
+    width: 300px;
+    height: auto;
+    background: transparent;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.bizmail_LoginBox {
+    padding: 10px 15px;
+}
+
+
+.bizmail_loginpanel form {
+    margin: 0;
+    padding: 0;
+}
+
+.bizmail_loginpanel input.text {
+    font-size: 12px;
+    width: 100px;
+    height: 20px;
+    margin: 0 2px;
+    background-color: transparent;
+    border:1px solid transparent;
+    box-shadow: none;
+    color: black;
+}
+
+.bizmail_loginpanel .bizmail_column {
+    height: 28px;
+}
+
+.bizmail_loginpanel .bizmail_column label {
+    display: block;
+    float: left;
+    width: 30px;
+    height: 24px;
+    line-height: 24px;
+    font-size: 12px;
+}
+
+.bizmail_loginpanel .bizmail_column .bizmail_inputArea {
+    float: left;
+    width: 240px;
+}
+
+.bizmail_loginpanel .bizmail_column span {
+    font-size: 12px;
+    word-wrap: break-word;
+    margin-left: 2px;
+    line-height: 200%;
+}
+
+.bizmail_loginpanel .bizmail_SubmitArea {
+    margin-left: 30px;
+    clear: both;
+}
+
+.bizmail_loginpanel .bizmail_SubmitArea a {
+    font-size: 12px;
+    margin-left: 5px;
+}
+
+.bizmail_loginpanel select {
+    width: 110px;
+    height: 20px;
+    margin: 0 2px;
+}
+.bizmail_loginpanel input {
+
+    background-color: rgba(83, 126, 236, 0.562);
+}
+
+
+</style>
+
+<script type="text/javascript">
+function checkInput() {
+    var e = document.form1.uin,
+        i = document.form1.pwd;
+    return 0 == e.value.length ? e.focus() : 0 == i.value.length ? i.focus() : (document.form1.submit(), setTimeout(" document.form1.pwd.value = '' ", 500)), !1
+}
+
+function writeLoginPanel(e) {
+    if (e && e.domainlist && -1 != e.domainlist.indexOf(".")) {
+        var a = "return checkInput()",
+            t = '<div id="divLoginpanelHor" class="bizmail_loginpanel" style="width:550px;"><div class="bizmail_LoginBox"><form name="form1" action="https://exmail.qq.com/cgi-bin/login" target="_blank" method="post" onsubmit="' + a + '"><input type="hidden" name="firstlogin" value="false" /><input type="hidden" name="errtemplate" value="dm_loginpage" /><input type="hidden" name="aliastype" value="other" /><input type="hidden" name="dmtype" value="bizmail" /><input type="hidden" name="p" value="" /><label>\u8d26\u53f7:</label><input type="text" name="uin" class="text" value="" />@#domainlist#<label>&nbsp&nbsp&nbsp;\u5bc6\u7801:</label><input type="password" name="pwd" class="text" value="" /><input type="submit" class="" name="" value="\u767b\u5f55" />&nbsp;<a href="https://exmail.qq.com/cgi-bin/readtemplate?check=false&t=biz_rf_portal#recovery" target="_blank">\u5fd8\u8bb0\u5bc6\u7801\uff1f</a></form></div></div>',
+            n = '<div id="divLoginpanelVer" class="bizmail_loginpanel"><div class="bizmail_LoginBox"><form name="form1" action="https://exmail.qq.com/cgi-bin/login" target="_blank" method="post" onsubmit="' + a + '"><input type="hidden" name="firstlogin" value="false" /><input type="hidden" name="errtemplate" value="dm_loginpage" /><input type="hidden" name="aliastype" value="other" /><input type="hidden" name="dmtype" value="bizmail" /><input type="hidden" name="p" value="" /><div class="bizmail_column"><label>\u8d26\u53f7:</label><div class="bizmail_inputArea"><input type="text" name="uin" class="text" value="" />@#domainlist#</div></div><div class="bizmail_column"><label>\u5bc6\u7801:</label><div class="bizmail_inputArea"><input type="password" name="pwd" class="text" value="" /></div></div><div class="bizmail_SubmitArea"><input type="submit" class="" name="" style="width:66px;" value="\u767b\u5f55" /><a href="https://exmail.qq.com/cgi-bin/readtemplate?check=false&t=biz_rf_portal#recovery" target="_blank">\u5fd8\u8bb0\u5bc6\u7801\uff1f</a></div></form></div></div>',
+            l = e.domainlist.split(";");
+        if (1 == l.length) var m = '<span>#domain#</span><input type="hidden" name="domain" value="#domain#" />'.replace(/#domain#/g, l[0]);
+        else {
+            m = '<select name="domain">';
+            for (i = 0; i < l.length; i++) m += '<option value="' + l[i] + '">' + l[i] + "</option>";
+            m += "</select>"
+        }
+        e.mode && "vertical" != e.mode && "both" != e.mode || document.write(n.replace(/#domainlist#/g, m)), "horizontal" != e.mode && "both" != e.mode || document.write(t.replace(/#domainlist#/g, m))
+    }
+}
+
+</script>      
+
+<script type="text/javascript"> writeLoginPanel({domainlist:"mviai.com", mode:"horizontal"});</script>      
+
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script size="300" alpha="0.6" zIndex="-1" src="/lib/canvas-ribbon/canvas-ribbon.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/medium-zoom@1/dist/medium-zoom.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+  <script defer src="/lib/three/three.min.js"></script>
+    <script defer src="/lib/three/three-waves.min.js"></script>
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+<script>
+document.querySelectorAll('.pdfobject-container').forEach(element => {
+  let url = element.dataset.target;
+  let pdfOpenParams = {
+    navpanes : 0,
+    toolbar  : 0,
+    statusbar: 0,
+    pagemode : 'thumbs',
+    view     : 'FitH'
+  };
+  let pdfOpenFragment = '#' + Object.entries(pdfOpenParams).map(([key, value]) => `${key}=${encodeURIComponent(value)}`).join('&');
+  let fullURL = `/lib/pdf/web/viewer.html?file=${encodeURIComponent(url)}${pdfOpenFragment}`;
+
+  if (NexT.utils.supportsPDFs()) {
+    element.innerHTML = `<embed class="pdfobject" src="${url + pdfOpenFragment}" type="application/pdf" style="height: ${element.dataset.height};">`;
+  } else {
+    element.innerHTML = `<iframe src="${fullURL}" style="height: ${element.dataset.height};" frameborder="0"></iframe>`;
+  }
+});
+</script>
+
+
+
+
+  
+
+  
+
+  <script>
+  NexT.utils.loadComments(document.querySelector('#SOHUCS'), () => {
+    var appid = 'cyxmItxjS';
+    var conf = 'e5e71132d9086bb54aeeba6e88e87df9';
+    var width = window.innerWidth || document.documentElement.clientWidth;
+    if (width < 960) {
+      window.document.write('<script id="changyan_mobile_js" charset="utf-8" type="text/javascript" src="https://cy-cdn.kuaizhan.com/upload/mobile/wap-js/changyan_mobile.js?client_id=' + appid + '&conf=' + conf + '"><\/script>');
+    } else {
+      var loadJs=function(d,a){var c=document.getElementsByTagName("head")[0]||document.head||document.documentElement;var b=document.createElement("script");b.setAttribute("type","text/javascript");b.setAttribute("charset","UTF-8");b.setAttribute("src",d);if(typeof a==="function"){if(window.attachEvent){b.onreadystatechange=function(){var e=b.readyState;if(e==="loaded"||e==="complete"){b.onreadystatechange=null;a()}}}else{b.onload=a}}c.appendChild(b)};loadJs("https://changyan.sohu.com/upload/changyan.js",function(){window.changyan.api.config({appid:appid,conf:conf})});
+    }
+  });
+  </script>
+  <script src="https://cy-cdn.kuaizhan.com/upload/plugins/plugins.count.js"></script>
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/z16.model.json"},"display":{"position":"left","width":75,"height":150},"mobile":{"show":true},"log":false});</script></body>
+</html>
+
+
+
+

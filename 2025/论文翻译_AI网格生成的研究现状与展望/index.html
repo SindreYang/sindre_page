@@ -1,0 +1,4266 @@
+<!DOCTYPE html>
+<html lang="zh-CN,en,default">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" href="/lib/pace/pace-theme-minimal.min.css">
+  <script src="/lib/pace/pace.min.js"></script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"blog.mviai.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":true,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":true,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="自动摘要: 	链接:	[What’stheSituationwithIntelligentMeshGeneration:ASurveyandPerspectives](https:&#x2F;&#x2F;ar ……..">
+<meta property="og:type" content="article">
+<meta property="og:title" content="论文翻译_AI网格生成的研究现状与展望">
+<meta property="og:url" content="http://blog.mviai.com/2025/%E8%AE%BA%E6%96%87%E7%BF%BB%E8%AF%91_AI%E7%BD%91%E6%A0%BC%E7%94%9F%E6%88%90%E7%9A%84%E7%A0%94%E7%A9%B6%E7%8E%B0%E7%8A%B6%E4%B8%8E%E5%B1%95%E6%9C%9B/index.html">
+<meta property="og:site_name" content="落叶无痕">
+<meta property="og:description" content="自动摘要: 	链接:	[What’stheSituationwithIntelligentMeshGeneration:ASurveyandPerspectives](https:&#x2F;&#x2F;ar ……..">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://blog.mviai.com/images/1701331290246-5955bd46-0f6c-4f9c-b6e7-0711616e147f.jpeg">
+<meta property="og:image" content="http://blog.mviai.com/images/1701398393795-816519e1-8b68-42ba-8e69-7263dbcbf5dd.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1701424044406-bacf9637-c77c-4ccf-9755-8887e798d04b.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1fe7ad1f6f368dd0791bb9912deff87d.svg">
+<meta property="og:image" content="http://blog.mviai.com/images/9f493997c33913987175caf4a4849955.svg">
+<meta property="og:image" content="http://blog.mviai.com/images/7aaf2781990aa336d909f7ebd32e2f69.svg">
+<meta property="og:image" content="http://blog.mviai.com/images/6f5dde593f0bc27956e14b5eaec2ed17.svg">
+<meta property="og:image" content="http://blog.mviai.com/images/5d8027d5df7c7412466663ed4ea5b332.svg">
+<meta property="og:image" content="http://blog.mviai.com/images/9f493997c33913987175caf4a4849955.svg">
+<meta property="og:image" content="http://blog.mviai.com/images/7aaf2781990aa336d909f7ebd32e2f69.svg">
+<meta property="og:image" content="http://blog.mviai.com/images/6f5dde593f0bc27956e14b5eaec2ed17.svg">
+<meta property="og:image" content="http://blog.mviai.com/images/ca4a4b43b0667d13d25a4425b3242b0e.svg">
+<meta property="og:image" content="http://blog.mviai.com/images/df976ff7fcf17d60490267d18a1e3996.svg">
+<meta property="og:image" content="http://blog.mviai.com/images/f6d8633a0473f22aa0e90b5bbf52c133.svg">
+<meta property="og:image" content="http://blog.mviai.com/images/94e79ad0c1aabeafef9e2fc4af6adf66.svg">
+<meta property="og:image" content="http://blog.mviai.com/images/94e79ad0c1aabeafef9e2fc4af6adf66.svg">
+<meta property="og:image" content="http://blog.mviai.com/images/69c21c798b1ac62e9decb112412d68ce.svg">
+<meta property="og:image" content="http://blog.mviai.com/images/3543787f94063dfe0d7a2fed8545e12b.svg">
+<meta property="og:image" content="http://blog.mviai.com/images/94e79ad0c1aabeafef9e2fc4af6adf66.svg">
+<meta property="og:image" content="http://blog.mviai.com/images/1701479512457-2ed2b0d3-4ab4-4a3e-b4bc-de0944947f29.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1701479528132-856111f3-ea85-4e45-804a-8a413c2b8a60.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1701479539260-095500ba-5d75-4956-a0b2-a768ef393538.png">
+<meta property="og:image" content="http://blog.mviai.com/images/0fb3cdb7d684a19dc991b731fde645c0.svg">
+<meta property="og:image" content="http://blog.mviai.com/images/09edd9dbbbde23c86ded88435fe80be5.svg">
+<meta property="og:image" content="http://blog.mviai.com/images/a6c44667eb625014d42cde48ebe9d05b.svg">
+<meta property="og:image" content="http://blog.mviai.com/images/e0b97a554174a01b29a2cdf558ddc821.svg">
+<meta property="og:image" content="http://blog.mviai.com/images/1701480784184-70e22959-001e-4bc5-97ff-80452da98953.png">
+<meta property="og:image" content="http://blog.mviai.com/images/45f7a63c5618c116714cfb253bfed565.svg">
+<meta property="og:image" content="http://blog.mviai.com/images/1701480807248-264c3309-a3bb-47b6-a9e8-7db29f744c3d.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1701480828176-ef630cf4-98ed-4da5-b610-36ddf73e9084.png">
+<meta property="og:image" content="http://blog.mviai.com/images/4760e2f007e23d820825ba241c47ce3b.svg">
+<meta property="og:image" content="http://blog.mviai.com/images/f81c667a75aff7280a902876ef49d0a5.svg">
+<meta property="og:image" content="http://blog.mviai.com/images/1701481505248-0f2bc644-2b60-4aba-9fd3-3d90414f7a9f.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1701486829624-92136453-b509-46de-a607-a74d818c4599.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1701487047234-356463e4-4665-46d5-b88b-2ecb8ac926dc.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1701487386735-01d88d64-1054-4227-bc66-c66e6f358e79.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1701487400856-56cbe5e1-9125-4444-9112-857ca6b0883f.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1701487419618-938c32e8-8343-490c-9ae7-d7ed8a6fcbac.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1701487430880-c159a80d-1efb-47ef-b6a2-7123a19533cd.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1701488116171-8e7bb77c-3f7b-40de-812c-05164b14e165.png">
+<meta property="article:published_time" content="2025-01-22T04:37:41.000Z">
+<meta property="article:modified_time" content="2025-01-22T12:37:41.249Z">
+<meta property="article:author" content="SindreYang">
+<meta property="article:tag" content="生活">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://blog.mviai.com/images/1701331290246-5955bd46-0f6c-4f9c-b6e7-0711616e147f.jpeg">
+
+<link rel="canonical" href="http://blog.mviai.com/2025/%E8%AE%BA%E6%96%87%E7%BF%BB%E8%AF%91_AI%E7%BD%91%E6%A0%BC%E7%94%9F%E6%88%90%E7%9A%84%E7%A0%94%E7%A9%B6%E7%8E%B0%E7%8A%B6%E4%B8%8E%E5%B1%95%E6%9C%9B/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>论文翻译_AI网格生成的研究现状与展望 | 落叶无痕</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">落叶无痕</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类<span class="badge">72</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档<span class="badge">321</span></a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+  <span class="exturl github-corner" data-url="aHR0cHM6Ly9naXRodWIuY29tL1NpbmRyZVlhbmc=" title="Follow me on GitHub" aria-label="Follow me on GitHub"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></span>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://blog.mviai.com/2025/%E8%AE%BA%E6%96%87%E7%BF%BB%E8%AF%91_AI%E7%BD%91%E6%A0%BC%E7%94%9F%E6%88%90%E7%9A%84%E7%A0%94%E7%A9%B6%E7%8E%B0%E7%8A%B6%E4%B8%8E%E5%B1%95%E6%9C%9B/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="SindreYang">
+      <meta itemprop="description" content="沉淀后我愿意做一个温暖的人。有自己的喜好，有自己的原则，有自己的信仰，不急功近利，不浮夸轻薄，宠辱不惊，淡定安逸，心静如水。------不忘初心，方得始终">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="落叶无痕">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          论文翻译_AI网格生成的研究现状与展望
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2025-01-22 12:37:41 / 修改时间：20:37:41" itemprop="dateCreated datePublished" datetime="2025-01-22T12:37:41+08:00">2025-01-22</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E4%B8%89%E7%BB%B4%E9%87%8D%E5%BB%BA/" itemprop="url" rel="index"><span itemprop="name">三维重建</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">Changyan：</span>
+    
+    
+      <a title="changyan" href="/2025/%E8%AE%BA%E6%96%87%E7%BF%BB%E8%AF%91_AI%E7%BD%91%E6%A0%BC%E7%94%9F%E6%88%90%E7%9A%84%E7%A0%94%E7%A9%B6%E7%8E%B0%E7%8A%B6%E4%B8%8E%E5%B1%95%E6%9C%9B/#SOHUCS" itemprop="discussionUrl">
+        <span id="changyan_count_unit" class="post-comments-count hc-comment-count" data-xid="2025/论文翻译_AI网格生成的研究现状与展望/" itemprop="commentCount"></span>
+      </a>
+    
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>自动摘要: 	链接:	[What’stheSituationwithIntelligentMeshGeneration:ASurveyandPerspectives](<span class="exturl" data-url="aHR0cHM6Ly9hci8=" title="https://ar/">https://ar<i class="fa fa-external-link"></i></span> ……..</p>
+<span id="more"></span>
+
+<h1 id="链接"><a href="#链接" class="headerlink" title="链接:"></a>链接:</h1><p><span class="exturl" data-url="aHR0cHM6Ly9hcnhpdi5vcmcvYWJzLzIyMTEuMDYwMDk=" title="https://arxiv.org/abs/2211.06009">What’s the Situation with Intelligent Mesh Generation: A Survey and Perspectives<i class="fa fa-external-link"></i></span></p>
+<p><span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL3h6YjAzMC9JTUdfU3VydmV5" title="https://github.com/xzb030/IMG_Survey">GitHub - xzb030&#x2F;IMG_Survey<i class="fa fa-external-link"></i></span></p>
+<h1 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h1><h2 id="动机"><a href="#动机" class="headerlink" title="动机"></a>动机</h2><p>在本文中，我们开始对以智能网格生成（IMG）为中心的出版物进行系统回顾。网格生成被公认为美国宇航局“愿景 2030”[1] 的六个基础研究方向之一，在计算几何中起着举足轻重的作用，是数值模拟不可或缺的一部分。IMG 将机器学习与网格生成相结合，其重要性正在得到认可，因为它是一个不断增长的研究语料库，探索使用神经网络在不同的应用场景中生成高质量的网格。在各种网格划分目标的推动下，IMG 研究的兴趣激增。值得注意的是，近年来出现了许多创新算法。尽管对 IMG 进行了大量研究，但明显缺乏采用标准化方法以确保重要性、完整性和公正性的综合综述。为了推进 IMG 领域的研究，迫切需要对当前最先进的 IMG 方法进行系统概述。这样的概述将有助于提炼这些作品的基本共性，确定当前的研究趋势，并确定有希望的未来方向。在这里，我们的目标是提出一个全面和系统的调查，包括详细的分类和以内容为导向的评估。我们进行了多方面的分析，研究了关键算法技术及其应用范围、智能体学习目标、数据类型、有针对性的挑战，以及优势和局限性。如图所示。1、我们为现有的 IMG 方法提供了不同的分类法，从三个角度进行概念化：关键技术、输出网格单元元素和相关数据类型。考虑到关键技术，我们将 IMG 方法分为基于变形的、基于分类的、基于等值面的、基于 Delaunay 三角测量的、基于参数化的和基于前沿的网格生成。从输出网格单元单元的角度来看，IMG 方法分为三角网格、四边形网格、混合多边形网格和四面体网格生成。最后，我们将应用程序输入数据类型分为基于点云、基于图像、基于体素、基于网格、基于边界或草图以及基于潜在变量的网格生成。此外，我们还简要概述了 IMG 的相关领域，例如用于网格学习的传统神经网络、网格质量指标和数据集。综上所述，我们研究和审查了 190 篇论文，其中包括 113 篇关注 IMG 的论文和 77 篇相关主题的论文。我们的论文有四个主要贡献：</p>
+<ol>
+<li>我们对 113 篇开创性的 IMG 论文进行了全面审查，并根据几个关键方面对其进行了评估：基础技术、应用范围、智能体学习目标、数据类型、目标挑战以及优势和局限性。</li>
+<li>我们从三个不同的有利位置对现有的 IMG 方法进行了分类：关键技术、输出网格单元元素和合适的输入数据类型;</li>
+<li>我们提供了与 IMG 密切相关的广泛概述，包括用于网格学习、网格质量评估和数据集;</li>
+<li>我们概括了 IMG 目前面临的挑战，并概述了研究人员可以探索的潜在有前途的途径，以应对他们未来的努力中的挑战。</li>
+</ol>
+<p><img src="/images/1701331290246-5955bd46-0f6c-4f9c-b6e7-0711616e147f.jpeg"><br> 图 1：从三个角度对现有 IMG 方法进行分类。</p>
+<h2 id="相关调查"><a href="#相关调查" class="headerlink" title="相关调查"></a>相关调查</h2><p>软件工程中使用的系统文献综述（SLR）[2] 是通过使用预定义的一系列有条不紊的步骤进行的。据我们所知，IMG 领域没有进行过单反。在本节中，我们将介绍一些相关的综述文章 [3]–[7]。Berger 等人。 [3] 调查了 1992 年至 2015 年开发的各种基于点云的表面重建算法。他们根据所采用的先验类型、处理点云伪影的能力、输入要求、形状类和重建输出对算法进行分类。这篇综述的重点是点云表面重建，其输出不一定是网格化的。请注意，网格重建和表面重建是两个不同的概念。网格重建不仅指曲面网格，还指体积网格。然而，表面重建不一定是网格划分，也可能是体素、RGBD 图像、有符号距离场等。还有其他调查仅涵盖特定的表面重建领域，例如基于图像的 3D 对象重建 [4]、表面重新划分网格 [5] 和先进的基于正面的方法 [7]。上述所有调查都集中在特定的表面重建领域，但并非专门针对 IMG。此外，Xiao [6] et al.从表征的角度总结几何深度学习。因此，本文是对现有 IMG 方法的首次综述。</p>
+<h1 id="方法"><a href="#方法" class="headerlink" title="方法"></a>方法</h1><p>本文的目的是通过采用双管齐下的策略提供全面而系统的调查。在初始阶段，我们深入研究现有文献，使用开放式解释方法和以关键词为中心的文献综述筛选出与 IMG 相关的工作。前一种方法以作者的专业知识为基础，从而产生了广泛而探索性的作品集，尽管它可能会引入选择偏差。相比之下，后者针对特定的 IMG 出版物，提供了明确的边界，但其有效性在很大程度上取决于所选择的关键词。为了融合这两种方法的优势，我们随后应用了以关键词为中心的解释方法和开放式解释方法。在随后的阶段，我们根据提取的内容对第一阶段收集的所有文章进行编译和评估。</p>
+<h2 id="检索策略"><a href="#检索策略" class="headerlink" title="检索策略"></a>检索策略</h2><p>检索策略对于收集有关特定主题的相关文献至关重要。搜索字符串和库的选择是重要因素。我们精心设计了一个检索字符串，并选择了五个不同的图书馆来寻找相关论文。遵循 SLR 准则 [2]，我们通过使用布尔运算符合并关键字及其同义词来构建搜索字符串。</p>
+<ul>
+<li>关键字和布尔运算符：<ul>
+<li>[(”computer graphics”OR ”computational geometry”) AND (”mesh reconstruc-tion” OR ”mesh generation” OR ”Surface reconstruction”OR ”3D object reconstruction” OR ”triangulation” OR ”quadri-lateral” OR ”tetrahedral” OR ”hexahedral”) AND (”intel-ligent” OR ”learning” OR ”data-based” OR ”neural net-work” OR ”ANN”)] OR (”mesh evaluation” OR ”3D object dataset” OR ”mesh neural network” OR ”mesh metric”)</li>
+<li>[（“计算机图形学”或“计算几何”）和（“网格重建”或“网格生成”或“表面重建”或“3D 对象重建”或“三角测量”或“四边形”或“四面体”或“六面体”）和（“智能”或“学习”或“基于数据”或“神经网络”或“ANN”）] 或（“网格评估”或“3D 对象数据集”或“网格神经网络”或“网格度量”）。</li>
+</ul>
+</li>
+</ul>
+<h2 id="内容提取及结果呈现"><a href="#内容提取及结果呈现" class="headerlink" title="内容提取及结果呈现"></a>内容提取及结果呈现</h2><p>现有文献提供了大量的 IMG 技术。我们共选取了 190 篇论文进行详细分析; 113 篇论文聚焦 IMG，77 篇论文深入探讨 IMG 相关领域，包括用于网格的经典神经网络、网格质量指标和网格数据集等。根据我们的研究问题，我们从每篇入选论文中摘录了以下细节：</p>
+<ol>
+<li>面临的主要挑战和取得的重大突破;</li>
+<li>基本概念、适用范围及利弊;</li>
+<li>输入数据的类型、输出网格和网格质量。</li>
+</ol>
+<p>此外，为了更客观地评估这些 IMG 方法，我们收集了以下附加信息：</p>
+<ol>
+<li>文章的引用频率（根据谷歌学术引用每月的引用次数）;</li>
+<li>本文所提算法的实用性。</li>
+</ol>
+<p>从关键技术、输出网格类型和输入数据类型的角度，我们首先对已有的 IMG 论文进行了分类，并在表 1 中进行了介绍。该表还封装了 IMG 是否是端到端的、其主网络结构以及神经网络模型的学习目标。表 1 从三个独特的角度对 113 篇 IMG 论文进行了清晰的分类，从而可以直观地了解每种 IMG 方法中如何融入智能。其次，我们深入研究了每篇 IMG 论文的详细内容，并按时间顺序组织了表 2。下表列出了每项研究的目标挑战、优势、局限性和平均每月引用次数。我们还在图 2 中展示了一些具有代表性的方法，将现有的 IMG 论文整理成折线图。</p>
+<p><img src="/images/1701398393795-816519e1-8b68-42ba-8e69-7263dbcbf5dd.png"><br> 图 2：具有代表性的 IMG 方法的时间序列概述</p>
+<p><img src="/images/1701424044406-bacf9637-c77c-4ccf-9755-8887e798d04b.png"><br> 图 3：6 种技术类型文章的年度分布情况。</p>
+<h3 id="表-1：文献中使用的各种类型的-IMG-的分类。DEMG、CLMG、ISMG、DTMG，尽管只有具有简单-PAMG-和-AFMG-的平面网格分别表示基于变形、基于分类、基于等值面、基于德劳内三角剖分、基于参数化和基于前沿的网格生成。PC、IM、VO、ME、BS-和-LA-分别表示基于点云、基于图像、基于体素、基于网格、基于边界或草图以及基于潜在变量的-IMG。Tri、Qua、Hyb-和-Tet-分别表示三角形、四边形、混合多边形和四面体网格。E2E-表示端到端，✓-表示满意。"><a href="#表-1：文献中使用的各种类型的-IMG-的分类。DEMG、CLMG、ISMG、DTMG，尽管只有具有简单-PAMG-和-AFMG-的平面网格分别表示基于变形、基于分类、基于等值面、基于德劳内三角剖分、基于参数化和基于前沿的网格生成。PC、IM、VO、ME、BS-和-LA-分别表示基于点云、基于图像、基于体素、基于网格、基于边界或草图以及基于潜在变量的-IMG。Tri、Qua、Hyb-和-Tet-分别表示三角形、四边形、混合多边形和四面体网格。E2E-表示端到端，✓-表示满意。" class="headerlink" title="表 1：文献中使用的各种类型的 IMG 的分类。DEMG、CLMG、ISMG、DTMG，尽管只有具有简单 PAMG 和 AFMG 的平面网格分别表示基于变形、基于分类、基于等值面、基于德劳内三角剖分、基于参数化和基于前沿的网格生成。PC、IM、VO、ME、BS 和 LA 分别表示基于点云、基于图像、基于体素、基于网格、基于边界或草图以及基于潜在变量的 IMG。Tri、Qua、Hyb 和 Tet 分别表示三角形、四边形、混合多边形和四面体网格。E2E 表示端到端，✓ 表示满意。"></a>表 1：文献中使用的各种类型的 IMG 的分类。DEMG、CLMG、ISMG、DTMG，尽管只有具有简单 PAMG 和 AFMG 的平面网格分别表示基于变形、基于分类、基于等值面、基于德劳内三角剖分、基于参数化和基于前沿的网格生成。PC、IM、VO、ME、BS 和 LA 分别表示基于点云、基于图像、基于体素、基于网格、基于边界或草图以及基于潜在变量的 IMG。Tri、Qua、Hyb 和 Tet 分别表示三角形、四边形、混合多边形和四面体网格。E2E 表示端到端，✓ 表示满意。</h3><table>
+<thead>
+<tr>
+<th>Article(提议)</th>
+<th>技术</th>
+<th></th>
+<th align="center"></th>
+<th></th>
+<th></th>
+<th></th>
+<th>输入</th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+<th>输出</th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+<th>描述</th>
+<th></th>
+</tr>
+</thead>
+<tbody><tr>
+<td></td>
+<td>DEMG(基于变形)</td>
+<td>CLMG(基于分类)</td>
+<td align="center">ISMG(基于等值面)</td>
+<td>DTMG(基于德劳内三角剖分)</td>
+<td>PAMG(基于参数化)</td>
+<td>AFMG(基于前沿)</td>
+<td>PC(点云)</td>
+<td>IM(图像)</td>
+<td>VO(体素)</td>
+<td>ME(网格)</td>
+<td>BS(边界&#x2F;草图)</td>
+<td>LA(潜在变量)</td>
+<td>Tri(三角网格)</td>
+<td>Qua(四边形)</td>
+<td>Hyb(混合多边形)</td>
+<td>Tet(四面体)</td>
+<td>E2E(端到端)</td>
+<td>Network Structure(网络结构)</td>
+<td>Learning Goals(学习目标)</td>
+</tr>
+<tr>
+<td>Self-organizing [42]</td>
+<td>✔️</td>
+<td></td>
+<td align="center"></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>✔️</td>
+<td></td>
+<td>✔️</td>
+<td>✔️</td>
+<td></td>
+<td></td>
+<td>✔️</td>
+<td>Self-organizing network</td>
+<td>Vertices location（顶点位置)</td>
+</tr>
+<tr>
+<td>Lowther et al. [43]</td>
+<td></td>
+<td></td>
+<td align="center"></td>
+<td>✔️</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>✔️</td>
+<td></td>
+<td>✔️</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>Feed forward net</td>
+<td>Element size（元素大小）</td>
+</tr>
+<tr>
+<td>Alfonzetti et al. [44]</td>
+<td></td>
+<td></td>
+<td align="center"></td>
+<td>✔️</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>✔️</td>
+<td></td>
+<td></td>
+<td>✔️</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>Let-It-Grow ANN</td>
+<td>Node position（节点位置）</td>
+</tr>
+<tr>
+<td>Alfonzetti et al. [45]</td>
+<td></td>
+<td></td>
+<td align="center"></td>
+<td>✔️</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>✔️</td>
+<td></td>
+<td></td>
+<td>✔️</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>ANN</td>
+<td>Node location（节点位置）</td>
+</tr>
+<tr>
+<td>Alfonzetti et al. [46]</td>
+<td></td>
+<td></td>
+<td align="center"></td>
+<td>✔️</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>✔️</td>
+<td></td>
+<td></td>
+<td>✔️</td>
+<td></td>
+<td></td>
+<td>✔️</td>
+<td></td>
+<td>ANN</td>
+<td>Node position（节点位置）</td>
+</tr>
+<tr>
+<td>Peng et al. [47]</td>
+<td></td>
+<td>✔️</td>
+<td align="center"></td>
+<td></td>
+<td></td>
+<td></td>
+<td>✔️</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>✔️</td>
+<td></td>
+<td></td>
+<td></td>
+<td>✔️</td>
+<td>MLP</td>
+<td>Coordinate z；Point occupancy（坐标 z；点占用）</td>
+</tr>
+<tr>
+<td>Yao et al. [48]</td>
+<td></td>
+<td>✔️</td>
+<td align="center"></td>
+<td></td>
+<td></td>
+<td>✔️</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>✔️</td>
+<td></td>
+<td></td>
+<td>✔️</td>
+<td></td>
+<td></td>
+<td>✔️</td>
+<td>ANN</td>
+<td>Node position（节点位置）</td>
+</tr>
+<tr>
+<td>Alfonzetti et al. [49]</td>
+<td></td>
+<td></td>
+<td align="center"></td>
+<td>✔️</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>✔️</td>
+<td></td>
+<td></td>
+<td>✔️</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>Let-It-Grow ANN</td>
+<td>Node position（节点位置）</td>
+</tr>
+<tr>
+<td>Li et al. [50]</td>
+<td></td>
+<td></td>
+<td align="center"></td>
+<td></td>
+<td>✔️</td>
+<td></td>
+<td>✔️</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>✔️</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>RBFs network</td>
+<td>Radial basis function（径向基函数）</td>
+</tr>
+<tr>
+<td>Agostinho et al. [51]</td>
+<td></td>
+<td></td>
+<td align="center"></td>
+<td></td>
+<td>✔️</td>
+<td></td>
+<td>✔️</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>✔️</td>
+<td></td>
+<td></td>
+<td></td>
+<td>✔️</td>
+<td>Self-organizing map</td>
+<td>3D coordinates（3D 坐标)</td>
+</tr>
+<tr>
+<td>Wen et al. [52]</td>
+<td></td>
+<td></td>
+<td align="center">✔️</td>
+<td></td>
+<td></td>
+<td></td>
+<td>✔️</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>✔️</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>RBFs network</td>
+<td>Radial basis function（径向基函数）</td>
+</tr>
+<tr>
+<td>Xiong et al. [53]</td>
+<td></td>
+<td></td>
+<td align="center"></td>
+<td></td>
+<td>✔️</td>
+<td></td>
+<td>✔️</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>✔️</td>
+<td></td>
+<td></td>
+<td></td>
+<td>✔️</td>
+<td>Sparse dictionary</td>
+<td>Vertex position and triangulation（顶点位置和三角剖分）</td>
+</tr>
+<tr>
+<td>DeepGarment [8]</td>
+<td>✔️</td>
+<td></td>
+<td align="center"></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>✔️</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>✔️</td>
+<td></td>
+<td></td>
+<td></td>
+<td>✔️</td>
+<td>SqueezeNet</td>
+<td>Vertex location（顶点位置）</td>
+</tr>
+<tr>
+<td>Deepsketch2face [9]</td>
+<td>✔️</td>
+<td></td>
+<td align="center"></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>✔️</td>
+<td></td>
+<td>✔️</td>
+<td></td>
+<td></td>
+<td></td>
+<td>✔️</td>
+<td>AlexNet</td>
+<td>Vertex position（顶点位置）</td>
+</tr>
+<tr>
+<td>ShapeMVD [54]</td>
+<td></td>
+<td></td>
+<td align="center">✔️</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>✔️</td>
+<td></td>
+<td>✔️</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>U-net</td>
+<td>Depth and normal map（深度和法线图）</td>
+</tr>
+<tr>
+<td>Surfnet [55]</td>
+<td></td>
+<td></td>
+<td align="center"></td>
+<td></td>
+<td>✔️</td>
+<td></td>
+<td></td>
+<td>✔️</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>✔️</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>Res-Unet</td>
+<td>Geometric image（几何图像）</td>
+</tr>
+<tr>
+<td>Pixel2mesh [10]</td>
+<td>✔️</td>
+<td></td>
+<td align="center"></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>✔️</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>✔️</td>
+<td></td>
+<td></td>
+<td></td>
+<td>✔️</td>
+<td>GCN; VGG-16; MLP</td>
+<td>Vertex coordinates；Feature extraction（顶点坐标；提取特征）</td>
+</tr>
+<tr>
+<td>AtlasNet [56]</td>
+<td></td>
+<td></td>
+<td align="center"></td>
+<td></td>
+<td>✔️</td>
+<td></td>
+<td>✔️</td>
+<td>✔️</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>✔️</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>PointNet&#x2F;ResNet+MLPs</td>
+<td>Point location（点位置）</td>
+</tr>
+<tr>
+<td>Li et al. [57]</td>
+<td></td>
+<td></td>
+<td align="center">✔️</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>✔️</td>
+<td></td>
+<td>✔️</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>U-Net</td>
+<td>Normals, depth map（法线、深度图）</td>
+</tr>
+<tr>
+<td>DMC [58]</td>
+<td></td>
+<td>✔️</td>
+<td align="center">✔️</td>
+<td></td>
+<td></td>
+<td></td>
+<td>✔️</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>✔️</td>
+<td></td>
+<td></td>
+<td></td>
+<td>✔️</td>
+<td>DMC</td>
+<td>Occupancy and vertex displacement（占用和顶点位移）</td>
+</tr>
+<tr>
+<td>CoMA [59]</td>
+<td>✔️</td>
+<td></td>
+<td align="center"></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>✔️</td>
+<td>✔️</td>
+<td></td>
+<td></td>
+<td></td>
+<td>✔️</td>
+<td>Autoencoder</td>
+<td>Point location（点位置）</td>
+</tr>
+<tr>
+<td>3D-CFCN [60]</td>
+<td></td>
+<td></td>
+<td align="center">✔️</td>
+<td></td>
+<td></td>
+<td></td>
+<td>✔️</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>✔️</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>OctNet-based U-Net</td>
+<td>Truncated signed distance field（截断有符号距离场）</td>
+</tr>
+<tr>
+<td>MGN [11]</td>
+<td>✔️</td>
+<td></td>
+<td align="center"></td>
+<td></td>
+<td>✔️</td>
+<td></td>
+<td></td>
+<td>✔️</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>✔️</td>
+<td></td>
+<td></td>
+<td></td>
+<td>✔️</td>
+<td>MLP</td>
+<td>Vertex position（顶点位置）</td>
+</tr>
+<tr>
+<td>3DN [35]</td>
+<td>✔️</td>
+<td></td>
+<td align="center"></td>
+<td></td>
+<td></td>
+<td></td>
+<td>✔️</td>
+<td>✔️</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>✔️</td>
+<td></td>
+<td></td>
+<td></td>
+<td>✔️</td>
+<td>PointNet&#x2F;VGG</td>
+<td>Vertex position（顶点位置）</td>
+</tr>
+<tr>
+<td>TMN [12]</td>
+<td>✔️</td>
+<td></td>
+<td align="center"></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>✔️</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>✔️</td>
+<td></td>
+<td></td>
+<td></td>
+<td>✔️</td>
+<td>ResNet&#x2F;MLP</td>
+<td>Vertex position and error（顶点位置和误差）</td>
+</tr>
+<tr>
+<td>ONet [61]</td>
+<td></td>
+<td>✔️</td>
+<td align="center">✔️</td>
+<td></td>
+<td></td>
+<td></td>
+<td>✔️</td>
+<td>✔️</td>
+<td>✔️</td>
+<td></td>
+<td></td>
+<td></td>
+<td>✔️</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>ResNet&#x2F;PointNet</td>
+<td>Grid  occupancy（网格占用）</td>
+</tr>
+<tr>
+<td>N3DMM [62]</td>
+<td>✔️</td>
+<td></td>
+<td align="center"></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>✔️</td>
+<td>✔️</td>
+<td></td>
+<td></td>
+<td></td>
+<td>✔️</td>
+<td>Spiral-Conv GAN</td>
+<td>Vertex position（顶点位置）</td>
+</tr>
+<tr>
+<td>PGAN [63]</td>
+<td></td>
+<td></td>
+<td align="center"></td>
+<td></td>
+<td>✔️</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>✔️</td>
+<td>✔️</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>WGAN</td>
+<td>Geometric image（几何图像）</td>
+</tr>
+<tr>
+<td>HumanMeshNet [13]</td>
+<td>✔️</td>
+<td></td>
+<td align="center"></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>✔️</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>✔️</td>
+<td></td>
+<td></td>
+<td></td>
+<td>✔️</td>
+<td>Resnet-18</td>
+<td>Vertex position（顶点位置）</td>
+</tr>
+<tr>
+<td>DISN [64]</td>
+<td></td>
+<td></td>
+<td align="center">✔️</td>
+<td></td>
+<td></td>
+<td></td>
+<td>✔️</td>
+<td>✔️</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>✔️</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>VGG-16</td>
+<td>Signed distance field（有符号距离场）</td>
+</tr>
+<tr>
+<td>IM-Net [65]</td>
+<td></td>
+<td>✔️</td>
+<td align="center">✔️</td>
+<td></td>
+<td></td>
+<td></td>
+<td>✔️</td>
+<td>✔️</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>✔️</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>IM-Net</td>
+<td>Signed distance field（有符号距离场）</td>
+</tr>
+<tr>
+<td>Scan2Mesh [66]</td>
+<td></td>
+<td>✔️</td>
+<td align="center"></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>✔️</td>
+<td></td>
+<td></td>
+<td></td>
+<td>✔️</td>
+<td></td>
+<td></td>
+<td></td>
+<td>✔️</td>
+<td>3D-Conv GNN</td>
+<td>Mesh faces（网格面片）</td>
+</tr>
+<tr>
+<td>DGP [67]</td>
+<td></td>
+<td></td>
+<td align="center"></td>
+<td></td>
+<td>✔️</td>
+<td></td>
+<td>✔️</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>✔️</td>
+<td></td>
+<td></td>
+<td></td>
+<td>✔️</td>
+<td>MLP</td>
+<td>Local parameterization（局部参数化）</td>
+</tr>
+<tr>
+<td>Mesh R-CNN [14]</td>
+<td>✔️</td>
+<td>✔️</td>
+<td align="center"></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>✔️</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>✔️</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>Mesh R-CNN</td>
+<td>Occupancy and point location（占用和点位置）</td>
+</tr>
+<tr>
+<td>DeepSDF [68]</td>
+<td></td>
+<td></td>
+<td align="center">✔️</td>
+<td></td>
+<td></td>
+<td></td>
+<td>✔️</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>✔️</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>MLP</td>
+<td>Signed distance field（有符号距离场）</td>
+</tr>
+<tr>
+<td>Pixel2mesh++ [15]</td>
+<td>✔️</td>
+<td></td>
+<td align="center"></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>✔️</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>✔️</td>
+<td></td>
+<td></td>
+<td></td>
+<td>✔️</td>
+<td>VGG; GCN</td>
+<td>Vertex position（顶点位置）</td>
+</tr>
+<tr>
+<td>PQ-Net [69]</td>
+<td></td>
+<td>✔️</td>
+<td align="center">✔️</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>✔️</td>
+<td></td>
+<td></td>
+<td></td>
+<td>✔️</td>
+<td>✔️</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>Seq2Seq Autoencoder</td>
+<td>Signed distance field（有符号距离场）</td>
+</tr>
+<tr>
+<td>BCNet [16]</td>
+<td>✔️</td>
+<td></td>
+<td align="center"></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>✔️</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>✔️</td>
+<td></td>
+<td></td>
+<td></td>
+<td>✔️</td>
+<td>ResNet; GAT; Spiral-Conv</td>
+<td>SMPL parameters(SMPL 参数); Vertex position（顶点位置）</td>
+</tr>
+<tr>
+<td>PolyGen [70]</td>
+<td></td>
+<td>✔️</td>
+<td align="center"></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>✔️</td>
+<td>✔️</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>✔️</td>
+<td></td>
+<td>✔️</td>
+<td>Transformer-based</td>
+<td>Predict vertices and faces sequentially(按顺序预测顶点和面)</td>
+</tr>
+<tr>
+<td>DGTS [71]</td>
+<td>✔️</td>
+<td></td>
+<td align="center"></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>✔️</td>
+<td></td>
+<td></td>
+<td>✔️</td>
+<td></td>
+<td></td>
+<td></td>
+<td>✔️</td>
+<td>GCN</td>
+<td>Displacement vector for each face（每个面的位移向量）</td>
+</tr>
+<tr>
+<td>Neural Subdivision [72]</td>
+<td>✔️</td>
+<td></td>
+<td align="center"></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>✔️</td>
+<td></td>
+<td></td>
+<td>✔️</td>
+<td></td>
+<td></td>
+<td></td>
+<td>✔️</td>
+<td>MLP</td>
+<td>Predicting vertex positions（预测顶点位置）</td>
+</tr>
+<tr>
+<td>Mobile3drecon [73]</td>
+<td></td>
+<td></td>
+<td align="center">✔️</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>✔️</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>✔️</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>Res-UNet</td>
+<td>Depth map（深度图）</td>
+</tr>
+<tr>
+<td>Sal [74]</td>
+<td></td>
+<td></td>
+<td align="center">✔️</td>
+<td></td>
+<td></td>
+<td></td>
+<td>✔️</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>✔️</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>MLP</td>
+<td>Unsigned distance field（无符号距离场）</td>
+</tr>
+<tr>
+<td>Pixel2mesh2 [17]</td>
+<td>✔️</td>
+<td></td>
+<td align="center"></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>✔️</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>✔️</td>
+<td></td>
+<td></td>
+<td></td>
+<td>✔️</td>
+<td>GCN; G-Resnet</td>
+<td>Vertex position（顶点位置）</td>
+</tr>
+<tr>
+<td>Voxel2mesh [40]</td>
+<td>✔️</td>
+<td></td>
+<td align="center"></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>✔️</td>
+<td></td>
+<td></td>
+<td></td>
+<td>✔️</td>
+<td></td>
+<td></td>
+<td></td>
+<td>✔️</td>
+<td>GCN-3D</td>
+<td>Vertex position（顶点位置）</td>
+</tr>
+<tr>
+<td>X-ray2shape [18]</td>
+<td>✔️</td>
+<td></td>
+<td align="center"></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>✔️</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>✔️</td>
+<td></td>
+<td></td>
+<td></td>
+<td>✔️</td>
+<td>CNN; GCN</td>
+<td>Vertex position（顶点位置）</td>
+</tr>
+<tr>
+<td>Li et al. [19]</td>
+<td>✔️</td>
+<td></td>
+<td align="center"></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>✔️</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>✔️</td>
+<td></td>
+<td></td>
+<td></td>
+<td>✔️</td>
+<td>Resnet; 3D-GCN</td>
+<td>Vertex position（顶点位置）</td>
+</tr>
+<tr>
+<td>Meshlet [75]</td>
+<td></td>
+<td></td>
+<td align="center">✔️</td>
+<td></td>
+<td>✔️</td>
+<td></td>
+<td>✔️</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>✔️</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>FC-based AE</td>
+<td>Vertex position（顶点位置）</td>
+</tr>
+<tr>
+<td>LIG [76]</td>
+<td></td>
+<td>✔️</td>
+<td align="center">✔️</td>
+<td></td>
+<td></td>
+<td></td>
+<td>✔️</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>✔️</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>AE; 3D-CNN; Residual block</td>
+<td>truncated signed distance field（截断有符号距离场）</td>
+</tr>
+<tr>
+<td>CONet [77]</td>
+<td></td>
+<td>✔️</td>
+<td align="center">✔️</td>
+<td></td>
+<td></td>
+<td></td>
+<td>✔️</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>✔️</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>U-Net</td>
+<td>Grid  occupancy probability（网格占用概率）</td>
+</tr>
+<tr>
+<td>ILSM [78]</td>
+<td></td>
+<td>✔️</td>
+<td align="center">✔️</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>✔️</td>
+<td></td>
+<td>✔️</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>CGAN</td>
+<td>Occupancy(占用）; Velocity field（速度场）</td>
+</tr>
+<tr>
+<td>IER [79]</td>
+<td></td>
+<td>✔️</td>
+<td align="center"></td>
+<td></td>
+<td></td>
+<td></td>
+<td>✔️</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>✔️</td>
+<td></td>
+<td></td>
+<td></td>
+<td>✔️</td>
+<td>SpareConv; MLP</td>
+<td>Triangle classification（三角形分类）</td>
+</tr>
+<tr>
+<td>Yang et al. [20]</td>
+<td>✔️</td>
+<td></td>
+<td align="center"></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>✔️</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>✔️</td>
+<td></td>
+<td></td>
+<td></td>
+<td>✔️</td>
+<td>VGG16; GCN; Graph attention</td>
+<td>Vertex position（顶点位置）</td>
+</tr>
+<tr>
+<td>MeshingNet [21]</td>
+<td>✔️</td>
+<td></td>
+<td align="center"></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>✔️</td>
+<td></td>
+<td>✔️</td>
+<td></td>
+<td></td>
+<td></td>
+<td>✔️</td>
+<td>FCN&#x2F;Resnet</td>
+<td>Vertex position（顶点位置）</td>
+</tr>
+<tr>
+<td>Point2Surf [80]</td>
+<td></td>
+<td>✔️</td>
+<td align="center">✔️</td>
+<td></td>
+<td></td>
+<td></td>
+<td>✔️</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>✔️</td>
+<td></td>
+<td>MLP</td>
+<td>Signed distance field（有符号距离场）</td>
+</tr>
+<tr>
+<td>DEFTET [81]</td>
+<td></td>
+<td>✔️</td>
+<td align="center"></td>
+<td></td>
+<td></td>
+<td></td>
+<td>✔️</td>
+<td>✔️</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>✔️</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>MLP;</td>
+<td>Occupancy prediction（预测占用）</td>
+</tr>
+<tr>
+<td>BTM [36]</td>
+<td>✔️</td>
+<td></td>
+<td align="center"></td>
+<td></td>
+<td></td>
+<td></td>
+<td>✔️</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>✔️</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>Autoencoder</td>
+<td>Initial mesh（初始网格）</td>
+</tr>
+<tr>
+<td>PointTriNet [82]</td>
+<td></td>
+<td>✔️</td>
+<td align="center"></td>
+<td></td>
+<td></td>
+<td></td>
+<td>✔️</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>✔️</td>
+<td></td>
+<td></td>
+<td></td>
+<td>✔️</td>
+<td>MLP</td>
+<td>Triangle labels（三角形标签）</td>
+</tr>
+<tr>
+<td>Surface Hof [22]</td>
+<td>✔️</td>
+<td></td>
+<td align="center"></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>✔️</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>✔️</td>
+<td></td>
+<td></td>
+<td></td>
+<td>✔️</td>
+<td>AE</td>
+<td>Vertex position（顶点位置）</td>
+</tr>
+<tr>
+<td>REIN [83]</td>
+<td></td>
+<td>✔️</td>
+<td align="center"></td>
+<td></td>
+<td></td>
+<td></td>
+<td>✔️</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>✔️</td>
+<td></td>
+<td></td>
+<td></td>
+<td>✔️</td>
+<td>GraphRNN</td>
+<td>Edge prediction（边预测）</td>
+</tr>
+<tr>
+<td>Henderson et al. [23]</td>
+<td>✔️</td>
+<td></td>
+<td align="center"></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>✔️</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>✔️</td>
+<td></td>
+<td></td>
+<td></td>
+<td>✔️</td>
+<td>CNN</td>
+<td>Vertex position（顶点位置）</td>
+</tr>
+<tr>
+<td>SSRNet [84]</td>
+<td></td>
+<td></td>
+<td align="center">✔️</td>
+<td></td>
+<td></td>
+<td></td>
+<td>✔️</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>✔️</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>UNet; tangent convolution</td>
+<td>Octree vertex labels（八叉树顶点标签）</td>
+</tr>
+<tr>
+<td>MeshVAE [85]</td>
+<td>✔️</td>
+<td></td>
+<td align="center"></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>✔️</td>
+<td>✔️</td>
+<td></td>
+<td></td>
+<td></td>
+<td>✔️</td>
+<td>CVAE; GCN</td>
+<td>Vertex position（顶点位置）</td>
+</tr>
+<tr>
+<td>Point2Mesh [37]</td>
+<td>✔️</td>
+<td></td>
+<td align="center"></td>
+<td></td>
+<td></td>
+<td></td>
+<td>✔️</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>✔️</td>
+<td></td>
+<td></td>
+<td></td>
+<td>✔️</td>
+<td>GCN</td>
+<td>Vertex position（顶点位置）</td>
+</tr>
+<tr>
+<td>NMF [38]</td>
+<td>✔️</td>
+<td></td>
+<td align="center"></td>
+<td></td>
+<td></td>
+<td></td>
+<td>✔️</td>
+<td>✔️</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>✔️</td>
+<td></td>
+<td></td>
+<td></td>
+<td>✔️</td>
+<td>Conditional Flow&#x2F;PointNet</td>
+<td>Vertex position（顶点位置）</td>
+</tr>
+<tr>
+<td>NDF [86]</td>
+<td></td>
+<td></td>
+<td align="center">✔️</td>
+<td></td>
+<td></td>
+<td></td>
+<td>✔️</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>✔️</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>IF-Nets</td>
+<td>Unsigned distance field（无符号距离场）</td>
+</tr>
+<tr>
+<td>Meshsdf [87]</td>
+<td></td>
+<td></td>
+<td align="center">✔️</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>✔️</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>✔️</td>
+<td></td>
+<td></td>
+<td></td>
+<td>✔️</td>
+<td>SplineCNN</td>
+<td>Vertex position（顶点位置）</td>
+</tr>
+<tr>
+<td>Smirnov et al. [26]</td>
+<td>✔️</td>
+<td></td>
+<td align="center"></td>
+<td></td>
+<td>✔️</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>✔️</td>
+<td></td>
+<td></td>
+<td>✔️</td>
+<td></td>
+<td></td>
+<td></td>
+<td>ResNet-18</td>
+<td>Local parameterization（局部参数化）</td>
+</tr>
+<tr>
+<td>Lasr [24]</td>
+<td>✔️</td>
+<td></td>
+<td align="center"></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>✔️</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>✔️</td>
+<td></td>
+<td></td>
+<td></td>
+<td>✔️</td>
+<td>Flow&#x2F;Mask Nets</td>
+<td>Vertex position（顶点位置）</td>
+</tr>
+<tr>
+<td>Transformerfusion [88]</td>
+<td></td>
+<td>✔️</td>
+<td align="center">✔️</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>✔️</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>✔️</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>Transformer; 3D-CNN</td>
+<td>Learning occupancy field（学习占用场）</td>
+</tr>
+<tr>
+<td>CSPNet [89]</td>
+<td></td>
+<td>✔️</td>
+<td align="center">✔️</td>
+<td></td>
+<td></td>
+<td></td>
+<td>✔️</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>✔️</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>CONet; PointNet</td>
+<td>Unsigned distance field（无符号距离场）</td>
+</tr>
+<tr>
+<td>DASM [25]</td>
+<td>✔️</td>
+<td></td>
+<td align="center"></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>✔️</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>✔️</td>
+<td></td>
+<td></td>
+<td></td>
+<td>✔️</td>
+<td>GCN; Mesh R-CNN</td>
+<td>Vertex position（顶点位置）</td>
+</tr>
+<tr>
+<td>Neuralrecon [90]</td>
+<td></td>
+<td>✔️</td>
+<td align="center">✔️</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>✔️</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>✔️</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>GRU; MLP</td>
+<td>Truncated signed distance field（截断有符号距离场）</td>
+</tr>
+<tr>
+<td>Sa-convonet [91]</td>
+<td></td>
+<td>✔️</td>
+<td align="center">✔️</td>
+<td></td>
+<td></td>
+<td></td>
+<td>✔️</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>✔️</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>PointNet;</td>
+<td>CNN learning occupancy field（CNN 学习占用场）</td>
+</tr>
+<tr>
+<td>DMTet [92]</td>
+<td></td>
+<td></td>
+<td align="center">✔️</td>
+<td></td>
+<td></td>
+<td></td>
+<td>✔️</td>
+<td></td>
+<td>✔️</td>
+<td></td>
+<td></td>
+<td></td>
+<td>✔️</td>
+<td></td>
+<td></td>
+<td></td>
+<td>✔️</td>
+<td>CGAN</td>
+<td>Vertex position；Signed distance field（顶点位置；有符号距离场）</td>
+</tr>
+<tr>
+<td>Vis2mesh [93]</td>
+<td></td>
+<td>✔️</td>
+<td align="center"></td>
+<td>✔️</td>
+<td></td>
+<td></td>
+<td>✔️</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>✔️</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>U-Net; PConv</td>
+<td>Visibility map（可见性图）</td>
+</tr>
+<tr>
+<td>IMLSNet [94]</td>
+<td></td>
+<td>✔️</td>
+<td align="center">✔️</td>
+<td></td>
+<td></td>
+<td></td>
+<td>✔️</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>✔️</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>Octree based CNNs</td>
+<td>Signed distance field（有符号距离场）</td>
+</tr>
+<tr>
+<td>Retrievalfuse [95]</td>
+<td></td>
+<td></td>
+<td align="center">✔️</td>
+<td></td>
+<td></td>
+<td></td>
+<td>✔️</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>✔️</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>U-net; Attention</td>
+<td>Truncated distance field（截断距离场）</td>
+</tr>
+<tr>
+<td>Deepdt [96]</td>
+<td></td>
+<td>✔️</td>
+<td align="center">✔️</td>
+<td></td>
+<td></td>
+<td></td>
+<td>✔️</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>✔️</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>GCN</td>
+<td>Interior-exterior classification（内外分类）</td>
+</tr>
+<tr>
+<td>Iso-points [97]</td>
+<td></td>
+<td></td>
+<td align="center">✔️</td>
+<td></td>
+<td>✔️</td>
+<td></td>
+<td>✔️</td>
+<td>✔️</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>✔️</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>IDR</td>
+<td>Isosurface（等值面）</td>
+</tr>
+<tr>
+<td>DST [98]</td>
+<td></td>
+<td></td>
+<td align="center"></td>
+<td>✔️</td>
+<td></td>
+<td></td>
+<td>✔️</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>✔️</td>
+<td></td>
+<td></td>
+<td></td>
+<td>✔️</td>
+<td>–</td>
+<td>Parameterization（参数化）</td>
+</tr>
+<tr>
+<td>SAP [99]</td>
+<td></td>
+<td></td>
+<td align="center">✔️</td>
+<td></td>
+<td></td>
+<td></td>
+<td>✔️</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>✔️</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>MLP</td>
+<td>Mesh indicator function（网格指示函数）</td>
+</tr>
+<tr>
+<td>Bertiche et al. [27]</td>
+<td>✔️</td>
+<td></td>
+<td align="center"></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>✔️</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>✔️</td>
+<td></td>
+<td></td>
+<td></td>
+<td>✔️</td>
+<td>Point-CNN</td>
+<td>SMPL parameters；Vertex position（SMPL 参数；顶点位置）</td>
+</tr>
+<tr>
+<td>NeeDrop [100]</td>
+<td></td>
+<td>✔️</td>
+<td align="center">✔️</td>
+<td></td>
+<td></td>
+<td></td>
+<td>✔️</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>✔️</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>ONet</td>
+<td>Interior-exterior classification（内外分类）</td>
+</tr>
+<tr>
+<td>LMR [28]</td>
+<td>✔️</td>
+<td></td>
+<td align="center"></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>✔️</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>✔️</td>
+<td></td>
+<td></td>
+<td></td>
+<td>✔️</td>
+<td>RNN;</td>
+<td>SMPL parameters（SMPL 参数）</td>
+</tr>
+<tr>
+<td>NRSfM [29]</td>
+<td>✔️</td>
+<td></td>
+<td align="center"></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>✔️</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>✔️</td>
+<td></td>
+<td></td>
+<td>✔️</td>
+<td>Unet</td>
+<td>Point location（点的位置）</td>
+</tr>
+<tr>
+<td>AnalyticMesh [101]</td>
+<td></td>
+<td>✔️</td>
+<td align="center">✔️</td>
+<td></td>
+<td></td>
+<td></td>
+<td>✔️</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>✔️</td>
+<td></td>
+<td>✔️</td>
+<td>MLPs</td>
+<td>Isosurface（等值面）</td>
+</tr>
+<tr>
+<td>DHSP [102]</td>
+<td>✔️</td>
+<td></td>
+<td align="center"></td>
+<td></td>
+<td>✔️</td>
+<td></td>
+<td>✔️</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>✔️</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>MeshCNN; 2DCNN</td>
+<td>Vertex position；Texture mapping（顶点位置；纹理映射）</td>
+</tr>
+<tr>
+<td>Neural-Pull [39]</td>
+<td></td>
+<td></td>
+<td align="center">✔️</td>
+<td></td>
+<td></td>
+<td></td>
+<td>✔️</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>✔️</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>MLP</td>
+<td>Signed distance field（有符号距离场）</td>
+</tr>
+<tr>
+<td>DI-Fusion [103]</td>
+<td></td>
+<td></td>
+<td align="center">✔️</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>✔️</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>✔️</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>MLP based AE</td>
+<td>Truncated signed distance field（截断有符号距离场）</td>
+</tr>
+<tr>
+<td>DSE [104]</td>
+<td></td>
+<td></td>
+<td align="center"></td>
+<td>✔️</td>
+<td>✔️</td>
+<td></td>
+<td>✔️</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>✔️</td>
+<td></td>
+<td></td>
+<td></td>
+<td>FoldingNet</td>
+<td>Parameterization（参数化）</td>
+</tr>
+<tr>
+<td>LDFQ [105]</td>
+<td></td>
+<td></td>
+<td align="center"></td>
+<td></td>
+<td>✔️</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>✔️</td>
+<td></td>
+<td></td>
+<td>✔️</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>Pointnet; SpiralNet</td>
+<td>Direction field（方向场）</td>
+</tr>
+<tr>
+<td>DGNN [106]</td>
+<td></td>
+<td>✔️</td>
+<td align="center"></td>
+<td>✔️</td>
+<td></td>
+<td></td>
+<td>✔️</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>✔️</td>
+<td></td>
+<td></td>
+<td></td>
+<td>✔️</td>
+<td>GNN+MLP</td>
+<td>Tetrahedral interior-exterior score（四面体内外得分）</td>
+</tr>
+<tr>
+<td>Hu et al. [30]</td>
+<td>✔️</td>
+<td></td>
+<td align="center"></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>✔️</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>✔️</td>
+<td></td>
+<td></td>
+<td></td>
+<td>✔️</td>
+<td>GAN</td>
+<td>Mesh texture（网格纹理）</td>
+</tr>
+<tr>
+<td>NMC [107]</td>
+<td></td>
+<td>✔️</td>
+<td align="center">✔️</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>✔️</td>
+<td></td>
+<td></td>
+<td></td>
+<td>✔️</td>
+<td></td>
+<td></td>
+<td></td>
+<td>✔️</td>
+<td>MLP</td>
+<td>Isosurface（等值面）</td>
+</tr>
+<tr>
+<td>Skeletonnet [32]</td>
+<td>✔️</td>
+<td>✔️</td>
+<td align="center">✔️</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>✔️</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>✔️</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>Point2voxel; 3D-Unet</td>
+<td>Interior-exterior classification（内外分类）</td>
+</tr>
+<tr>
+<td>Nvdiffrec [108]</td>
+<td></td>
+<td></td>
+<td align="center">✔️</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>✔️</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>✔️</td>
+<td></td>
+<td></td>
+<td></td>
+<td>✔️</td>
+<td>GAN; MLP</td>
+<td>Signed distance field；Texture（有符号距离场；纹理）</td>
+</tr>
+<tr>
+<td>Selfrecon [33]</td>
+<td>✔️</td>
+<td></td>
+<td align="center"></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>✔️</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>✔️</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>MLP</td>
+<td>Point position and isosurface（点位置和等值面）</td>
+</tr>
+<tr>
+<td>Autosdf [109]</td>
+<td></td>
+<td></td>
+<td align="center">✔️</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>✔️</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>✔️</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>VQ-VAE; transformer</td>
+<td>Signed distance field（有符号距离场）</td>
+</tr>
+<tr>
+<td>NKF [110]</td>
+<td></td>
+<td>✔️</td>
+<td align="center">✔️</td>
+<td></td>
+<td></td>
+<td></td>
+<td>✔️</td>
+<td></td>
+<td></td>
+<td></td>
+<td>✔️</td>
+<td></td>
+<td>✔️</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>CNN</td>
+<td>Interior-exterior classification（内外分类）</td>
+</tr>
+<tr>
+<td>Sketch2PQ [111]</td>
+<td></td>
+<td></td>
+<td align="center"></td>
+<td></td>
+<td>✔️</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>✔️</td>
+<td></td>
+<td></td>
+<td>✔️</td>
+<td>U-Net</td>
+<td>Spline surface and direction field（样条曲面和方向场）</td>
+</tr>
+<tr>
+<td>SRMAE [112]</td>
+<td>✔️</td>
+<td></td>
+<td align="center"></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>✔️</td>
+<td></td>
+<td></td>
+<td>✔️</td>
+<td></td>
+<td></td>
+<td></td>
+<td>✔️</td>
+<td>AE; 2DConv</td>
+<td>Hexagonal mesh position（六边形网格位置）</td>
+</tr>
+<tr>
+<td>OnSurfacePrior [113]</td>
+<td></td>
+<td></td>
+<td align="center">✔️</td>
+<td></td>
+<td></td>
+<td></td>
+<td>✔️</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>✔️</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>MLP</td>
+<td>Signed distance field（有符号距离场）</td>
+</tr>
+<tr>
+<td>Lu et al. [114]</td>
+<td></td>
+<td></td>
+<td align="center"></td>
+<td></td>
+<td></td>
+<td>✔️</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>✔️</td>
+<td></td>
+<td></td>
+<td></td>
+<td>✔️</td>
+<td></td>
+<td>✔️</td>
+<td>BP-ANN</td>
+<td>Node position；Angle（节点位置；角度）</td>
+</tr>
+<tr>
+<td>MGNet [115]</td>
+<td></td>
+<td></td>
+<td align="center"></td>
+<td></td>
+<td>✔️</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>✔️</td>
+<td></td>
+<td></td>
+<td>✔️</td>
+<td></td>
+<td></td>
+<td>✔️</td>
+<td>MLPs</td>
+<td>Point position（点的位置）</td>
+</tr>
+<tr>
+<td>RLQMG [116]</td>
+<td></td>
+<td></td>
+<td align="center"></td>
+<td></td>
+<td></td>
+<td>✔️</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>✔️</td>
+<td></td>
+<td></td>
+<td>✔️</td>
+<td></td>
+<td></td>
+<td>✔️</td>
+<td>RL; FNN</td>
+<td>Point position；Insertion type（点的位置；插入类型）</td>
+</tr>
+<tr>
+<td>TopoNet [34]</td>
+<td>✔️</td>
+<td></td>
+<td align="center"></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>✔️</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>✔️</td>
+<td></td>
+<td></td>
+<td></td>
+<td>✔️</td>
+<td>pixel2mesh; GCN; RL</td>
+<td>Point position；Face occupancy（点的位置；面占用）</td>
+</tr>
+<tr>
+<td>SAniHead [41]</td>
+<td>✔️</td>
+<td></td>
+<td align="center"></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>✔️</td>
+<td></td>
+<td>✔️</td>
+<td></td>
+<td></td>
+<td></td>
+<td>✔️</td>
+<td>Pixel2mesh; GCN</td>
+<td>Point position（点的位置）</td>
+</tr>
+<tr>
+<td>NDC [117]</td>
+<td></td>
+<td>✔️</td>
+<td align="center">✔️</td>
+<td></td>
+<td></td>
+<td></td>
+<td>✔️</td>
+<td></td>
+<td>✔️</td>
+<td></td>
+<td></td>
+<td></td>
+<td>✔️</td>
+<td></td>
+<td></td>
+<td></td>
+<td>✔️</td>
+<td>3D CNN&#x2F;pointnet++</td>
+<td>Edge prediction（预测边）</td>
+</tr>
+<tr>
+<td>PCGAN [118]</td>
+<td></td>
+<td></td>
+<td align="center"></td>
+<td></td>
+<td>✔️</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>✔️</td>
+<td>✔️</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>GAN</td>
+<td>Geometric image（几何图像）</td>
+</tr>
+<tr>
+<td>Nice-slam [119]</td>
+<td></td>
+<td></td>
+<td align="center">✔️</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>✔️</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>✔️</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>MLPs</td>
+<td>Isosurface（等值面）</td>
+</tr>
+<tr>
+<td>NRGBD [120]</td>
+<td></td>
+<td></td>
+<td align="center">✔️</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>✔️</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>✔️</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>NeRF</td>
+<td>Signed distance field（有符号距离场）</td>
+</tr>
+<tr>
+<td>POCO [121]</td>
+<td></td>
+<td>✔️</td>
+<td align="center">✔️</td>
+<td></td>
+<td></td>
+<td></td>
+<td>✔️</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>✔️</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>FKAconv；Attention model</td>
+<td>point occupancy（点占用）</td>
+</tr>
+</tbody></table>
+<h3 id="表-2：所有选定的-IMG-方法的提议、优势和局限性。AMC-表示平均每月引用次数"><a href="#表-2：所有选定的-IMG-方法的提议、优势和局限性。AMC-表示平均每月引用次数" class="headerlink" title="表 2：所有选定的 IMG 方法的提议、优势和局限性。AMC 表示平均每月引用次数"></a>表 2：所有选定的 IMG 方法的提议、优势和局限性。AMC 表示平均每月引用次数</h3><table>
+<thead>
+<tr>
+<th>（Article）论文</th>
+<th>Challenges (提议)</th>
+<th>Advantages (优势)</th>
+<th>Limitations (局限性)</th>
+<th>AMC（引用次数&#x2F;每月）</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Self-organizing [42]</td>
+<td>非均匀密度网格生成</td>
+<td>生成具有指定密度分布的网格</td>
+<td>仅处理具有给定边界的简单情况</td>
+<td>0.12</td>
+</tr>
+<tr>
+<td>Lowther et al. [43]</td>
+<td>非均匀密度网格生成</td>
+<td>完全自动，密度自适应网格</td>
+<td>结果极不规则，需要边界</td>
+<td>0.08</td>
+</tr>
+<tr>
+<td>Alfonzetti et al. [44]</td>
+<td>非均匀密度网格生成</td>
+<td>密度自适应网格；保留边界</td>
+<td>需要一个初始粗略网格</td>
+<td>0.12</td>
+</tr>
+<tr>
+<td>Alfonzetti et al. [45]</td>
+<td>非均匀密度网格生成</td>
+<td>顶点密度函数可以自适应计算</td>
+<td>需要一个初始粗略网格</td>
+<td>0.07</td>
+</tr>
+<tr>
+<td>Alfonzetti et al. [46]</td>
+<td>非均匀四面体网格生成</td>
+<td>可以生成预设数量的四面体网格</td>
+<td>需要一个粗糙的初始网格和密度函数</td>
+<td>0.04</td>
+</tr>
+<tr>
+<td>Peng et al. [47]</td>
+<td>手动表示复杂的 3D 物体</td>
+<td>将多层感知器与 3D 对象重建相结合</td>
+<td>MLP 只需要恢复 Z 坐标</td>
+<td>0.14</td>
+</tr>
+<tr>
+<td>Yao et al. [48]</td>
+<td>规定 IMG 网格元素提取规则</td>
+<td>在一定程度上减少奇点的数量</td>
+<td>不是端到端的；可能陷入局部最小值</td>
+<td>0.16</td>
+</tr>
+<tr>
+<td>Alfonzetti et al. [49]</td>
+<td>为 3D 情况生成高质量网格</td>
+<td>输出网格质量好；算法简单</td>
+<td>仅处理具有给定边界的简单情况</td>
+<td>0.04</td>
+</tr>
+<tr>
+<td>Li et al. [50]</td>
+<td>对不完整输入数据的鲁棒性</td>
+<td>不完整点云数据的表面重建</td>
+<td>神经网络仅用于补充点云</td>
+<td>0.02</td>
+</tr>
+<tr>
+<td>Agostinho et al. [51]</td>
+<td>详细的多分辨率网格生成</td>
+<td>以多分辨率方式；只需要一个简单的初始网格</td>
+<td>仅适用于 0 类对象网格的生成</td>
+<td>0.25</td>
+</tr>
+<tr>
+<td>Wen et al. [52]</td>
+<td>RBF 方法中的病态矩阵和过拟合问题</td>
+<td>克服系数矩阵的数值病态和过拟合问题</td>
+<td>径向基函数的选择限制了隐式函数的解空间</td>
+<td>0.05</td>
+</tr>
+<tr>
+<td>Xiong et al. [53]</td>
+<td>克服多阶段处理的限制</td>
+<td>联合优化几何和连接性；对异常值和噪声具有鲁棒性；保留尖锐特征</td>
+<td>不能保证收敛；无法避免局部最小值；可能在孔区域失败</td>
+<td>0.69</td>
+</tr>
+<tr>
+<td>DeepGarment [8]</td>
+<td>智能、高效和实用的 IMG</td>
+<td>仅从单个图像中高效捕获 3D 服装形状</td>
+<td>仅能处理简单的 T 恤和连衣裙</td>
+<td>0.89</td>
+</tr>
+<tr>
+<td>Deepsketch2face [9]</td>
+<td>将草图转换为网格</td>
+<td>有效地推断 2D 草图的网格；有效地帮助用户创建面部网格</td>
+<td>仅适用于卡通模型；无法创建皱纹等细节</td>
+<td>1.74</td>
+</tr>
+<tr>
+<td>ShapeMVD [54]</td>
+<td>转换草图为网格的高效性</td>
+<td>输出网格保留拓扑和形状结构</td>
+<td>输出网格缺乏细节；非端到端可微分</td>
+<td>2.47</td>
+</tr>
+<tr>
+<td>Surfnet [55]</td>
+<td>直接生成刚性和非刚性形状的网格</td>
+<td>在一定程度上解决面积畸变问题</td>
+<td>仅能生成 0 类曲面</td>
+<td>2.60</td>
+</tr>
+<tr>
+<td>…</td>
+<td>…</td>
+<td>…</td>
+<td>…</td>
+<td>…</td>
+</tr>
+<tr>
+<td>Pixel2mesh [10]</td>
+<td>输出网格丢失表面细节</td>
+<td>肯定保留表面细节</td>
+<td>仅能重建与初始网格拓扑类似的对象</td>
+<td>16.82</td>
+</tr>
+<tr>
+<td>AtlasNet [56]</td>
+<td>生成高分辨率的 3D 形状</td>
+<td>生成任意分辨率的形状；适用范围广</td>
+<td>存在失真或重叠</td>
+<td>16.29</td>
+</tr>
+<tr>
+<td>Li et al. [57]</td>
+<td>从 2D 草图建模通用自由曲面 3D 表面</td>
+<td>自由曲面建模；只需要简洁的线条注解；解决流场问题</td>
+<td>无法创建几何细节；每次只能建模一个补丁；不是端到端可微分的</td>
+<td>1.22</td>
+</tr>
+<tr>
+<td>DMC [58]</td>
+<td>立方体算法端到端</td>
+<td>立方体网格端到端生成；</td>
+<td>高内存要求；受限于 <img src="/images/1fe7ad1f6f368dd0791bb9912deff87d.svg"></td>
+<td></td>
+</tr>
+<tr>
+<td>体素分辨率</td>
+<td>3.04</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>CoMA [59]</td>
+<td>生成人脸的 3D 网格</td>
+<td>生成多样逼真的 3D 人脸；</td>
+<td>需要来自相同对象类的参考模板</td>
+<td>6.60</td>
+</tr>
+<tr>
+<td>3D-CFCN [60]</td>
+<td>不完整和噪声输入</td>
+<td>在一定程度上，对噪声鲁棒；</td>
+<td>薄片的网格生成较差</td>
+<td>0.50</td>
+</tr>
+<tr>
+<td>MGN [11]</td>
+<td>预测物体几何结构</td>
+<td>重建网格并捕捉纹理；</td>
+<td>无法处理姿态相关的变形；依赖分割</td>
+<td>5.03</td>
+</tr>
+<tr>
+<td>3DN [35]</td>
+<td>简单高效的 IMG 算法</td>
+<td>端到端可优化模型；</td>
+<td>需要参考模板</td>
+<td>2.23</td>
+</tr>
+<tr>
+<td>TMN [12]</td>
+<td>高质量网格生成</td>
+<td>可重建各种拓扑的网格；</td>
+<td>无法直接生成未封闭表面</td>
+<td>3.12</td>
+</tr>
+<tr>
+<td>ONet [61]</td>
+<td>简单高效的网格表示</td>
+<td>能在任何分辨率提取 3D 网格；可以处理各种输入</td>
+<td>高内存要求</td>
+<td>28.79</td>
+</tr>
+<tr>
+<td>N3DMM [62]</td>
+<td>网格的高效特征表示</td>
+<td>创建各向异性网格；轻便易优化模型；</td>
+<td>需要来自相同对象类的参考模板</td>
+<td>2.48</td>
+</tr>
+<tr>
+<td>PGAN [63]</td>
+<td>探索几何图像的网格生成</td>
+<td>生成多样逼真的 3D 人脸；</td>
+<td>复杂的预处理&#x2F;后处理；参数化导致网格失真</td>
+<td>0.03</td>
+</tr>
+<tr>
+<td>HumanMeshNet [13]</td>
+<td>实时重建</td>
+<td>确保光滑的表面重建；</td>
+<td>训练数据和测试数据必须是相同的基本模型</td>
+<td>0.35</td>
+</tr>
+<tr>
+<td>DISN [64]</td>
+<td>高质量和详细的网格生成</td>
+<td>捕捉细粒度细节；</td>
+<td>只能处理有明确背景的对象</td>
+<td>8.45</td>
+</tr>
+<tr>
+<td>IM-Net [65]</td>
+<td>生成高视觉质量的网格</td>
+<td>有效的坐标信息表示；</td>
+<td>很多非表面点导致无效计算</td>
+<td>17.10</td>
+</tr>
+<tr>
+<td>Scan2Mesh [66]</td>
+<td>适应不完整扫描</td>
+<td>从嘈杂和部分范围扫描中生成更加干净和类 CAD 的网格</td>
+<td>高内存要求；不强制网格的规则性和连续性</td>
+<td>1.67</td>
+</tr>
+<tr>
+<td>DGP [67]</td>
+<td>稠密重建点云</td>
+<td>对噪声鲁棒；捕捉锐利特征；任意分辨率的网格</td>
+<td>高计算复杂度；没有自适应补丁选择</td>
+<td>2.59</td>
+</tr>
+<tr>
+<td>Mesh R-CNN [14]</td>
+<td>高质量和详细的网格生成</td>
+<td>适用于无约束的现实世界图像；</td>
+<td>非流形，重建精度低</td>
+<td>8.03</td>
+</tr>
+<tr>
+<td>DeepSDF [68]</td>
+<td>在保真度、效率和压缩能力之间进行取舍</td>
+<td>实现高质量的形状表示、插值和从部分和嘈杂的 3D 输入数据中完成</td>
+<td>简单的全连接网络结构，没有局部信息或平移等变性</td>
+<td>32.23</td>
+</tr>
+<tr>
+<td>Pixel2mesh++[15]</td>
+<td>跨视图信息融合</td>
+<td>利用跨视图信息；强大的泛化能力；</td>
+<td>仅能生成 0 亏格的表面</td>
+<td>3.74</td>
+</tr>
+<tr>
+<td>PQ-Net [69]</td>
+<td>本地结构和几何编码</td>
+<td>学习以顺序部件装配的形式的 3D 形状表示；</td>
+<td>不能学习对称关系或产生改变拓扑的网格</td>
+<td>2.15</td>
+</tr>
+<tr>
+<td>BCNet [16]</td>
+<td>几何表示的准确性</td>
+<td>能生成不同拓扑的服装；</td>
+<td>一些细节无法生成</td>
+<td>2.48</td>
+</tr>
+<tr>
+<td>PolyGen [70]</td>
+<td>生成多样逼真的几何形状</td>
+<td>能生成连贯且多样化的网格样本；</td>
+<td>适用于生成人造物体表面，但不适用于复杂曲面的生成</td>
+<td>3.68</td>
+</tr>
+<tr>
+<td>DGTS [71]</td>
+<td>学习网格的几何信息</td>
+<td>在不同拓扑的两个曲面之间转移几何信息；不需要参数化</td>
+<td>无法有效学习整体语义信息；对输入数据有较高要求</td>
+<td>1.30</td>
+</tr>
+<tr>
+<td>Neural Subdivision [72]</td>
+<td>生成光滑且保持特征的细分结果</td>
+<td>能学习复杂的非线性细分方案；</td>
+<td>无法保证全局语义信息</td>
+<td>1.83</td>
+</tr>
+<tr>
+<td>Mobile3drecon [73]</td>
+<td>实时网格生成</td>
+<td>实时稠密网格重建；</td>
+<td>对锐利特征的维护较差</td>
+<td>3.33</td>
+</tr>
+<tr>
+<td>Sal [74]</td>
+<td>适用于无符号几何数据</td>
+<td>不需要地面真实法向数据或内&#x2F;外标记；</td>
+<td>对薄部位的生成不佳</td>
+<td>7.30</td>
+</tr>
+<tr>
+<td>Pixel2mesh2 [17]</td>
+<td>保留表面细节</td>
+<td>几何正则化约束；</td>
+<td>仅适用于 0 次亏格表面</td>
+<td>0.76</td>
+</tr>
+<tr>
+<td>Voxel2mesh [40]</td>
+<td>无需后处理</td>
+<td>能生成无需任何后处理的 3D 网格；</td>
+<td>仅适用于 0 次亏格表面</td>
+<td>1.39</td>
+</tr>
+<tr>
+<td>X-ray2shape [18]</td>
+<td>适用于低对比度图像数据</td>
+<td>对低对比度图像有效；</td>
+<td>太多的奇点；无法处理复杂拓扑</td>
+<td>0.30</td>
+</tr>
+<tr>
+<td>Li et al.[19]</td>
+<td>背景重建</td>
+<td>最终网格不受环境影响；预处理决定网格质量；</td>
+<td>薄部位生成不佳</td>
+<td>0.02</td>
+</tr>
+<tr>
+<td>Meshlet [75]</td>
+<td>对稀疏和嘈杂的 3D 点稳健</td>
+<td>适用于稀疏嘈杂数据；规则且全局一致的网格；</td>
+<td>对薄结构失败；分辨率固定</td>
+<td>1.08</td>
+</tr>
+<tr>
+<td>LIG [76]</td>
+<td>用于规模和复杂室内场景的 IMG</td>
+<td>能生成任意规模带有细节的场景的网格；</td>
+<td>假设不同类别共享相似的部分几何</td>
+<td>7.85</td>
+</tr>
+<tr>
+<td>CONet [77]</td>
+<td>可扩展和复杂场景网格生成</td>
+<td>整合局部和全局信息；获得平移等变性；</td>
+<td>不适用于稀疏点云和对噪声不稳健</td>
+<td>13.59</td>
+</tr>
+<tr>
+<td>ILSM [78]</td>
+<td>逼真的液体飞溅网格生成</td>
+<td>从简单用户草图输入生成逼真的液体飞溅网格；</td>
+<td>无法生成像真实世界飞溅那样的详细飞溅；泛化能力弱</td>
+<td>0.22</td>
+</tr>
+<tr>
+<td>IER [79]</td>
+<td>生成精细的细节；泛化能力强</td>
+<td>保留细节；处理模糊结构；泛化能力强；</td>
+<td>非流形网格有孔洞；需要后处理</td>
+<td>0.83</td>
+</tr>
+<tr>
+<td>Yang et al.[20]</td>
+<td>生成物体细节</td>
+<td>端到端架构</td>
+<td>仅适用于 0 次亏格形状</td>
+<td>0</td>
+</tr>
+<tr>
+<td>MeshingNet [21]</td>
+<td>自动非结构化网格生成</td>
+<td>非均匀网格生成方法；将 PDEs 与 IMG 结合；</td>
+<td>仅测试了平面网格生成</td>
+<td>0.81</td>
+</tr>
+<tr>
+<td>Point2Surf [80]</td>
+<td>处理部分扫描和噪声</td>
+<td>适用于不均匀嘈杂的输入和具有不同拓扑的对象；</td>
+<td>不是端到端可微分的过程</td>
+<td>2.73</td>
+</tr>
+<tr>
+<td>DEFTET [81]</td>
+<td>单图像到四面体网格的生成</td>
+<td>适用于任何拓扑；高效算法；无需后处理；</td>
+<td>有翻转的四面体；无法保证特征</td>
+<td>1.38</td>
+</tr>
+<tr>
+<td>BTM [36]</td>
+<td>单一网格原型的泛化能力</td>
+<td>比可比方法更具泛化能力；</td>
+<td>高计算复杂度，需要多个网格原型</td>
+<td>0.10</td>
+</tr>
+<tr>
+<td>PointTriNet [82]</td>
+<td>高效、可扩展和泛化的算法</td>
+<td>以无监督方式训练；对异常值具有鲁棒性；</td>
+<td>有很多孔洞的网格，非流形</td>
+<td>1.04</td>
+</tr>
+<tr>
+<td>Surface Hof [22]</td>
+<td>高分辨率表面重建</td>
+<td>为各种拓扑生成任意分辨率的详细网格；</td>
+<td>仅适用于有明确背景的图像；不是端到端可微分的</td>
+<td>0.10</td>
+</tr>
+<tr>
+<td>REIN [83]</td>
+<td>用稀疏点云生成网格</td>
+<td>稀疏点云的网格生成</td>
+<td>非流形，无置换不变性</td>
+<td>0.04</td>
+</tr>
+<tr>
+<td>Henderson et al. [23]</td>
+<td>产生纹理网格</td>
+<td>没有自相交点; 不需要真实值分割 masks</td>
+<td>需要具有相同拓扑结构的引用模板</td>
+<td>1.83</td>
+</tr>
+<tr>
+<td>MeshVAE [85]</td>
+<td>一种有效的网格池化操作</td>
+<td>基于网格简化的池操作; 可以生成细节</td>
+<td>仅适用于均匀网格; 非水密或不规则网格会失败</td>
+<td>0.65</td>
+</tr>
+<tr>
+<td>Point2Mesh [37]</td>
+<td>网格生成的可学先验方法</td>
+<td>对无方向法线和噪音具有稳健性; 产生水密网格，非监督式学习</td>
+<td>需要初始网格; 高计算复杂度和重建精度低</td>
+<td>3.68</td>
+</tr>
+<tr>
+<td>SSRNet [84]</td>
+<td>大规模点云网格重建</td>
+<td>强大的可扩展性；擅长重建几何细节</td>
+<td>不是一个端到端可微的过程；分区方法至关重要</td>
+<td>1.26</td>
+</tr>
+<tr>
+<td>NMF [38]</td>
+<td>流形网格生成</td>
+<td>生成两个流形网格</td>
+<td>只适用于 0 亏格形状</td>
+<td>1.26</td>
+</tr>
+<tr>
+<td>NDF [86]</td>
+<td>任意形状的高分辨率输出</td>
+<td>可以生成非闭合的表面；可以表示内部结构</td>
+<td>网格划分需要后处理</td>
+<td>3.67</td>
+</tr>
+<tr>
+<td>Meshsdf [87]</td>
+<td>曲面网格生成的一种可微方法</td>
+<td>端到端可微；任意拓扑结构的水密网格</td>
+<td>泛化性能不足，仅生成简单网格</td>
+<td>2.19</td>
+</tr>
+<tr>
+<td>Smirnov et al. [26]</td>
+<td>高效的 IMG</td>
+<td>最终网格具有较少的异常点</td>
+<td>需要后处理</td>
+<td>0.87</td>
+</tr>
+<tr>
+<td>Lasr [24]</td>
+<td>非刚性结构网格生成</td>
+<td>不需要特定类别的网格模板；良好的通用性</td>
+<td>在严重遮挡时失败；效率需要改进</td>
+<td>1.47</td>
+</tr>
+<tr>
+<td>Transformerfusion [88]</td>
+<td>高效的编码和准确的重建</td>
+<td>交互式帧率运行的在线重建方法</td>
+<td>在某些场景中无法构建细节；</td>
+<td>2.36</td>
+</tr>
+<tr>
+<td>CSPNet [89]</td>
+<td>为复杂表面提供高效且低内存占用的表示</td>
+<td>可表示任意拓扑的复杂表面；局部几何属性的高效计算</td>
+<td>不是端到端可微的过程</td>
+<td>0.82</td>
+</tr>
+<tr>
+<td>DASM [25]</td>
+<td>利用局部正则化</td>
+<td>插拔式平滑模块可以生成更平滑的网格</td>
+<td>网格平滑需要手动设计的度量</td>
+<td>0.47</td>
+</tr>
+<tr>
+<td>Neuralrecon [90]</td>
+<td>精确、一致和实时重建</td>
+<td>可以实时生成精确和连贯的重建</td>
+<td>不是端到端可微的过程</td>
+<td>2.93</td>
+</tr>
+<tr>
+<td>Sa-convonet [91]</td>
+<td>可扩展到大规模场景；通用性</td>
+<td>适用于大型场景；</td>
+<td>推断速度慢</td>
+<td>1.18</td>
+</tr>
+<tr>
+<td>DMTet [92]</td>
+<td>从 IMG 生成高质量和详细的网格</td>
+<td>可以生成任意拓扑的网格，更精细的几何细节，较少的伪影</td>
+<td>全局均匀分辨率；容易产生双层&#x2F;断裂表面</td>
+<td>0.81</td>
+</tr>
+<tr>
+<td>Vis2mesh [93]</td>
+<td>大规模场景网格生成</td>
+<td>良好的泛化性；对噪声鲁棒；细节重建</td>
+<td>系统复杂</td>
+<td>0.09</td>
+</tr>
+<tr>
+<td>IMLSNet [94]</td>
+<td>将离散点集转换为光滑网格</td>
+<td>在点集上定义隐式函数</td>
+<td>不是端到端可微的过程</td>
+<td>1.60</td>
+</tr>
+<tr>
+<td>Retrievalfuse [95]</td>
+<td>大场景网格重建</td>
+<td>精确的场景重建；保留局部细节</td>
+<td>检索结果可能不够理想</td>
+<td>1.27</td>
+</tr>
+<tr>
+<td>Deepdt [96]</td>
+<td>内部&#x2F;外部分类无法获得干净的网格</td>
+<td>没有四面体的真实标签或可见性信息</td>
+<td>无法处理过大的输入</td>
+<td>0.47</td>
+</tr>
+<tr>
+<td>Iso-points [97]</td>
+<td>用于嘈杂和不完整输入的 IMG</td>
+<td>更快的收敛和准确的细节和拓扑恢复</td>
+<td>没有明确地建模外观</td>
+<td>0.87</td>
+</tr>
+<tr>
+<td>DST [98]</td>
+<td>三角网格的可微结构</td>
+<td>控制顶点位置和拓扑；对顶点数量线性复杂度</td>
+<td>需要表面分割；边界上存在可见的伪影；无法处理大量点或部件</td>
+<td>0.38</td>
+</tr>
+<tr>
+<td>SAP [99]</td>
+<td>点到网格层的高效可微表示</td>
+<td>输出无漏洞流形网格；可解释，轻量级和短推理时间；对异常值鲁棒</td>
+<td>仅限于小型场景；需要立方级别内存</td>
+<td>1.60</td>
+</tr>
+<tr>
+<td>Bertiche et al. [27]</td>
+<td>对各种几何和拓扑的泛化性</td>
+<td>具有微分几何的连续预测</td>
+<td>最终网格中缺少服装细节</td>
+<td>0</td>
+</tr>
+<tr>
+<td>NeeDrop [100]</td>
+<td>用极度稀疏的点云生成网格</td>
+<td>自监督方法；输入数据可以是稀疏点云</td>
+<td>需要后处理生成网格</td>
+<td>0.33</td>
+</tr>
+<tr>
+<td>AnalyticMesh [101]</td>
+<td>精确的网格重建</td>
+<td>与 Marching Cube 相比不丢失隐式场的细节</td>
+<td>需要后处理，如平滑或填补孔</td>
+<td>0</td>
+</tr>
+<tr>
+<td>LMR [28]</td>
+<td>在野外视频中的网格推断</td>
+<td>视频网格恢复的局部动力学建模方法</td>
+<td>生成的网格无法匹配人体</td>
+<td>0</td>
+</tr>
+<tr>
+<td>NRSfM [29]</td>
+<td>非刚性表面重建</td>
+<td>用于非刚性变形网格生成的简单有效模型</td>
+<td>生成的网格可能在面片边界重叠</td>
+<td>0.11</td>
+</tr>
+<tr>
+<td>DHSP [102]</td>
+<td>用稀疏彩色点云生成网格；多先验集成</td>
+<td>生成具有高分辨率纹理的网格；稀疏噪声点云鲁棒</td>
+<td>结构和操作复杂；仅能处理简单拓扑的单个物体模型</td>
+<td>0.27</td>
+</tr>
+<tr>
+<td>Neural-Pull [39]</td>
+<td>学习高质量 SDF 以生成网格</td>
+<td>无需符号距离值学习 SDF；对噪声鲁棒</td>
+<td>重建网格中缺少清晰的特征</td>
+<td>1.30</td>
+</tr>
+<tr>
+<td>DI-Fusion [103]</td>
+<td>内存和网格质量之间的权衡</td>
+<td>同时编码几何和不确定信息；</td>
+<td>无法保持空间连续的尖锐特征</td>
+<td>1.47</td>
+</tr>
+<tr>
+<td>DSE [104]</td>
+<td>生成流形网格</td>
+<td>产生近流形的三角网格，对异常值鲁棒</td>
+<td>不是端到端可微的；需要对部件进行对齐</td>
+<td>0.67</td>
+</tr>
+<tr>
+<td>LDFQ [105]</td>
+<td>四边形的 IMG 方法依赖于稠密的用户提供的方向场</td>
+<td>对计算方向场的稳健数据驱动方法</td>
+<td>构造框架场的真实值的构建方式决定网格的质量</td>
+<td>0.09</td>
+</tr>
+<tr>
+<td>DGNN [106]</td>
+<td>用于大规模场景和不完整点云输入的 IMG</td>
+<td>大规模、缺陷点云的网格重建；考虑可见性信息</td>
+<td>通用性低，在采集噪声较大、重建细节缺失时限制精度</td>
+<td>0.17</td>
+</tr>
+<tr>
+<td>Hu et al. [30]</td>
+<td>生成复杂的几何特征</td>
+<td>在网格密度和特征表示之间取得权衡</td>
+<td>最终网格有更多重叠</td>
+<td>0.07</td>
+</tr>
+<tr>
+<td>NMC [107]</td>
+<td>保留尖锐特征的 IMG 方法</td>
+<td>可保持尖锐的几何特征和学习局部拓扑</td>
+<td>对旋转敏感；生成的网格可能出现自相交</td>
+<td>0.89</td>
+</tr>
+<tr>
+<td>Skeletonnet [32]</td>
+<td>拓扑上的约束不足</td>
+<td>保留拓扑；高质量的骨架体积</td>
+<td>无法处理野外自然图像；算法复杂度高</td>
+<td>0.80</td>
+</tr>
+<tr>
+<td>Nvdiffrec [108]</td>
+<td>拓扑、材质和光照的联合优化</td>
+<td>具有材质的外观感知和端到端的网格生成</td>
+<td>计算和内存消耗高；简化着色模型</td>
+<td>3.33</td>
+</tr>
+<tr>
+<td>Selfrecon [33]</td>
+<td>结合隐式和显式表示的优势</td>
+<td>通过自监督优化为穿着服装的人产生高保真度表面</td>
+<td>优化时间长；主要适用于自旋转运动</td>
+<td>2.00</td>
+</tr>
+<tr>
+<td>Autosdf [109]</td>
+<td>网格生成的强大先验</td>
+<td>对多种任务的多模态生成有用；对齐敏感；</td>
+<td>仅适用于 CAD 模型；不是端到端可微的</td>
+<td>3.67</td>
+</tr>
+<tr>
+<td>NKF [110]</td>
+<td>用稀疏点云生成大场景网格；通用性</td>
+<td>能够重建训练集之外的形状类别；能够重建大场景网格</td>
+<td>核实现需要密集线性求解；需要定向点</td>
+<td>2</td>
+</tr>
+<tr>
+<td>Sketch2PQ [111]</td>
+<td>实时 IMG</td>
+<td>带有密集方向场的实时网格生成</td>
+<td>不是端到端可微的；仅适用于圆盘拓扑表面</td>
+<td>0</td>
+</tr>
+<tr>
+<td>SRMAE [112]</td>
+<td>良好的泛化性</td>
+<td>能够处理不同尺寸的网格；适用于无边界网格</td>
+<td>繁琐的预处理；全局信息利用不足</td>
+<td>0.25</td>
+</tr>
+<tr>
+<td>OnSurfacePrior [113]</td>
+<td>用稀疏点云和有效先验生成网格</td>
+<td>不需要 SDF 和法线；适用于稀疏点云</td>
+<td>不是端到端可微的过程</td>
+<td>1.33</td>
+</tr>
+<tr>
+<td>Lu et al. [114]</td>
+<td>智能前沿法</td>
+<td>一种基于自动化前沿的 IMG 方法</td>
+<td>仅适用于 2D 网格；缺少对异常点的控制；</td>
+<td>0</td>
+</tr>
+<tr>
+<td>MGNet [115]</td>
+<td>差分结构网格生成</td>
+<td>无监督结构四边形网格生成；无需先验知识或测量数据</td>
+<td>边界精度决定网格质量；只适用于平面网格</td>
+<td>0.33</td>
+</tr>
+<tr>
+<td>RLQMG [116]</td>
+<td>高效智能的四边形网格生成</td>
+<td>无需额外清理操作即可自动生成四边形网格</td>
+<td>缺少对异常点的控制；仅适用于平面网格生成</td>
+<td>0.20</td>
+</tr>
+<tr>
+<td>TopoNet [34]</td>
+<td>拓扑通用性</td>
+<td>不受模板拓扑限制；更好地捕捉几何形状</td>
+<td>重建的网格中有小孔</td>
+<td>0</td>
+</tr>
+<tr>
+<td>SAniHead [41]</td>
+<td>动物头部的网格生成</td>
+<td>能够生成具有几何细节的网格</td>
+<td>难以创建具有细小结构和较差泛化能力的形状</td>
+<td>1.33</td>
+</tr>
+<tr>
+<td>NDC [117]</td>
+<td>对双轮廓方法难以获得表面梯度</td>
+<td>良好的重建质量；适用于各种输入</td>
+<td>生成非流形网格，对方向不完全不变</td>
+<td>0</td>
+</tr>
+<tr>
+<td>PCGAN [118]</td>
+<td>通过 CNN 处理网格之间的拓扑相似性</td>
+<td>保留拓扑信息和空间结构；</td>
+<td>需要为网格生成进行预处理和后处理</td>
+<td>0</td>
+</tr>
+<tr>
+<td>Nice-slam [119]</td>
+<td>大场景过度平滑的网格生成</td>
+<td>能够填补小孔并外推场景几何；实时系统</td>
+<td>只有粗略表示</td>
+<td>4.33</td>
+</tr>
+<tr>
+<td>NRGBD [120]</td>
+<td>室内场景高质量网格重建</td>
+<td>有效结合深度观测和神经辐射场进行室内场景重建</td>
+<td>需要后处理；缺乏细节；收敛慢</td>
+<td>8.67</td>
+</tr>
+<tr>
+<td>POCO [121]</td>
+<td>隐式重建的可扩展性</td>
+<td>既适用于单个对象重建，也适用于整个场景重建</td>
+<td>缺少大型部件时无法完成形状; 如果没有法线，则定位失败</td>
+<td>2.00</td>
+</tr>
+</tbody></table>
+<h2 id="基本概念"><a href="#基本概念" class="headerlink" title="基本概念"></a>基本概念</h2><p>通常，网格分为曲面网格和体积网格。曲面网格是一组多边形面，目标是形成对象曲面的近似值。多边形曲面网格具有三种不同的组合元素：顶点、边和面。这个网格也可以被认为是几何和拓扑的组合，其中几何提供了它所有顶点的位置，而拓扑提供了不同相邻顶点之间的信息。在数学上，包含 <img src="/images/9f493997c33913987175caf4a4849955.svg"><br> 顶点和 <img src="/images/7aaf2781990aa336d909f7ebd32e2f69.svg"><br> 面的多边形曲面网格 <img src="/images/6f5dde593f0bc27956e14b5eaec2ed17.svg"><br> 形成为</p>
+<p><img src="/images/5d8027d5df7c7412466663ed4ea5b332.svg"></p>
+<p>其中 <img src="/images/9f493997c33913987175caf4a4849955.svg"><br> 是顶点集，<img src="/images/7aaf2781990aa336d909f7ebd32e2f69.svg"><br> 是面集，<img src="/images/6f5dde593f0bc27956e14b5eaec2ed17.svg"><br> 的形成为:</p>
+<p><img src="/images/ca4a4b43b0667d13d25a4425b3242b0e.svg"></p>
+<p>其中 <img src="/images/df976ff7fcf17d60490267d18a1e3996.svg"><br> 表示每个体素 <img src="/images/f6d8633a0473f22aa0e90b5bbf52c133.svg"><br> 的面数。</p>
+<p>为了避免歧义，网格生成的定义如下：</p>
+<ul>
+<li>定义 1.网格生成：<ul>
+<li>网格生成就是这样一个任务：给定输入数据 <img src="/images/94e79ad0c1aabeafef9e2fc4af6adf66.svg"><br>，映射 <img src="/images/94e79ad0c1aabeafef9e2fc4af6adf66.svg"><br> 并输出曲面网格 <img src="/images/69c21c798b1ac62e9decb112412d68ce.svg"><br> 或体积网格 <img src="/images/3543787f94063dfe0d7a2fed8545e12b.svg"></li>
+</ul>
+</li>
+</ul>
+<p>从本质上讲，网格生成的目标是恢复 <img src="/images/94e79ad0c1aabeafef9e2fc4af6adf66.svg"><br> 中缺失的几何信息或拓扑信息。通过我们的调查现有 IMG 方法的输入数据类型不会超出点云、图像、体素、边界或草图、网格和潜在变量。</p>
+<h1 id="基于技术的分类"><a href="#基于技术的分类" class="headerlink" title="基于技术的分类"></a>基于技术的分类</h1><p>在本节中，我们将现有的 IMG 方法分为六组，即基于变形的、基于分类的、基于等值面的、基于 Delaunay 三角测量的、基于参数化的和基于前沿的网格生成。这种分类基于每种方法固有的关键技术和指导原则。在这个分类中，我们说明了主要的 IMG 方法如何巧妙地将传统的网格生成技术与新的深度学习模块相结合，突出了每种方法的优点和缺点。我们预计这种分类法将帮助读者更直观地掌握神经网络在网格生成中的功能。</p>
+<ol>
+<li>在基于变形的 IMG 算法中，神经网络模块主要预测顶点位置。</li>
+<li>对于基于分类的 IMG，神经网络主要用作确定顶点连接或占用的分类器。</li>
+<li>基于等值面的 IMG 采用神经网络进行隐式函数拟合和零等值面提取。</li>
+<li>在基于 Delaunay 三角测量的 IMG 中，神经网络被用于预测顶点坐标或权重。</li>
+<li>对于基于参数化的 IMG 算法，神经网络学习参数化映射或处理参数化数据。</li>
+<li>在推进基于前端的 IMG 算法中，利用神经网络来预测波的正向和新节点的连接类型。</li>
+</ol>
+<p>下文相应小节将作进一步阐述。</p>
+<h2 id="基于变形的网格生成"><a href="#基于变形的网格生成" class="headerlink" title="基于变形的网格生成"></a>基于变形的网格生成</h2><p>网格由多边形组成，本质上是连续表面的离散表示。多边形的组合性质阻止了在任何给定表面的可能网格划分空间上取导数。因此，网格处理和优化技术很难利用现代优化框架的模块化梯度下降组件。为了规避这个问题，基于变形的 IMG 引起了更多的关注。如图 4 所示，该技术的一个显着特征是需要初始网格，例如球形或椭球形模板网格。基于变形的 IMG 适用于不同类型的输入。基于几何信息的目标网格通常由图像 [8]–[34]、点云 [35]–[39] 或体素 [40]、[41] 生成。<img src="/images/1701479512457-2ed2b0d3-4ab4-4a3e-b4bc-de0944947f29.png"><br> 图 4：Point2Mesh [37]：一种基于变形的 IMG 方法</p>
+<p>由于存在初始网格，这种类型的方法在一定程度上降低了网格生成的难度。神经网络只需要预测顶点的位置，因为连接关系已经存在。最早的基于变形的 IMG 工作可追溯到 1991 年，Ahn 等 [42] 提出了一种自组织神经网络来自动生成非均匀密度网格。这是一项开创性的工作，尽管只是平面网格与简单的几何学。近年来，出现了大量的实用方法。早期基于变形的 IMG 工作大多涉及对基本模型进行变形以获得目标网格，如服装 [8]、面部 [9] 和身体 [13]。这些方法仅生成特定目标对象的变形网格。后来，以 Pixel2Mesh [10] 为代表的一系列算法引入了模板作为基本网格，大大提高了实用性和泛化性。基于变形的方法与 GCN 和 MLP 紧密集成，以更好地预测顶点位置。然而，所有基于变形的模型都有一个共同的缺点：它们只能生成与初始网格具有相同拓扑结构的网格。因此，另一个研究方向是如何使其适应多种拓扑结构。Rios 等人。[36] 提出了一个非常直接的解决方案，即提供多个基本模板网格供算法自动选择。值得注意的是，这种方法并不能从根本上解决上述问题，而只是缓解了这些问题。为了继续，Charrada 等人。[34] 引入了一种面部修剪机制，该机制使用面部修剪操作迭代调整网格的拓扑结构，同时保留模板的主要属性，即吸引人的视觉外观和均匀的网格连接。诚然，面部修剪机制可以使该方法适用于更复杂拓扑的网格生成。</p>
+<h2 id="基于分类的网格生成"><a href="#基于分类的网格生成" class="headerlink" title="基于分类的网格生成"></a>基于分类的网格生成</h2><p>在结构化数据领域分类模型的启发和鼓励下，许多研究人员通过将基于分类模型的神经网络与网格生成相结合，设计了各种有效的 IMG 算法。这些算法分为两类：占用预测 [14]、[32]、[47]、[58]、[61]、[65]、[69]、[76]–[78]、[80]、[81]、[88]–[91]、[93]、[94]、[96]、[100]、[101]、[106]、[107]、[110]、[117]、[121] 和网格基本单元预测 [66]、[79]、[82]、[83]。前者对三维空间进行体素化，决定体素是否属于一个物体，这是一个二元分类问题。或者，占有预测可以进一步看作是物体的内部、表面和外部三个分类问题。后者将网格生成视为基本元素的组合，因此生成模型只需要判断要检测的基本元素是否应该存在，本质上也是一个二元分类问题。示例包括分面存在和局部连通性的分类。除了二元分类之外，还可以设计多分类来生成网格，例如 IER [79]。图 5 和 图 6 分别显示了基于占用率和基本元素分类的 IGM 方法。</p>
+<p> <img src="/images/1701479528132-856111f3-ea85-4e45-804a-8a413c2b8a60.png"><br> 图 5：早期作品通过判断每个网格的占用来定位物体表面，然后重建图 5：NKF [110]：基于占用分类的 IMG。</p>
+<p><img src="/images/1701479539260-095500ba-5d75-4956-a0b2-a768ef393538.png"><br> 图 6： IER [79]：基于分面存在分类的 IMG。</p>
+<p>通过行进立方体进行网格划分 [122]。在高分辨率情况下，与体素分辨率的立方成正比的浮点运算是无法忍受的。对象占据的网格通常仅由聚集在同一区域中的少量立方体组成，这意味着许多计算被浪费了。为了克服计算复杂度高的问题，IM-NET [65] 提出了一种更有效的采样方法，即对形状表面附近的更多点进行采样，而忽略远处的大多数点。在解决从点云生成网格的任务时，后续工作 [80]，[121] 侧重于判断点云的占用率而不是整个 3D 空间，这直接减少了浮点计算。与前者相比，这些基于网格基本单元预测的 IMG 方法可以端到端地生成网格。Yao [48] 提出了第一种使用分类模型生成网格的算法，该算法用于确定是否添加新顶点以及以何种方式添加新顶点。IER [79] 通过在输入点云上构建 k-最近邻图，提出了一组候选三角形面，其中利用神经网络过滤掉不正确的候选面。IER 的流程图如图 6 所示。Scan2Mesh [66] 和 REIN [83] 通过对边的存在进行分类来生成网格。PointTriNet [82] 迭代应用了两个神经网络：分类网络预测候选三角形是否应该出现在网格中，而建议网络则建议其他候选三角形。PointTriNet 的提议网络避免了预先定义候选面的需要，并消除了所有点必须从三角形网格顶点派生的假设。虽然 PointTriNet 的应用范围有所扩大，但生成的网格仍存在诸多问题，如非流形、孔多等。</p>
+<h2 id="基于等值面的网格生成"><a href="#基于等值面的网格生成" class="headerlink" title="基于等值面的网格生成"></a>基于等值面的网格生成</h2><p>假设每个点 <img src="/images/0fb3cdb7d684a19dc991b731fde645c0.svg"><br> 都有一个属性值，并且 <img src="/images/09edd9dbbbde23c86ded88435fe80be5.svg"><br> 表示空间 X 中的隐式函数。然后，由具有相等属性值的连续空间组成的曲面称为等值面，其定义为：</p>
+<p><img src="/images/a6c44667eb625014d42cde48ebe9d05b.svg"></p>
+<p>现有的基于等值面的 IMG 利用神经网络来拟合隐式函数并提取 <img src="/images/e0b97a554174a01b29a2cdf558ddc821.svg"><br>。三角形网格通常通过行进立方体 [122]、行进四面体 [123]、泊松曲面重建 [124] 算法或神经网络 [58]、[92]、[101]、[107]、[117] 进行重建。根据所选隐函数的不同，这些 IMG 方法分为四类：径向基函数（RBF）[52]、占用场 [32]、[54]、[57]、[58]、[61]、[73]、[78]、[84]、[88]、[91]、[110]、[119]、[121]、有符号距离函数（SDF）[39]、[60]、[64]、[65]、[69]、[76]、[77]、[80]、[87]、[90]、[92]、[94]–[97]、[99]、[101]、[103]、[107]–[109]， [113]、[117]、[120] 和无符号距离函数（UDF）[74]、[86]、[89]、[100]。不同类型的隐式函数如图 7 所示。</p>
+<p><img src="/images/1701480784184-70e22959-001e-4bc5-97ff-80452da98953.png"><br> 图 7：不同类型的隐式函数 [100]。</p>
+<p>基于等值面的 IMG 具有表示复杂几何形状和拓扑结构的优点，并且不限于预定义的分辨率。因此，基于等值面的 IMG 受到研究人员的青睐。2009 年，Wen et al.[52] 利用基于最小二乘径向基函数的神经网络来估计每个表面样本上的系数，并构造一个连续的隐式函数来表示 3D 表面。该网络还克服了传统 RBF 重建的数值失调和过拟合问题，并提供了一种利用较少样本重建模型的工具，使几何处理变得可行和实用。之后，Lun 等人。[54] 使用解码器网络将前景概率函数与占用场拟合，其定义如下：<img src="/images/45f7a63c5618c116714cfb253bfed565.svg"></p>
+<p>最近，出现了许多基于占用率预测的作品。Liao 等 [58] 通过预测每个体素的占用概率，提出了可微的行进立方体。为了提高体素占用预测的计算和记忆效率，Mescheder 等人提出了占用网络 [61]。目前，已经提出了各种具有不同网络架构和训练策略的基于占用的方法，以不断提高效率、鲁棒性和准确性 [32]、[57]、[73]、[78]、[84]、[88]、[91]、[110]、[119]、[121]。另外两个常用的隐式函数是 SDF 和 UDF。Cao 等 [60] 介绍了一种级联的 3D 卷积网络架构，该架构以渐进式、从粗到细的方式从嘈杂和不完整的深度图中学习 SDF。Wang 等.[64] 提出了一个深度隐式表面网络，该网络通过预测底层 SDF 从 2D 图像生成高质量、细节丰富的 3D 网格。在这些方法中，利用神经辐射场（NeRF）的 IMG 方法在再现物体或场景的外观方面显示出有希望的结果 [120]，[125][126]。对于它们来说，NeRF 用于预测 SDF 或密度场。然后，可以使用行进立方体算法从 SDF 中提取网格。尽管神经内隐表征在 3D 重建中因其表现力和灵活性，神经隐式表示的本质会产生缓慢的推理时间，并且需要仔细初始化。为了解决这些问题，Peng 等人。[99] 使用可微分 PSR [124] 引入了可微点到网格层，该层通过隐式指示器字段将显式 3D 点表示与 3D 网格桥接起来，从而实现端到端优化。其流程图如图 8 所示。</p>
+<p><img src="/images/1701480807248-264c3309-a3bb-47b6-a9e8-7db29f744c3d.png"><br> 图 8： SAP [99]：一种基于等值面的 IMG 方法</p>
+<p>Mon 等 [74] 介绍了一种与符号无关的学习方法，用于直接从原始和无符号几何数据中学习隐式形状表示。在文献 [86] 中，提出了神经距离场来预测给定稀疏点云的任意三维形状的无符号距离场。为了通过隐式表示估计局部几何，例如法线和切线平面，Venkatesh 等人。[89] 利用了一种称为最接近表面点表示的有效隐式表示，用于解决表面上的偏微分方程相关问题 [127]–[132]。为了处理高度稀疏的输入点云，NeeDrop [100] 引入了一种基于统计的自监督方法，直接从点云中估计占用函数。等值面方法系列有时受到其对噪声、异常值和非均匀采样的敏感性的限制。此外，在隐式方法中大规模求解方程可能非常耗时。分辨率与运行时间以及内存使用量之间存在三次或二次关系，这限制了其应用价值。</p>
+<h2 id="基于-Delaunay-三角测量的网格生成"><a href="#基于-Delaunay-三角测量的网格生成" class="headerlink" title="基于 Delaunay 三角测量的网格生成"></a>基于 Delaunay 三角测量的网格生成</h2><p>Delaunay 三角测量 [133] 是一种广泛使用的网格重建技术，可以将点云连接成三角形网格。Delaunay 三角剖分具有许多优良的特性，例如最大化最小角度特性。无论从哪个区域构建 Delaunay 三角剖分，最终生成的三角形网格都是独一无二的。受 Delaunay 三角测量的启发，一些研究人员试图将其集成到 IMG 中，以生成高质量和流形网格 [43]–[46]，[49]，[98]，[104]，[106]。在这些方法中，早期作品 [43]–[45]，[49] 使用神经网络预测顶点的位置，然后使用 Delaunay 三角测量 [133] 生成高质量的网格。这些方法生成具有给定边界或粗网格的二维平面网格。然而，在应用中，经常需要解决三维表面问题。Alfonzetti [46] 利用 3D Delaunay 算法从 3D 点云生成四面体网格。Song 等 [93] 将分类模型与自适应 Delaunay 算法相结合，实现了室内外大场景的网格重构. Rakotosaona 等人。[104] 通过神经网络将一个 3D 点投影到 2D 参数空间中，使用 Delaunay 算法对 2D 平面点进行三角测量，然后通过逆向映射将点云拉回 3D 表面。算法流水线如图 9 所示。此外，为了实现端到端的可微三角测量, Rakotosaona 等人。[98] 提出了一种可微分加权的 Delaunay 三角剖分法。</p>
+<p><img src="/images/1701480828176-ef630cf4-98ed-4da5-b610-36ddf73e9084.png"></p>
+<p>图 9： DSE [104]： 基于 Delaunay 三角测量的 IMG</p>
+<h2 id="基于参数化的网格生成"><a href="#基于参数化的网格生成" class="headerlink" title="基于参数化的网格生成"></a>基于参数化的网格生成</h2><p>如 [134] 所述，参数化是嵌入在 3D 中的曲面网格与称为参数空间的简单 2D 域之间的对应关系。通常，参数化应该是双射的，这是计算机图形学和几何处理中的一个经典问题，具有多种应用，例如网格生成、纹理映射和形状对应。考虑到网格生成在参数空间中的便利性，一些研究者尝试将参数化与机器学习模块相结合，然后发明了一系列基于参数化的 IMG 方法。根据参数化参与模式的不同，我们大致将其分为两类。第一类是基于几何图像的 IMG。作者通过传统的参数化方法 [135] 将表面映射到参数平面上，得到几何图像，利用深度学习模型对几何图像进行处理，然后将几何图像转换为网格。第二类是基于参数化学习的 IMG，它学习从参数空间到目标空间的映射。然后，通过传统或机器学习方法在参数空间中生成网格。对于第一类，Sinha 等 [55] 开发了一种创建几何图像的程序，该图像表示一类 3D 对象的形状表面。然后，作者利用这些几何图像通过开发深度残差网络的变体来生成特定类别的表面。Li 等.[63]， [118] 提出了预测生成对抗网络和预测补偿生成对抗网络来学习几何和法线图像的联合分布以生成网格。他们的目标是使用两个生成对抗网络（GAN）[136] 生成网格，并在面部网格生成方面取得了良好的性能。这种方法的优点是可以通过 2D 网格卷积直接处理 3D 对象。然而，角度和面积畸变往往被忽略。Surfnet [55] 通过使同一类的不同对象具有相同的几何图像，在一定程度上减少了区域畸变的影响。对于第二类主要思想是通过神经网络拟合从参数空间到对象空间的映射，反之亦然。早期的工作 [50] 通过拟合双变量函数将平面网格提升到表面。在文献 [51] 中，学习了从二维三角形晶格到三维空间中曲面的映射，以将参数空间中的网格提升到目标曲面。其他研究人员尝试将 3D 点云投影到 2D 平面上，在平面上生成网格，然后将其拉回。考虑到表面拓扑结构的复杂性和差异性，部分工作选择拟合局部同态映射 [26]、[56]、[67]、[75]、[98]、[104]、[105]。另一部分通过假定曲面类型 [53]、[102]、[111]、[115] 直接拟合全局映射。图 10 显示了一种局部参数学习方法 DST [98]，该方法将源分解为局部补丁，然后执行每个补丁网格划分。该方法采用参数化 <img src="/images/4760e2f007e23d820825ba241c47ce3b.svg"><br>（一种双射和分段可微映射）将 3D 曲面投影到 2D 参数空间中。然后，使用 <img src="/images/f81c667a75aff7280a902876ef49d0a5.svg"><br> 提升 2D 顶点，在曲面上形成软 3D 三角测量。DST 的优点是保证生成的网格为 2-流形，限制是分区导致的边界伪影，这是所有局部参数化方法的共性问题。</p>
+<p><img src="/images/1701481505248-0f2bc644-2b60-4aba-9fd3-3d90414f7a9f.png"></p>
+<p>图 10： DST [98]：一种基于参数化的 IMG 方法</p>
+<h2 id="基于前沿的网格生成"><a href="#基于前沿的网格生成" class="headerlink" title="基于前沿的网格生成"></a>基于前沿的网格生成</h2><p>前沿方法是一种贪婪算法，它从边界到内部逐渐生成网格节点并递归执行。每个递归过程分为三个步骤：首先，从分割网格域和非网格域的生成段前端集中选择一个线段，其中所选段称为基段，因为它将构成创建新三角形元素的基础; 其次，将新的网格节点或已有的网格节点连接到基段，以生成新的三角形单元; 最后，更新生成线段 Front Set 和 Triangle 元素。受到经典前沿方法的吸引，一些研究人员试图将其与机器学习模块相结合，以设计新的实用算法。早期的前进前沿方法可以生成简单的网格，但它涉及许多低效的计算 [137]，[138]。Yao 等 [48] 将新的顶点位置预测和分类相结合，生成了四边形网格。RLQMG [116] 将前进前沿方法与强化学习相结合，分别通过状态表示和动作表示生成波前和新点。Lu 等 [114] 使用深度学习来学习前进的方向和步骤。这种方法的主要局限性是无法保证生成的网格的质量（例如，异常点太多）。此外，现有的基于前沿的先进方法只能生成平面网格。</p>
+<h1 id="基于生成类型的分类"><a href="#基于生成类型的分类" class="headerlink" title="基于生成类型的分类"></a>基于生成类型的分类</h1><p>根据输出网格基元的类型，我们将 IMG 分为三角形、四边形、混合多边形和四面体网格生成。这种分类使我们能够识别每种方法生成的网格类型，从而使用户能够选择最适合他们需求的内容。如表 1 所示，目前大多数 IMG 方法都生成三角形网格。这种趋势是合乎逻辑的，因为三角形网格仍然是流行的格式，并得到了丰富的工具和理论知识的支持。这一观察结果还强调，三角形网格划分以外的领域，如四边形网格划分和体积网格划分，是需要进一步探索的领域。</p>
+<h2 id="三角形网格生成"><a href="#三角形网格生成" class="headerlink" title="三角形网格生成"></a>三角形网格生成</h2><p>三角形网格可以说是最主要的曲面网格表示。它的受欢迎程度源于它的简单性、灵活性以及许多数据结构的存在，以实现高效的网格导航和操作。随着公开的三角形网格数据集的增加和深度学习技术的进一步发展，已经提出了许多方法来生成给定点云、图像或其他形式数据的三角形网格。值得注意的是，早在 1990 年代，智能三角网格生成算法就引起了研究人员的兴趣。这一时期的主要研究重点是密度自适应三角网格生成算法 [42]–[46]，[49]，其主要特点是在神经网络学习的密度函数的指导下，在初始粗网格上生成具有所需非均匀密度的三角形网格。然而，上述方法主要集中在平面网格上，很少考虑三维物体的表面网格生成。因此，为了提高算法适应真实输入的实用性，越来越多的研究人员致力于研究 3D 网格生成。Peng 等.[47] 探讨了神经网络在三角网格重建和 3D 对象表示中的可行性。虽然这种方法非常简单，但它通过预测 z 坐标实现了从 2D 到 3D 的提升。随着 3D 数据采集设备的快速发展，以 3D 数据为输入的三角形网格生成正在成为 IMG 的重要分支。三角形网格生成大致分为两种类型：（1）显式方法，直接从输入点恢复三角形网格，（2）隐式方法，旨在恢复体积函数，其零级集对曲面进行编码。对于前者，我们将点云视为简并网格（即两点之间没有连接关系的网格）。因此，需要选择顶点并预测正确的邻接关系。具体而言，Scan2mesh [66] 通过对点位置和连接关系的联合预测来生成三角形网格。但是，使用全连接图作为候选边集会使边信息变得多余。Daroya 等人。[83] 提出了 REIN，这是一个基于 RNN 的网络，通过顺序边缘预测生成具有不同数量顶点的网格。如第 3.1 节所述，一些基于模板变形的方法也等同于初始化点连接关系。对于后者，曲面三角形网格通常使用行进立方体 [122]、行进四面体 [123] 或泊松曲面重构 [124] 算法进行重构。但是，这些方法无法保持清晰的特征，并且不是端到端的。因此，一些研究人员探索了可微行进立方体算法来保持清晰的特征。Liao 等 [58] 展示了一种实现端到端训练的可微分替代方案。Liu 等人 [94] 提出了一种基于等值面的深度移动最小二乘法来生成三角形网格。Chen 等 [107] 重新设计了行进立方体算法，并构建了一些镶嵌模板，可以更好地保留锐利的特征。Chen 等.[117] 改进了双轮廓算法 [139]，最终允许端到端训练。另一个分支是基于 2D 图像或特征的三角形网格生成方法，它比基于 3D 数据的方法更模糊，并且在辅助网格生成之前需要更高的鲁棒性。遮挡信息的重建和深度信息的估计变得尤为重要。一些基于变形的方法和基于参数化的方法已成为解决上述情况的主流方法。对于前者，图像被认为是指导模板变形的信息。典型的代表 Pixel2Mesh 系列 [10]、[15]、[17]、[31]。对于后者，我们将 2D 特征理解为 3D 对象表面的参数化。基于几何图像的 [55]，[118] 方法值得注意。</p>
+<h2 id="四边形网格生成"><a href="#四边形网格生成" class="headerlink" title="四边形网格生成"></a>四边形网格生成</h2><p>由于四边形网格具有吸引人的张量积性质和平滑表面近似，因此在许多应用中，四边形网格划分技术通常比三角形网格更受欢迎，例如纹理、有限元仿真和 B 样条拟合。为了利用深度学习强大的表示和泛化能力，一些研究人员还尝试将深度学习与四边形网格生成相结合，并获得了良好的解决方案 [26]、[29]、[42]、[48]、[105]、[111]、[115]、[116].遵循传统的分类方法，我们将基于深度学习的四边形网格生成分为直接 [29]、[42]、[48]、[115]、[116] 和间接 [26]、[105]、[111] 方法，根据是否需要中间模型表示。在这些直接 IMG 方法中，Ahn 等 [42] 提出了一种自组织神经网络，该神经网络通过变形初始网格来实现自动非均匀密度四边形网格生成。姚明等.[48] 提出了一种基于人工神经网络的单元提取方法，用于自动生成有限元四边形网格。作者设计了合理的节点插入类型，然后利用神经网络预测节点位置和插入类型。网格边界通过多次更新迭代不断推进。Pedone 等 [29] 生成了一个小型变形矩形网格的数据库。Chen 等 [115] 介绍了一种以无监督方式生成结构化网格的微分方法。该方法以边界曲线为输入，采用精心设计的神经网络来分析潜在的网格划分规则，并输出具有所需单元数的网格。为了克服传统方法在实现高质量网格和计算复杂度之间取得平衡的困难，Pan 等 [116] 提出了一种基于强化学习的自动四边形网格生成方法。不幸的是，所有这些方法都只能处理简单的平面或曲面。对于间接方法，Smirnov 等 [26] 学习了一种特殊的形状表示：由 Coons 面片组成的可变形参数模板。给定光栅图像，首先，系统推断一组参数化表面，以实现 3D 输入。然后，使用模板生成四边形网格。Deng 等 [111] 提出了 Sketch2PQ 系统，该系统使用描边线、深度样本以及从草图中诱导的可见和遮挡区域蒙版作为输入。首先，Sketch2PQ 计算方向场和 B 样条曲面作为中间模型表示。然后，通过几何优化从 B 样条曲面和 CDF 中提取四边形网格。另一个有趣的工作是 LDFQ [105]，它从三角形网格中学习交叉场以生成四边形网格。他们的网络可以推断出类似于四边形对齐的帧场。这种丰富的指导信息能够保证生成正确和高质量的四边形网格。LDFQ 的流水线如图 11 所示。</p>
+<p><img src="/images/1701486829624-92136453-b509-46de-a607-a74d818c4599.png"></p>
+<p>图 11：LDFQ [105]：一种用于四边形网格的 IMG 方法。</p>
+<h2 id="混合多边形网格生成"><a href="#混合多边形网格生成" class="headerlink" title="混合多边形网格生成"></a>混合多边形网格生成</h2><p>在实际应用中，由于各种非理想条件，往往不可能只生成一个基本面。因此，一些研究人员出于主动或被动的意图设计了混合网格生成算法。然而，由于其应用的局限性，以混合网格为生成目标的 IMG 类型屈指可数。在我们检索的文献中，只有 BP-ANN [114]、AnalyticMesh [101] 和 PolyGen [70] 属于这一类。BP-ANN 通过推进前沿方法生成各向异性的四边形和各向同性三角形网格，提高了混合网格生成的自动化水平和效率。AnalyticMesh 在分析单元之间移动，以恢复由隐式表面网络捕获的闭合分段平面表面的精确网格。该算法适用于更高级的 MLP 架构，包括具有快捷连接和最大池化操作的架构，这些架构支持一组更丰富的架构设计，用于学习和精确划分复杂曲面形状的网格。Polygen 更紧凑地表示具有不同多边形的对象表面。</p>
+<h2 id="四面体网格生成"><a href="#四面体网格生成" class="headerlink" title="四面体网格生成"></a>四面体网格生成</h2><p>四面体网格生成是网格生成的一个重要分支。与曲面网格不同，四面体网格生成同时划分了物体的表面和内部。四面体网格在数值模拟中起着不可替代的作用，因此受到了众多研究者的关注。然而，由于问题的复杂性和基础理论的不完备性，智能四面体网格生成仍然缺乏。在我们选择的文献中，四面体网格生成过程已被深度学习模块部分 [46] 或完全 [81] 取代。在 [46] 中，Alfonzetti 等人提出了一种用于四面体网格的神经网络生成器。从初始的适度粗网格开始，生成器通过节点概率密度函数将网格增长到用户指定的节点数。DefTet [81] 针对顶点放置和占用进行了优化，并且相对于标准 3D 重建损失函数是可微分的。与以前的工作相比，DefTet 具有多项优势，并且可以输出具有任意拓扑结构的形状，使用四面体的占用来区分对象的内部和外部。DefTet 还通过变形这些四面体中的三角形面来表示局部几何细节，以更好地与物体表面对齐，从而以比现有体积方法低得多的内存占用实现高保真重建。DefTet 接受点云或图像作为输入数据来生成网格。DefTet 的算法流程如图 12 所示。</p>
+<p><img src="/images/1701487047234-356463e4-4665-46d5-b88b-2ecb8ac926dc.png"><br> 图 12：DefTet [81]：四面体网格的 IMG 方法。</p>
+<h1 id="基于输入数据类型的分类"><a href="#基于输入数据类型的分类" class="headerlink" title="基于输入数据类型的分类"></a>基于输入数据类型的分类</h1><p>根据适用的输入数据类型，我们将 IMG 分为基于点云、基于图像、基于体素、基于网格、基于边界或草图以及基于潜在变量的网格生成等类别。这种分类使我们能够识别每种方法所需的输入数据类型，从而使用户能够选择与其特定数据类型或用例最相关的方法。如表 1 所示，大多数现有的 IMG 方法从图像或点云生成网格，这可能是由于与其他方法相比，获取这些类型的数据相对容易。后续小节将提供更多详细信息。</p>
+<h2 id="基于点云的网格生成"><a href="#基于点云的网格生成" class="headerlink" title="基于点云的网格生成"></a>基于点云的网格生成</h2><p>点云作为 3D 数据的主要表示形式，在自动驾驶、AR 等领域得到了广泛的应用，与 RGB 图像相比，点云自然具有深度信息，不受环境光照条件的影响。从点云重建网格是计算机图形学中一个长期存在的问题。最近，已经开发了各种方法来重建一系列应用的形状 [3]。这些方法分为两类：</p>
+<ol>
+<li>点位置和连接关系的直接估计（如图 13 所示）</li>
+<li>基于等值面的隐式表面重建。</li>
+</ol>
+<p><img src="/images/1701487386735-01d88d64-1054-4227-bc66-c66e6f358e79.png"><br> 图 13：PointTriNet [82]：一种基于点云的 IMG 方法。</p>
+<p>第 4.1 节说明了这种划分。接下来，我们从两个方面介绍这些方法：</p>
+<ol>
+<li>基于点云的网格生成的挑战，</li>
+<li>为应对这些挑战而提出的可学习先验和相关方法。</li>
+</ol>
+<p>基于点云的 IMG 方法的挑战来自数据和任务目标。对于数据方面，虽然点云是易于访问的 3D 数据，但它们通常稀疏、嘈杂甚至不完整。为了应对这些挑战，研究人员提出了多种方法 [39]、[50]、[75]、[83]、[97]、[100]、[110]、[113]。Li 等 [50] 率先考虑了基于神经网络从不完全点云生成网格的问题。Badki 等 [75] 通过学习局部几何先验来处理稀疏或嘈杂的点云，同时确保全局几何的一致性。Boulch 等 [100] 和 Ma 等 [39]，[113] 通过将查询 3D 位置拉到表面上的最近点，从稀疏的点云中重建了高精度网格。对于任务目标，大场景网格重构和流形网格生成是该领域的重点。大场景网格重建 [77]、[91]、[93]、[95]、[106]、[110] 等项目取得了较大进展，但距离实际应用还有很长的路要走。流形网格生成 [98]、[99]、[104]、[107]、[117] 主要通过结合 Delaunay 三角测量或行进立方体算法来实现。例如，Chen 等 [107] 提出了第一个基于行进立方体的方法，能够恢复尖锐的几何特征。Rakotosaona 等 [104] 利用二维 Delaunay 三角剖分的特性来构建三维网格。</p>
+<h2 id="基于图像的网格生成"><a href="#基于图像的网格生成" class="headerlink" title="基于图像的网格生成"></a>基于图像的网格生成</h2><p>基于图像的网格生成的目标是从一个或多个 2D 图像中推断对象或场景的 3D 网格。仅从 2D 图像中恢复丢失的尺寸是一个不合理的问题，也是许多应用的基础，例如机器人导航、3D 建模和动画、工业控制和医疗诊断。深度学习技术的快速发展，更重要的是，越来越多的公共数据集，加速了这一子领域的发展。尽管是最近才出现的，但这些方法在各种任务上都显示出令人兴奋和有希望的结果 [4]。基于图像的方法面临的直接困难之一是如何维护和表示物体的几何和拓扑信息。Sinha 等 [55] 构建网络来学习几何图像，以图像为输入以生成 3D 网格。形状的几何信息通过参数化学习来保留。Wang 等 [10] 使用基于变形的方法来恢复几何形状和拓扑结构。之后，出现了许多基于变形的方法 [15]，[17]–[20]。Wen 等人. [15] 使用多个图像来构建几何细节，如 14 所示。Tong 等 [18] 使用特定的模板来提供更多的几何细节。虽然有很多优秀的作品，但泛化仍然是这些基于变形的 IMG 技术的弱点。其他研究人员已将注意力转向纹理网格的重建。尽管 RGB 图像提供了一些纹理信息，但这项任务比单纯生成网格更具挑战性。Henderson 等人。[23] 专注于从 2D 图像生成 3D 纹理网格的问题。Munkberg 等 [108] 同时从多视图图像观测中优化了拓扑、材料和照明。诚然，在探索 3D 网格纹理和 2D 图像之间的对应关系时，IMG 的可解释性得到了增强。此外，基于图像序列和视频的网格生成也值得关注 [24]、[28]、[29]、[33]、[88]、[90]。</p>
+<p><img src="/images/1701487400856-56cbe5e1-9125-4444-9112-857ca6b0883f.png"><br> 图 14：Pixel2Mesh++ [15]：一种基于图像的 IMG 方法。</p>
+<h2 id="基于体素的网格生成"><a href="#基于体素的网格生成" class="headerlink" title="基于体素的网格生成"></a>基于体素的网格生成</h2><p>体素是一种数据结构，它使用固定大小的立方体作为表示 3D 对象的最小单位。体素是存储体积数据、提供密度、不透明度、法线和其他信息的传统方法。体素格网的索引提供位置信息。体素建模的主要缺点是体素的存储和计算需要大量的内存资源。与点云类似，一类基于体素的方法使用占用率和等值面来隐式生成网格。Mescheder 等 [61] 使用占用网络进行 3D 分辨率增强，以更好地重建物体。Voxel2Mesh [40] 利用网络从体素化的 MRI 脑图像和 CT 肝脏扫描中提取特征，并依靠变形网络获得目标物体的三角形网格。Peng 等.[77] 将卷积编码器与隐式占用解码器相结合，实现了对象和 3D 场景的详细重建。作者将输入编码为 2D 或 3D 体素网格，这些网格使用卷积网络进行处理，然后通过全连接的网络解码为占用概率。DMTet [92] 是一个深度 3D 条件生成模型，可以使用简单的用户指南（如粗体素）合成高分辨率的 3D 形状。该模型通过可微的行进四面体层结合了隐式和显式 3D 表示的优点。这种组合允许使用重建和对抗损失来联合优化表面几何形状和拓扑结构，以及生成细分层次结构。作为等值面提取的中间产物，体素化距离场也经常被用作生成网格的输入 [66]，[107]，[117] Scan2Mesh [66] 将体素化截断符号距离场（TSDF）作为输入。其框架如图 15 所示。Scan2Mesh 由两个主要组件组成：首先，3D 卷积和图神经网络用于联合预测顶点位置和边缘连通性。第二，使用图神经网络预测最终的网格面结构。NMC [107] 使用有符号距离场作为输入，然后进行训练以重建隐式场的零等值面，同时保留锐边和平滑曲线等几何特征。NMC 的主要局限性在于它对旋转敏感，无法避免网格的自交。NDC [117] 是一种基于双轮廓的数据驱动的网格重建方法。可以训练 NDC 从二元体素网格、有符号或无符号距离场或点云生成网格，并且可以在输入表示图纸或部分曲面的情况下生成开放曲面。</p>
+<p><img src="/images/1701487419618-938c32e8-8343-490c-9ae7-d7ed8a6fcbac.png"><br> 图 15： Scan2Mesh [66]：一种基于体素的 IMG 方法。</p>
+<h2 id="基于网格的网格生成"><a href="#基于网格的网格生成" class="headerlink" title="基于网格的网格生成"></a>基于网格的网格生成</h2><p>在 IMG 中，基于网格的输入主要用于两个任务：网格优化 [44]–[46]、[49]、[112] 和四边形网格生成 [105]。早期基于深度学习的网格生成倾向于将粗网格作为输入，并通过神经网络对其进行细化以满足对象的几何和拓扑信息。在 [44] 中，Alfonzetti 提出了一种自动网格生成器，即 Let-It-Grow 神经网络。该算法从具有少量顶点的三角形的粗略网格开始，增加顶点数，直到达到用户选择的值。顶点增长由预定义的概率密度函数驱动。在 Alfonzetti 的后续工作 [45]，[46]，[49] 中，他遵循了 [44] 中的想法，并提出了不同的解决方案。Liu 等 [72] 提出了一种新的数据驱动的从粗到细几何建模的框架。Hahner 等人。[112] 提出了一种自动编码器，可以处理不同大小和拓扑结构的半规则网格。该算法可以高质量地重建网格，并泛化到看不见的时间序列的动态。Dielen 等人。[105] 提出了一种神经网络，可以从非结构化三角形网格推断帧场。然后，通过现有的基于参数化的四边形方法从框架场重建四边形网格。</p>
+<h2 id="基于边界或草图的网格生成"><a href="#基于边界或草图的网格生成" class="headerlink" title="基于边界或草图的网格生成"></a>基于边界或草图的网格生成</h2><p>与点云或图像相比，边界和草图是两种更简洁、更易于获取的数据。因此，边界和草图是网格生成任务的常用输入数据形式。边界定义了网格覆盖的区域，给出了网格的初始位置和增长方向，并且是推进基于前端的网格生成方法的常见输入。草图描绘了 3D 形状的丰富几何特征，例如轮廓、遮挡和暗示轮廓、山脊和山谷以及影线，从而为网格生成提供了一种简洁直观的方法。在我们收集的 IMG 中，基于边界的网格生成方法 [21]、[42]、[43]、[48]、[114]–[116] 通常用于 2D 平面网格，而基于草图的方法 [9]、[26]、[41]、[54]、[57]、[78]、[111] 通常用于 3D 物体表面网格。对于基于边界的 IMG，大多数方法通过前进前沿技术 [48]，[114]，[116] 或通过在给定初始边界条件下求解偏微分方程 [21]，[115] 来生成二维网格。此外，A. Chang-Hoi et al. [42] 和 D. Lowther et al [43] 通过生成网格变形和点预测。草图可以被认为是一个非常稀疏的图像。因此，需要额外的信息（例如，深度信息）或全局和局部约束。Lun 等人。[54] 基于草图的生成分为两个阶段：首先，从多视图草图生成深度和法线图像，其次，从深度和法线图像生成表面。Li 等.[57] 使用 CNN 来推断表示表面的深度和法线贴图，中间层对曲率方向场进行建模并生成置信度图以提高鲁棒性。邓等.[111] 使用可见和遮挡边界、等高线和特征线以及一些深度样本生成四边形网格。边界和特征线共同决定了网格的样式，如 16 所示。</p>
+<p><img src="/images/1701487430880-c159a80d-1efb-47ef-b6a2-7123a19533cd.png"></p>
+<p>图 16  Sketch2PQ [111]：基于草图的四边形网格 IMG。</p>
+<h2 id="基于潜在变量的网格生成"><a href="#基于潜在变量的网格生成" class="headerlink" title="基于潜在变量的网格生成"></a>基于潜在变量的网格生成</h2><p>GANs 和变分自编码器（VAEs）[140] 作为两大主流的生成模型，自然而然地在 IMG 中发挥了作用。众所周知，这两种模型都可以在训练后直接从潜在变量（随机噪声）生成图像。受到图像生成成功的启发，一些研究人员进行了基于 GAN 和 VAE 的网格生成研究。考虑到模型训练后生成网格只需要潜在空间的潜在变量，该文将该方法归类为基于潜在变量的网格生成 [59]、[62]、[63]、[69]、[85]、[118]。具体来说，Li et al.[63]， [118] 使用 GAN 模型从潜在变量生成几何和法线图像，然后通过后处理生成网格。其他一些研究 [59]，[62]，[85] 选择了 VAE 模型来重建、变形或插值网格。Pq-Net [69] 使用条件变分自动编码器实现了零件的序列生成。</p>
+<p><img src="/images/1701488116171-8e7bb77c-3f7b-40de-812c-05164b14e165.png"><br> 图 17： PGAN [63]：一种基于潜在变量的 IMG 方法。</p>
+<h1 id="评估"><a href="#评估" class="headerlink" title="评估"></a>评估</h1><p>一般来说，各种 IMG 的评估方法分为两大类：定性和定量。我们的定性分析侧重于所有 IMG 方法的内容视角，包括针对性挑战、优势、局限性和平均每月引用次数。另一方面定量评估通常强调特定指标，例如时间复杂度和网格质量。在本节中，我们根据从所有选定方法中提取的内容进行彻底而全面的定性分析。然而，由于各种 IMG 方法的目标任务和数据集差异很大，它们采用的指标差异很大。因此，我们避免对所有 IMG 方法进行定量比较，而是提供常用指标列表。</p>
+<h2 id="内容评估"><a href="#内容评估" class="headerlink" title="内容评估"></a>内容评估</h2><p>我们从综述的论文中提取了所提算法的主要挑战、优势和局限性，并按时间顺序在表 2 中进行了排序。关键挑战往往是论文的目标，并在一定程度上体现了它的价值。优势往往体现在对挑战的有效解决方案上。这些局限性指出了该算法的不足，并为未来的研究指明了方向。在具体应用中，这三个方面也为我们提供了选择合适的算法的指导。在优点和局限性的总结中，我们没有使用诸如更高的准确性、更快的速度或更少的内存需求等短语。随着 IMG 技术的发展，原文中声称的优势往往难以为继。因此，我们尝试根据任务目标和应用场景给出更客观的评价。此外，我们计算并展示了每篇论文的平均月度引用次数（AMC），这在一定程度上反映了相应工作的影响力。</p>
+<h2 id="指标"><a href="#指标" class="headerlink" title="指标"></a>指标</h2><p>在我们早期的定量分析尝试中，我们经历了复杂而艰巨的数据整理和分析。虽然我们最终失败了，但我们也意外地发现，缺乏基准测试是阻碍 IMG 发展的挑战。这里的基准测试包括统一的测试数据和指标。对于定量分析，大多数方法都会创建自己的测试数据。即使数据集相同，测试数据也会因预处理不同而有所不同。而且，指标选择的差异也直接导致了量化比较的无法进行。由于上述无法克服的问题，我们放弃了对现有 IMG 方法进行全面定量比较的尝试。接下来，我们列出并解释 IMG 中常用的指标，以便读者了解该领域综合比较的挑战。根据评估的指标，我们将这些指标分为错误和特征保留指标、拓扑指标和感知指标。</p>
+<ol>
+<li>错误和特征保留指标<ol>
+<li>在 IMG 中，倒角距离（CD）[141] 是衡量重建网格 M 与目标曲面 M 之间误差的最普遍指标。CD 定义为两个点云之间最小距离的平均值。点的坐标范围、点的密度和距离范数的定义将直接影响 CD 的值。无论坐标是否归一化、网格上的采样点数量以及距离是否为 Lor Lnorm，都会产生不同的 CD 值，从而无法进行比较分析。F 分数 [10] 定义为精确率和召回率的谐波平均值，其中召回率是 M 上与 M 相距一定距离内的点的分数，精度是 M 上与 M 相距一定距离内的点的分数。F 分数主要捕捉重大错误，忽略对视觉伪影有重大影响的小错误。然而，不同的阈值和距离选择策略直接导致不同的 F 分数值。正态一致性评分 [61] 衡量的是 3D 模型曲面法线的一致性，即相邻面的法线应该是平滑连续的，而不是明显不连续或不一致的。测试数据必须包含精确的法向量，并且涉及复杂的投影，因此应用场景有限。</li>
+</ol>
+</li>
+<li>拓扑指标<ol>
+<li>水密性和流形性是两个拓扑指标。水密性 [82] 表示正好具有两个入射三角形的边的百分比，流形性 [82] 表示具有一个或两个入射三角形的边的百分比。这两个指标从拓扑的角度测量网格，但忽略了目标表面的几何形状和特征。</li>
+</ol>
+</li>
+<li>感知指标<ol>
+<li>正如 [65]，[142] 所指出的，诸如均方误差和 CD 之类的指标并不能解释物体表面的视觉质量。对于视觉感知，形状中的低频误差不如高频误差明显。为了克服传统质量指标的缺点，出现了基于视觉相似度或感知质量的深度学习测量方法 [143]–[149]。然而，这些模型的泛化性和适用性有待提高，因此很少用于定量比较分析。</li>
+</ol>
+</li>
+</ol>
+<p>如上所述，我们不能用现有的结果来比较所有这些 IMG 方法，也不能直接通过实验来比较它们。对这些 IMG 方法进行比较分析是非常具有挑战性的。然而，为了方便研究人员选择自己感兴趣的论文，我们在补充材料和项目库中提供了一些不完善的定性比较结果和比较关系图。</p>
+<h1 id="外部资源"><a href="#外部资源" class="headerlink" title="外部资源"></a>外部资源</h1><h2 id="常见数据集"><a href="#常见数据集" class="headerlink" title="常见数据集"></a>常见数据集</h2><p>数据是 IMG 发展的基石。输入的多样性突显了 IMG 方法所采用数据集的多样性。遗憾的是，目前不存在体积网格的公共数据集。因此，我们在这里的重点仅限于三角形和四边形网格的常用数据集。</p>
+<ol>
+<li>三角网格<ol>
+<li>这些常用的三角形网格数据集包括 Princeton ModelNet、ShapeNet [150]、TOSCA [151]、COSEG [152]、Berger [153] 和 Williams [67] 的表面重建基准、Thingi10K [154]、D-FAUST [155]、Famous [80] 和 CAD 数据集 ABC [156]; 用于单图像 3D 形状建模的数据集：Pix3d [157]; 面部表情数据集：COMA [59] 和 MeIn3D [158]; 人体形状数据集：MGN [11] 和 MultiHuman [159]; 具有真实纹理的服装身体网格：RenderPeople [160]、Axyz [161] 和 Digit Wardrobe [11]; 和室内场景数据集：ScanNet [162]、Scenenet [163]、Matterport3d [164]、和合成室 [77]。最常用的两个数据集是 ShapeNet 和 ModelNet。ShapeNet 包含来自多种语义类别的 3D 模型，并将它们组织在 Word-Net 分类法下。ShapeNet 已对超过 3,000,000 个 3D 模型进行了索引，其中 220,000 个模型分为 3,135 个类别。ModelNet 有 662 个对象类别和 127915 个 CAD 模型。它包含三个子集：具有 10 个类别的 Modelnet10; Modelnet40 有 40 个类别; 和 Aligned40 与 40 类对齐的 3D 模型。</li>
+</ol>
+</li>
+<li>四边形网格<ol>
+<li>常用的四边形网格数据集包括 QuadWild [165]; 具有真实纹理的服装身体网格：RenderPeople [160]、Axyz [161]。值得注意的是，四边形网格数据集不够充分，这也在很大程度上阻碍了该领域的发展。</li>
+</ol>
+</li>
+</ol>
+<h2 id="常用的先验"><a href="#常用的先验" class="headerlink" title="常用的先验"></a>常用的先验</h2><p>在 IMG 中，常用的基础先验包括平滑的 ness（smooth-ness）、基元（primitives）、分布（distribution）、用户驱动（user-driven）、方向（orientation）、可见性（visibility）和规律性（regularity priors.）先验。在缺乏监督信息的情况下，这些先验为模型优化提供了有效的指导。下面，我们将详细介绍它们。表面光滑度先验约束重构曲面以满足一定程度的光滑度。最一般的形式是局部光滑度，例如拉普拉斯光滑约束，它通常作为目标函数的常规项 [10]、[14]–[17]、[20]、[25]、[40]、[81]。几何正则化 [111]，[113] 试图将点拉到它们的邻居。在平滑先验约束下，模型通常会滤除噪声，但也会丢失一些高频细节。几何基元先验假设场景几何可以用一组紧凑的简单几何形状来解释，即平面、盒子、球体和圆柱体。方向先验是传统网格生成中的重要先验，适用于基于深度学习的网格生成任务。在基于距离场生成物体表面时，正态一致性先验保证了方向的一致性 [74]。可见性先验对重建场景的外部空间以及它如何为对抗噪声、不均匀采样和缺失数据提供线索。具体来说，Deng et al.  在 Sketch2PQ [111] 中，通过深度-法线兼容性项和深度样本项使用可见性。Sulzer 等 [106] 巧妙地利用了从相机位置获得的能见度信息，并制作了水密网格。Song 等人。[93] 明确地采用深度补全来预测 3D 点的可见性。全局规律性先验利用了许多形状在其更高层次的构图中具有一定程度的规律性的概念。规律性是指整体与部分的关系 [69]，[76]。同一种对象由相似的基本子部分以相似的排列方式组成。例如，汽车由车轮、底盘和盖板从下到上组成。此外，对称性也是一种常见的规律性。</p>
+<h2 id="基于网格的经典学习架构"><a href="#基于网格的经典学习架构" class="headerlink" title="基于网格的经典学习架构"></a>基于网格的经典学习架构</h2><p>随着深度学习方法在计算机视觉中的成功，许多神经网络模型被引入到使用体积网格 [68]、[166]–[169] 和点云 [170]–[176] 进行三维形状表示。然而由于网格数据的复杂性和不规则性，只有少数神经网络同时使用几何和拓扑信息作为输入 [177]–[180]。MeshCNN [177] 是一种专为三角形网格设计的卷积神经网络，定义了以边缘为中心的卷积和池化操作。在边及其入射三角形的四条边上应用卷积，并通过保留曲面拓扑的边折叠操作应用池化。这些操作有助于直接分析原生形式的网格。MeshNet [178] 定义了三角形网格的面心卷积和池化操作。为了综合几何信息和拓扑信息，该网络提供了一个有效的数据预处理和网络框架。PD-MeshNet [179] 利用 3D 网格的边缘和面的特征作为输入，并使用注意力机制动态聚合它们。Singh [180] 设计了表面相关块，可以捕获不同尺度的局部特征。虽然上述网络模型中只有少数能够同时处理几何和拓扑结构，但在网格分析和特征表示的研究中已经涌现出许多优秀的工作。Masci 等 [181] 提出了利用网状连通性结构的卷积。从那时起，几种方法解决了网格结构和采样率的不规则性，提出了诸如对每个顶点的邻域进行均匀采样或通过光谱分解实现规则性等想法 [182]–[186]。最近，结合学习到的热扩散操作，DiffusionNet [187] 提供了跨表面几何表示的统一视角。另一条工作线试图理解网格的结构和连通性 [38]，[85]，[185]。例如，作者在与顶点相关的点特征上实现了卷积层，例如在 EdgeConv [174] 中。通过结合邻域或边缘信息，这些方法可以更好地综合表示网格表面的几何和拓扑信息。</p>
+<h1 id="讨论与结论"><a href="#讨论与结论" class="headerlink" title="讨论与结论"></a>讨论与结论</h1><p>IMG 显著增强了传统网格生成技术的通用性、鲁棒性和实用性。然而，它也有其自身的一系列挑战：处理非理想数据、算法实用性和复杂的对象生成。非理想数据挑战需要处理缺乏 3D 信息的 2D 图像、稀疏和不均匀的点云、被遮挡或不完整的点云、嘈杂的数据和大规模输入数据。算法实用性存在一些障碍，例如确保广泛的泛化、实现高计算效率、保持低内存要求、对非理想输入表现出鲁棒性以及保证端到端的可微性。为复杂对象生成网格的挑战与复杂的对象或场景有关。这包括为大型动态场景创建网格、高密度细节、基于纹理的网格、溅水网格、非均匀密度网格和结构化网格。</p>
+<h2 id="公开提议摘要"><a href="#公开提议摘要" class="headerlink" title="公开提议摘要"></a>公开提议摘要</h2><p>在这篇综述中，我们强调了所选文章中发现的局限性。这些局限性不仅代表了 IMG 领域的挑战，同时也有助于确定未来潜在的研究方向。我们认识到的主要挑战如下：</p>
+<ol>
+<li>泛化：<ol>
+<li>泛化意味着算法处理训练期间未观察到的对象的能力 - 是证明算法实际效用的关键方面。缺乏泛化是当前 IMG 方法的一个普遍问题，特别是那些使用基于变形的网格生成技术的方法。这些方法通常会生成特定于特定对象类型或拓扑的网格，从而限制了其更广泛的适用性。</li>
+</ol>
+</li>
+<li>可解释性：<ol>
+<li>IMG 的可解释性至关重要，尤其是在航空航天工业中。我们建议将 IMG 与基本的数学和物理模型融合在一起，Zheng 等 [188] 和 Lei 等的研究证明了这一点。[189]，不仅可以有效地控制模型优化，还可以增强模型的可解释性。然而，到目前为止，还没有研究直接解决这一特定问题。</li>
+</ol>
+</li>
+<li>缺乏基准<ol>
+<li>如第 6.2 节所述，对所有这些 IMG 方法进行全面的比较分析会带来重大挑战。缺乏标准化的测试程序，加上测试数据和指标的差异，严重阻碍了 IMG 的发展。因此，制定基准标准将大大加快 IMG 的进展。</li>
+</ol>
+</li>
+<li>水密和流形：<ol>
+<li>在许多计算机图形应用中经常需要水密和流形网格。然而，目前基于单元分类的 IMG 方法无法生成水密或流形网格。在尝试从头开始生成网格时，这些方法会忽略某些局部约束。此外，由于水密和流形网格的离散性，它们无法提供模型优化所必需的梯度。</li>
+</ol>
+</li>
+<li>结构化网格：<ol>
+<li>结构化网格具有非结构化网格无法比拟的诸多优势，包括高效的存储和访问。不幸的是，由于其固有的复杂性，MGNet [115] 是目前唯一考虑结构化网格生成的 IMG 方法。因此，探索能够处理真实世界对象的更实用的结构化或半结构化 IMG 算法至关重要。此外，四边形和体积网格数据集明显稀缺，这阻碍了 IMG 在结构化四边形网格和体积网格生成领域的发展。在这些领域创建开源数据集可以大大加快 IMG 在结构化网格环境中的开发。</li>
+</ol>
+</li>
+<li>纹理网格：纹理网格是 3D 对象中备受追捧的表示形式，广泛应用于工业设计和数字娱乐等众多领域。现有的 IMG 研究主要集中在重建几何和拓扑结构的挑战上。相比之下，只有少数研究集中在纹理网格的生成上 [23]，[108]，[190]。此外，纹理网格的生成无疑增强了模型的可解释性，使其成为 IMG 领域未来探索的重要领域。</li>
+<li>大型或动态场景网格生成：<ol>
+<li>场景网格生成在自动驾驶、室内机器人、混合现实等多个领域具有巨大潜力。要使 IMG 方法在实际应用中真正发挥作用，必须解决几个关键特性。首先，需要算法的实时功能。其次，该算法应该能够对没有观测值的区域做出合理的预测。此外，系统应展示可伸缩性以适应大型场景。最后，对嘈杂或不完整观测的鲁棒性至关重要。然而，现有的方法 [13]、[28]、[73]、[90]、[91]、[93]、[95]、[110]、[119] 不能同时满足这些标准，导致场景网格往往过于平滑和缺乏细节。</li>
+</ol>
+</li>
+</ol>
+<h2 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h2><p>在本文中，我们对智能网格生成 （IMG） 方法进行了系统而全面的回顾，重点介绍了核心技术、应用范围、学习目标、数据类型、目标挑战、优势和局限性。我们仔细研究了 113 篇研究论文，进行了详细的分析和数据提取。我们的主要提取点包括 1） 已解决的挑战，2） 基本概念、应用范围、优点和缺点，3） 输入数据类型、输出网格的性质和网格质量，以及 4） 未来研究的潜在方向。文章根据其技术、单元元素和适用的数据类型进行分类。虽然近年来 IMG 取得了长足的进步，但我们也发现了许多问题和挑战，为该领域未来的探索和研究铺平了道路。据我们所知，这是对现有 IMG 方法的最新和最全面的调查。本调查为 IMG 领域的学者提供了全面的视角和广泛的研究资源。但是，值得注意的是，我们的评论有一定的局限性。具体来说，我们的重点完全放在 IMG 上; 非机器学习网格生成方法超出了我们的范围。因此，许多关于传统网格生成的有价值的论文没有被收录。此外，尽管应用了系统的文献综述方法和人工检索以确保全面纳入，但由于现有文献数量庞大，在初始选择中可能忽略了相关论文。</p>
+<h1 id="引用"><a href="#引用" class="headerlink" title="引用"></a>引用</h1><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br></pre></td><td class="code"><pre><span class="line">[1] J. P. Slotnick, A. Khodadoust, J. Alonso, D. Darmofal, W. Gropp,E. Lurie, and D. J. Mavriplis, “Cfd vision 2030 study: a path torevolutionary computational aerosciences,” Tech. Rep., 2014.</span><br><span class="line">[2] S. Keele, “Guidelines for performing systematic literature reviews in software engineering,” 2007.</span><br><span class="line">[3] M. Berger, A. Tagliasacchi, L. M. Seversky, P. Alliez, G. Guennebaud, J. A. Levine, A. Sharf, and C. T. Silva, “A surveyof surface reconstruction from point clouds,” in Comput GraphForum, vol. 36, no. 1, 2017, pp. 301–329.</span><br><span class="line">[4] X.-F. Han, H. Laga, and M. Bennamoun, “Image-based 3d objectreconstruction: State-of-the-art and trends in the deep learningera,” IEEE TPAMI, vol. 43, no. 5, pp. 1578–1604, 2019.</span><br><span class="line">[5] D. Khan, A. Plopski, Y. Fujimoto, M. Kanbara, G. Jabeen, Y. J.Zhang, X. Zhang, and H. Kato, “Surface remeshing: A systematic literature review of methods and research directions,” IEEETVCG, vol. 28, no. 3, pp. 1680–1713, 2020.18</span><br><span class="line">[6] Y.-P. Xiao, Y.-K. Lai, F.-L. Zhang, C. Li, and L. Gao, “A surveyon deep geometry learning: From a representation perspective,”Comput Vis Media, vol. 6, no. 2, p. 8, 2020.</span><br><span class="line">[7] W. Nianhua, L. Peng, C. Xinghua, and Z. Laiping, “Preliminaryinvestigation on unstructured mesh generation technique basedon advancing front method and machine learning methods,” J.Theor. Appl. Mech., vol. 53, no. 3, pp. 740–751, 2021.</span><br><span class="line">[8] R. Daneˇrek, E. Dibra, C. ˇ Oztireli, R. Ziegler, and M. Gross, ¨“DeepGarment : 3D Garment Shape Estimation from a SingleImage,” Comput Graph Forum, vol. 36, pp. 269–280, May 2017.</span><br><span class="line">[9] X. Han, C. Gao, and Y. Yu, “Deepsketch2face: a deep learningbased sketching system for 3d face and caricature modeling,”ACM TOG, vol. 36, no. 4, pp. 1–12, 2017.</span><br><span class="line">[10] N. Wang, Y. Zhang, Z. Li, Y. Fu, W. Liu, and Y.-G. Jiang,“Pixel2mesh: Generating 3d mesh models from single rgb images,” in ECCV, 2018, pp. 52–67.</span><br><span class="line">[11] B. L. Bhatnagar, G. Tiwari, C. Theobalt, and G. Pons-Moll, “Multigarment net: Learning to dress 3d people from images,” in ICCV,2019, pp. 5420–5430.</span><br><span class="line">[12] J. Pan, X. Han, W. Chen, J. Tang, and K. Jia, “Deep meshreconstruction from single rgb images via topology modificationnetworks,” in ICCV, 2019, pp. 9964–9973.</span><br><span class="line">[13] A. Venkat, C. Patel, Y. Agrawal, and A. Sharma, “HumanMeshNet: Polygonal Mesh Recovery of Humans,” in ICCVW, 2019, pp.2178–2187.</span><br><span class="line">[14] G. Gkioxari, J. Johnson, and J. Malik, “Mesh R-CNN,” in ICCV,2019, pp. 9784–9794.</span><br><span class="line">[15] C. Wen, Y. Zhang, Z. Li, and Y. Fu, “Pixel2mesh++: Multi-view 3dmesh generation via deformation,” in ICCV, 2019, pp. 1042–1051.</span><br><span class="line">[16] B. Jiang, J. Zhang, Y. Hong, J. Luo, L. Liu, and H. Bao, “Bcnet:Learning body and cloth shape from a single image,” in ECCV,2020, pp. 18–35.</span><br><span class="line">[17] N. Wang, Y. Zhang, Z. Li, Y. Fu, H. Yu, W. Liu, X. Xue, and Y.-G.Jiang, “Pixel2mesh: 3d mesh model generation via image guideddeformation,” IEEE TPAMI, vol. 43, no. 10, pp. 3600–3613, 2020.</span><br><span class="line">[18] F. Tong, M. Nakao, S. Wu, M. Nakamura, and T. Matsuda, “Xray2shape: reconstruction of 3d liver shape from a single 2dprojection image,” in 2020 42nd EMBC, 2020, pp. 1608–1611.</span><br><span class="line">[19] X. Li, K. Ping, X. Gu, and M. He, “3d shape reconstruction offurniture object from a single real indoor image,” in 2020 17thICCWAMTIP, 2020, pp. 101–104.</span><br><span class="line">[20] Y. Dongsheng, K. Ping, and X. Gu, “3D Reconstruction based onGAT from a Single Image,” in ICCWAMTIP, 2020, pp. 122–125.</span><br><span class="line">[21] Z. Zhang, Y. Wang, P. K. Jimack, and H. Wang, “MeshingNet:A New Mesh Generation Method Based on Deep Learning,” inICCS, 2020, pp. 186–198.</span><br><span class="line">[22] Z. Wang, V. Isler, and D. D. Lee, “Surface Hof: Surface Reconstruction From A Single Image Using Higher Order FunctionNetworks,” in ICIP, 2020, pp. 2666–2670.</span><br><span class="line">[23] P. Henderson, V. Tsiminaki, and C. H. Lampert, “Leveraging 2DData to Learn Textured 3D Mesh Generation,” in CVPR, Jun.2020, pp. 7495–7504.</span><br><span class="line">[24] G. Yang, D. Sun, V. Jampani, D. Vlasic, F. Cole, H. Chang, D. Ramanan, W. T. Freeman, and C. Liu, “Lasr: Learning articulatedshape reconstruction from a monocular video,” in CVPR, 2021,pp. 15 980–15 989.</span><br><span class="line">[25] U. Wickramasinghe, P. Fua, and G. Knott, “Deep active surfacemodels,” in CVPR, 2021, pp. 11 652–11 661.</span><br><span class="line">[26] D. Smirnov, M. Bessmeltsev, and J. Solomon, “Learning manifoldpatch-based representations of man-made shapes,” in ICLR, 2020.</span><br><span class="line">[27] H. Bertiche, M. Madadi, and S. Escalera, “Deep Parametric Surfaces for 3D Outfit Reconstruction from Single View Image,” inFG 2021, 2021, pp. 1–8.</span><br><span class="line">[28] R. Li, S. Karanam, R. Li, T. Chen, B. Bhanu, and Z. Wu, “LearningLocal Recurrent Models for Human Mesh Recovery,” in 3DV,2021, pp. 555–564.</span><br><span class="line">[29] M. Pedone, A. Mostafa, and J. Heikkila, “Learning non-rigid ¨surface reconstruction from spatia-temporal image patches,” inICPR, 2021, pp. 10 134–10 140.</span><br><span class="line">[30] M. Hu, J. Rutqvist, and C. I. Steefel, “Mesh generation andoptimization from digital rock fractures based on neural styletransfer,” J. Rock Mech. Geotech. Eng., vol. 13, Aug. 2021.</span><br><span class="line">[31] N. Wang, Y. Zhang, Z. Li, Y. Fu, H. Yu, W. Liu, X. Xue, and Y.-G. Jiang, “Pixel2Mesh: 3D Mesh Model Generation via ImageGuided Deformation,” IEEE TPAMI, vol. 43, pp. 3600–3613, 2021.</span><br><span class="line">[32] J. Tang, X. Han, M. Tan, X. Tong, and K. Jia, “Skeletonnet: Atopology-preserving solution for learning mesh reconstruction ofobject surfaces from rgb images,” IEEE TPAMI, 2021.</span><br><span class="line">[33] B. Jiang, Y. Hong, H. Bao, and J. Zhang, “Selfrecon: Self reconstruction your digital avatar from monocular video,” in CVPR,2022, pp. 5605–5615.</span><br><span class="line">[34] T. Ben Charrada, H. Tabia, A. Chetouani, and H. Laga, “TopoNet:Topology Learning for 3D Reconstruction of Objects of ArbitraryGenus,” Comput Graph Forum, no. n/a, Mar. 2022.</span><br><span class="line">[35] W. Wang, D. Ceylan, R. Mech, and U. Neumann, “3dn: 3ddeformation network,” in CVPR, 2019, pp. 1038–1046.</span><br><span class="line">[36] T. Rios, J. Kong, B. van Stein, T. Back, P. Wollstadt, B. Sendhoff, ¨and S. Menzel, “Back To Meshes: Optimal Simulation-ready MeshPrototypes For Autoencoder-based 3D Car Point Clouds,” inSSCI, 2020, pp. 942–949.</span><br><span class="line">[37] R. Hanocka, G. Metzer, R. Giryes, and D. Cohen-Or,“Point2Mesh: A Self-Prior for Deformable Meshes,” ACM TOG,vol. 39, no. 4, Aug. 2020.</span><br><span class="line">[38] K. Gupta and M. Chandraker, “Neural mesh flow: 3D manifoldmesh generation via diffeomorphic flows,” in NeurIPS, Dec. 2020,pp. 1747–1758.</span><br><span class="line">[39] B. Ma, Z. Han, Y.-S. Liu, and M. Zwicker, “Neural-Pull: LearningSigned Distance Functions from Point Clouds by Learning to PullSpace onto Surfaces,” ICML, vol. 139, Jan. 2021.</span><br><span class="line">[40] U. Wickramasinghe, E. Remelli, G. Knott, and P. Fua,“Voxel2mesh: 3d mesh model generation from volumetric data,”in MICCAI, 2020, pp. 299–308.</span><br><span class="line">[41] D. Du, X. Han, H. Fu, F. Wu, Y. Yu, S. Cui, and L. Liu, “SAniHead: Sketching Animal-Like 3D Character Heads Using a ViewSurface Collaborative Mesh Generative Network,” IEEE TVCG,vol. 28, no. 6, pp. 2415–2429, Jun. 2022.</span><br><span class="line">[42] A. Chang-Hoi, L. Sang-Soo, L. Hyuek-Jae, and L. Soo-Young,“A self-organizing neural network approach for automatic meshgeneration,” IEEE Trans. Magn., vol. 27, pp. 4201–4204, Sep. 1991.</span><br><span class="line">[43] D. Lowther and D. Dyck, “A density driven mesh generatorguided by a neural network,” IEEE Trans. Magn., vol. 29, no. 2,pp. 1927–1930, Mar. 1993.</span><br><span class="line">[44] S. Alfonzetti, S. Coco, S. Cavalieri, and M. Malgeri, “Automaticmesh generation by the let-it-grow neural network,” IEEE Trans.Magn., vol. 32, no. 3, pp. 1349–1352, 1996.</span><br><span class="line">[45] S. Alfonzetti, “A finite element mesh generator based on anadaptive neural network,” IEEE Trans. Magn., vol. 34, no. 5, pp.3363–3366, Sep. 1998.</span><br><span class="line">[46] ——, “A neural network generator for tetrahedral meshes,” IEEETrans. Magn., vol. 39, no. 3, pp. 1650–1653, 2003.</span><br><span class="line">[47] L. W. Peng and S. M. Shamsuddin, “3D object reconstruction andrepresentation using neural networks,” in GRAPHITE, 2004, pp.139–147.</span><br><span class="line">[48] S. Yao, B. Yan, B. Chen, and Y. Zeng, “An ann-based elementextraction method for automatic mesh generation,” Expert Syst.Appl., vol. 29, no. 1, pp. 193–206, 2005.</span><br><span class="line">[49] S. Alfonzetti, E. Dilettoso, and N. Salerno, “An Optimized Generator of Finite Element Meshes Based on a Neural Network,”IEEE Trans. Magn., vol. 44, pp. 1278–1281, Jun. 2008.</span><br><span class="line">[50] G.-x. Li, X.-m. Wu, and W.-m. Zhao, “Incomplete Points CloudData Surface Reconstruction Based on Neural Network,” in IIHMSP, 2008, pp. 913–916.</span><br><span class="line">[51] A. de Medeiros Brito Junior, A. D. DOria Neto, J. Dantas de Melo, ´and L. M. Garcia Goncalves, “An Adaptive Learning Approachfor 3-D Surface Reconstruction From Point Clouds,” IEEE Trans.Neural Netw., vol. 19, pp. 1130–1140, 2008.</span><br><span class="line">[52] P. Wen, X. Wu, Y. Zhu, and X. Peng, “LS-RBF network based 3Dsurface reconstruction method,” in CCDC, Jun. 2009, pp. 5785–5789, iSSN: 1948-9447.</span><br><span class="line">[53] S. Xiong, J. Zhang, J. Zheng, J. Cai, and L. Liu, “Robust surfacereconstruction via dictionary learning,” ACM TOG, vol. 33, no. 6,pp. 201:1–201:12, Nov. 2014.</span><br><span class="line">[54] Z. Lun, M. Gadelha, E. Kalogerakis, S. Maji, and R. Wang, “3dshape reconstruction from sketches via multi-view convolutionalnetworks,” in 3DV, 2017, pp. 67–77.</span><br><span class="line">[55] A. Sinha, A. Unmesh, Q. Huang, and K. Ramani, “Surfnet:Generating 3d shape surfaces using deep residual networks,” inCVPR, 2017, pp. 6040–6049.</span><br><span class="line">[56] T. Groueix, M. Fisher, V. G. Kim, B. C. Russell, and M. Aubry,“A papier-mach ˆ e approach to learning 3d surface generation,” in ´CVPR, 2018, pp. 216–224.19</span><br><span class="line">[57] C. Li, H. Pan, Y. Liu, X. Tong, A. Sheffer, and W. Wang, “Robustflow-guided neural prediction for sketch-based freeform surfacemodeling,” ACM TOG, vol. 37, no. 6, pp. 1–12, 2018.</span><br><span class="line">[58] Y. Liao, S. Donne, and A. Geiger, “Deep Marching Cubes: Learn- ´ing Explicit Surface Representations,” in CVPR, Jun. 2018, pp.2916–2925.</span><br><span class="line">[59] A. Ranjan, T. Bolkart, S. Sanyal, and M. J. Black, “Generating 3dfaces using convolutional mesh autoencoders,” in ECCV, 2018,pp. 704–720.</span><br><span class="line">[60] Y.-P. Cao, Z.-N. Liu, Z.-F. Kuang, L. Kobbelt, and S.-M. Hu,“Learning to reconstruct high-quality 3d shapes with cascadedfully convolutional networks,” in ECCV, 2018, pp. 616–633.</span><br><span class="line">[61] L. Mescheder, M. Oechsle, M. Niemeyer, S. Nowozin, andA. Geiger, “Occupancy networks: Learning 3d reconstruction infunction space,” in CVPR, 2019, pp. 4460–4470.</span><br><span class="line">[62] G. Bouritsas, S. Bokhnyak, S. Ploumpis, M. Bronstein, andS. Zafeiriou, “Neural 3d morphable models: Spiral convolutionalnetworks for 3d shape representation learning and generation,”in ICCV, 2019, pp. 7213–7222.</span><br><span class="line">[63] T. Li, Y. Shi, X. Sun, J. Wang, and B. Yin, “PGAN: PredictionGenerative Adversarial Nets for Meshes,” in VCIP, 2019, pp. 1–4.</span><br><span class="line">[64] Q. Xu, W. Wang, D. Ceylan, R. Mech, and U. Neumann, “DISN:Deep Implicit Surface Network for High-quality Single-view 3DReconstruction,” in NeurIPS, vol. 32, 2019.</span><br><span class="line">[65] Z. Chen and H. Zhang, “Learning Implicit Fields for GenerativeShape Modeling,” in CVPR, Jun. 2019, pp. 5932–5941.</span><br><span class="line">[66] A. Dai and M. Nießner, “Scan2Mesh: From Unstructured RangeScans to 3D Meshes,” in CVPR, Jun. 2019, pp. 5569–5578.</span><br><span class="line">[67] F. Williams, T. Schneider, C. Silva, D. Zorin, J. Bruna, andD. Panozzo, “Deep Geometric Prior for Surface Reconstruction,”in CVPR, Jun. 2019, pp. 10 122–10 131.</span><br><span class="line">[68] J. J. Park, P. Florence, J. Straub, R. Newcombe, and S. Lovegrove,“Deepsdf: Learning continuous signed distance functions forshape representation,” in CVPR, 2019, pp. 165–174.</span><br><span class="line">[69] R. Wu, Y. Zhuang, K. Xu, H. Zhang, and B. Chen, “Pq-net: Agenerative part seq2seq network for 3d shapes,” in CVPR, 2020,pp. 829–838.</span><br><span class="line">[70] C. Nash, Y. Ganin, S. M. A. Eslami, and P. Battaglia, “PolyGen:An autoregressive generative model of 3D meshes,” in ICML, vol.1. PMLR, 2020, pp. 7220–7229.</span><br><span class="line">[71] A. Hertz, R. Hanocka, R. Giryes, and D. Cohen-Or, “Deep geometric texture synthesis,” ACM TOG, vol. 39, pp. 108–1, 2020.</span><br><span class="line">[72] H.-T. D. Liu, V. G. Kim, S. Chaudhuri, N. Aigerman, and A. Jacobson, “Neural subdivision,” ACM TOG, vol. 39, pp. 124–1, 2020.</span><br><span class="line">[73] X. Yang, L. Zhou, H. Jiang, Z. Tang, Y. Wang, H. Bao, andG. Zhang, “Mobile3drecon: real-time monocular 3d reconstruction on a mobile phone,” IEEE TVCG, vol. 26, no. 12, pp. 3446–3456, 2020.</span><br><span class="line">[74] M. Atzmon and Y. Lipman, “Sal: Sign agnostic learning of shapesfrom raw data,” in CVPR, 2020, pp. 2565–2574.</span><br><span class="line">[75] A. Badki, O. Gallo, J. Kautz, and P. Sen, “Meshlet priors for 3dmesh reconstruction,” in CVPR, 2020, pp. 2849–2858.</span><br><span class="line">[76] C. Jiang, A. Sud, A. Makadia, J. Huang, M. Nießner,T. Funkhouser et al., “Local implicit grid representations for 3dscenes,” in CVPR, 2020, pp. 6001–6010.</span><br><span class="line">[77] S. Peng, M. Niemeyer, L. Mescheder, M. Pollefeys, and A. Geiger,“Convolutional occupancy networks,” in ECCV, 2020, pp. 523–540.</span><br><span class="line">[78] G. Yan, Z. Chen, J. Yang, and H. Wang, “Interactive liquid splashmodeling by user sketches,” TOG, vol. 39, pp. 1–13, 2020.</span><br><span class="line">[79] M. Liu, X. Zhang, and H. Su, “Meshing Point Clouds withPredicted Intrinsic-Extrinsic Ratio Guidance,” in ECCV. SpringerInternational Publishing, 2020, pp. 68–84.</span><br><span class="line">[80] P. Erler, P. Guerrero, S. Ohrhallinger, N. J. Mitra, and M. Wimmer,“Points2Surf Learning Implicit Surfaces from Point Clouds,” inECCV, 2020, pp. 108–124.</span><br><span class="line">[81] J. Gao, W. Chen, T. Xiang, A. Jacobson, M. McGuire, and S. Fidler,“Learning Deformable Tetrahedral Meshes for 3D Reconstruction,” in NeurIPS, vol. 33, 2020, pp. 9936–9947.</span><br><span class="line">[82] N. Sharp and M. Ovsjanikov, “PointTriNet: Learned Triangulation of 3D Point Sets,” in ECCV, 2020, pp. 762–778.</span><br><span class="line">[83] R. Daroya, R. Atienza, and R. Cajote, “REIN: Flexible MeshGeneration from Point Clouds,” in CVPRW, Jun. 2020, pp. 1444–1453.</span><br><span class="line">[84] Z. Mi, Y. Luo, and W. Tao, “SSRNet: Scalable 3D Surface Reconstruction Network,” in CVPR, Jun. 2020, pp. 967–976.</span><br><span class="line">[85] Y.-J. Yuan, Y.-K. Lai, J. Yang, Q. Duan, H. Fu, and L. Gao, “MeshVariational Autoencoders with Edge Contraction Pooling,” inCVPRW, Jun. 2020, pp. 1105–1112.</span><br><span class="line">[86] J. Chibane, G. Pons-Moll et al., “Neural unsigned distance fieldsfor implicit function learning,” NeurIPS, vol. 33, pp. 21 638–21 652, 2020.</span><br><span class="line">[87] E. Remelli, A. Lukoianov, S. Richter, B. Guillard, T. Bagautdinov,P. Baque, and P. Fua, “Meshsdf: Differentiable iso-surface extraction,” NeurIPS, vol. 33, pp. 22 468–22 478, 2020.</span><br><span class="line">[88] A. Bozic, P. Palafox, J. Thies, A. Dai, and M. Nießner, “Transformerfusion: Monocular rgb scene reconstruction using transformers,” NeurIPS, vol. 34, pp. 1403–1414, 2021.</span><br><span class="line">[89] R. Venkatesh, T. Karmali, S. Sharma, A. Ghosh, R. V. Babu,L. A. Jeni, and M. Singh, “Deep implicit surface point predictionnetworks,” in ICCV, 2021, pp. 12 653–12 662.</span><br><span class="line">[90] J. Sun, Y. Xie, L. Chen, X. Zhou, and H. Bao, “Neuralrecon:Real-time coherent 3d reconstruction from monocular video,” inCVPR, 2021, pp. 15 598–15 607.</span><br><span class="line">[91] J. Tang, J. Lei, D. Xu, F. Ma, K. Jia, and L. Zhang, “Saconvonet: Sign-agnostic optimization of convolutional occupancynetworks,” in ICCV, 2021, pp. 6504–6513.</span><br><span class="line">[92] T. Shen, J. Gao, K. Yin, M.-Y. Liu, and S. Fidler, “Deep marchingtetrahedra: a hybrid representation for high-resolution 3d shapesynthesis,” in NeurIPS, vol. 34, 2021, pp. 6087–6101.</span><br><span class="line">[93] S. Song, Z. Cui, and R. Qin, “Vis2mesh: Efficient mesh reconstruction from unstructured point clouds of large scenes with learnedvirtual view visibility,” in ICCV, 2021, pp. 6514–6524.</span><br><span class="line">[94] S.-L. Liu, H.-X. Guo, H. Pan, P.-S. Wang, X. Tong, and Y. Liu,“Deep implicit moving least-squares functions for 3d reconstruction,” in CVPR, 2021, pp. 1788–1797.</span><br><span class="line">[95] Y. Siddiqui, J. Thies, F. Ma, Q. Shan, M. Nießner, and A. Dai,“Retrievalfuse: Neural 3d scene reconstruction with a database,”in ICCV, 2021, pp. 12 568–12 577.</span><br><span class="line">[96] Y. Luo, Z. Mi, and W. Tao, “Deepdt: Learning geometry from delaunay triangulation for surface reconstruction,” in AAAI, vol. 35,no. 3, 2021, pp. 2277–2285.</span><br><span class="line">[97] W. Yifan, S. Wu, C. Oztireli, and O. Sorkine-Hornung, “Isopoints: Optimizing neural implicit surfaces with hybrid representations,” in CVPR, 2021, pp. 374–383.</span><br><span class="line">[98] M.-J. Rakotosaona, N. Aigerman, N. J. Mitra, M. Ovsjanikov, andP. Guerrero, “Differentiable surface triangulation,” ACM TOG,vol. 40, no. 6, pp. 1–13, 2021.</span><br><span class="line">[99] S. Peng, C. Jiang, Y. Liao, M. Niemeyer, M. Pollefeys, andA. Geiger, “Shape as points: A differentiable poisson solver,”NeurIPS, vol. 34, pp. 13 032–13 044, 2021.</span><br><span class="line">[100] A. Boulch, P.-A. Langlois, G. Puy, and R. Marlet, “NeeDrop:Self-supervised Shape Representation from Sparse Point Cloudsusing Needle Dropping,” in 3DV, 2021, pp. 940–950.</span><br><span class="line">[101] J. Lei, K. Jia, and Y. Ma, “Learning and Meshing from DeepImplicit Surface Networks Using an Efficient Implementation ofAnalytic Marching,” IEEE TPAMI, pp. 1–1, 2021.</span><br><span class="line">[102] X. Wei, Z. Chen, Y. Fu, Z. Cui, and Y. Zhang, “Deep Hybrid SelfPrior for Full 3D Mesh Generation,” ICCV, 2021.</span><br><span class="line">[103] J. Huang, S.-S. Huang, H. Song, and S.-M. Hu, “DI-Fusion: OnlineImplicit 3D Reconstruction with Deep Priors,” in CVPR, Jun.2021, pp. 8928–8937.</span><br><span class="line">[104] M.-J. Rakotosaona, P. Guerrero, N. Aigerman, N. Mitra, andM. Ovsjanikov, “Learning Delaunay Surface Elements for MeshReconstruction,” in CVPR, Jun. 2021, pp. 22–31.</span><br><span class="line">[105] A. Dielen, I. Lim, M. Lyon, and L. Kobbelt, “Learning DirectionFields for Quad Mesh Generation,” Comput Graph Forum, vol. 40,no. 5, pp. 181–191, Aug. 2021.</span><br><span class="line">[106] R. Sulzer, L. Landrieu, R. Marlet, and B. Vallet, “Scalable SurfaceReconstruction with Delaunay-Graph Neural Networks,” ComputGraph Forum, vol. 40, no. 5, pp. 157–167, Aug. 2021.</span><br><span class="line">[107] Z. Chen and H. Zhang, “Neural Marching Cubes,” ACM TOG,vol. 40, no. 6, pp. 1–15, Dec. 2021.</span><br><span class="line">[108] J. Munkberg, J. Hasselgren, T. Shen, J. Gao, W. Chen, A. Evans,T. Muller, and S. Fidler, “Extracting triangular 3d models, mate- ¨rials, and lighting from images,” in CVPR, 2022, pp. 8280–8290.</span><br><span class="line">[109] P. Mittal, Y.-C. Cheng, M. Singh, and S. Tulsiani, “Autosdf: Shapepriors for 3d completion, reconstruction and generation,” inCVPR, 2022, pp. 306–315.</span><br><span class="line">[110] F. Williams, Z. Gojcic, S. Khamis, D. Zorin, J. Bruna, S. Fidler, andO. Litany, “Neural fields as learnable kernels for 3d reconstruction,” in CVPR, 2022, pp. 18 500–18 510.</span><br><span class="line">[111] Z. Deng, Y. Liu, H. Pan, W. Jabi, J. Zhang, and B. Deng,“Sketch2PQ: Freeform Planar Quadrilateral Mesh Design via aSingle Sketch,” IEEE TVCG, pp. 1–1, 2022.</span><br><span class="line">[112] S. Hahner and J. Garcke, “Mesh Convolutional Autoencoder forSemi-Regular Meshes of Different Sizes,” in WACV, 2022, pp.2344–2353.</span><br><span class="line">[113] B. Ma, Y.-S. Liu, and Z. Han, “Reconstructing surfaces for sparsepoint clouds with on-surface priors,” in CVPR, 2022, pp. 6315–6325.</span><br><span class="line">[114] P. Lu, N. Wang, Y. Lin, X. Zhang, Y. Wu, and H. Zhang, “Anew unstructured hybrid mesh generation method based on BPANN,” J. Phys. Conf. Ser, 2022.</span><br><span class="line">[115] X. Chen, T. Li, Q. Wan, X. He, C. Gong, Y. Pang, and J. Liu,“MGNet: a novel differential mesh generation method based onunsupervised neural networks,” Eng. Comput., Mar. 2022.</span><br><span class="line">[116] J. Pan, J. Huang, G. Cheng, and Y. Zeng, “Reinforcement learningfor automatic quadrilateral mesh generation: a soft actor-criticapproach,” Mar. 2022.</span><br><span class="line">[117] Z. Chen, A. Tagliasacchi, T. Funkhouser, and H. Zhang, “NeuralDual Contouring,” ACM TOG, vol. 41, pp. 1–13, Jul. 2022.</span><br><span class="line">[118] T. Li, Y. Shi, X. Sun, J. Wang, and B. Yin, “PCGAN: PredictionCompensation Generative Adversarial Network for Meshes,”IEEE T-CSVT, vol. 32, no. 7, pp. 4667–4679, Jul. 2022.</span><br><span class="line">[119] Z. Zhu, S. Peng, V. Larsson, W. Xu, H. Bao, Z. Cui, M. R. Oswald,and M. Pollefeys, “Nice-slam: Neural implicit scalable encodingfor slam,” in CVPR, 2022, pp. 12 786–12 796.</span><br><span class="line">[120] D. Azinovic, R. Martin-Brualla, D. B. Goldman, M. Nießner, and ´J. Thies, “Neural rgb-d surface reconstruction,” in CVPR, 2022,pp. 6290–6301.</span><br><span class="line">[121] A. Boulch and R. Marlet, “Poco: Point convolution for surfacereconstruction,” in CVPR, 2022, pp. 6302–6314.</span><br><span class="line">[122] W. E. Lorensen and H. E. Cline, “Marching cubes: A high resolution 3d surface construction algorithm,” ACM siggraph computergraphics, vol. 21, no. 4, pp. 163–169, 1987.</span><br><span class="line">[123] A. Doi and A. Koide, “An efficient method of triangulating equivalued surfaces by using tetrahedral cells,” IEICE Trans. Inf. Syst.,vol. 74, pp. 214–224, 1991.</span><br><span class="line">[124] M. Kazhdan and H. Hoppe, “Screened poisson surface reconstruction,” ACM TOG, vol. 32, no. 3, pp. 1–13, 2013.</span><br><span class="line">[125] P. Wang, L. Liu, Y. Liu, C. Theobalt, T. Komura, and W. Wang,“Neus: Learning neural implicit surfaces by volume renderingfor multi-view reconstruction,” in NeurIPS.</span><br><span class="line">[126] J. Wang, T. Bleja, and L. Agapito, “Go-surf: Neural feature gridoptimization for fast, high-fidelity rgb-d surface reconstruction,”in 3DV, 2022, pp. 433–442.</span><br><span class="line">[127] S. J. Ruuth and B. Merriman, “A simple embedding method forsolving partial differential equations on surfaces,” J Comput Phys,vol. 227, no. 3, pp. 1943–1961, 2008.</span><br><span class="line">[128] C. B. Macdonald and S. J. Ruuth, “Level set equations on surfacesvia the closest point method,” J. Sci. Comput., vol. 35, pp. 219–240,2008.</span><br><span class="line">[129] ——, “The implicit closest point method for the numerical solution of partial differential equations on surfaces,” SIAM Journalon Scientific Computing, vol. 31, no. 6, pp. 4330–4350, 2010.</span><br><span class="line">[130] T. Marz and C. B. Macdonald, “Calculus on surfaces with general ¨closest point functions,” SINUM, vol. 50, pp. 3303–3328, 2012.</span><br><span class="line">[131] L. Tian, C. B. Macdonald, and S. J. Ruuth, “Segmentation onsurfaces with the closest point method,” in ICIP, 2009, pp. 3009–3012.</span><br><span class="line">[132] C. B. Macdonald, J. Brandman, and S. J. Ruuth, “Solving eigenvalue problems on curved surfaces using the closest pointmethod,” J Comput Phys, vol. 230, no. 22, pp. 7944–7956, 2011.</span><br><span class="line">[133] D.-T. Lee and B. J. Schachter, “Two algorithms for constructinga delaunay triangulation,” In. j. comput. inf. sci., vol. 9, no. 3, pp.219–242, 1980.</span><br><span class="line">[134] N. Ray, W. C. Li, B. Levy, A. Sheffer, and P. Alliez, “Periodic global ´parameterization,” ACM TOG, vol. 25, no. 4, pp. 1460–1485, 2006.</span><br><span class="line">[135] X. Gu, S. J. Gortler, and H. Hoppe, “Geometry images,” inProceedings of the 29th annual conference on Computer graphics andinteractive techniques, 2002, pp. 355–361.</span><br><span class="line">[136] I. Goodfellow, J. Pouget-Abadie, M. Mirza, B. Xu, D. WardeFarley, S. Ozair, A. Courville, and Y. Bengio, “Generative adversarial networks,” Commun. ACM, vol. 63, pp. 139–144, 2020.</span><br><span class="line">[137] R. Lohner and P. Parikh, “Generation of three-dimensional un- ¨structured grids by the advancing-front method,” Int. J. Numer.Methods Fluids, vol. 8, no. 10, pp. 1135–1149, 1988.</span><br><span class="line">[138] Y. Guo, X. Huang, Z. Ma, Y. Hai, R. Zhao, and K. Sun, “Animproved advancing-front-delaunay method for triangular meshgeneration,” in CGI, 2021, pp. 477–487.</span><br><span class="line">[139] T. Ju, F. Losasso, S. Schaefer, and J. Warren, “Dual contouring ofhermite data,” in SIGGRAPH, 2002, pp. 339–346.</span><br><span class="line">[140] D. P. Kingma and M. Welling, “Auto-encoding variational bayes,”arXiv preprint arXiv:1312.6114, 2013.</span><br><span class="line">[141] H. Fan, H. Su, and L. J. Guibas, “A point set generation networkfor 3d object reconstruction from a single image,” in CVPR, 2017,pp. 605–613.</span><br><span class="line">[142] O. Sorkine, D. Cohen-Or, and S. Toledo, “High-pass quantizationfor mesh encoding.” in SGP, vol. 42, 2003, p. 3.</span><br><span class="line">[143] I. Abouelaziz, M. El Hassouni, and H. Cherifi, “A curvaturebased method for blind mesh visual quality assessment usinga general regression neural network,” in SITIS. IEEE, 2016, pp.793–797.</span><br><span class="line">[144] I. Abouelaziz, M. E. Hassouni, and H. Cherifi, “A convolutionalneural network framework for blind mesh visual quality assessment,” in ICIP, Sep. 2017, pp. 755–759.</span><br><span class="line">[145] I. Abouelaziz, A. Chetouani, M. El Hassouni, and H. Cherifi,“Reduced Reference Mesh Visual Quality Assessment Based onConvolutional Neural Network,” in SITIS, 2018, pp. 617–620.</span><br><span class="line">[146] I. Abouelaziz, A. Chetouani, M. E. Hassouni, L. J. Latecki, andH. Cherifi, “Convolutional Neural Network for Blind Mesh Visual Quality Assessment Using 3D Visual Saliency,” in ICIP, 2018.</span><br><span class="line">[147] I. Abouelaziz, A. Chetouani, M. El Hassouni, H. Cherifi, andL. J. Latecki, “Learning graph convolutional network for blindmesh visual quality assessment,” IEEE Access, vol. 9, pp. 108 200–108 211, 2021.</span><br><span class="line">[148] X. Chen, J. Liu, Y. Pang, J. Chen, L. Chi, and C. Gong, “Developing a new mesh quality evaluation method based on convolutional neural network,” Eng. Appl. Comput. Fluid Mech, vol. 14,no. 1, pp. 391–400, 2020.</span><br><span class="line">[149] X. Chen, J. Liu, C. Gong, S. Li, Y. Pang, and B. Chen, “Mve-net:An automatic 3-d structured mesh validity evaluation frameworkusing deep neural networks,” Comput Aided Des, vol. 141, p.103104, 2021.</span><br><span class="line">[150] A. X. Chang, T. Funkhouser, L. Guibas, P. Hanrahan, Q. Huang,Z. Li, S. Savarese, M. Savva, S. Song, H. Su et al., “Shapenet: Aninformation-rich 3d model repository,” arXiv preprint, 2015.</span><br><span class="line">[151] A. M. Bronstein, M. M. Bronstein, and R. Kimmel, “Efficientcomputation of isometry-invariant distances between surfaces,”SIAM J. Sci. Comput, vol. 28, pp. 1812–1836, 2006.</span><br><span class="line">[152] Y. Wang, S. Asafi, O. Van Kaick, H. Zhang, D. Cohen-Or, andB. Chen, “Active co-analysis of a set of shapes,” ACM TOG,vol. 31, no. 6, pp. 1–10, 2012.</span><br><span class="line">[153] M. Berger, J. A. Levine, L. G. Nonato, G. Taubin, and C. T. Silva,“A benchmark for surface reconstruction,” ACM TOG, vol. 32,no. 2, pp. 1–17, 2013.</span><br><span class="line">[154] Q. Zhou and A. Jacobson, “Thingi10k: A dataset of 10,000 3dprinting models,” arXiv preprint arXiv:1605.04797, 2016.</span><br><span class="line">[155] F. Bogo, J. Romero, G. Pons-Moll, and M. J. Black, “Dynamicfaust: Registering human bodies in motion,” in CVPR, 2017, pp.6233–6242.</span><br><span class="line">[156] S. Koch, A. Matveev, Z. Jiang, F. Williams, A. Artemov, E. Burnaev, M. Alexa, D. Zorin, and D. Panozzo, “Abc: A big cad modeldataset for geometric deep learning,” in CVPR, 2019, pp. 9601–9611.</span><br><span class="line">[157] X. Sun, J. Wu, X. Zhang, Z. Zhang, C. Zhang, T. Xue, J. B.Tenenbaum, and W. T. Freeman, “Pix3d: Dataset and methodsfor single-image 3d shape modeling,” in CVPR, 2018, pp. 2974–2983.</span><br><span class="line">[158] J. Booth, A. Roussos, S. Zafeiriou, A. Ponniah, and D. Dunaway,“A 3d morphable model learnt from 10,000 faces,” in CVPR, 2016,pp. 5543–5552.</span><br><span class="line">[159] Y. Zheng, R. Shao, Y. Zhang, T. Yu, Z. Zheng, Q. Dai, and Y. Liu,“Deepmulticap: Performance capture of multiple characters using sparse multiview cameras,” in ICCV, 2021, pp. 6239–6249.</span><br><span class="line">[160] “Renderpeople,” &lt;https://renderpeople.com/free-3d-people&gt;.</span><br><span class="line">[161] “axyz,” &lt;https://secure.axyz-design.com/&gt;, 2019.</span><br><span class="line">[162] A. Dai, A. X. Chang, M. Savva, M. Halber, T. Funkhouser, andM. Nießner, “Scannet: Richly-annotated 3d reconstructions ofindoor scenes,” in CVPR, 2017, pp. 5828–5839.</span><br><span class="line">[163] A. Handa, V. Patr ˘ aucean, S. Stent, and R. Cipolla, “Scenenet: An ˘annotated model generator for indoor scene understanding,” inICRA, 2016, pp. 5737–5743.</span><br><span class="line">[164] A. Chang, A. Dai, T. Funkhouser, M. Halber, M. Niessner,M. Savva, S. Song, A. Zeng, and Y. Zhang, “Matterport3d: Learning from rgb-d data in indoor environments,” arXiv preprint, 2017.</span><br><span class="line">[165] N. Pietroni, S. Nuvoli, T. Alderighi, P. Cignoni, and M. Tarini,“Reliable feature-line driven quad-remeshing,” in ACM SIGGRAPH, vol. 40, no. 4, 2021, pp. 1–17.</span><br><span class="line">[166] D. Maturana and S. Scherer, “Voxnet: A 3d convolutional neuralnetwork for real-time object recognition,” in IROS, 2015, pp. 922–928.</span><br><span class="line">[167] A. Brock, T. Lim, J. M. Ritchie, and N. Weston, “Generativeand discriminative voxel modeling with convolutional neuralnetworks,” arXiv preprint arXiv:1608.04236, 2016.</span><br><span class="line">[168] P.-S. Wang, Y. Liu, Y.-X. Guo, C.-Y. Sun, and X. Tong, “Ocnn: Octree-based convolutional neural networks for 3d shapeanalysis,” ACM TOG, vol. 36, pp. 1–11, 2017.</span><br><span class="line">[169] Z. Chen, V. G. Kim, M. Fisher, N. Aigerman, H. Zhang, andS. Chaudhuri, “Decor-gan: 3d shape detailization by conditionalrefinement,” in CVPR. ICS, 2021, pp. 15 735–15 744.</span><br><span class="line">[170] C. R. Qi, H. Su, K. Mo, and L. J. Guibas, “Pointnet: Deep learningon point sets for 3d classification and segmentation,” in CVPR,2017, pp. 652–660.</span><br><span class="line">[171] C. R. Qi, L. Yi, H. Su, and L. J. Guibas, “Pointnet++: Deephierarchical feature learning on point sets in a metric space,”NeurIPS, vol. 30, 2017.</span><br><span class="line">[172] Y. Yang, C. Feng, Y. Shen, and D. Tian, “Foldingnet: Point cloudauto-encoder via deep grid deformation,” in CVPR, 2018, pp.206–215.</span><br><span class="line">[173] H. Thomas, C. R. Qi, J.-E. Deschaud, B. Marcotegui, F. Goulette,and L. J. Guibas, “Kpconv: Flexible and deformable convolutionfor point clouds,” in ICCV, 2019, pp. 6411–6420.</span><br><span class="line">[174] Y. Wang, Y. Sun, Z. Liu, S. E. Sarma, M. M. Bronstein, and J. M.Solomon, “Dynamic graph cnn for learning on point clouds,”ACM Trans. Graph., vol. 38, no. 5, oct 2019.</span><br><span class="line">[175] Z. Li, W. Wang, N. Lei, and R. Wang, “Weakly supervised pointcloud upsampling via optimal transport,” in ICASSP, 2022, pp.2564–2568.</span><br><span class="line">[176] R. Wiersma, A. Nasikun, E. Eisemann, and K. Hildebrandt,“Deltaconv: anisotropic operators for geometric deep learning onpoint clouds,” ACM TOG, vol. 41, no. 4, pp. 1–10, 2022.</span><br><span class="line">[177] R. Hanocka, A. Hertz, N. Fish, R. Giryes, S. Fleishman, andD. Cohen-Or, “Meshcnn: a network with an edge,” ACM TOG,vol. 38, no. 4, pp. 1–12, 2019.</span><br><span class="line">[178] Y. Feng, Y. Feng, H. You, X. Zhao, and Y. Gao, “Meshnet: Meshneural network for 3d shape representation,” in AAAI, vol. 33,no. 01, 2019, pp. 8279–8286.</span><br><span class="line">[179] F. Milano, A. Loquercio, A. Rosinol, D. Scaramuzza, andL. Carlone, “Primal-dual mesh convolutional neural networks,”NeurIPS, vol. 33, pp. 952–963, 2020.</span><br><span class="line">[180] V. V. Singh, S. V. Sheshappanavar, and C. Kambhamettu, “Meshnet++: A network with a face,” in ACM MM, 2021, pp. 4883–4891.</span><br><span class="line">[181] J. Masci, D. Boscaini, M. Bronstein, and P. Vandergheynst,“Geodesic convolutional neural networks on riemannian manifolds,” in ICCVW, 2015, pp. 37–45.</span><br><span class="line">[182] D. Boscaini, J. Masci, E. Rodola, and M. Bronstein, “Learning `shape correspondence with anisotropic convolutional neural networks,” NeurIPS, 2016.</span><br><span class="line">[183] I. Lim, A. Dielen, M. Campen, and L. Kobbelt, “A simple approach to intrinsic correspondence learning on unstructured 3dmeshes,” in ECCVW, 2018, pp. 0–0.</span><br><span class="line">[184] J. Schult, F. Engelmann, T. Kontogianni, and B. Leibe,“Dualconvmesh-net: Joint geodesic and euclidean convolutionson 3d meshes,” in CVPR, 2020, pp. 8612–8622.</span><br><span class="line">[185] Y. Zhou, C. Wu, Z. Li, C. Cao, Y. Ye, J. Saragih, H. Li, andY. Sheikh, “Fully convolutional mesh autoencoder using efficientspatially varying kernels,” NeurIPS, vol. 33, pp. 9251–9262, 2020.</span><br><span class="line">[186] D. Smirnov and J. Solomon, “Hodgenet: Learning spectral geometry on triangle meshes,” ACM TOG, vol. 40, pp. 1–11, 2021.</span><br><span class="line">[187] N. Sharp, S. Attaiki, K. Crane, and M. Ovsjanikov, “Diffusionnet:Discretization agnostic learning on surfaces,” ACM TOG, vol. 41,no. 3, pp. 1–16, 2022.</span><br><span class="line">[188] X. Zheng, Y. Zhu, W. Chen, N. Lei, Z. Luo, and X. Gu, “Quadrilateral mesh generation III: Optimizing singularity configurationbased on abel-jacobi theory,” Comput. Methods Appl. Mech. Eng.,vol. 387, p. 114146, 2021.</span><br><span class="line">[189] N. Lei, K. Su, L. Cui, S.-T. Yau, and X. D. Gu, “A geometric viewof optimal transportation and generative model,” Comput. AidedGeom. Des, vol. 68, pp. 1–21, 2019.</span><br><span class="line">[190] L. Gao, T. Wu, Y.-J. Yuan, M.-X. Lin, Y.-K. Lai, and H. Zhang,“Tm-net: Deep generative networks for textured meshes,” ACMTOG, vol. 40, no. 6, pp. 1–15, 2021.</span><br></pre></td></tr></table></figure>
+
+
+
+
+<h2 id=""><a href="#" class="headerlink" title=""></a></h2>
+    </div>
+
+    
+    
+    
+        <div class="reward-container">
+  <div></div>
+  <button onclick="var qr = document.getElementById('qr'); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/images/wechatpay.png" alt="SindreYang 微信支付">
+        <p>微信支付</p>
+      </div>
+      
+      <div style="display: inline-block;">
+        <img src="/images/alipay.png" alt="SindreYang 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>SindreYang
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://blog.mviai.com/2025/%E8%AE%BA%E6%96%87%E7%BF%BB%E8%AF%91_AI%E7%BD%91%E6%A0%BC%E7%94%9F%E6%88%90%E7%9A%84%E7%A0%94%E7%A9%B6%E7%8E%B0%E7%8A%B6%E4%B8%8E%E5%B1%95%E6%9C%9B/" title="论文翻译_AI网格生成的研究现状与展望">http://blog.mviai.com/2025/论文翻译_AI网格生成的研究现状与展望/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <span class="exturl" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC9kZWVkLnpo"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</span> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+        
+
+  <div class="followme">
+    <p>欢迎关注我的其它发布渠道</p>
+
+    <div class="social-list">
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="/images/wechat.png">
+            <span class="icon">
+              <i class="fa fa-wechat"></i>
+            </span>
+
+            <span class="label">WeChat</span>
+          </a>
+        </div>
+    </div>
+  </div>
+
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2025/%E8%AE%BA%E6%96%87%E7%BF%BB%E8%AF%91_%E5%8D%A0%E4%BD%8D%E7%BD%91%E7%BB%9C-Occupancy_networks/" rel="prev" title="论文翻译_占位网络-Occupancy_networks">
+      <i class="fa fa-chevron-left"></i> 论文翻译_占位网络-Occupancy_networks
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2025/%E8%AE%BA%E6%96%87%E5%86%99%E4%BD%9C_%E5%85%A8%E5%86%A0%E7%94%9F%E6%88%90/" rel="next" title="论文写作_全冠生成">
+      论文写作_全冠生成 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    
+  <div class="comments">
+    <div id="SOHUCS"></div>
+  </div>
+  
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%93%BE%E6%8E%A5"><span class="nav-number">1.</span> <span class="nav-text">链接:</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%BC%95%E8%A8%80"><span class="nav-number">2.</span> <span class="nav-text">引言</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8A%A8%E6%9C%BA"><span class="nav-number">2.1.</span> <span class="nav-text">动机</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%9B%B8%E5%85%B3%E8%B0%83%E6%9F%A5"><span class="nav-number">2.2.</span> <span class="nav-text">相关调查</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%96%B9%E6%B3%95"><span class="nav-number">3.</span> <span class="nav-text">方法</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A3%80%E7%B4%A2%E7%AD%96%E7%95%A5"><span class="nav-number">3.1.</span> <span class="nav-text">检索策略</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%86%85%E5%AE%B9%E6%8F%90%E5%8F%96%E5%8F%8A%E7%BB%93%E6%9E%9C%E5%91%88%E7%8E%B0"><span class="nav-number">3.2.</span> <span class="nav-text">内容提取及结果呈现</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%A1%A8-1%EF%BC%9A%E6%96%87%E7%8C%AE%E4%B8%AD%E4%BD%BF%E7%94%A8%E7%9A%84%E5%90%84%E7%A7%8D%E7%B1%BB%E5%9E%8B%E7%9A%84-IMG-%E7%9A%84%E5%88%86%E7%B1%BB%E3%80%82DEMG%E3%80%81CLMG%E3%80%81ISMG%E3%80%81DTMG%EF%BC%8C%E5%B0%BD%E7%AE%A1%E5%8F%AA%E6%9C%89%E5%85%B7%E6%9C%89%E7%AE%80%E5%8D%95-PAMG-%E5%92%8C-AFMG-%E7%9A%84%E5%B9%B3%E9%9D%A2%E7%BD%91%E6%A0%BC%E5%88%86%E5%88%AB%E8%A1%A8%E7%A4%BA%E5%9F%BA%E4%BA%8E%E5%8F%98%E5%BD%A2%E3%80%81%E5%9F%BA%E4%BA%8E%E5%88%86%E7%B1%BB%E3%80%81%E5%9F%BA%E4%BA%8E%E7%AD%89%E5%80%BC%E9%9D%A2%E3%80%81%E5%9F%BA%E4%BA%8E%E5%BE%B7%E5%8A%B3%E5%86%85%E4%B8%89%E8%A7%92%E5%89%96%E5%88%86%E3%80%81%E5%9F%BA%E4%BA%8E%E5%8F%82%E6%95%B0%E5%8C%96%E5%92%8C%E5%9F%BA%E4%BA%8E%E5%89%8D%E6%B2%BF%E7%9A%84%E7%BD%91%E6%A0%BC%E7%94%9F%E6%88%90%E3%80%82PC%E3%80%81IM%E3%80%81VO%E3%80%81ME%E3%80%81BS-%E5%92%8C-LA-%E5%88%86%E5%88%AB%E8%A1%A8%E7%A4%BA%E5%9F%BA%E4%BA%8E%E7%82%B9%E4%BA%91%E3%80%81%E5%9F%BA%E4%BA%8E%E5%9B%BE%E5%83%8F%E3%80%81%E5%9F%BA%E4%BA%8E%E4%BD%93%E7%B4%A0%E3%80%81%E5%9F%BA%E4%BA%8E%E7%BD%91%E6%A0%BC%E3%80%81%E5%9F%BA%E4%BA%8E%E8%BE%B9%E7%95%8C%E6%88%96%E8%8D%89%E5%9B%BE%E4%BB%A5%E5%8F%8A%E5%9F%BA%E4%BA%8E%E6%BD%9C%E5%9C%A8%E5%8F%98%E9%87%8F%E7%9A%84-IMG%E3%80%82Tri%E3%80%81Qua%E3%80%81Hyb-%E5%92%8C-Tet-%E5%88%86%E5%88%AB%E8%A1%A8%E7%A4%BA%E4%B8%89%E8%A7%92%E5%BD%A2%E3%80%81%E5%9B%9B%E8%BE%B9%E5%BD%A2%E3%80%81%E6%B7%B7%E5%90%88%E5%A4%9A%E8%BE%B9%E5%BD%A2%E5%92%8C%E5%9B%9B%E9%9D%A2%E4%BD%93%E7%BD%91%E6%A0%BC%E3%80%82E2E-%E8%A1%A8%E7%A4%BA%E7%AB%AF%E5%88%B0%E7%AB%AF%EF%BC%8C%E2%9C%93-%E8%A1%A8%E7%A4%BA%E6%BB%A1%E6%84%8F%E3%80%82"><span class="nav-number">3.2.1.</span> <span class="nav-text">表 1：文献中使用的各种类型的 IMG 的分类。DEMG、CLMG、ISMG、DTMG，尽管只有具有简单 PAMG 和 AFMG 的平面网格分别表示基于变形、基于分类、基于等值面、基于德劳内三角剖分、基于参数化和基于前沿的网格生成。PC、IM、VO、ME、BS 和 LA 分别表示基于点云、基于图像、基于体素、基于网格、基于边界或草图以及基于潜在变量的 IMG。Tri、Qua、Hyb 和 Tet 分别表示三角形、四边形、混合多边形和四面体网格。E2E 表示端到端，✓ 表示满意。</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%A1%A8-2%EF%BC%9A%E6%89%80%E6%9C%89%E9%80%89%E5%AE%9A%E7%9A%84-IMG-%E6%96%B9%E6%B3%95%E7%9A%84%E6%8F%90%E8%AE%AE%E3%80%81%E4%BC%98%E5%8A%BF%E5%92%8C%E5%B1%80%E9%99%90%E6%80%A7%E3%80%82AMC-%E8%A1%A8%E7%A4%BA%E5%B9%B3%E5%9D%87%E6%AF%8F%E6%9C%88%E5%BC%95%E7%94%A8%E6%AC%A1%E6%95%B0"><span class="nav-number">3.2.2.</span> <span class="nav-text">表 2：所有选定的 IMG 方法的提议、优势和局限性。AMC 表示平均每月引用次数</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5"><span class="nav-number">3.3.</span> <span class="nav-text">基本概念</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%9F%BA%E4%BA%8E%E6%8A%80%E6%9C%AF%E7%9A%84%E5%88%86%E7%B1%BB"><span class="nav-number">4.</span> <span class="nav-text">基于技术的分类</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9F%BA%E4%BA%8E%E5%8F%98%E5%BD%A2%E7%9A%84%E7%BD%91%E6%A0%BC%E7%94%9F%E6%88%90"><span class="nav-number">4.1.</span> <span class="nav-text">基于变形的网格生成</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9F%BA%E4%BA%8E%E5%88%86%E7%B1%BB%E7%9A%84%E7%BD%91%E6%A0%BC%E7%94%9F%E6%88%90"><span class="nav-number">4.2.</span> <span class="nav-text">基于分类的网格生成</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9F%BA%E4%BA%8E%E7%AD%89%E5%80%BC%E9%9D%A2%E7%9A%84%E7%BD%91%E6%A0%BC%E7%94%9F%E6%88%90"><span class="nav-number">4.3.</span> <span class="nav-text">基于等值面的网格生成</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9F%BA%E4%BA%8E-Delaunay-%E4%B8%89%E8%A7%92%E6%B5%8B%E9%87%8F%E7%9A%84%E7%BD%91%E6%A0%BC%E7%94%9F%E6%88%90"><span class="nav-number">4.4.</span> <span class="nav-text">基于 Delaunay 三角测量的网格生成</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9F%BA%E4%BA%8E%E5%8F%82%E6%95%B0%E5%8C%96%E7%9A%84%E7%BD%91%E6%A0%BC%E7%94%9F%E6%88%90"><span class="nav-number">4.5.</span> <span class="nav-text">基于参数化的网格生成</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9F%BA%E4%BA%8E%E5%89%8D%E6%B2%BF%E7%9A%84%E7%BD%91%E6%A0%BC%E7%94%9F%E6%88%90"><span class="nav-number">4.6.</span> <span class="nav-text">基于前沿的网格生成</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%9F%BA%E4%BA%8E%E7%94%9F%E6%88%90%E7%B1%BB%E5%9E%8B%E7%9A%84%E5%88%86%E7%B1%BB"><span class="nav-number">5.</span> <span class="nav-text">基于生成类型的分类</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%89%E8%A7%92%E5%BD%A2%E7%BD%91%E6%A0%BC%E7%94%9F%E6%88%90"><span class="nav-number">5.1.</span> <span class="nav-text">三角形网格生成</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9B%9B%E8%BE%B9%E5%BD%A2%E7%BD%91%E6%A0%BC%E7%94%9F%E6%88%90"><span class="nav-number">5.2.</span> <span class="nav-text">四边形网格生成</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B7%B7%E5%90%88%E5%A4%9A%E8%BE%B9%E5%BD%A2%E7%BD%91%E6%A0%BC%E7%94%9F%E6%88%90"><span class="nav-number">5.3.</span> <span class="nav-text">混合多边形网格生成</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9B%9B%E9%9D%A2%E4%BD%93%E7%BD%91%E6%A0%BC%E7%94%9F%E6%88%90"><span class="nav-number">5.4.</span> <span class="nav-text">四面体网格生成</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%9F%BA%E4%BA%8E%E8%BE%93%E5%85%A5%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B%E7%9A%84%E5%88%86%E7%B1%BB"><span class="nav-number">6.</span> <span class="nav-text">基于输入数据类型的分类</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9F%BA%E4%BA%8E%E7%82%B9%E4%BA%91%E7%9A%84%E7%BD%91%E6%A0%BC%E7%94%9F%E6%88%90"><span class="nav-number">6.1.</span> <span class="nav-text">基于点云的网格生成</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9F%BA%E4%BA%8E%E5%9B%BE%E5%83%8F%E7%9A%84%E7%BD%91%E6%A0%BC%E7%94%9F%E6%88%90"><span class="nav-number">6.2.</span> <span class="nav-text">基于图像的网格生成</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9F%BA%E4%BA%8E%E4%BD%93%E7%B4%A0%E7%9A%84%E7%BD%91%E6%A0%BC%E7%94%9F%E6%88%90"><span class="nav-number">6.3.</span> <span class="nav-text">基于体素的网格生成</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9F%BA%E4%BA%8E%E7%BD%91%E6%A0%BC%E7%9A%84%E7%BD%91%E6%A0%BC%E7%94%9F%E6%88%90"><span class="nav-number">6.4.</span> <span class="nav-text">基于网格的网格生成</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9F%BA%E4%BA%8E%E8%BE%B9%E7%95%8C%E6%88%96%E8%8D%89%E5%9B%BE%E7%9A%84%E7%BD%91%E6%A0%BC%E7%94%9F%E6%88%90"><span class="nav-number">6.5.</span> <span class="nav-text">基于边界或草图的网格生成</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9F%BA%E4%BA%8E%E6%BD%9C%E5%9C%A8%E5%8F%98%E9%87%8F%E7%9A%84%E7%BD%91%E6%A0%BC%E7%94%9F%E6%88%90"><span class="nav-number">6.6.</span> <span class="nav-text">基于潜在变量的网格生成</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%AF%84%E4%BC%B0"><span class="nav-number">7.</span> <span class="nav-text">评估</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%86%85%E5%AE%B9%E8%AF%84%E4%BC%B0"><span class="nav-number">7.1.</span> <span class="nav-text">内容评估</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8C%87%E6%A0%87"><span class="nav-number">7.2.</span> <span class="nav-text">指标</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%A4%96%E9%83%A8%E8%B5%84%E6%BA%90"><span class="nav-number">8.</span> <span class="nav-text">外部资源</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B8%B8%E8%A7%81%E6%95%B0%E6%8D%AE%E9%9B%86"><span class="nav-number">8.1.</span> <span class="nav-text">常见数据集</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B8%B8%E7%94%A8%E7%9A%84%E5%85%88%E9%AA%8C"><span class="nav-number">8.2.</span> <span class="nav-text">常用的先验</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9F%BA%E4%BA%8E%E7%BD%91%E6%A0%BC%E7%9A%84%E7%BB%8F%E5%85%B8%E5%AD%A6%E4%B9%A0%E6%9E%B6%E6%9E%84"><span class="nav-number">8.3.</span> <span class="nav-text">基于网格的经典学习架构</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%AE%A8%E8%AE%BA%E4%B8%8E%E7%BB%93%E8%AE%BA"><span class="nav-number">9.</span> <span class="nav-text">讨论与结论</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%AC%E5%BC%80%E6%8F%90%E8%AE%AE%E6%91%98%E8%A6%81"><span class="nav-number">9.1.</span> <span class="nav-text">公开提议摘要</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BB%93%E8%AE%BA"><span class="nav-number">9.2.</span> <span class="nav-text">结论</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%BC%95%E7%94%A8"><span class="nav-number">10.</span> <span class="nav-text">引用</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link"><span class="nav-number">10.1.</span> <span class="nav-text"></span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="SindreYang"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">SindreYang</p>
+  <div class="site-description" itemprop="description">沉淀后我愿意做一个温暖的人。有自己的喜好，有自己的原则，有自己的信仰，不急功近利，不浮夸轻薄，宠辱不惊，淡定安逸，心静如水。------不忘初心，方得始终</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">321</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">72</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL1NpbmRyZVlhbmc=" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;SindreYang"><i class="fa fa-fw fa-github"></i>GitHub</span>
+      </span>
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="bWFpbHRvOnl4QG12aWFpLmNvbQ==" title="E-Mail → mailto:yx@mviai.com"><i class="fa fa-fw fa-envelope"></i>E-Mail</span>
+      </span>
+  </div>
+  <div class="cc-license motion-element" itemprop="license">
+    <span class="exturl cc-opacity" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC9kZWVkLnpo"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+  <div class="languages">
+    <label class="lang-select-label">
+      <i class="fa fa-language"></i>
+      <span>简体中文</span>
+      <i class="fa fa-angle-up" aria-hidden="true"></i>
+    </label>
+    <select class="lang-select" data-canonical="">
+      
+        <option value="zh-CN" data-href="/2025/%E8%AE%BA%E6%96%87%E7%BF%BB%E8%AF%91_AI%E7%BD%91%E6%A0%BC%E7%94%9F%E6%88%90%E7%9A%84%E7%A0%94%E7%A9%B6%E7%8E%B0%E7%8A%B6%E4%B8%8E%E5%B1%95%E6%9C%9B/" selected="">
+          简体中文
+        </option>
+      
+        <option value="en" data-href="/en/2025/%E8%AE%BA%E6%96%87%E7%BF%BB%E8%AF%91_AI%E7%BD%91%E6%A0%BC%E7%94%9F%E6%88%90%E7%9A%84%E7%A0%94%E7%A9%B6%E7%8E%B0%E7%8A%B6%E4%B8%8E%E5%B1%95%E6%9C%9B/" selected="">
+          English
+        </option>
+      
+    </select>
+  </div>
+
+        
+
+<div class="copyright">
+  
+  &copy; 2018 – 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">SindreYang</span>
+</div><!-- 页面点击小红心 -->
+<script type="text/javascript" src="/js/love.js"></script>
+<!-- 背景波浪 -->
+<script color="0,0,255" opacity="0.5" zIndex="-1" count="99" src="https://cdn.jsdelivr.net/npm/canvas-nest.js@1/dist/canvas-nest.js"></script>
+
+
+<!-- 腾讯企业邮箱 -->
+<style>
+.bizmail_loginpanel {
+    font-size: 12px;
+    width: 300px;
+    height: auto;
+    background: transparent;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.bizmail_LoginBox {
+    padding: 10px 15px;
+}
+
+
+.bizmail_loginpanel form {
+    margin: 0;
+    padding: 0;
+}
+
+.bizmail_loginpanel input.text {
+    font-size: 12px;
+    width: 100px;
+    height: 20px;
+    margin: 0 2px;
+    background-color: transparent;
+    border:1px solid transparent;
+    box-shadow: none;
+    color: black;
+}
+
+.bizmail_loginpanel .bizmail_column {
+    height: 28px;
+}
+
+.bizmail_loginpanel .bizmail_column label {
+    display: block;
+    float: left;
+    width: 30px;
+    height: 24px;
+    line-height: 24px;
+    font-size: 12px;
+}
+
+.bizmail_loginpanel .bizmail_column .bizmail_inputArea {
+    float: left;
+    width: 240px;
+}
+
+.bizmail_loginpanel .bizmail_column span {
+    font-size: 12px;
+    word-wrap: break-word;
+    margin-left: 2px;
+    line-height: 200%;
+}
+
+.bizmail_loginpanel .bizmail_SubmitArea {
+    margin-left: 30px;
+    clear: both;
+}
+
+.bizmail_loginpanel .bizmail_SubmitArea a {
+    font-size: 12px;
+    margin-left: 5px;
+}
+
+.bizmail_loginpanel select {
+    width: 110px;
+    height: 20px;
+    margin: 0 2px;
+}
+.bizmail_loginpanel input {
+
+    background-color: rgba(83, 126, 236, 0.562);
+}
+
+
+</style>
+
+<script type="text/javascript">
+function checkInput() {
+    var e = document.form1.uin,
+        i = document.form1.pwd;
+    return 0 == e.value.length ? e.focus() : 0 == i.value.length ? i.focus() : (document.form1.submit(), setTimeout(" document.form1.pwd.value = '' ", 500)), !1
+}
+
+function writeLoginPanel(e) {
+    if (e && e.domainlist && -1 != e.domainlist.indexOf(".")) {
+        var a = "return checkInput()",
+            t = '<div id="divLoginpanelHor" class="bizmail_loginpanel" style="width:550px;"><div class="bizmail_LoginBox"><form name="form1" action="https://exmail.qq.com/cgi-bin/login" target="_blank" method="post" onsubmit="' + a + '"><input type="hidden" name="firstlogin" value="false" /><input type="hidden" name="errtemplate" value="dm_loginpage" /><input type="hidden" name="aliastype" value="other" /><input type="hidden" name="dmtype" value="bizmail" /><input type="hidden" name="p" value="" /><label>\u8d26\u53f7:</label><input type="text" name="uin" class="text" value="" />@#domainlist#<label>&nbsp&nbsp&nbsp;\u5bc6\u7801:</label><input type="password" name="pwd" class="text" value="" /><input type="submit" class="" name="" value="\u767b\u5f55" />&nbsp;<a href="https://exmail.qq.com/cgi-bin/readtemplate?check=false&t=biz_rf_portal#recovery" target="_blank">\u5fd8\u8bb0\u5bc6\u7801\uff1f</a></form></div></div>',
+            n = '<div id="divLoginpanelVer" class="bizmail_loginpanel"><div class="bizmail_LoginBox"><form name="form1" action="https://exmail.qq.com/cgi-bin/login" target="_blank" method="post" onsubmit="' + a + '"><input type="hidden" name="firstlogin" value="false" /><input type="hidden" name="errtemplate" value="dm_loginpage" /><input type="hidden" name="aliastype" value="other" /><input type="hidden" name="dmtype" value="bizmail" /><input type="hidden" name="p" value="" /><div class="bizmail_column"><label>\u8d26\u53f7:</label><div class="bizmail_inputArea"><input type="text" name="uin" class="text" value="" />@#domainlist#</div></div><div class="bizmail_column"><label>\u5bc6\u7801:</label><div class="bizmail_inputArea"><input type="password" name="pwd" class="text" value="" /></div></div><div class="bizmail_SubmitArea"><input type="submit" class="" name="" style="width:66px;" value="\u767b\u5f55" /><a href="https://exmail.qq.com/cgi-bin/readtemplate?check=false&t=biz_rf_portal#recovery" target="_blank">\u5fd8\u8bb0\u5bc6\u7801\uff1f</a></div></form></div></div>',
+            l = e.domainlist.split(";");
+        if (1 == l.length) var m = '<span>#domain#</span><input type="hidden" name="domain" value="#domain#" />'.replace(/#domain#/g, l[0]);
+        else {
+            m = '<select name="domain">';
+            for (i = 0; i < l.length; i++) m += '<option value="' + l[i] + '">' + l[i] + "</option>";
+            m += "</select>"
+        }
+        e.mode && "vertical" != e.mode && "both" != e.mode || document.write(n.replace(/#domainlist#/g, m)), "horizontal" != e.mode && "both" != e.mode || document.write(t.replace(/#domainlist#/g, m))
+    }
+}
+
+</script>      
+
+<script type="text/javascript"> writeLoginPanel({domainlist:"mviai.com", mode:"horizontal"});</script>      
+
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script size="300" alpha="0.6" zIndex="-1" src="/lib/canvas-ribbon/canvas-ribbon.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/medium-zoom@1/dist/medium-zoom.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+  <script defer src="/lib/three/three.min.js"></script>
+    <script defer src="/lib/three/three-waves.min.js"></script>
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+<script>
+document.querySelectorAll('.pdfobject-container').forEach(element => {
+  let url = element.dataset.target;
+  let pdfOpenParams = {
+    navpanes : 0,
+    toolbar  : 0,
+    statusbar: 0,
+    pagemode : 'thumbs',
+    view     : 'FitH'
+  };
+  let pdfOpenFragment = '#' + Object.entries(pdfOpenParams).map(([key, value]) => `${key}=${encodeURIComponent(value)}`).join('&');
+  let fullURL = `/lib/pdf/web/viewer.html?file=${encodeURIComponent(url)}${pdfOpenFragment}`;
+
+  if (NexT.utils.supportsPDFs()) {
+    element.innerHTML = `<embed class="pdfobject" src="${url + pdfOpenFragment}" type="application/pdf" style="height: ${element.dataset.height};">`;
+  } else {
+    element.innerHTML = `<iframe src="${fullURL}" style="height: ${element.dataset.height};" frameborder="0"></iframe>`;
+  }
+});
+</script>
+
+
+
+
+  
+
+  
+
+  <script>
+  NexT.utils.loadComments(document.querySelector('#SOHUCS'), () => {
+    var appid = 'cyxmItxjS';
+    var conf = 'e5e71132d9086bb54aeeba6e88e87df9';
+    var width = window.innerWidth || document.documentElement.clientWidth;
+    if (width < 960) {
+      window.document.write('<script id="changyan_mobile_js" charset="utf-8" type="text/javascript" src="https://cy-cdn.kuaizhan.com/upload/mobile/wap-js/changyan_mobile.js?client_id=' + appid + '&conf=' + conf + '"><\/script>');
+    } else {
+      var loadJs=function(d,a){var c=document.getElementsByTagName("head")[0]||document.head||document.documentElement;var b=document.createElement("script");b.setAttribute("type","text/javascript");b.setAttribute("charset","UTF-8");b.setAttribute("src",d);if(typeof a==="function"){if(window.attachEvent){b.onreadystatechange=function(){var e=b.readyState;if(e==="loaded"||e==="complete"){b.onreadystatechange=null;a()}}}else{b.onload=a}}c.appendChild(b)};loadJs("https://changyan.sohu.com/upload/changyan.js",function(){window.changyan.api.config({appid:appid,conf:conf})});
+    }
+  });
+  </script>
+  <script src="https://cy-cdn.kuaizhan.com/upload/plugins/plugins.count.js"></script>
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/z16.model.json"},"display":{"position":"left","width":75,"height":150},"mobile":{"show":true},"log":false});</script></body>
+</html>
+
+
+
+

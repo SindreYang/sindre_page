@@ -1,0 +1,745 @@
+<!DOCTYPE html>
+<html lang="zh-CN,en,default">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" href="/lib/pace/pace-theme-minimal.min.css">
+  <script src="/lib/pace/pace.min.js"></script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"blog.mviai.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":true,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":true,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="自动摘要: 		摘要：	三维牙齿分割是数字正畸学的一项重要任务。已经提出了几种深度学习方法用于从三维牙科模型或口内扫描中自动分割牙齿。这些方法需要注释的3D口内扫描。手动注释3D口内扫描是一项艰巨的任务。 ……..">
+<meta property="og:type" content="article">
+<meta property="og:title" content="使用深度学习从3D牙科模型中自动分割牙齿_从单个3D牙科模型可以学习到什么的定量分析">
+<meta property="og:url" content="http://blog.mviai.com/2025/%E4%BD%BF%E7%94%A8%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E4%BB%8E3D%E7%89%99%E7%A7%91%E6%A8%A1%E5%9E%8B%E4%B8%AD%E8%87%AA%E5%8A%A8%E5%88%86%E5%89%B2%E7%89%99%E9%BD%BF_%E4%BB%8E%E5%8D%95%E4%B8%AA3D%E7%89%99%E7%A7%91%E6%A8%A1%E5%9E%8B%E5%8F%AF%E4%BB%A5%E5%AD%A6%E4%B9%A0%E5%88%B0%E4%BB%80%E4%B9%88%E7%9A%84%E5%AE%9A%E9%87%8F%E5%88%86%E6%9E%90/index.html">
+<meta property="og:site_name" content="落叶无痕">
+<meta property="og:description" content="自动摘要: 		摘要：	三维牙齿分割是数字正畸学的一项重要任务。已经提出了几种深度学习方法用于从三维牙科模型或口内扫描中自动分割牙齿。这些方法需要注释的3D口内扫描。手动注释3D口内扫描是一项艰巨的任务。 ……..">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://blog.mviai.com/images/1670924490803-2d503963-d9ec-40ea-81ff-190004be8485.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1670981243481-4d57ca98-82b2-4f97-be8b-4cf7f29023b5.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1671789287935-081271a9-c443-4368-a7ae-ee7c33a54d5d.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1672020169643-f061d3b2-c271-4115-a0dc-2503e9c87a93.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1672020455281-a88d657c-c391-4a18-ab6a-de4ea302af60.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1672020808614-fed6275e-8f15-4ff8-bf2c-b9cc49c40cfb.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1672020943577-2fd338ad-4148-4185-8b02-3f844cd9222b.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1672021052173-5534d97d-825a-4ffc-a822-90e1ede29222.png">
+<meta property="article:published_time" content="2025-01-22T04:37:39.000Z">
+<meta property="article:modified_time" content="2025-01-22T12:37:39.946Z">
+<meta property="article:author" content="SindreYang">
+<meta property="article:tag" content="生活">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://blog.mviai.com/images/1670924490803-2d503963-d9ec-40ea-81ff-190004be8485.png">
+
+<link rel="canonical" href="http://blog.mviai.com/2025/%E4%BD%BF%E7%94%A8%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E4%BB%8E3D%E7%89%99%E7%A7%91%E6%A8%A1%E5%9E%8B%E4%B8%AD%E8%87%AA%E5%8A%A8%E5%88%86%E5%89%B2%E7%89%99%E9%BD%BF_%E4%BB%8E%E5%8D%95%E4%B8%AA3D%E7%89%99%E7%A7%91%E6%A8%A1%E5%9E%8B%E5%8F%AF%E4%BB%A5%E5%AD%A6%E4%B9%A0%E5%88%B0%E4%BB%80%E4%B9%88%E7%9A%84%E5%AE%9A%E9%87%8F%E5%88%86%E6%9E%90/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>使用深度学习从3D牙科模型中自动分割牙齿_从单个3D牙科模型可以学习到什么的定量分析 | 落叶无痕</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">落叶无痕</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类<span class="badge">72</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档<span class="badge">321</span></a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+  <span class="exturl github-corner" data-url="aHR0cHM6Ly9naXRodWIuY29tL1NpbmRyZVlhbmc=" title="Follow me on GitHub" aria-label="Follow me on GitHub"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></span>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://blog.mviai.com/2025/%E4%BD%BF%E7%94%A8%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E4%BB%8E3D%E7%89%99%E7%A7%91%E6%A8%A1%E5%9E%8B%E4%B8%AD%E8%87%AA%E5%8A%A8%E5%88%86%E5%89%B2%E7%89%99%E9%BD%BF_%E4%BB%8E%E5%8D%95%E4%B8%AA3D%E7%89%99%E7%A7%91%E6%A8%A1%E5%9E%8B%E5%8F%AF%E4%BB%A5%E5%AD%A6%E4%B9%A0%E5%88%B0%E4%BB%80%E4%B9%88%E7%9A%84%E5%AE%9A%E9%87%8F%E5%88%86%E6%9E%90/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="SindreYang">
+      <meta itemprop="description" content="沉淀后我愿意做一个温暖的人。有自己的喜好，有自己的原则，有自己的信仰，不急功近利，不浮夸轻薄，宠辱不惊，淡定安逸，心静如水。------不忘初心，方得始终">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="落叶无痕">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          使用深度学习从3D牙科模型中自动分割牙齿_从单个3D牙科模型可以学习到什么的定量分析
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2025-01-22 12:37:39 / 修改时间：20:37:39" itemprop="dateCreated datePublished" datetime="2025-01-22T12:37:39+08:00">2025-01-22</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E7%82%B9%E4%BA%91%E7%B3%BB%E5%88%97/" itemprop="url" rel="index"><span itemprop="name">点云系列</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">Changyan：</span>
+    
+    
+      <a title="changyan" href="/2025/%E4%BD%BF%E7%94%A8%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E4%BB%8E3D%E7%89%99%E7%A7%91%E6%A8%A1%E5%9E%8B%E4%B8%AD%E8%87%AA%E5%8A%A8%E5%88%86%E5%89%B2%E7%89%99%E9%BD%BF_%E4%BB%8E%E5%8D%95%E4%B8%AA3D%E7%89%99%E7%A7%91%E6%A8%A1%E5%9E%8B%E5%8F%AF%E4%BB%A5%E5%AD%A6%E4%B9%A0%E5%88%B0%E4%BB%80%E4%B9%88%E7%9A%84%E5%AE%9A%E9%87%8F%E5%88%86%E6%9E%90/#SOHUCS" itemprop="discussionUrl">
+        <span id="changyan_count_unit" class="post-comments-count hc-comment-count" data-xid="2025/使用深度学习从3D牙科模型中自动分割牙齿_从单个3D牙科模型可以学习到什么的定量分析/" itemprop="commentCount"></span>
+      </a>
+    
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>自动摘要: 		摘要：	三维牙齿分割是数字正畸学的一项重要任务。已经提出了几种深度学习方法用于从三维牙科模型或口内扫描中自动分割牙齿。这些方法需要注释的3D口内扫描。手动注释3D口内扫描是一项艰巨的任务。 ……..</p>
+<span id="more"></span>
+
+
+<h1 id="摘要："><a href="#摘要：" class="headerlink" title="摘要："></a>摘要：</h1><p>三维牙齿分割是数字正畸学的一项重要任务。已经提出了几种深度学习方法用于从三维牙科模型或口内扫描中自动分割牙齿。这些方法需要注释的3D 口内扫描。手动注释3D 口内扫描是一项艰巨的任务。一种方法是设计自我监督的方法，以减少人工标签的努力。与场景点云、形状点云等其他类型的点云数据相比，三维齿点云数据具有非常规则的结构和较强的形状优先性。我们看看有多少代表性的信息可以从一个单一的三维口腔内扫描学习。我们采用十种不同的方法对其进行定量评价，其中六种是通用的点云分割方法，另外四种是特定的牙齿分割方法。令人惊讶的是，我们发现，通过单个3D 口腔内扫描训练，Dice 得分可以高达0.86，而完整的训练集给出的 Dice 得分为0.94。结果表明，在适当的条件下，如数据增强，分割方法可以从单个三维齿点云扫描中获得大量的信息。我们是第一个从一个单一的三维口腔扫描定量评估和证明深度学习方法的表征学习能力。这可以通过尽可能充分地利用现有数据，在极端数据限制情况下建立牙齿分割的自我监督方法。      <img src="/images/1670924490803-2d503963-d9ec-40ea-81ff-190004be8485.png"><br>图1.  单扫描表征学习: 我们表明，几种深度学习方法可以训练(a)使用一个单一的三维口内扫描，如此图像(b)在适当的条件下。</p>
+<h1 id="关键词"><a href="#关键词" class="headerlink" title="关键词:"></a>关键词:</h1><p>三维牙齿分割，牙齿点云，牙齿网格，口内扫描分割，三维牙齿模型，深度学习，机器学习，单一图像学习</p>
+<h1 id="1-前言"><a href="#1-前言" class="headerlink" title="1. 前言"></a>1. 前言</h1><p>口腔内扫描仪(IOS)由于其快速重建三维表面的能力，正日益成为数字牙科不可或缺的一部分。这些相机被广泛用于代替传统的口腔内或牙科相机。虽然使用牙科相机拍摄每颗牙齿的照片可能需要几个小时，但口内扫描仪可以在几分钟内完成扫描。这些三维口腔内扫描或三维牙科模型可以捕捉三维形态，拓扑和颜色信息的形式点云或网格。口腔三维扫描可以辅助牙齿矫正设计、修复设计、微笑美容等。自动三维齿点云分割是所有这些步骤中的关键一步。</p>
+<p>近年来，基于多种深度学习的方法被提出用于口腔三维扫描中的牙齿自动分割。我们注意到，这些方法1-9中的大多数都是完全监督的，只有少数是弱监督或半监督的。提出了一种利用点网络相似网络从齿点云中学习全局信息，利用不同尺度的邻接矩阵学习局部信息的网格网络。张等人。提出了一种利用并行网络分别学习坐标和法线信息的方法。等等。Al10提出了一种方法，该方法利用下颌上的牙齿具有对称结构的事实，并在连接牙齿质心的曲线之前强加一个形状。这些方法使用带注释的3D 口内扫描(从802到400010)进行训练。手动注释3D 口内扫描是一个乏味的过程。此外，近年来自我监督方法在机器学习领域得到了越来越多的关注。自我监督技术有了很大的进步。在自我监督中，借口任务是自动构建的，不需要任何手动注释的数据，这使网络能够学习有用的功能，并利用这些知识在下游任务产生令人印象深刻的结果，即使有限的数据。尽管自然图像中的自我监控有很大的好处，而且三维点云如场景点云、形状点云等也有很大的好处，但是在口内扫描的三维牙齿分割中缺乏自我监控的方法。自我监督允许我们从有限的数据中学习。正是在这种情况下，我们调查的代表性权力的单一口腔内扫描。这是一个很重要的问题，因为不同于自然图像更加多样化，牙齿扫描有非常强大的形状和大小之前-例如，通常下颌有对称排列的牙齿和牙齿有相对的大小约束，例如一个臼齿可能不会比门牙体积小，有两个例子的牙齿在两侧的下颌等。知道我们可以在监督下从一个单一的口腔内扫描中提取多少信息来进行3D 牙齿分割可以作为自我监督的基线，也就是说，网络将能够通过自我监督学到最小限度的信息。</p>
+<p>我们包括十种不同的方法来评估单次口内扫描的代表性能力。我们精心挑选了通用的点云分割方法和齿点云分割方法。此选择背后的基本原理是确保分析可以在不同方法之间推广。我们选择一般分割方法的原因是，虽然技术上，牙点云分割方法也操作点云，牙点云与场景点云几乎没有什么不同，因为大多数牙点云分割方法实际上操作牙齿网格数据，但它表示为点云数据，我们将在后面的2.1节中看到。我们的工作组织如下: 首先描述了数据集，其预处理，数据增强方法，然后介绍和概述了不同的通用和齿特异点云分割方法。接下来，我们提供了我们进行的实验和结果的细节。最后，我们对研究结果及其相关性进行了简要的讨论。</p>
+<h1 id="2-方法"><a href="#2-方法" class="headerlink" title="2. 方法"></a>2. 方法</h1><h2 id="2-1-数据处理"><a href="#2-1-数据处理" class="headerlink" title="2.1 数据处理"></a>2.1 数据处理</h2><p>我们有一个由50个实验对象组成的私人数据库。该数据集包括受试者下颌的3D 口内扫描。原始的口内扫描包括超过100000个网格。我们使用二次下采样的方法将网格下采样到16000个网格，以便保留原始口内扫描的拓扑结构。在下采样之后，每个网格单元用24维向量描述，其中坐标为12维，法线为剩余的12维。坐标由三角形网格的三个顶点和网格的重心组成，而法线对应于四个坐标点上的法线。所有3D 牙科模型或口腔内扫描的地面真相注释(autodesk MeshMixer)是根据临床要求并在我们的合作伙伴组织的专业牙医的建议下完成的。注释的3D 口腔内扫描的示例如图1所示。每次扫描最多有14颗牙齿(牙齿计数分布如表1所示)</p>
+<p>表1. 跨数据分割的牙齿计数分布<img src="/images/1670981243481-4d57ca98-82b2-4f97-be8b-4cf7f29023b5.png"></p>
+<h2 id="2-2-数据增强"><a href="#2-2-数据增强" class="headerlink" title="2.2 数据增强"></a>2.2 数据增强</h2><p>为了提高模型的泛化能力，通过组合1)随机旋转，2)随机平移和3)在合理范围内对每个3D 牙齿表面进行随机重新缩放(例如放大&#x2F;缩小)来增加数据的训练集和验证集。具体而言，沿着3D 空间中的三个轴中的每一个，训练&#x2F;验证表面具有50% 的移位和缩放概率，分别在 [ -10, 10] 和 [0.8, 1.2] 之间均匀采样。此外，每个训练&#x2F;验证表面有50% 的概率是 x 轴和 y 轴和 z 轴旋转，角度均匀采样在[ -π，π ]之间。这些随机操作的组合模拟了来自每个原始表面的40个“新”病例。</p>
+<h2 id="2-3-分割方法"><a href="#2-3-分割方法" class="headerlink" title="2.3 分割方法"></a>2.3 分割方法</h2><h3 id="2-3-1-一般点云分割方法"><a href="#2-3-1-一般点云分割方法" class="headerlink" title="2.3.1 一般点云分割方法"></a>2.3.1 一般点云分割方法</h3><p>在本节中，我们将研究一般的点云分割方法。我们所说的“一般”是指分割方法与场景点云、激光雷达点云或形状点云等点云数据的类型无关。</p>
+<p>PointNet11 - 它是一个高效的基于深度学习的网络架构，用于点云处理任务，如对象分类、部分分割、场景语义解析等。PointNet 体系结构很好地理解了点云的全局特性。</p>
+<p>PointNet + +12 - Qi 等人引入了与 PointNet 体系结构一起的分层特征学习，从而能够更好地理解点云中的局部邻域。</p>
+<p>DGCNN13 - 这项工作介绍了一种网络架构，用于从点云捕获拓扑信息。由于点云本质上是一组无序的点集，它们缺乏拓扑信息。DGCNN 提出了一种称为 EdgeConv 的网络模块，该模块可以应用于网络不同层次的动态计算图。EdgeConv 还捕获当地的邻里信息。</p>
+<p>PointMLP14 - Ma等人结果表明，点云的纯剩余网络结构可以在不降低网络速度的情况下实现高度竞争性的性能，而且具有昂贵和复杂的局部几何提取器&#x2F;分析器。</p>
+<p>PCT15 - 遵循变压器架构在自然语言处理和自然图像处理方面的巨大成功，Guo 等人提出了一种用于点云处理的变压器网络。该算法精心设计了一个输入网络，采用了最远点采样和最近邻搜索，使网络既受益于点云的局部结构，又受益于点云的全局结构。</p>
+<p>BAAFNet16 - Qiu等人。提出了一种网络体系结构，通过结合几何和语义特征的双边方式提取局部上下文细节。它们还处理点云的不同分辨率，从而减少了模糊性，并全面解释了点云每个点的不同之处。</p>
+<h3 id="2-3-2-牙齿点云分割方法"><a href="#2-3-2-牙齿点云分割方法" class="headerlink" title="2.3.2 牙齿点云分割方法"></a>2.3.2 牙齿点云分割方法</h3><p>在这一部分中，我们将看一看专门为牙齿分割而设计的方法。我们还将说明这些方法是如何受到一般点云分割方法的影响。</p>
+<p>MeshSegNet1 - Lien 等人提出了一种新的网络结构，其中图形约束的学习模块以分层方式提取多尺度上下文特征，然后密集同化局部到全局的几何特征为一个全面的角色塑造的牙齿网格细胞的分割任务。这个网络大量借鉴了 pointnet 体系结构，但在理解局部几何学时使用了邻接矩阵。</p>
+<p>GAC3 - Zhao 等人提出了一种网络体系结构，该体系结构使用两个分支来提取细粒度的局部信息和全局信息。全局特性分支在概念上类似于 PointNet 体系结构。本地信息提取器分支引入了一个名为 LSAM 的模块。该模块从 DGCNN 体系结构中借鉴了 EdgeConv 的概念，它学习动态计算图的边权重，同时通过使用位置和语义特征进行局部上下文学习。图注意机制用于总结从动态图中获得的信息。</p>
+<p>TSGCNet2 - Zhang 等人提出了一个两流网络，其中两个独立的流专门用于理解坐标和点法线。该方法与 GAC 方法有一个共同点，都是利用图注意层来总结图的权重信息。但是它区分了不同类型的信息，比如坐标和法线，最初应该单独处理，以充分利用它们来表征网格单元。</p>
+<p>MBESegNet4 - Li 等人提出了一种能够处理分层和多尺度信息的网络。与 BAAFNet16 中的概念相似，这种方法也用几何和语义信息来双向增强局部特征。</p>
+<h1 id="3-实验"><a href="#3-实验" class="headerlink" title="3. 实验"></a>3. 实验</h1><p>任务是从3D 牙齿模型中分割牙齿，C &#x3D; 8个不同的语义部分，表示中切牙(T7) ，侧切牙(T6) ，犬齿&#x2F;尖牙(T5) ，第一前磨牙(T4) ，第二前磨牙(T3) ，第一磨牙(T2) ，第二磨牙(T1)和背景&#x2F;牙龈(BG)。所有的实验都是在监督下进行的。</p>
+<h2 id="3-1-实验设置-1（所有扫描）"><a href="#3-1-实验设置-1（所有扫描）" class="headerlink" title="3.1 实验设置 1（所有扫描）"></a>3.1 实验设置 1（所有扫描）</h2><p>对于这个实验，我们使用 32:8:10 的 train-test-val 分割来划分数据集。利用前面描述的数据增强方法对训练集和验证集进行了增强。所有的十种分割方法都是在这个完整的数据集上以完全监督的方式进行训练的。我们的数据集包括牙齿缺失、错位、断牙等情况。</p>
+<h2 id="3-2-实验设置-2（单次扫描）"><a href="#3-2-实验设置-2（单次扫描）" class="headerlink" title="3.2 实验设置 2（单次扫描）"></a>3.2 实验设置 2（单次扫描）</h2><p>在这种情况下，我们只使用一个数据点或口内扫描的32个受试者在实验设置1的训练集进行训练。测试和验证集与实验设置1相同。在实验设置1中，增加了训练集和验证集。已经选择的口内扫描上有14颗牙齿。</p>
+<h2 id="3-3-实验设置3（单扫描-w-o-增强）"><a href="#3-3-实验设置3（单扫描-w-o-增强）" class="headerlink" title="3.3 实验设置3（单扫描 w&#x2F;o 增强）"></a>3.3 实验设置3（单扫描 w&#x2F;o 增强）</h2><p>这类似于实验设置2，但是没有使用数据增强。在这种情况下，相同的样本被重复多次以匹配培训的批量大小。</p>
+<h2 id="3-4-指标"><a href="#3-4-指标" class="headerlink" title="3.4 指标"></a>3.4 指标</h2><p>我们使用四种不同的指标来衡量牙齿分割方法的性能。这些指标是整体准确度(OA) ，骰子评分(DSC) ，灵敏度(SEN)和正预测值(PPV)。对于所有的指标，我们采用所有类的平均值。</p>
+<h2 id="3-5-训练结果"><a href="#3-5-训练结果" class="headerlink" title="3.5 训练结果"></a>3.5 训练结果</h2><p>实验已经进行了400个纪元，选择了最佳验证模型。所有的模型都已经在 RTX 8000系统上进行了训练。</p>
+<p><img src="/images/1671789287935-081271a9-c443-4368-a7ae-ee7c33a54d5d.png"><br>表2. 牙齿分割的结果，从这10种不同的方法在整体准确度和Dice评分。每个实验设置下的最佳结果以粗体列出。</p>
+<h1 id="4-实验结果"><a href="#4-实验结果" class="headerlink" title="4. 实验结果"></a>4. 实验结果</h1><p>我们的实验结果列在表2和表3中。表2显示了在前面描述的三种不同的实验设置(全扫描、单扫描和单扫描增强)下，所有类别标签的不同方法的平均 Dice 评分、灵敏度和阳性预测值的整体准确度。图1(a)显示了不同设置下不同方法的 Dice 得分比较</p>
+<p><img src="/images/1672020169643-f061d3b2-c271-4115-a0dc-2503e9c87a93.png"><br>图2. DGCNN 牙齿标记方法在全扫描、单扫描和单扫描增强训练中的定性比较</p>
+<p><img src="/images/1672020455281-a88d657c-c391-4a18-ab6a-de4ea302af60.png"><br>表3. 对十种方法进行了分割。所有扫描、 SS (单次扫描)和 SSNA (单次扫描增强)分别表示实验设置1、2和3</p>
+<p><img src="/images/1672020808614-fed6275e-8f15-4ff8-bf2c-b9cc49c40cfb.png"><br>图3. 通过单次扫描训练的不同方法进行牙齿标记的比较</p>
+<p><img src="/images/1672020943577-2fd338ad-4148-4185-8b02-3f844cd9222b.png"><br>图4. 通过单次扫描训练的不同方法进行牙齿标记的比较</p>
+<p><img src="/images/1672021052173-5534d97d-825a-4ffc-a822-90e1ede29222.png"><br>图5. 通过单次扫描训练的不同方法获得的牙向 Dice 评分</p>
+<p>表3和图5显示了10种不同方法在不同类别标签上的性能比较。通过单次扫描训练的不同方法进行牙齿标记的定性结果如图3和图4所示。对于 MeshSegNet1，我们包含了两个不同的结果-一个带有图切割后处理(gco) ，另一个没有后处理。我们观察到图割后处理作为一个可插入的模块可以驱动 Dice 得分更高，但是代价是额外的计算能力。在实验中我们还注意到了数据增强的效果。表3和图5显示了10种不同方法在不同类别标签上的性能比较。通过单次扫描训练的不同方法进行牙齿标记的定性结果如图3和图4所示。对于 MeshSegNet1，我们包含了两个不同的结果-一个带有图切割后处理(gco) ，另一个没有后处理。我们观察到图割后处理作为一个可插入的模块可以驱动 Dice 得分更高，但是代价是额外的计算能力。在实验中我们还注意到了数据增强的效果。除 BAAFNet 和 MBESegNet 方法外，其余方法均通过数据增强得到改进。这种异常可能归因于这样一个事实，即牙齿网格被视为齿点云，其中三个顶点的坐标被视为特征，从牙齿网格三角形中心预测这些可能是具有挑战性的。值得注意的是，即使不使用任何后处理，如图形切割(MeshSegNet) ，方法，如 DGCNN，PointNet，MeshSegNet 和 PointMLP 达到0.77骰子得分。数据增强似乎混淆了 BAAFNet 和 MBESegNet 网络。需要指出的是，在提交这项工作时，TSGCNet、 GAC 和 MBESegNet 的实现尚未公开，因此我们实施了这些方法。有趣的是，当不使用数据增强时，PointNet 在单次扫描学习方面表现最差。它根本不会学到任何信息。图2显示了在不同的实验设置下通过 DGCNN 方法进行的口内扫描标记的样本。样本的门牙标签分配到磨牙。这可能是由于缺乏随机旋转数据增强，DGCNN 的学习是基于输入单扫描的方向，它已被训练。PCT 方法只在坐标上而不是法线上进行训练，但是在单次扫描设置中成功地获得了良好的性能。BAAFNet 的单次扫描训练提出了一个有趣的例子，即错误标记的细胞不局限于一个区域。相反，他们是分散的。这可能是由于 BAAFNet 从牙齿网格的原始分辨率创建了多个分辨率，但是与网格单元相关的三角形顶点(和法线)不会改变以适应下采样。</p>
+<h1 id="5-论述"><a href="#5-论述" class="headerlink" title="5. 论述"></a>5. 论述</h1><p>我们的工作量化地建立了从一个单一的三维口腔内扫描中可以学习到大量信息的可能性。这可以作为在极其有限的数据注释场景下设计自我监督方法的起点。此外，研究结果也提出了一些有趣的问题。我们知道基于深度学习的方法依赖于大量的数据，一般的理解是数据越多，结果越好。但是目前的结果迫使我们在牙齿分割的背景下思考: 我们真的需要那么多的数据吗？或者仅仅是代表性的口内扫描就足够了。3D 口腔内扫描对牙齿分割的挑战，通常被理解为: 错位的牙齿、缺失的牙齿、破损的牙齿、牙冠等。在这种情况下，如果我们以口内扫描的形式表示每个挑战，模型的性能是否仍然很高？牙齿分割的另一个挑战是，不是所有的受试者都有所有的牙齿，例如，孩子的牙龈上可能有12颗牙齿。这可能会因为将 T1与 T2混淆而导致网络问题。但是如果我们观察一个包含14颗牙齿的口内扫描，理论上，可以从这些扫描中生成12颗牙齿的口内扫描，然后使用形状完成方法进行训练？此外，我们可以很容易地观察到，牙齿分割是在交叉的部分分割和实例分割问题。自然而然地，问题就出现了，为什么不注释一半的口内扫描包含每个牙齿的一个实例，而不是整个？或者我们可以把这个问题转化为更通用的点云领域，通过问，是否有必要注释整个对象，如果它是对称的性质？我们最后说，我们的工作为未来的探索开辟了许多有趣的途径，通过建立定量的结果，什么可以从一个单一的口内扫描学习。</p>
+
+    </div>
+
+    
+    
+    
+        <div class="reward-container">
+  <div></div>
+  <button onclick="var qr = document.getElementById('qr'); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/images/wechatpay.png" alt="SindreYang 微信支付">
+        <p>微信支付</p>
+      </div>
+      
+      <div style="display: inline-block;">
+        <img src="/images/alipay.png" alt="SindreYang 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>SindreYang
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://blog.mviai.com/2025/%E4%BD%BF%E7%94%A8%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E4%BB%8E3D%E7%89%99%E7%A7%91%E6%A8%A1%E5%9E%8B%E4%B8%AD%E8%87%AA%E5%8A%A8%E5%88%86%E5%89%B2%E7%89%99%E9%BD%BF_%E4%BB%8E%E5%8D%95%E4%B8%AA3D%E7%89%99%E7%A7%91%E6%A8%A1%E5%9E%8B%E5%8F%AF%E4%BB%A5%E5%AD%A6%E4%B9%A0%E5%88%B0%E4%BB%80%E4%B9%88%E7%9A%84%E5%AE%9A%E9%87%8F%E5%88%86%E6%9E%90/" title="使用深度学习从3D牙科模型中自动分割牙齿_从单个3D牙科模型可以学习到什么的定量分析">http://blog.mviai.com/2025/使用深度学习从3D牙科模型中自动分割牙齿_从单个3D牙科模型可以学习到什么的定量分析/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <span class="exturl" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC9kZWVkLnpo"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</span> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+        
+
+  <div class="followme">
+    <p>欢迎关注我的其它发布渠道</p>
+
+    <div class="social-list">
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="/images/wechat.png">
+            <span class="icon">
+              <i class="fa fa-wechat"></i>
+            </span>
+
+            <span class="label">WeChat</span>
+          </a>
+        </div>
+    </div>
+  </div>
+
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2025/%E5%88%A9%E7%94%A8opencv%E6%B5%8B%E8%AF%95c++%E4%B8%8Epython%E6%95%B0%E6%8D%AE%E6%98%AF%E5%90%A6%E4%B8%80%E8%87%B4/" rel="prev" title="利用opencv测试c++与python数据是否一致">
+      <i class="fa fa-chevron-left"></i> 利用opencv测试c++与python数据是否一致
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2025/%E4%BD%BF%E7%94%A8python_package%EF%BC%88%E5%8F%AF%E5%B5%8C%E5%85%A5%E7%9A%84%E5%8C%85%EF%BC%8C%E5%8E%8B%E7%BC%A9%E7%89%88%EF%BC%89%E6%90%AD%E5%BB%BApython%E7%8E%AF%E5%A2%83/" rel="next" title="使用python_package（可嵌入的包，压缩版）搭建python环境">
+      使用python_package（可嵌入的包，压缩版）搭建python环境 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    
+  <div class="comments">
+    <div id="SOHUCS"></div>
+  </div>
+  
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%91%98%E8%A6%81%EF%BC%9A"><span class="nav-number">1.</span> <span class="nav-text">摘要：</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%85%B3%E9%94%AE%E8%AF%8D"><span class="nav-number">2.</span> <span class="nav-text">关键词:</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#1-%E5%89%8D%E8%A8%80"><span class="nav-number">3.</span> <span class="nav-text">1. 前言</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-%E6%96%B9%E6%B3%95"><span class="nav-number">4.</span> <span class="nav-text">2. 方法</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#2-1-%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86"><span class="nav-number">4.1.</span> <span class="nav-text">2.1 数据处理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-2-%E6%95%B0%E6%8D%AE%E5%A2%9E%E5%BC%BA"><span class="nav-number">4.2.</span> <span class="nav-text">2.2 数据增强</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-3-%E5%88%86%E5%89%B2%E6%96%B9%E6%B3%95"><span class="nav-number">4.3.</span> <span class="nav-text">2.3 分割方法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3-1-%E4%B8%80%E8%88%AC%E7%82%B9%E4%BA%91%E5%88%86%E5%89%B2%E6%96%B9%E6%B3%95"><span class="nav-number">4.3.1.</span> <span class="nav-text">2.3.1 一般点云分割方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3-2-%E7%89%99%E9%BD%BF%E7%82%B9%E4%BA%91%E5%88%86%E5%89%B2%E6%96%B9%E6%B3%95"><span class="nav-number">4.3.2.</span> <span class="nav-text">2.3.2 牙齿点云分割方法</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-%E5%AE%9E%E9%AA%8C"><span class="nav-number">5.</span> <span class="nav-text">3. 实验</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#3-1-%E5%AE%9E%E9%AA%8C%E8%AE%BE%E7%BD%AE-1%EF%BC%88%E6%89%80%E6%9C%89%E6%89%AB%E6%8F%8F%EF%BC%89"><span class="nav-number">5.1.</span> <span class="nav-text">3.1 实验设置 1（所有扫描）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-2-%E5%AE%9E%E9%AA%8C%E8%AE%BE%E7%BD%AE-2%EF%BC%88%E5%8D%95%E6%AC%A1%E6%89%AB%E6%8F%8F%EF%BC%89"><span class="nav-number">5.2.</span> <span class="nav-text">3.2 实验设置 2（单次扫描）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-3-%E5%AE%9E%E9%AA%8C%E8%AE%BE%E7%BD%AE3%EF%BC%88%E5%8D%95%E6%89%AB%E6%8F%8F-w-o-%E5%A2%9E%E5%BC%BA%EF%BC%89"><span class="nav-number">5.3.</span> <span class="nav-text">3.3 实验设置3（单扫描 w&#x2F;o 增强）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-4-%E6%8C%87%E6%A0%87"><span class="nav-number">5.4.</span> <span class="nav-text">3.4 指标</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-5-%E8%AE%AD%E7%BB%83%E7%BB%93%E6%9E%9C"><span class="nav-number">5.5.</span> <span class="nav-text">3.5 训练结果</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#4-%E5%AE%9E%E9%AA%8C%E7%BB%93%E6%9E%9C"><span class="nav-number">6.</span> <span class="nav-text">4. 实验结果</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#5-%E8%AE%BA%E8%BF%B0"><span class="nav-number">7.</span> <span class="nav-text">5. 论述</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="SindreYang"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">SindreYang</p>
+  <div class="site-description" itemprop="description">沉淀后我愿意做一个温暖的人。有自己的喜好，有自己的原则，有自己的信仰，不急功近利，不浮夸轻薄，宠辱不惊，淡定安逸，心静如水。------不忘初心，方得始终</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">321</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">72</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL1NpbmRyZVlhbmc=" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;SindreYang"><i class="fa fa-fw fa-github"></i>GitHub</span>
+      </span>
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="bWFpbHRvOnl4QG12aWFpLmNvbQ==" title="E-Mail → mailto:yx@mviai.com"><i class="fa fa-fw fa-envelope"></i>E-Mail</span>
+      </span>
+  </div>
+  <div class="cc-license motion-element" itemprop="license">
+    <span class="exturl cc-opacity" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC9kZWVkLnpo"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+  <div class="languages">
+    <label class="lang-select-label">
+      <i class="fa fa-language"></i>
+      <span>简体中文</span>
+      <i class="fa fa-angle-up" aria-hidden="true"></i>
+    </label>
+    <select class="lang-select" data-canonical="">
+      
+        <option value="zh-CN" data-href="/2025/%E4%BD%BF%E7%94%A8%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E4%BB%8E3D%E7%89%99%E7%A7%91%E6%A8%A1%E5%9E%8B%E4%B8%AD%E8%87%AA%E5%8A%A8%E5%88%86%E5%89%B2%E7%89%99%E9%BD%BF_%E4%BB%8E%E5%8D%95%E4%B8%AA3D%E7%89%99%E7%A7%91%E6%A8%A1%E5%9E%8B%E5%8F%AF%E4%BB%A5%E5%AD%A6%E4%B9%A0%E5%88%B0%E4%BB%80%E4%B9%88%E7%9A%84%E5%AE%9A%E9%87%8F%E5%88%86%E6%9E%90/" selected="">
+          简体中文
+        </option>
+      
+        <option value="en" data-href="/en/2025/%E4%BD%BF%E7%94%A8%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E4%BB%8E3D%E7%89%99%E7%A7%91%E6%A8%A1%E5%9E%8B%E4%B8%AD%E8%87%AA%E5%8A%A8%E5%88%86%E5%89%B2%E7%89%99%E9%BD%BF_%E4%BB%8E%E5%8D%95%E4%B8%AA3D%E7%89%99%E7%A7%91%E6%A8%A1%E5%9E%8B%E5%8F%AF%E4%BB%A5%E5%AD%A6%E4%B9%A0%E5%88%B0%E4%BB%80%E4%B9%88%E7%9A%84%E5%AE%9A%E9%87%8F%E5%88%86%E6%9E%90/" selected="">
+          English
+        </option>
+      
+    </select>
+  </div>
+
+        
+
+<div class="copyright">
+  
+  &copy; 2018 – 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">SindreYang</span>
+</div><!-- 页面点击小红心 -->
+<script type="text/javascript" src="/js/love.js"></script>
+<!-- 背景波浪 -->
+<script color="0,0,255" opacity="0.5" zIndex="-1" count="99" src="https://cdn.jsdelivr.net/npm/canvas-nest.js@1/dist/canvas-nest.js"></script>
+
+
+<!-- 腾讯企业邮箱 -->
+<style>
+.bizmail_loginpanel {
+    font-size: 12px;
+    width: 300px;
+    height: auto;
+    background: transparent;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.bizmail_LoginBox {
+    padding: 10px 15px;
+}
+
+
+.bizmail_loginpanel form {
+    margin: 0;
+    padding: 0;
+}
+
+.bizmail_loginpanel input.text {
+    font-size: 12px;
+    width: 100px;
+    height: 20px;
+    margin: 0 2px;
+    background-color: transparent;
+    border:1px solid transparent;
+    box-shadow: none;
+    color: black;
+}
+
+.bizmail_loginpanel .bizmail_column {
+    height: 28px;
+}
+
+.bizmail_loginpanel .bizmail_column label {
+    display: block;
+    float: left;
+    width: 30px;
+    height: 24px;
+    line-height: 24px;
+    font-size: 12px;
+}
+
+.bizmail_loginpanel .bizmail_column .bizmail_inputArea {
+    float: left;
+    width: 240px;
+}
+
+.bizmail_loginpanel .bizmail_column span {
+    font-size: 12px;
+    word-wrap: break-word;
+    margin-left: 2px;
+    line-height: 200%;
+}
+
+.bizmail_loginpanel .bizmail_SubmitArea {
+    margin-left: 30px;
+    clear: both;
+}
+
+.bizmail_loginpanel .bizmail_SubmitArea a {
+    font-size: 12px;
+    margin-left: 5px;
+}
+
+.bizmail_loginpanel select {
+    width: 110px;
+    height: 20px;
+    margin: 0 2px;
+}
+.bizmail_loginpanel input {
+
+    background-color: rgba(83, 126, 236, 0.562);
+}
+
+
+</style>
+
+<script type="text/javascript">
+function checkInput() {
+    var e = document.form1.uin,
+        i = document.form1.pwd;
+    return 0 == e.value.length ? e.focus() : 0 == i.value.length ? i.focus() : (document.form1.submit(), setTimeout(" document.form1.pwd.value = '' ", 500)), !1
+}
+
+function writeLoginPanel(e) {
+    if (e && e.domainlist && -1 != e.domainlist.indexOf(".")) {
+        var a = "return checkInput()",
+            t = '<div id="divLoginpanelHor" class="bizmail_loginpanel" style="width:550px;"><div class="bizmail_LoginBox"><form name="form1" action="https://exmail.qq.com/cgi-bin/login" target="_blank" method="post" onsubmit="' + a + '"><input type="hidden" name="firstlogin" value="false" /><input type="hidden" name="errtemplate" value="dm_loginpage" /><input type="hidden" name="aliastype" value="other" /><input type="hidden" name="dmtype" value="bizmail" /><input type="hidden" name="p" value="" /><label>\u8d26\u53f7:</label><input type="text" name="uin" class="text" value="" />@#domainlist#<label>&nbsp&nbsp&nbsp;\u5bc6\u7801:</label><input type="password" name="pwd" class="text" value="" /><input type="submit" class="" name="" value="\u767b\u5f55" />&nbsp;<a href="https://exmail.qq.com/cgi-bin/readtemplate?check=false&t=biz_rf_portal#recovery" target="_blank">\u5fd8\u8bb0\u5bc6\u7801\uff1f</a></form></div></div>',
+            n = '<div id="divLoginpanelVer" class="bizmail_loginpanel"><div class="bizmail_LoginBox"><form name="form1" action="https://exmail.qq.com/cgi-bin/login" target="_blank" method="post" onsubmit="' + a + '"><input type="hidden" name="firstlogin" value="false" /><input type="hidden" name="errtemplate" value="dm_loginpage" /><input type="hidden" name="aliastype" value="other" /><input type="hidden" name="dmtype" value="bizmail" /><input type="hidden" name="p" value="" /><div class="bizmail_column"><label>\u8d26\u53f7:</label><div class="bizmail_inputArea"><input type="text" name="uin" class="text" value="" />@#domainlist#</div></div><div class="bizmail_column"><label>\u5bc6\u7801:</label><div class="bizmail_inputArea"><input type="password" name="pwd" class="text" value="" /></div></div><div class="bizmail_SubmitArea"><input type="submit" class="" name="" style="width:66px;" value="\u767b\u5f55" /><a href="https://exmail.qq.com/cgi-bin/readtemplate?check=false&t=biz_rf_portal#recovery" target="_blank">\u5fd8\u8bb0\u5bc6\u7801\uff1f</a></div></form></div></div>',
+            l = e.domainlist.split(";");
+        if (1 == l.length) var m = '<span>#domain#</span><input type="hidden" name="domain" value="#domain#" />'.replace(/#domain#/g, l[0]);
+        else {
+            m = '<select name="domain">';
+            for (i = 0; i < l.length; i++) m += '<option value="' + l[i] + '">' + l[i] + "</option>";
+            m += "</select>"
+        }
+        e.mode && "vertical" != e.mode && "both" != e.mode || document.write(n.replace(/#domainlist#/g, m)), "horizontal" != e.mode && "both" != e.mode || document.write(t.replace(/#domainlist#/g, m))
+    }
+}
+
+</script>      
+
+<script type="text/javascript"> writeLoginPanel({domainlist:"mviai.com", mode:"horizontal"});</script>      
+
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script size="300" alpha="0.6" zIndex="-1" src="/lib/canvas-ribbon/canvas-ribbon.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/medium-zoom@1/dist/medium-zoom.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+  <script defer src="/lib/three/three.min.js"></script>
+    <script defer src="/lib/three/three-waves.min.js"></script>
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+<script>
+document.querySelectorAll('.pdfobject-container').forEach(element => {
+  let url = element.dataset.target;
+  let pdfOpenParams = {
+    navpanes : 0,
+    toolbar  : 0,
+    statusbar: 0,
+    pagemode : 'thumbs',
+    view     : 'FitH'
+  };
+  let pdfOpenFragment = '#' + Object.entries(pdfOpenParams).map(([key, value]) => `${key}=${encodeURIComponent(value)}`).join('&');
+  let fullURL = `/lib/pdf/web/viewer.html?file=${encodeURIComponent(url)}${pdfOpenFragment}`;
+
+  if (NexT.utils.supportsPDFs()) {
+    element.innerHTML = `<embed class="pdfobject" src="${url + pdfOpenFragment}" type="application/pdf" style="height: ${element.dataset.height};">`;
+  } else {
+    element.innerHTML = `<iframe src="${fullURL}" style="height: ${element.dataset.height};" frameborder="0"></iframe>`;
+  }
+});
+</script>
+
+
+
+
+  
+
+  
+
+  <script>
+  NexT.utils.loadComments(document.querySelector('#SOHUCS'), () => {
+    var appid = 'cyxmItxjS';
+    var conf = 'e5e71132d9086bb54aeeba6e88e87df9';
+    var width = window.innerWidth || document.documentElement.clientWidth;
+    if (width < 960) {
+      window.document.write('<script id="changyan_mobile_js" charset="utf-8" type="text/javascript" src="https://cy-cdn.kuaizhan.com/upload/mobile/wap-js/changyan_mobile.js?client_id=' + appid + '&conf=' + conf + '"><\/script>');
+    } else {
+      var loadJs=function(d,a){var c=document.getElementsByTagName("head")[0]||document.head||document.documentElement;var b=document.createElement("script");b.setAttribute("type","text/javascript");b.setAttribute("charset","UTF-8");b.setAttribute("src",d);if(typeof a==="function"){if(window.attachEvent){b.onreadystatechange=function(){var e=b.readyState;if(e==="loaded"||e==="complete"){b.onreadystatechange=null;a()}}}else{b.onload=a}}c.appendChild(b)};loadJs("https://changyan.sohu.com/upload/changyan.js",function(){window.changyan.api.config({appid:appid,conf:conf})});
+    }
+  });
+  </script>
+  <script src="https://cy-cdn.kuaizhan.com/upload/plugins/plugins.count.js"></script>
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/z16.model.json"},"display":{"position":"left","width":75,"height":150},"mobile":{"show":true},"log":false});</script></body>
+</html>
+
+
+
+

@@ -1,0 +1,1107 @@
+<!DOCTYPE html>
+<html lang="zh-CN,en,default">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" href="/lib/pace/pace-theme-minimal.min.css">
+  <script src="/lib/pace/pace.min.js"></script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"blog.mviai.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":true,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":true,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="自动摘要: 	PCN：点补全网络		PCNPointCompletionNetwork.pdf		YuanW,KhotT, ……..">
+<meta property="og:type" content="article">
+<meta property="og:title" content="论文翻译_PCN-点补全网络">
+<meta property="og:url" content="http://blog.mviai.com/2025/%E8%AE%BA%E6%96%87%E7%BF%BB%E8%AF%91_PCN-%E7%82%B9%E8%A1%A5%E5%85%A8%E7%BD%91%E7%BB%9C/index.html">
+<meta property="og:site_name" content="落叶无痕">
+<meta property="og:description" content="自动摘要: 	PCN：点补全网络		PCNPointCompletionNetwork.pdf		YuanW,KhotT, ……..">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://blog.mviai.com/images/1651809261522-2b1cccdd-1c82-4aa3-9823-5dd3729dd78e.png">
+<meta property="og:image" content="https://g.yuque.com/gr/latex?X#card=math&code=X&id=K0hLY">
+<meta property="og:image" content="https://g.yuque.com/gr/latex?Y#card=math&code=Y&id=dZSDy">
+<meta property="og:image" content="https://g.yuque.com/gr/latex?X#card=math&code=X&id=XTqX3">
+<meta property="og:image" content="https://g.yuque.com/gr/latex?Y#card=math&code=Y&id=mm8Ab">
+<meta property="og:image" content="https://g.yuque.com/gr/latex?X#card=math&code=X&id=ZrRUd">
+<meta property="og:image" content="https://g.yuque.com/gr/latex?Y#card=math&code=Y&id=rdCqm">
+<meta property="og:image" content="https://g.yuque.com/gr/latex?X#card=math&code=X&id=I9a1F">
+<meta property="og:image" content="https://g.yuque.com/gr/latex?Y#card=math&code=Y&id=cXcic">
+<meta property="og:image" content="https://g.yuque.com/gr/latex?X#card=math&code=X&id=gw9jJ">
+<meta property="og:image" content="https://g.yuque.com/gr/latex?Y#card=math&code=Y&id=w8EUb">
+<meta property="og:image" content="https://g.yuque.com/gr/latex?X#card=math&code=X&id=HaQZI">
+<meta property="og:image" content="https://g.yuque.com/gr/latex?Y#card=math&code=Y&id=ihMuF">
+<meta property="og:image" content="https://g.yuque.com/gr/latex?X#card=math&code=X&id=ZDWIv">
+<meta property="og:image" content="https://g.yuque.com/gr/latex?k#card=math&code=k&id=jDhVR">
+<meta property="og:image" content="https://g.yuque.com/gr/latex?k#card=math&code=k&id=Ozj2h">
+<meta property="og:image" content="https://g.yuque.com/gr/latex?Y_%7Bcourse%7D#card=math&code=Y_%7Bcourse%7D&id=v54dO">
+<meta property="og:image" content="https://g.yuque.com/gr/latex?Y_%7Bdetail%7D#card=math&code=Y_%7Bdetail%7D&id=mQohj">
+<meta property="og:image" content="https://g.yuque.com/gr/latex?L#card=math&code=L&id=V0Fed">
+<meta property="og:image" content="https://g.yuque.com/gr/latex?Y_%7Bgt%7D#card=math&code=Y_%7Bgt%7D&id=yOP3B">
+<meta property="og:image" content="http://blog.mviai.com/images/1651809287235-f6b3486b-a42e-4caa-9b6d-afa5a7455677.png">
+<meta property="og:image" content="https://g.yuque.com/gr/latex?X#card=math&code=X&id=c7Erg">
+<meta property="og:image" content="https://g.yuque.com/gr/latex?%5Cmathbf%7Bv%7D#card=math&code=%5Cmathbf%7Bv%7D&id=dGaX5">
+<meta property="og:image" content="https://g.yuque.com/gr/latex?%5Cmathbf%7Bv%7D#card=math&code=%5Cmathbf%7Bv%7D&id=RIjng">
+<meta property="og:image" content="https://g.yuque.com/gr/latex?Y_%7Bcoarse%7D#card=math&code=Y_%7Bcoarse%7D&id=sqjGP">
+<meta property="og:image" content="https://g.yuque.com/gr/latex?Y_%7Bdetail%7D#card=math&code=Y_%7Bdetail%7D&id=l4w69">
+<meta property="og:image" content="https://g.yuque.com/gr/latex?%5Cmathbf%7Bv%7D%5Cin%5Cmathbb%7BR%7D%5Ek,%20k=1024#card=math&code=%5Cmathbf%7Bv%7D%5Cin%5Cmathbb%7BR%7D%5Ek%2C%20k%3D1024&id=zijql">
+<meta property="og:image" content="https://g.yuque.com/gr/latex?m#card=math&code=m&id=mpsTM">
+<meta property="og:image" content="https://g.yuque.com/gr/latex?m%5Ctimes3#card=math&code=m%5Ctimes3&id=VovFM">
+<meta property="og:image" content="https://g.yuque.com/gr/latex?P#card=math&code=P&id=nJc1h">
+<meta property="og:image" content="https://g.yuque.com/gr/latex?%5Cmathbf%7Bp%7D_i=(x,y,z)#card=math&code=%5Cmathbf%7Bp%7D_i%3D%28x%2Cy%2Cz%29&id=UefLq">
+<meta property="og:image" content="https://g.yuque.com/gr/latex?%5Cmathbf%7Bp%7D_i#card=math&code=%5Cmathbf%7Bp%7D_i&id=GCW3C">
+<meta property="og:image" content="https://g.yuque.com/gr/latex?%5Cmathbf%7Bf%7D_i#card=math&code=%5Cmathbf%7Bf%7D_i&id=NOoQE">
+<meta property="og:image" content="https://g.yuque.com/gr/latex?F#card=math&code=F&id=d1E5Q">
+<meta property="og:image" content="https://g.yuque.com/gr/latex?%5Cmathbf%7Bf%7D_i#card=math&code=%5Cmathbf%7Bf%7D_i&id=LW6IL">
+<meta property="og:image" content="https://g.yuque.com/gr/latex?F#card=math&code=F&id=LozSN">
+<meta property="og:image" content="https://g.yuque.com/gr/latex?k#card=math&code=k&id=DPFNq">
+<meta property="og:image" content="https://g.yuque.com/gr/latex?%5Cmathbf%7Bg%7D#card=math&code=%5Cmathbf%7Bg%7D&id=K4ePA">
+<meta property="og:image" content="https://g.yuque.com/gr/latex?%5Cmathbf%7Bg%7D_j=%5Cmax_%7Bi=1,%5Ccdots,m%7D%5C%7BF_%7Bij%7D%5C%7D,j=1,%5Ccdots,k#card=math&code=%5Cmathbf%7Bg%7D_j%3D%5Cmax_%7Bi%3D1%2C%5Ccdots%2Cm%7D%5C%7BF_%7Bij%7D%5C%7D%2Cj%3D1%2C%5Ccdots%2Ck&id=XZYCu">
+<meta property="og:image" content="https://g.yuque.com/gr/latex?F#card=math&code=F&id=rJcEU">
+<meta property="og:image" content="https://g.yuque.com/gr/latex?%5Cmathbf%7Bg%7D#card=math&code=%5Cmathbf%7Bg%7D&id=kvCXU">
+<meta property="og:image" content="https://g.yuque.com/gr/latex?%5Cmathbf%7Bg%7D#card=math&code=%5Cmathbf%7Bg%7D&id=E2FB3">
+<meta property="og:image" content="https://g.yuque.com/gr/latex?%5Cmathbf%7Bf%7D_i#card=math&code=%5Cmathbf%7Bf%7D_i&id=wXWLe">
+<meta property="og:image" content="https://g.yuque.com/gr/latex?%5Ctilde%7BF%7D#card=math&code=%5Ctilde%7BF%7D&id=Zc4oC">
+<meta property="og:image" content="https://g.yuque.com/gr/latex?%5B%5Cmathbf%7Bf%7D_i,%5Cmathbf%7Bg%7D%5D#card=math&code=%5B%5Cmathbf%7Bf%7D_i%2C%5Cmathbf%7Bg%7D%5D&id=dkWl7">
+<meta property="og:image" content="https://g.yuque.com/gr/latex?%5Ctilde%7BF%7D#card=math&code=%5Ctilde%7BF%7D&id=QuaUx">
+<meta property="og:image" content="https://g.yuque.com/gr/latex?%5Cmathbf%7Bv%7D#card=math&code=%5Cmathbf%7Bv%7D&id=URPUD">
+<meta property="og:image" content="https://g.yuque.com/gr/latex?%5Cmathbf%7Bv%7D#card=math&code=%5Cmathbf%7Bv%7D&id=zwYun">
+<meta property="og:image" content="https://g.yuque.com/gr/latex?3s#card=math&code=3s&id=BAFKW">
+<meta property="og:image" content="https://g.yuque.com/gr/latex?%5Cmathbf%7Bv%7D#card=math&code=%5Cmathbf%7Bv%7D&id=TIVim">
+<meta property="og:image" content="https://g.yuque.com/gr/latex?Y_%7Bcoarse%7D#card=math&code=Y_%7Bcoarse%7D&id=cYRiq">
+<meta property="og:image" content="https://g.yuque.com/gr/latex?s%5Ctimes3#card=math&code=s%5Ctimes3&id=HNzU8">
+<meta property="og:image" content="https://g.yuque.com/gr/latex?Y_%7Bcoarse%7D#card=math&code=Y_%7Bcoarse%7D&id=vsQjv">
+<meta property="og:image" content="https://g.yuque.com/gr/latex?%5Cmathbf%7Bq%7D_i#card=math&code=%5Cmathbf%7Bq%7D_i&id=Y0nL2">
+<meta property="og:image" content="https://g.yuque.com/gr/latex?%5Cmathbf%7Bq%7D_i#card=math&code=%5Cmathbf%7Bq%7D_i&id=IsONF">
+<meta property="og:image" content="https://g.yuque.com/gr/latex?t=u%5E2#card=math&code=t%3Du%5E2&id=dAsdL">
+<meta property="og:image" content="https://g.yuque.com/gr/latex?%5Cmathbf%7Bq%7D_i#card=math&code=%5Cmathbf%7Bq%7D_i&id=ZBklH">
+<meta property="og:image" content="https://g.yuque.com/gr/latex?s#card=math&code=s&id=jVtr6">
+<meta property="og:image" content="https://g.yuque.com/gr/latex?n=st#card=math&code=n%3Dst&id=Hm2Wy">
+<meta property="og:image" content="https://g.yuque.com/gr/latex?Y_%7Bdetail%7D#card=math&code=Y_%7Bdetail%7D&id=oFdpu">
+<meta property="og:image" content="https://g.yuque.com/gr/latex?CD(S_1,S_2)=%0A%09%5Cfrac1%7B%7CS_1%7C%7D%5Csum_%7Bx%5Cin%20S_1%7D%5Cmin_%7By%5Cin%20S_2%7D%5C%7Cx-y%5C%7C_2%0A%09+%5Cfrac1%7B%7CS_2%7C%7D%5Csum_%7By%5Cin%20S_2%7D%5Cmin_%7Bx%5Cin%20S_1%7D%5C%7Cy-x%5C%7C_2%0A#card=math&code=CD%28S_1%2CS_2%29%3D%0A%09%5Cfrac1%7B%7CS_1%7C%7D%5Csum_%7Bx%5Cin%20S_1%7D%5Cmin_%7By%5Cin%20S_2%7D%5C%7Cx-y%5C%7C_2%0A%09%2B%5Cfrac1%7B%7CS_2%7C%7D%5Csum_%7By%5Cin%20S_2%7D%5Cmin_%7Bx%5Cin%20S_1%7D%5C%7Cy-x%5C%7C_2%0A&id=imM7A">
+<meta property="og:image" content="https://g.yuque.com/gr/latex?CD#card=math&code=CD&id=N5eIP">
+<meta property="og:image" content="https://g.yuque.com/gr/latex?S_1#card=math&code=S_1&id=ZHHdU">
+<meta property="og:image" content="https://g.yuque.com/gr/latex?S_2#card=math&code=S_2&id=gieyv">
+<meta property="og:image" content="https://g.yuque.com/gr/latex?CD#card=math&code=CD&id=LlgWk">
+<meta property="og:image" content="https://g.yuque.com/gr/latex?S_1#card=math&code=S_1&id=tfL4g">
+<meta property="og:image" content="https://g.yuque.com/gr/latex?S_2#card=math&code=S_2&id=qiAxK">
+<meta property="og:image" content="https://g.yuque.com/gr/latex?EMD(S_1,S_2)=%5Cmin_%7B%5Cphi:S_1%5Cto%20S_2%7D%5Cfrac1%7B%7CS_1%7C%7D%5Csum_%7Bx%5Cin%20S_1%7D%5C%7Cx-%5Cphi(x)%5C%7C_2%0A#card=math&code=EMD%28S_1%2CS_2%29%3D%5Cmin_%7B%5Cphi%3AS_1%5Cto%20S_2%7D%5Cfrac1%7B%7CS_1%7C%7D%5Csum_%7Bx%5Cin%20S_1%7D%5C%7Cx-%5Cphi%28x%29%5C%7C_2%0A&id=aykVq">
+<meta property="og:image" content="https://g.yuque.com/gr/latex?EMD#card=math&code=EMD&id=DNuv9">
+<meta property="og:image" content="https://g.yuque.com/gr/latex?%5Cphi:S_1%5Cto%20S_2#card=math&code=%5Cphi%3AS_1%5Cto%20S_2&id=EtRo7">
+<meta property="og:image" content="https://g.yuque.com/gr/latex?%5Cphi#card=math&code=%5Cphi&id=G7YJq">
+<meta property="og:image" content="https://g.yuque.com/gr/latex?(1+%5Cepsilon)#card=math&code=%281%2B%5Cepsilon%29&id=ADPCR">
+<meta property="og:image" content="https://g.yuque.com/gr/latex?CD#card=math&code=CD&id=ujeZ6">
+<meta property="og:image" content="https://g.yuque.com/gr/latex?EMD#card=math&code=EMD&id=IWALO">
+<meta property="og:image" content="https://g.yuque.com/gr/latex?S_1#card=math&code=S_1&id=cWlQh">
+<meta property="og:image" content="https://g.yuque.com/gr/latex?S_2#card=math&code=S_2&id=OJB6P">
+<meta property="og:image" content="https://g.yuque.com/gr/latex?L(Y_%7Bcoarse%7D,Y_%7Bdetail%7D,Y_%7Bgt%7D)=d_1(Y_%7Bcoarse%7D,%5Ctilde%7BY%7D_%7Bgt%7D)+%5Calpha%20d_2(Y_%7Bdetail%7D,Y_%7Bgt%7D)%0A#card=math&code=L%28Y_%7Bcoarse%7D%2CY_%7Bdetail%7D%2CY_%7Bgt%7D%29%3Dd_1%28Y_%7Bcoarse%7D%2C%5Ctilde%7BY%7D_%7Bgt%7D%29%2B%5Calpha%20d_2%28Y_%7Bdetail%7D%2CY_%7Bgt%7D%29%0A&id=LdlWH">
+<meta property="og:image" content="https://g.yuque.com/gr/latex?d_1#card=math&code=d_1&id=Br1Kh">
+<meta property="og:image" content="https://g.yuque.com/gr/latex?d_2#card=math&code=d_2&id=Tx2wB">
+<meta property="og:image" content="https://g.yuque.com/gr/latex?%5Calpha#card=math&code=%5Calpha&id=sqA6r">
+<meta property="og:image" content="https://g.yuque.com/gr/latex?%5Ctilde%7BY%7D_%7Bgt%7D#card=math&code=%5Ctilde%7BY%7D_%7Bgt%7D&id=jB4b2">
+<meta property="og:image" content="https://g.yuque.com/gr/latex?%5Ctilde%7BY%7D_%7Bgt%7D#card=math&code=%5Ctilde%7BY%7D_%7Bgt%7D&id=HWrPO">
+<meta property="og:image" content="https://g.yuque.com/gr/latex?Y_%7Bcoarse%7D#card=math&code=Y_%7Bcoarse%7D&id=edKJb">
+<meta property="og:image" content="https://g.yuque.com/gr/latex?Y_%7Bdetail%7D#card=math&code=Y_%7Bdetail%7D&id=JiL76">
+<meta property="og:image" content="https://g.yuque.com/gr/latex?Y_%7Bgt%7D#card=math&code=Y_%7Bgt%7D&id=fPCp1">
+<meta property="og:image" content="https://g.yuque.com/gr/latex?CD#card=math&code=CD&id=TVXJp">
+<meta property="og:image" content="https://g.yuque.com/gr/latex?EMD#card=math&code=EMD&id=oarc8">
+<meta property="og:image" content="https://g.yuque.com/gr/latex?d_1#card=math&code=d_1&id=RQ29M">
+<meta property="og:image" content="https://g.yuque.com/gr/latex?CD#card=math&code=CD&id=yvDA2">
+<meta property="og:image" content="https://g.yuque.com/gr/latex?d_2#card=math&code=d_2&id=ryWwQ">
+<meta property="og:image" content="https://g.yuque.com/gr/latex?EMD#card=math&code=EMD&id=rJOAZ">
+<meta property="og:image" content="https://g.yuque.com/gr/latex?O(n%5E2)#card=math&code=O%28n%5E2%29&id=CHQl0">
+<meta property="og:image" content="https://g.yuque.com/gr/latex?n#card=math&code=n&id=qMcMP">
+<meta property="og:image" content="https://g.yuque.com/gr/latex?CD#card=math&code=CD&id=rgtoo">
+<meta property="og:image" content="https://g.yuque.com/gr/latex?O(n%5Clog%20n)#card=math&code=O%28n%5Clog%20n%29&id=RmmS0">
+<meta property="og:image" content="https://g.yuque.com/gr/latex?EMD#card=math&code=EMD&id=S35V3">
+<meta property="og:image" content="https://g.yuque.com/gr/latex?D#card=math&code=D&id=yMq4t">
+<meta property="og:image" content="https://g.yuque.com/gr/latex?(X,Y)#card=math&code=%28X%2CY%29&id=QuwxN">
+<meta property="og:image" content="https://g.yuque.com/gr/latex?0.7#card=math&code=0.7&id=rxOJ7">
+<meta property="og:image" content="https://g.yuque.com/gr/latex?d#card=math&code=d&id=RGgQE">
+<meta property="og:image" content="https://g.yuque.com/gr/latex?128%5Ctimes128#card=math&code=128%5Ctimes128&id=MFiB9">
+<meta property="og:image" content="https://g.yuque.com/gr/latex?s=1024#card=math&code=s%3D1024&id=Z3hXk">
+<meta property="og:image" content="https://g.yuque.com/gr/latex?n=16384#card=math&code=n%3D16384&id=exWMM">
+<meta property="og:image" content="http://blog.mviai.com/images/1651809308897-adfbb868-8a4e-4ba6-b06e-9fffcfcd4315.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1651809319359-3f5c2a90-391d-4869-b63d-431b179d2a17.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1651809333667-fc25c734-0e85-4e09-9073-b82da662174f.png">
+<meta property="og:image" content="https://g.yuque.com/gr/latex?L_1#card=math&code=L_1&id=Mw0Vc">
+<meta property="og:image" content="https://g.yuque.com/gr/latex?L_1#card=math&code=L_1&id=o1CKA">
+<meta property="og:image" content="https://g.yuque.com/gr/latex?p%5C%25#card=math&code=p%5C%25&id=hlNbS">
+<meta property="og:image" content="https://g.yuque.com/gr/latex?p#card=math&code=p&id=mQzCJ">
+<meta property="og:image" content="https://g.yuque.com/gr/latex?0%5C%25#card=math&code=0%5C%25&id=CUsKk">
+<meta property="og:image" content="https://g.yuque.com/gr/latex?80%5C%25#card=math&code=80%5C%25&id=ZFdYI">
+<meta property="og:image" content="https://g.yuque.com/gr/latex?1%5C%25#card=math&code=1%5C%25&id=iOGkP">
+<meta property="og:image" content="https://g.yuque.com/gr/latex?d_%7Bmax%7D=1.6#card=math&code=d_%7Bmax%7D%3D1.6&id=akpwR">
+<meta property="og:image" content="http://blog.mviai.com/images/1651809350637-64cf177a-7b1e-4722-bfb8-283b78a216bd.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1651809386756-aae0f207-0726-4e74-8a1e-ab242a42d10a.png">
+<meta property="og:image" content="https://g.yuque.com/gr/latex?2%5Ccos%5E%7B-1%7D(2%5Clangle%20q_1,q_2%5Crangle%5E2-1)#card=math&code=2%5Ccos%5E%7B-1%7D%282%5Clangle%20q_1%2Cq_2%5Crangle%5E2-1%29&id=iiev5">
+<meta property="og:image" content="https://g.yuque.com/gr/latex?q_1,q_2#card=math&code=q_1%2Cq_2&id=chgTv">
+<meta property="og:image" content="https://g.yuque.com/gr/latex?q_1,q_2#card=math&code=q_1%2Cq_2&id=EO08U">
+<meta property="og:image" content="https://g.yuque.com/gr/latex?%5C%7Ct_1-t_2%5C%7C_2#card=math&code=%5C%7Ct_1-t_2%5C%7C_2&id=RVCTQ">
+<meta property="og:image" content="https://g.yuque.com/gr/latex?t_1#card=math&code=t_1&id=F1tVC">
+<meta property="og:image" content="https://g.yuque.com/gr/latex?t_2#card=math&code=t_2&id=xYYIw">
+<meta property="og:image" content="http://blog.mviai.com/images/1651809426934-e8c547f0-9e73-4d15-9b65-b6bc1eef7a7c.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1651809437250-036bec51-2681-4d3e-a6d0-8d205c555c90.png">
+<meta property="og:image" content="https://g.yuque.com/gr/latex?Y_%7Bcoarse%7D#card=math&code=Y_%7Bcoarse%7D&id=FheQo">
+<meta property="og:image" content="https://g.yuque.com/gr/latex?k#card=math&code=k&id=tBC6z">
+<meta property="og:image" content="https://g.yuque.com/gr/latex?%5Cmathbf%7Bv%7D#card=math&code=%5Cmathbf%7Bv%7D&id=xneqQ">
+<meta property="og:image" content="https://g.yuque.com/gr/latex?%5Cmathbf%7Bq%7D_i#card=math&code=%5Cmathbf%7Bq%7D_i&id=eagAb">
+<meta property="og:image" content="https://g.yuque.com/gr/latex?%5Cmathbf%7Bq%7D_i#card=math&code=%5Cmathbf%7Bq%7D_i&id=AmXd4">
+<meta property="og:image" content="https://g.yuque.com/gr/latex?u%5Ctimes%20u#card=math&code=u%5Ctimes%20u&id=KdUjN">
+<meta property="og:image" content="https://g.yuque.com/gr/latex?t=u%5E2#card=math&code=t%3Du%5E2&id=ThaiI">
+<meta property="og:image" content="https://g.yuque.com/gr/latex?r#card=math&code=r&id=c9Pmy">
+<meta property="og:image" content="https://g.yuque.com/gr/latex?r#card=math&code=r&id=lP339">
+<meta property="og:image" content="https://g.yuque.com/gr/latex?u%5Ctimes%20u#card=math&code=u%5Ctimes%20u&id=X4lw0">
+<meta property="og:image" content="https://g.yuque.com/gr/latex?t%5Ctimes2#card=math&code=t%5Ctimes2&id=ZB3wi">
+<meta property="og:image" content="https://g.yuque.com/gr/latex?G#card=math&code=G&id=qoCg7">
+<meta property="og:image" content="https://g.yuque.com/gr/latex?%5Cmathbf%7Bq%7D_i#card=math&code=%5Cmathbf%7Bq%7D_i&id=P9uHa">
+<meta property="og:image" content="https://g.yuque.com/gr/latex?%5Cmathbf%7Bv%7D#card=math&code=%5Cmathbf%7Bv%7D&id=XcxEB">
+<meta property="og:image" content="https://g.yuque.com/gr/latex?G#card=math&code=G&id=o5Pk1">
+<meta property="og:image" content="https://g.yuque.com/gr/latex?t%5Ctimes3#card=math&code=t%5Ctimes3&id=mwmrZ">
+<meta property="og:image" content="https://g.yuque.com/gr/latex?Q#card=math&code=Q&id=uXxiV">
+<meta property="og:image" content="https://g.yuque.com/gr/latex?%5Cmathbf%7Bq%7D_i#card=math&code=%5Cmathbf%7Bq%7D_i&id=fiCRr">
+<meta property="og:image" content="https://g.yuque.com/gr/latex?%5Cmathbf%7Bq%7D_i#card=math&code=%5Cmathbf%7Bq%7D_i&id=MRh6O">
+<meta property="og:image" content="http://blog.mviai.com/images/1651809456488-1dad5fe7-de03-4c51-bad0-2ee15a06d5f4.png">
+<meta property="og:image" content="https://g.yuque.com/gr/latex?128%5E3#card=math&code=128%5E3&id=qQVb5">
+<meta property="og:image" content="https://g.yuque.com/gr/latex?32%5E3#card=math&code=32%5E3&id=UKIie">
+<meta property="og:image" content="https://g.yuque.com/gr/latex?16384%5Ctimes3#card=math&code=16384%5Ctimes3&id=dvOXM">
+<meta property="og:image" content="https://g.yuque.com/gr/latex?u=128#card=math&code=u%3D128&id=vRy1W">
+<meta property="og:image" content="https://g.yuque.com/gr/latex?r=0.5#card=math&code=r%3D0.5&id=VKrwX">
+<meta property="og:image" content="https://g.yuque.com/gr/latex?1024%5Ctimes3#card=math&code=1024%5Ctimes3&id=FDPhL">
+<meta property="og:image" content="https://g.yuque.com/gr/latex?u=4#card=math&code=u%3D4&id=UmCDo">
+<meta property="og:image" content="https://g.yuque.com/gr/latex?r=0.05#card=math&code=r%3D0.05&id=u7hdA">
+<meta property="og:image" content="http://blog.mviai.com/images/1651809478396-f7a30dfb-b5be-4136-8fd8-38591ec74b24.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1651809489131-78c60ce6-6878-4f76-a904-1ce93ad149d5.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1651809492287-c8d2e276-385a-4ee4-828d-c0469946316d.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1651809498577-5108a462-5798-47fe-baca-3404e92b7450.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1651809522362-41bbabb2-a25b-45a8-b2b4-6494be254d57.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1651809528428-1f19a026-c39e-43a8-b492-917334bb2dac.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1651809540100-19a6d685-5be7-4f9d-b34c-b63c433f38da.png">
+<meta property="og:image" content="https://g.yuque.com/gr/latex?%5Cmathbf%7Bv%7D#card=math&code=%5Cmathbf%7Bv%7D&id=CLvsv">
+<meta property="og:image" content="http://blog.mviai.com/images/1651809546055-2105063a-c0bf-4be0-a0bc-7e73eb1a9a8f.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1651809556089-22d64180-3389-4203-9436-88153f9bab82.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1651809565002-9a32301c-2264-494d-9168-559fe1daa74d.png">
+<meta property="article:published_time" content="2025-01-22T04:37:40.000Z">
+<meta property="article:modified_time" content="2025-01-22T12:37:40.705Z">
+<meta property="article:author" content="SindreYang">
+<meta property="article:tag" content="生活">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://blog.mviai.com/images/1651809261522-2b1cccdd-1c82-4aa3-9823-5dd3729dd78e.png">
+
+<link rel="canonical" href="http://blog.mviai.com/2025/%E8%AE%BA%E6%96%87%E7%BF%BB%E8%AF%91_PCN-%E7%82%B9%E8%A1%A5%E5%85%A8%E7%BD%91%E7%BB%9C/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>论文翻译_PCN-点补全网络 | 落叶无痕</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">落叶无痕</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类<span class="badge">72</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档<span class="badge">321</span></a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+  <span class="exturl github-corner" data-url="aHR0cHM6Ly9naXRodWIuY29tL1NpbmRyZVlhbmc=" title="Follow me on GitHub" aria-label="Follow me on GitHub"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></span>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://blog.mviai.com/2025/%E8%AE%BA%E6%96%87%E7%BF%BB%E8%AF%91_PCN-%E7%82%B9%E8%A1%A5%E5%85%A8%E7%BD%91%E7%BB%9C/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="SindreYang">
+      <meta itemprop="description" content="沉淀后我愿意做一个温暖的人。有自己的喜好，有自己的原则，有自己的信仰，不急功近利，不浮夸轻薄，宠辱不惊，淡定安逸，心静如水。------不忘初心，方得始终">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="落叶无痕">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          论文翻译_PCN-点补全网络
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2025-01-22 12:37:40 / 修改时间：20:37:40" itemprop="dateCreated datePublished" datetime="2025-01-22T12:37:40+08:00">2025-01-22</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/GAN%E7%B3%BB%E5%88%97/" itemprop="url" rel="index"><span itemprop="name">GAN系列</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">Changyan：</span>
+    
+    
+      <a title="changyan" href="/2025/%E8%AE%BA%E6%96%87%E7%BF%BB%E8%AF%91_PCN-%E7%82%B9%E8%A1%A5%E5%85%A8%E7%BD%91%E7%BB%9C/#SOHUCS" itemprop="discussionUrl">
+        <span id="changyan_count_unit" class="post-comments-count hc-comment-count" data-xid="2025/论文翻译_PCN-点补全网络/" itemprop="commentCount"></span>
+      </a>
+    
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>自动摘要: 	PCN：点补全网络		<span class="exturl" data-url="aHR0cHM6Ly9hcnhpdi5vcmcvcGRmLzE4MDguMDA2NzE=" title="https://arxiv.org/pdf/1808.00671">PCNPointCompletionNetwork.pdf<i class="fa fa-external-link"></i></span>		YuanW,KhotT, ……..</p>
+<span id="more"></span>
+
+<h1 id="PCN：点补全网络"><a href="#PCN：点补全网络" class="headerlink" title="PCN：点补全网络"></a>PCN：点补全网络</h1><p><span class="exturl" data-url="aHR0cHM6Ly9hcnhpdi5vcmcvcGRmLzE4MDguMDA2NzE=" title="https://arxiv.org/pdf/1808.00671">PCN Point Completion Network.pdf<i class="fa fa-external-link"></i></span></p>
+<p>Yuan W, Khot T, Held D, et al. Pcn: Point completion network[C]&#x2F;&#x2F;2018 International Conference on 3D Vision (3DV). IEEE, 2018: 728-737.</p>
+<p><span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL3dlbnRhb3l1YW4vcGNu" title="https://github.com/wentaoyuan/pcn">作者的原始实现<i class="fa fa-external-link"></i></span></p>
+<p><span class="exturl" data-url="aHR0cHM6Ly9wYXBlcnN3aXRoY29kZS5jb20vcGFwZXIvcGNuLXBvaW50LWNvbXBsZXRpb24tbmV0d29yaw==" title="https://paperswithcode.com/paper/pcn-point-completion-network">PCN 的其他实现<i class="fa fa-external-link"></i></span></p>
+<h1 id="摘要"><a href="#摘要" class="headerlink" title="摘要"></a>摘要</h1><p>形状补全，是许多视觉和机器人应用的核心问题。目标是从部分观测中估计对象的完整几何形状。在本文中，我们提出了点补全网络（Point Completion Network, PCN），一种新颖的基于学习的形状补全方法。与现有的形状补全方法不同，PCN直接对原始点云进行操作，没有任何关于底层形状的结构假设（如：对称性）或者标注（如：语义类别）。它的特点是一个解码器的设计，能够生成细粒度的补全，同时维护少量的参数。我们的实验表明，PCN在基于不同水平的不完整数据和噪声的输入（包括来自KITTI数据集中使用激光雷达扫描得到的汽车数据）下都在现实结构的缺失区域中补全了稠密的、完整的点云。代码、数据和训练模型参见<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL3dlbnRhb3l1YW4vcGNu" title="https://github.com/wentaoyuan/pcn">PCN Tensorflow 实现<i class="fa fa-external-link"></i></span>。</p>
+<h1 id="Ch01-介绍"><a href="#Ch01-介绍" class="headerlink" title="Ch01 介绍"></a>Ch01 介绍</h1><p>现实的3D数据经常是不完整的、存在几何和语义信息的损失。例如：由于数据点的稀疏性和有限的传感器的分辨率和遮挡，图1中激光雷达扫描的汽车很难被识别。在本文中，我们展示了一种使用编码器–解码器网络的、新颖的、基于学习的方法去补全这些局部数据。网络直接映射局部形状到完整形状，两种形状都采用3D点云来表示。</p>
+<p><img src="/images/1651809261522-2b1cccdd-1c82-4aa3-9823-5dd3729dd78e.png"></p>
+<p>图1：（顶）来自KITTI[^13]的原始激光雷达扫描数据。注意到数据的不完整性使得汽车很少能够被识别。（底）基于PCN生成的完整扫描。从场景中分割出来的独立的汽车点云。</p>
+<p>最近许多工作[9][48]利用包含合成形状的大数据集去训练深度神经网络，该网络可以从单个视图或者局部视图的组合中推断完整的几何形状。我们的工作也是受这些工作的启发，但是我们的方法与现有方法的关键区别是三维数据的表示。大多数现有方法将三维数据体素化为占用网格或者距离场，并用卷积网络进行处理。然而，3D体素按照立方速度增长的内存消耗限制了这些方法的输出分辨率。此外，精细的几何信息经常因为离散化而丢失。相比之下，我们是基于原始点云设计网络。这个设计避免了高内存消耗和体素化带来的几何信息损失，并且允许网络生成更加细粒度的补全。</p>
+<p>设计一个可以使用和生成点云的网络存在以下几个挑战：</p>
+<ol>
+<li>点云是无序集，这意味着点的排列不会改变它们所代表的几何形状。这就需要设计满足排列不变性的特征提取器和损失函数。</li>
+<li>在点云中没有明确的局部领域的定义，这使得应用任何卷积操作都很困难。</li>
+<li>现有的点云生成网络仅能生成一小部分点，这不足以充分地捕获输出形状的细节。</li>
+</ol>
+<p>我们提出的模型征服和这些挑战，组合了一个排列不变的、非卷积的特征提取器和一个从粗到细的点集生成器在单个网络中，并且对它进行端到端的训练。</p>
+<p>本文的主要贡献：</p>
+<ul>
+<li>一种基于学习的形状补全方法，直接在三维点云上操作，无须中间过程体素化；</li>
+<li>一种新颖的网络架构，以一种由粗到细的方式生成稠密的、完整的点云；</li>
+<li>大量的实验表明，相比强基线改善了补全的结果，提升了针对噪声和稀疏数据的稳健性，增强了现实数据的泛化性以及形状补全如何辅助下游任务。</li>
+</ul>
+<h1 id="Sec02-相关工作"><a href="#Sec02-相关工作" class="headerlink" title="Sec02 相关工作"></a>Sec02 相关工作</h1><h2 id="3D形状补全"><a href="#3D形状补全" class="headerlink" title="3D形状补全"></a>3D形状补全</h2><p>用于3D形状实例的现有方法可以大致分为基于几何的、基于对齐的和基于学习的方法：</p>
+<ul>
+<li>基于几何的方法。在没有任何外部数据的情况下，使用来自局部输入的几何提示来补全形状。这些方法假设适度完整的输入中缺失区域的几何信息可以从观察到的区域中直接推导。这个假设并不适用于现实世界中大多数不完整的数据。 <ul>
+<li>表面重建方法[3][10][33][41][49][54][^62]生成平滑的插值来填充局部不完整扫描的孔洞。</li>
+<li>对称驱动方法[29][30][35][36][46][52][^55]识别局部输入中的对称轴和重复的、规则的结构，从而将观测到的区域的局部信息复制到未观测到的区域中。</li>
+</ul>
+</li>
+<li>基于对齐的方法从一个大型的形状数据库中基于模板形状通过匹配局部输入来补全形状。这些方法在推理过程中需要昂贵的优化资源，使得它们不能满足在线应用的实践需要，并且它们对噪声比较敏感。 <ul>
+<li>直接获取完整的形状[15][24][32][34][^43]</li>
+<li>获取对象的部件，然后组装这些部件获取完整的形状[17][19][28][45][^52]</li>
+<li>变形检索的模型去合成与输入更加一致的形状[6][12][14][21][22][39]</li>
+<li>使用平面或者二次曲面等几何图元来代替形状数据库[7][25][31][42][^61]</li>
+</ul>
+</li>
+<li>基于学习的方法使用参数化模型（通常是深度神经网络）来补全形状，模型直接将局部输入映射为完整的形状，从而提供快速的推理和更好的泛化。我们的方法就属于这类。然而其他方法假设所有的形状都与一个共同的参考形状相对应，这就限制了它们对某些形状类别（如：人或脸）的适用性。 <ul>
+<li>大多数现有的基于学习的方法使用体素表示形状[9][16][44][47][50][54][56][59]，这些方法对于应用卷积神经网络非常方便；我们的方法使用点云数据，这样就保存了形状的完整的几何信息，提高了内存的效率。</li>
+<li>最近一个方法探索了可变形的网格作为形状表示。</li>
+</ul>
+</li>
+</ul>
+<h2 id="点云上的深度学习"><a href="#点云上的深度学习" class="headerlink" title="点云上的深度学习"></a>点云上的深度学习</h2><p>我们的研究是基于最近几个对点云进行操作的深度神经网络的最新进展之上。PointNet及其扩展[37][38]是这一领域的先驱，也是开展这项工作时的SOTA。它结合了逐点多层感知机与对称聚合函数，获得了排列的不变性和扰动的稳健性，这对于点云的有效特征学习至关重要。从那以后，几种可替代的方法[23][51][53][57][^58]也被提出。其中有一些方法作为编码器被集成到我们的模型中。</p>
+<p>在解码器网络研究上，从学习到的特征生成点集的工作相对较少。[1]使用全连接解码器，[11]提出了一种组合全连接层和去卷积层的多分支解码器。最近，[^60]引入了一种有趣的解码器设计，它模拟了2D平面到3D表面的变形。然而，这些方法生成的结果都少于2048个点。我们的模型结合了这些设计的优点，并且以更加高效的方式生成了更高分辨率的输出。</p>
+<h1 id="Sec03-问题陈述"><a href="#Sec03-问题陈述" class="headerlink" title="Sec03 问题陈述"></a>Sec03 问题陈述</h1><p>设<img src="https://g.yuque.com/gr/latex?X#card=math&code=X&id=K0hLY">是位于观测对象表面上的一组三维点，这些点是通过单次观测或者三维传感器的一系列观测获得的。设<img src="https://g.yuque.com/gr/latex?Y#card=math&code=Y&id=dZSDy">是从对象的观测到的表面和未观测到的表面随机均匀抽样得到的三维点的稠密集合。我们定义形状补全问题为在给定<img src="https://g.yuque.com/gr/latex?X#card=math&code=X&id=XTqX3">下预测<img src="https://g.yuque.com/gr/latex?Y#card=math&code=Y&id=mm8Ab">。请注意，在这个构想下，<img src="https://g.yuque.com/gr/latex?X#card=math&code=X&id=ZrRUd">不一定是<img src="https://g.yuque.com/gr/latex?Y#card=math&code=Y&id=rdCqm">的子集，并且<img src="https://g.yuque.com/gr/latex?X#card=math&code=X&id=I9a1F">中的点和<img src="https://g.yuque.com/gr/latex?Y#card=math&code=Y&id=cXcic">中的点没有明确的对应关系。因为它们都是从潜在的对象表面独立抽样得来的。</p>
+<p>我们使用有监督学习来解决这个问题。利用很容易获取<img src="https://g.yuque.com/gr/latex?X#card=math&code=X&id=gw9jJ">和<img src="https://g.yuque.com/gr/latex?Y#card=math&code=Y&id=w8EUb">的样本的大规模合成数据集，我们训练神经网络直接从<img src="https://g.yuque.com/gr/latex?X#card=math&code=X&id=HaQZI">去预测<img src="https://g.yuque.com/gr/latex?Y#card=math&code=Y&id=ihMuF">。网络在多个对象类别中是通用的，并且对潜在的对象结构没有做任何假设，如：对称性或者平面性。网格架构在Sec04中描述，训练过程在Sec0501中描述。</p>
+<h1 id="Sec04-点补全网络"><a href="#Sec04-点补全网络" class="headerlink" title="Sec04 点补全网络"></a>Sec04 点补全网络</h1><p>本节描述了我们提出的模型的架构，点补全网络（Point Completion Network，PCN）。如图2所示，PCN是一个编码器–解码器网络。编码器的输入是点云<img src="https://g.yuque.com/gr/latex?X#card=math&code=X&id=ZDWIv">，输出是<img src="https://g.yuque.com/gr/latex?k#card=math&code=k&id=jDhVR">维特征向量。解码器的输入是<img src="https://g.yuque.com/gr/latex?k#card=math&code=k&id=Ozj2h">维特征向量，输出一个粗略的（course）点云<img src="https://g.yuque.com/gr/latex?Y_%7Bcourse%7D#card=math&code=Y_%7Bcourse%7D&id=v54dO">和一个精细的（detail）点云<img src="https://g.yuque.com/gr/latex?Y_%7Bdetail%7D#card=math&code=Y_%7Bdetail%7D&id=mQohj">。损失函数<img src="https://g.yuque.com/gr/latex?L#card=math&code=L&id=V0Fed">是计算基准点云<img src="https://g.yuque.com/gr/latex?Y_%7Bgt%7D#card=math&code=Y_%7Bgt%7D&id=yOP3B">和编码器输出之间的差别，然后通过反向传播训练整个网络。请注意，与自动编码器不同，我们没有强制网络在输出中保留输入中的点。相反，网络从局部观测的空间到完整形状的空间中学习了一种投影。接下来，我们描述了编码器、解码器和损失函数的特定设计。</p>
+<p><img src="/images/1651809287235-f6b3486b-a42e-4caa-9b6d-afa5a7455677.png"></p>
+<p>图2：PCN架构。编码器抽象了输入点云<img src="https://g.yuque.com/gr/latex?X#card=math&code=X&id=c7Erg">为特征向量<img src="https://g.yuque.com/gr/latex?%5Cmathbf%7Bv%7D#card=math&code=%5Cmathbf%7Bv%7D&id=dGaX5">。解码器使用<img src="https://g.yuque.com/gr/latex?%5Cmathbf%7Bv%7D#card=math&code=%5Cmathbf%7Bv%7D&id=RIjng">，首先生成粗略的输出<img src="https://g.yuque.com/gr/latex?Y_%7Bcoarse%7D#card=math&code=Y_%7Bcoarse%7D&id=sqjGP">，然后生成精细的输出<img src="https://g.yuque.com/gr/latex?Y_%7Bdetail%7D#card=math&code=Y_%7Bdetail%7D&id=l4w69">。每个颜色化的方框表示一个矩阵行。相同的颜色指示相同的内容。</p>
+<h2 id="Sec0401-点特征编码"><a href="#Sec0401-点特征编码" class="headerlink" title="Sec0401 点特征编码"></a>Sec0401 点特征编码</h2><p>编码器负责将输入点云中的几何信息总结为特征向量<img src="https://g.yuque.com/gr/latex?%5Cmathbf%7Bv%7D%5Cin%5Cmathbb%7BR%7D%5Ek,%20k=1024#card=math&code=%5Cmathbf%7Bv%7D%5Cin%5Cmathbb%7BR%7D%5Ek%2C%20k%3D1024&id=zijql">。我们提出的编码器是PointNet的扩展版本，它从PointNet中继承了排列的不变性和对噪声的容忍度，可以处理不同数目的输入点。</p>
+<p>具体来说，编码器由两个堆叠的PointNet层组成。</p>
+<ul>
+<li>第一层将<img src="https://g.yuque.com/gr/latex?m#card=math&code=m&id=mpsTM">个输入点表示为<img src="https://g.yuque.com/gr/latex?m%5Ctimes3#card=math&code=m%5Ctimes3&id=VovFM">的矩阵<img src="https://g.yuque.com/gr/latex?P#card=math&code=P&id=nJc1h">，其中的每一行都是点<img src="https://g.yuque.com/gr/latex?%5Cmathbf%7Bp%7D_i=(x,y,z)#card=math&code=%5Cmathbf%7Bp%7D_i%3D%28x%2Cy%2Cz%29&id=UefLq">的3D坐标。 <ul>
+<li>首先，一个共享的由两个带有ReLU激活函数的线性层组成的多层感知机（Multi-Layer Perceptron，MLP）用于将每个<img src="https://g.yuque.com/gr/latex?%5Cmathbf%7Bp%7D_i#card=math&code=%5Cmathbf%7Bp%7D_i&id=GCW3C">转换为点特征向量<img src="https://g.yuque.com/gr/latex?%5Cmathbf%7Bf%7D_i#card=math&code=%5Cmathbf%7Bf%7D_i&id=NOoQE">。这样输出一个特征矩阵<img src="https://g.yuque.com/gr/latex?F#card=math&code=F&id=d1E5Q">，其中的行是学习得到的点特征<img src="https://g.yuque.com/gr/latex?%5Cmathbf%7Bf%7D_i#card=math&code=%5Cmathbf%7Bf%7D_i&id=LW6IL">。</li>
+<li>然后，对<img src="https://g.yuque.com/gr/latex?F#card=math&code=F&id=LozSN">执行逐点最大池化操作获得<img src="https://g.yuque.com/gr/latex?k#card=math&code=k&id=DPFNq">维全局特征<img src="https://g.yuque.com/gr/latex?%5Cmathbf%7Bg%7D#card=math&code=%5Cmathbf%7Bg%7D&id=K4ePA">，其中<img src="https://g.yuque.com/gr/latex?%5Cmathbf%7Bg%7D_j=%5Cmax_%7Bi=1,%5Ccdots,m%7D%5C%7BF_%7Bij%7D%5C%7D,j=1,%5Ccdots,k#card=math&code=%5Cmathbf%7Bg%7D_j%3D%5Cmax_%7Bi%3D1%2C%5Ccdots%2Cm%7D%5C%7BF_%7Bij%7D%5C%7D%2Cj%3D1%2C%5Ccdots%2Ck&id=XZYCu">。</li>
+</ul>
+</li>
+<li>第二层取<img src="https://g.yuque.com/gr/latex?F#card=math&code=F&id=rJcEU">和<img src="https://g.yuque.com/gr/latex?%5Cmathbf%7Bg%7D#card=math&code=%5Cmathbf%7Bg%7D&id=kvCXU">为输入。 <ul>
+<li>首先，将<img src="https://g.yuque.com/gr/latex?%5Cmathbf%7Bg%7D#card=math&code=%5Cmathbf%7Bg%7D&id=E2FB3">与每个<img src="https://g.yuque.com/gr/latex?%5Cmathbf%7Bf%7D_i#card=math&code=%5Cmathbf%7Bf%7D_i&id=wXWLe">拼接起来获取增强的点特征矩阵<img src="https://g.yuque.com/gr/latex?%5Ctilde%7BF%7D#card=math&code=%5Ctilde%7BF%7D&id=Zc4oC">，矩阵的行是拼接后的特征向量<img src="https://g.yuque.com/gr/latex?%5B%5Cmathbf%7Bf%7D_i,%5Cmathbf%7Bg%7D%5D#card=math&code=%5B%5Cmathbf%7Bf%7D_i%2C%5Cmathbf%7Bg%7D%5D&id=dkWl7">。</li>
+<li>然后，<img src="https://g.yuque.com/gr/latex?%5Ctilde%7BF%7D#card=math&code=%5Ctilde%7BF%7D&id=QuaUx">通过另一个共享MLP和逐点最大池化（如：第一层一样），输出最终的特征向量<img src="https://g.yuque.com/gr/latex?%5Cmathbf%7Bv%7D#card=math&code=%5Cmathbf%7Bv%7D&id=URPUD"></li>
+</ul>
+</li>
+</ul>
+<h2 id="Sec0402-多阶段点生成"><a href="#Sec0402-多阶段点生成" class="headerlink" title="Sec0402 多阶段点生成"></a>Sec0402 多阶段点生成</h2><p>解码器负责从特征向量<img src="https://g.yuque.com/gr/latex?%5Cmathbf%7Bv%7D#card=math&code=%5Cmathbf%7Bv%7D&id=zwYun">生成输出的点云。我们提出的解码器在多级点生成流程中组合了全连接解码器[1]和基于折叠的解码器[60]的优点。实验展示了我们的解码器的性能优于全连接版本或者基于折叠的解码器。</p>
+<p>我们主要的观测结果是全连接解码器擅长预测表示形状的全局几何性质的稀疏的点集合。同时，基于折叠的解码器擅长逼近表示形状的局部几何性质的平滑的表面。因此，我们将输出点云的生成分成两个阶段：</p>
+<ul>
+<li>第一阶段，通过一个有<img src="https://g.yuque.com/gr/latex?3s#card=math&code=3s&id=BAFKW">个输出单元的全连接网络传递<img src="https://g.yuque.com/gr/latex?%5Cmathbf%7Bv%7D#card=math&code=%5Cmathbf%7Bv%7D&id=TIVim">生成粗略的输出<img src="https://g.yuque.com/gr/latex?Y_%7Bcoarse%7D#card=math&code=Y_%7Bcoarse%7D&id=cYRiq">，再将输出重新改变维度为<img src="https://g.yuque.com/gr/latex?s%5Ctimes3#card=math&code=s%5Ctimes3&id=HNzU8">的矩阵。</li>
+<li>第二阶段，对于<img src="https://g.yuque.com/gr/latex?Y_%7Bcoarse%7D#card=math&code=Y_%7Bcoarse%7D&id=vsQjv">中的每个点<img src="https://g.yuque.com/gr/latex?%5Cmathbf%7Bq%7D_i#card=math&code=%5Cmathbf%7Bq%7D_i&id=Y0nL2">，通过折叠操作在以<img src="https://g.yuque.com/gr/latex?%5Cmathbf%7Bq%7D_i#card=math&code=%5Cmathbf%7Bq%7D_i&id=IsONF">为中心的局部坐标中生成<img src="https://g.yuque.com/gr/latex?t=u%5E2#card=math&code=t%3Du%5E2&id=dAsdL">个点的方块（细节参考附录B），并且通过在输出增加<img src="https://g.yuque.com/gr/latex?%5Cmathbf%7Bq%7D_i#card=math&code=%5Cmathbf%7Bq%7D_i&id=ZBklH">将之转换为全局坐标。结合所有的<img src="https://g.yuque.com/gr/latex?s#card=math&code=s&id=jVtr6">面片给出由<img src="https://g.yuque.com/gr/latex?n=st#card=math&code=n%3Dst&id=Hm2Wy">组成的精细的输出<img src="https://g.yuque.com/gr/latex?Y_%7Bdetail%7D#card=math&code=Y_%7Bdetail%7D&id=oFdpu">。</li>
+</ul>
+<p>我们的网络，在这个多阶段过程中，生成了一个稠密的输出点云，相比全连接解码器使用的参数更少（参见表1），相比基于折叠的解码器灵活性更强。</p>
+<h2 id="Sec0403-损失函数"><a href="#Sec0403-损失函数" class="headerlink" title="Sec0403 损失函数"></a>Sec0403 损失函数</h2><p>损失函数测量输出点云和基准点云之间的差异。因为两个点云都是无序的，损失函数需要对点的排列保持不变。两个候选的排列不变函数由[^11]引入：倒角距离（Chamfer Distance，CD）和地动距离（Earth Mover’s Distance，EMD）[^注1]</p>
+<p><img src="https://g.yuque.com/gr/latex?CD(S_1,S_2)=%0A%09%5Cfrac1%7B%7CS_1%7C%7D%5Csum_%7Bx%5Cin%20S_1%7D%5Cmin_%7By%5Cin%20S_2%7D%5C%7Cx-y%5C%7C_2%0A%09+%5Cfrac1%7B%7CS_2%7C%7D%5Csum_%7By%5Cin%20S_2%7D%5Cmin_%7Bx%5Cin%20S_1%7D%5C%7Cy-x%5C%7C_2%0A#card=math&code=CD%28S_1%2CS_2%29%3D%0A%09%5Cfrac1%7B%7CS_1%7C%7D%5Csum_%7Bx%5Cin%20S_1%7D%5Cmin_%7By%5Cin%20S_2%7D%5C%7Cx-y%5C%7C_2%0A%09%2B%5Cfrac1%7B%7CS_2%7C%7D%5Csum_%7By%5Cin%20S_2%7D%5Cmin_%7Bx%5Cin%20S_1%7D%5C%7Cy-x%5C%7C_2%0A&id=imM7A"></p>
+<p>等式(1)中的<img src="https://g.yuque.com/gr/latex?CD#card=math&code=CD&id=N5eIP">计算了输入点云<img src="https://g.yuque.com/gr/latex?S_1#card=math&code=S_1&id=ZHHdU">和基准点云<img src="https://g.yuque.com/gr/latex?S_2#card=math&code=S_2&id=gieyv">之间的平均最近点距离。我们使用的是对称版本的倒角距离，其中第一项强制输出点逼近基准点，第二项保证输出点云覆盖基准点云。请注意，计算<img src="https://g.yuque.com/gr/latex?CD#card=math&code=CD&id=LlgWk">时不需要<img src="https://g.yuque.com/gr/latex?S_1#card=math&code=S_1&id=tfL4g">和<img src="https://g.yuque.com/gr/latex?S_2#card=math&code=S_2&id=qiAxK">是相同的大小。</p>
+<p><img src="https://g.yuque.com/gr/latex?EMD(S_1,S_2)=%5Cmin_%7B%5Cphi:S_1%5Cto%20S_2%7D%5Cfrac1%7B%7CS_1%7C%7D%5Csum_%7Bx%5Cin%20S_1%7D%5C%7Cx-%5Cphi(x)%5C%7C_2%0A#card=math&code=EMD%28S_1%2CS_2%29%3D%5Cmin_%7B%5Cphi%3AS_1%5Cto%20S_2%7D%5Cfrac1%7B%7CS_1%7C%7D%5Csum_%7Bx%5Cin%20S_1%7D%5C%7Cx-%5Cphi%28x%29%5C%7C_2%0A&id=aykVq"></p>
+<p>等式(2)中的<img src="https://g.yuque.com/gr/latex?EMD#card=math&code=EMD&id=DNuv9">找到一个双射<img src="https://g.yuque.com/gr/latex?%5Cphi:S_1%5Cto%20S_2#card=math&code=%5Cphi%3AS_1%5Cto%20S_2&id=EtRo7">，用于最小化对应点之间的平均距离。在实践中，找到最优<img src="https://g.yuque.com/gr/latex?%5Cphi#card=math&code=%5Cphi&id=G7YJq">的成本过高，因此我们使用迭代<img src="https://g.yuque.com/gr/latex?(1+%5Cepsilon)#card=math&code=%281%2B%5Cepsilon%29&id=ADPCR">的逼近模式[^4]。与<img src="https://g.yuque.com/gr/latex?CD#card=math&code=CD&id=ujeZ6">不同，<img src="https://g.yuque.com/gr/latex?EMD#card=math&code=EMD&id=IWALO">需要<img src="https://g.yuque.com/gr/latex?S_1#card=math&code=S_1&id=cWlQh">和<img src="https://g.yuque.com/gr/latex?S_2#card=math&code=S_2&id=OJB6P">是相同的大小。</p>
+<p><img src="https://g.yuque.com/gr/latex?L(Y_%7Bcoarse%7D,Y_%7Bdetail%7D,Y_%7Bgt%7D)=d_1(Y_%7Bcoarse%7D,%5Ctilde%7BY%7D_%7Bgt%7D)+%5Calpha%20d_2(Y_%7Bdetail%7D,Y_%7Bgt%7D)%0A#card=math&code=L%28Y_%7Bcoarse%7D%2CY_%7Bdetail%7D%2CY_%7Bgt%7D%29%3Dd_1%28Y_%7Bcoarse%7D%2C%5Ctilde%7BY%7D_%7Bgt%7D%29%2B%5Calpha%20d_2%28Y_%7Bdetail%7D%2CY_%7Bgt%7D%29%0A&id=LdlWH"></p>
+<p>等式(3)中是我们提出的损失函数，包括两个项<img src="https://g.yuque.com/gr/latex?d_1#card=math&code=d_1&id=Br1Kh">和<img src="https://g.yuque.com/gr/latex?d_2#card=math&code=d_2&id=Tx2wB">，超参数<img src="https://g.yuque.com/gr/latex?%5Calpha#card=math&code=%5Calpha&id=sqA6r">控制权重。第一项是粗略输出与基准抽样的子样本<img src="https://g.yuque.com/gr/latex?%5Ctilde%7BY%7D_%7Bgt%7D#card=math&code=%5Ctilde%7BY%7D_%7Bgt%7D&id=jB4b2">之间的距离，<img src="https://g.yuque.com/gr/latex?%5Ctilde%7BY%7D_%7Bgt%7D#card=math&code=%5Ctilde%7BY%7D_%7Bgt%7D&id=HWrPO">与<img src="https://g.yuque.com/gr/latex?Y_%7Bcoarse%7D#card=math&code=Y_%7Bcoarse%7D&id=edKJb">大小相同。第二项是精细输出<img src="https://g.yuque.com/gr/latex?Y_%7Bdetail%7D#card=math&code=Y_%7Bdetail%7D&id=JiL76">与完整基准<img src="https://g.yuque.com/gr/latex?Y_%7Bgt%7D#card=math&code=Y_%7Bgt%7D&id=fPCp1">之间的距离。</p>
+<p>在我们的实验中，我们同时使用<img src="https://g.yuque.com/gr/latex?CD#card=math&code=CD&id=TVXJp">和<img src="https://g.yuque.com/gr/latex?EMD#card=math&code=EMD&id=oarc8">作为<img src="https://g.yuque.com/gr/latex?d_1#card=math&code=d_1&id=RQ29M">，仅使用<img src="https://g.yuque.com/gr/latex?CD#card=math&code=CD&id=yvDA2">作为<img src="https://g.yuque.com/gr/latex?d_2#card=math&code=d_2&id=ryWwQ">。这是因为<img src="https://g.yuque.com/gr/latex?EMD#card=math&code=EMD&id=rJOAZ">逼近模式的计算复杂度为<img src="https://g.yuque.com/gr/latex?O(n%5E2)#card=math&code=O%28n%5E2%29&id=CHQl0">，当<img src="https://g.yuque.com/gr/latex?n#card=math&code=n&id=qMcMP">比较大时训练期间的计算成本也比较高，而<img src="https://g.yuque.com/gr/latex?CD#card=math&code=CD&id=rgtoo">使用有效的数据结构（如：KDTree）完成最近邻搜索时其计算复杂度为<img src="https://g.yuque.com/gr/latex?O(n%5Clog%20n)#card=math&code=O%28n%5Clog%20n%29&id=RmmS0">。</p>
+<p>注：[^注1]：在计算机科学中，<img src="https://g.yuque.com/gr/latex?EMD#card=math&code=EMD&id=S35V3">是一个区域<img src="https://g.yuque.com/gr/latex?D#card=math&code=D&id=yMq4t">上两个概率分布之间的距离度量。在数学中，就是Wasserstein测度。</p>
+<h1 id="Sec05-实验"><a href="#Sec05-实验" class="headerlink" title="Sec05 实验"></a>Sec05 实验</h1><p>首先，在本节中描述了如何创建一个大尺度、多类别数据集用于训练我们的模型。其次，通过比较我们的方法与现在的方法形成对比，以及我们的方法在合成形状上的消融版本。最后，展示了真实世界点云的补全结果，并且介绍了这个结果如何帮助下游的任务（如：点云配准，Point Cloud Registration）。</p>
+<h2 id="Sec0501-数据生成与模型训练"><a href="#Sec0501-数据生成与模型训练" class="headerlink" title="Sec0501 数据生成与模型训练"></a>Sec0501 数据生成与模型训练</h2><p>为了训练我们的模型，我们使用来自ShapeNet的合成CAD模型去创建一个大尺度数据集，数据集中包含了成对的局部和完整的点云<img src="https://g.yuque.com/gr/latex?(X,Y)#card=math&code=%28X%2CY%29&id=QuwxN">。具体就是，从8个类别（飞机、储藏柜、汽车、椅子、电灯、沙发、桌子、器皿）中选择30974个模型。完整点云是从网格表面均匀抽样16384个点创建的，部分点云是将2.5D深度图反向投影到3D生成的。我们使用反向投影深度图生成部分点云输入，而不是完整点云的子集，是为了将输入分布更加接近真实世界的传感器数据。对于每个模型，8个部分点云来自8个随机分布的视角生成。请注意，部分点云可以拥有不同的尺寸。</p>
+<p>我们选择使用合成数据集来生成训练数据，是因为它包含了真实数据集中没有的完整的、精细的对象三维模型。尽管最近出现的数据集（如：ScanNet[8]和S3DIS[2]）拥有非常高质量的三维重建，但是这些重建受限于扫描仪的视角而存在缺失区域，因此它们不足以成为我们的模型的基准数据。</p>
+<p>我们保留了100个模型用于验证，150个模型用于检测，剩余的模型用于训练。我们的模型都使用初始学习率为0.0001的Adam[^20]优化器进行了50轮训练，批处理大小是32。学习率每5万次衰减<img src="https://g.yuque.com/gr/latex?0.7#card=math&code=0.7&id=rxOJ7">。</p>
+<h2 id="Sec0502-ShapeNet的补全结果"><a href="#Sec0502-ShapeNet的补全结果" class="headerlink" title="Sec0502 ShapeNet的补全结果"></a>Sec0502 ShapeNet的补全结果</h2><p>在本小节中，我们在ShapeNet的合成点云上对比了我们的方法和几个强基线，包括：表示体素网格、我们模型的修改版本。我们还检测了在新颖的形状上我们的方法的泛化能力，以及我们的模型在面对遮挡和噪声时的稳健性。</p>
+<h3 id="基线"><a href="#基线" class="headerlink" title="基线"></a>基线</h3><p>先前基于点的补全方法，或者假设了输入的点云比我们已经拥有更加完整[18]，或者使用了形状的先验知识（如：语义分类、对称性、部件分割[52]），因此无法与我们的方法直接比较。这里，我们对比了我们的模型与四个强基线模型，这类模型与我们的模型一样工作在多类别的对象上，也存在不同程度的不完整性。</p>
+<ol>
+<li>3D-EPN[^9]：这是一类体素补全方法的代表，也是在大型合成数据集上实现了端到端的训练。为了比较3D-EPN的距离场输出与PCN的点云输出，我们将距离场转换为点云，转换方法是在一个很小的值<img src="https://g.yuque.com/gr/latex?d#card=math&code=d&id=RGgQE">上提取等位面，并且在结果网格上均匀采样16384个点。为了保证比较的公平，我们还转换PCN的点云输出为距离场，转换方法是从网格中心到输出中的最近点计算距离。</li>
+<li>FC：这是一个与PCN使用了相同编码器的网络，但是其解码器是一个3层全连接网络，这个网络直接输出16384个点的坐标。</li>
+<li>Folding（折叠）：这是一个与PCN使用了相同编码器的网络，但是其解码器纯粹是基于折叠的[^60]，用于将一个<img src="https://g.yuque.com/gr/latex?128%5Ctimes128#card=math&code=128%5Ctimes128&id=MFiB9">的2D栅格转换为3D点云。</li>
+<li>PN2：这是一个与PCN使用了相同解码器的网络，但是其编码器是PointNet++[^38]。</li>
+</ol>
+<p>我们提供了两种版本的模型用于比较，它们分别是：PCN-CD和PCN-EMD。粗略输出的点的个数<img src="https://g.yuque.com/gr/latex?s=1024#card=math&code=s%3D1024&id=Z3hXk">，精细输出的点的个数<img src="https://g.yuque.com/gr/latex?n=16384#card=math&code=n%3D16384&id=exWMM">。对于粗略输出的损失函数，PCN-CD使用CD，PCN-EMD使用EMD。请注意，对于精细输出的损失函数，受到EMD的计算复杂度的限制，两种模型都使用CD。</p>
+<h3 id="测试集"><a href="#测试集" class="headerlink" title="测试集"></a>测试集</h3><p>我们创建了两个测试集：一个是从参与了训练的8个类别中保留的150个形状组成；一个是从没有参与训练的8个类别中保留的150个形状组成。我们将新的类别分成两组：一组在视觉上与训练类别相似：床、长凳、书架和公共汽车；另一组在视觉上与训练类别不相似：吉他、摩托车、手枪和滑板。图3中给出了定理比较结果，图9中给出了定性比较结果。</p>
+<p><img src="/images/1651809308897-adfbb868-8a4e-4ba6-b06e-9fffcfcd4315.png"></p>
+<p>图3：ShapeNet上的定量比较。对于CD（上）和EMD（下），下面的效果更好。(a)展示了从参与了训练的相同类别中测试案例的结果。(b)展示了没有参与训练的类别中测试案例的结果，这些类别分为相似的（公共汽车、床、书架、长凳）和不相似的（吉他、摩托车、滑板、手枪）。</p>
+<p><img src="/images/1651809319359-3f5c2a90-391d-4869-b63d-431b179d2a17.png"></p>
+<p>图9：ShapeNet上定性补全结果。上面四行是训练期间使用过的类别的结果。下面四行是训练期间没有见过的类别的结果。</p>
+<h3 id="度量"><a href="#度量" class="headerlink" title="度量"></a>度量</h3><p>我们在点云上使用的度量是输出的点云和基准点云之间的CD和EMD，定义见Sec0403。图5中使用插图展示了两个度量之间的差别。我们可以看出当全局结构不同时（如：椅子靠背的角附近）CD的值很高。另一方面，EMD更加分散，因为它惩罚了两个点云之间的稠密差。请注意，EMD的均值远大于CD。这是因为EMD需要点之间一对一的对应关系，而CD可以是一对多的对应关系。</p>
+<p><img src="/images/1651809333667-fc25c734-0e85-4e09-9073-b82da662174f.png"></p>
+<p>图5：CD（左）和EMD（右）的插图表示。上面一行展示了我们的模型的输出，下面一行展示了基准的输出。左边的点通过它们到其他点云最近点的距离上色（近邻距离，Nearest Neighbor Distance，NN）。右边的点通过最优双射下对应点的距离上色（匹配距离）。平均CD是近邻距离的均值，平均EMD是匹配距离的均值。</p>
+<p>我们在距离场中使用的度量是输出距离场和基准距离场之间的<img src="https://g.yuque.com/gr/latex?L_1#card=math&code=L_1&id=Mw0Vc">距离，跟[^8]中一样。为了在不同的维度上拥有可以比较的数字，我们将误差从体素距离转换为模型的测度空间距离。</p>
+<h3 id="新颖对象的泛化性"><a href="#新颖对象的泛化性" class="headerlink" title="新颖对象的泛化性"></a>新颖对象的泛化性</h3><p>如图3b所示，我们的方法在新颖类别的对象上优于所有的基线。更加重要的是，我们的模型的性能并没有受到显著地影响，甚至在可视化不相似的类别中（如：图9中的手枪）。这个说明通过我们的模型学习得到了形状先验。</p>
+<h3 id="体素方法的比较"><a href="#体素方法的比较" class="headerlink" title="体素方法的比较"></a>体素方法的比较</h3><p>可以看出，我们的方法无论在CD还是在EMD上都显著地优于3D-EPN方法。为了更好地解释数字，在图4a和图4b上，我们展示了对于测试集中的每个实例，我们的基于CD和EMD的补全结果相比3D-EPN都有巨大的提升。此外，它们还改善了3D-EPN上误差很大的例子，说明它们具有处理具有挑战性的、先前的方法处理失败的例子的能力。</p>
+<p>在图4c中，我们的模型的输出被转换为距离场时获得了更低的<img src="https://g.yuque.com/gr/latex?L_1#card=math&code=L_1&id=o1CKA">距离。而且，我们的方法相比3D-EPN在高分辨率上改进更加显著。</p>
+<h3 id="解码器的比较"><a href="#解码器的比较" class="headerlink" title="解码器的比较"></a>解码器的比较</h3><p>在图3中，我们提出的解码器与现在的解码器设计进行了比较。我们的多阶段设计混合了全连接解码器和基于折叠的解码器的优点，并且获得了比它们更好的结果。依据定性的结果，我们发现全连接解码器在输出点的局部稠密上没有提供任何约束，并且输出点经常在区域中过度中心化（如：桌子的表面），这样会导致很高的EMD值。另一方面，基于折叠的解码器经常产生在空间中浮动的点，并且与基准数据的全局几何性质不一致，这样会导致很高的CD值。这是因为我们的数据集的形状包括许多凹面和尖锐的边，这使得全局折叠一个2D平面到一个3D形状非常具有挑战性。FoldingNet[^60]通过链接两个折叠操作来解决这个问题。然而，仅通过局部的折叠操作，我们的解码器仅使用一次折叠操作就能够获得更好的性能。</p>
+<h3 id="编码器比较"><a href="#编码器比较" class="headerlink" title="编码器比较"></a>编码器比较</h3><p>图3中的另一对比较是堆叠的PN和PN2[^38]分别作为编码器。PN2是层次特征提取网络的代表，这类网络在全局池化之前将局部信息聚集在一起。我们的结果说明堆叠PN的编码器效果更优，因为堆叠PN的编码器仅使用了全局池化。我们相信，对于我们处理的局部数据，由于局部近邻选择中的子优化，局部优化没有全局优化稳定。因此，我们认为使用堆叠PN层代替局部池化是混合局部信息和全局信息的更好的方法。</p>
+<h3 id="参数数量"><a href="#参数数量" class="headerlink" title="参数数量"></a>参数数量</h3><p>表1：可以训练的模型参数的数量</p>
+<table>
+<thead>
+<tr>
+<th>方法</th>
+<th>3D-EPN</th>
+<th>FC</th>
+<th>折叠</th>
+<th>PN2</th>
+<th>PCN</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>参数数量</td>
+<td>5240万</td>
+<td>5320万</td>
+<td>240万</td>
+<td>679万</td>
+<td>685万</td>
+</tr>
+</tbody></table>
+<p>如表1所示，我们的模型相比3D-EPN和FC在参数数量上少了一个数量级，同时明显地获得了更好的性能。</p>
+<h3 id="遮挡和噪声的稳健性"><a href="#遮挡和噪声的稳健性" class="headerlink" title="遮挡和噪声的稳健性"></a>遮挡和噪声的稳健性</h3><p>现在，我们的方法测试传感器噪声和大尺度遮挡的稳健性。具体来说，我们使用高斯噪声（标准差是深度图度量的0.01倍）扰动了深度图，并且用一个掩膜（覆盖<img src="https://g.yuque.com/gr/latex?p%5C%25#card=math&code=p%5C%25&id=hlNbS">个点）进行遮挡，<img src="https://g.yuque.com/gr/latex?p#card=math&code=p&id=mQzCJ">的取值为<img src="https://g.yuque.com/gr/latex?0%5C%25#card=math&code=0%5C%25&id=CUsKk">到<img src="https://g.yuque.com/gr/latex?80%5C%25#card=math&code=80%5C%25&id=ZFdYI">。此外，我们随机设计<img src="https://g.yuque.com/gr/latex?1%5C%25#card=math&code=1%5C%25&id=iOGkP">的试题值为<img src="https://g.yuque.com/gr/latex?d_%7Bmax%7D=1.6#card=math&code=d_%7Bmax%7D%3D1.6&id=akpwR">。</p>
+<p><img src="/images/1651809350637-64cf177a-7b1e-4722-bfb8-283b78a216bd.png"></p>
+<p>图6：基于不同水平的可见性带噪声的输入产生的定性（上）与定量（下）的结果。</p>
+<p>如图6所示，（CD和EMD）的误差是依据遮挡区域的大小逐步增长的。请注意，我们的模型没有基于这些遮挡和噪声样例进行训练，但是它们依然对其保持稳健性。模型学习得到的很强的形状先验帮助模型忽略噪声点，并且在遮挡下预测合理的输出。这个表现部分地说明了模型在真实世界的数据下也具有很强的泛化性，就如我们在后续的章节中展示的那样。</p>
+<h2 id="Sec0503-KITTI的补全结果"><a href="#Sec0503-KITTI的补全结果" class="headerlink" title="Sec0503 KITTI的补全结果"></a>Sec0503 KITTI的补全结果</h2><p>在本次实验中，我们的补全方法检测了从真实世界的激光雷达中扫描的局部点云数据。具体来说，我们从KITTI数据集中执行了一系列的Velodyne（激光雷达生产商）扫描[^13]。我们提取每一帧中标记为汽车的对象边界框内的点，从而产生2483个局部点云。每个点云都被转换为盒子的坐标，用一个从ShapeNet的汽车上训练的PCN进行补全，并且转换回世界坐标帧，操作过程参考图16。我们使用一个专门在汽车上训练的模型来整合对象类别的先验知识。拥有这样的先验知识对于我们的方法来说并非必要，但是可以帮助模型获得更好的性能。</p>
+<p><img src="/images/1651809386756-aae0f207-0726-4e74-8a1e-ab242a42d10a.png"><br>图16：KITTI的定性补全结果</p>
+<p>我们没有KITTI的补全的基准点云数据。因此，我们提出了三个代替的测度去评估模型的性能：</p>
+<ol>
+<li>保真度。这是输入的输入的每个点到输出中它的最近邻点的距离均值，这个测度表明输入的保留程度。</li>
+<li>最小匹配距离（Minimal Matching Distance，MMD）。它是输出和ShapeNet的汽车点云之间的倒角距离（Chamfer Distance，CD），这个测度表明就CD而言，其最接近输出点云的程度。</li>
+<li>一致性。这是连续帧中相同实例的补全输出之间的CD均值。这个测度表明网络的输入与输出之间的变化程度。作为比较，我们还计算了连续帧的输入之间的CD均值，表示为一致性（输入）。这些指标在表2中报告。</li>
+</ol>
+<p>表2：KITTI的定理结果</p>
+<table>
+<thead>
+<tr>
+<th>保真度</th>
+<th>MMD</th>
+<th>一致性</th>
+<th>一致性（输入）</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>0.02800</td>
+<td>0.01850</td>
+<td>0.01163</td>
+<td>0.05121</td>
+</tr>
+</tbody></table>
+<p>与来自2.5D图像反向投影成点云不同，来自激光雷达扫描的点云非常稀疏。2483个局部点云平均包含440个点，某些点云中点的数量甚至低于10个。相反，训练中使用的来自2.5D图像的点云中点的数量经常超过1000个。尽管如此，我们的模型能够在无需什么精调的情况下，在两个分布之间轻松地转换，从极端的局部输入中生成一致的补全。这个结果可以归因于使用了基于点的表示方法，相比体素表示方法其敏感性更低。此外，我们的模型的每次预测在Nvidia GeForce 1080Ti GPU上只需要0.0012秒，在3.6GHz Intel Core i7-7700 CPU 上只需要2秒，证明它非常适合实时应用。</p>
+<h2 id="Sec0504-基于补全实现点云配准"><a href="#Sec0504-基于补全实现点云配准" class="headerlink" title="Sec0504 基于补全实现点云配准"></a>Sec0504 基于补全实现点云配准</h2><p>点云上的许多常见任务都可以受益于更加完整和稠密的输入。在这里，作为这种应用的例子，展示了我们的网络可以改善点云配准的结果。具体来说，我们对来自Sec0503的相同的Velodyne序列中的相邻帧的汽车点云执行配准，使用PCL[40]中实现的简单的点对点ICP[5]算法。这样产生了2396个配准实例。我们向配准算法提供了两种输入：一种来自原始扫描的局部点云；一种是从ShapeNet的汽车类别上训练的PCN生成的补全点云。我们比较了局部输入和全局输入中配准结果上的旋转误差和平移误差。旋转误差的计算公式：<img src="https://g.yuque.com/gr/latex?2%5Ccos%5E%7B-1%7D(2%5Clangle%20q_1,q_2%5Crangle%5E2-1)#card=math&code=2%5Ccos%5E%7B-1%7D%282%5Clangle%20q_1%2Cq_2%5Crangle%5E2-1%29&id=iiev5">，其中<img src="https://g.yuque.com/gr/latex?q_1,q_2#card=math&code=q_1%2Cq_2&id=chgTv">是基准旋转的四元数表示，并且旋转计算来自ICP。这个结果度量了<img src="https://g.yuque.com/gr/latex?q_1,q_2#card=math&code=q_1%2Cq_2&id=EO08U">之间的角度。平移误差的计算公式：<img src="https://g.yuque.com/gr/latex?%5C%7Ct_1-t_2%5C%7C_2#card=math&code=%5C%7Ct_1-t_2%5C%7C_2&id=RVCTQ">，其中<img src="https://g.yuque.com/gr/latex?t_1#card=math&code=t_1&id=F1tVC">是基准平移，<img src="https://g.yuque.com/gr/latex?t_2#card=math&code=t_2&id=xYYIw">是通过ICP计算的平移。</p>
+<p>如图7a和图7b中所示，由PCN产生的补全点云，旋转和平移估计更加精确，并且显著地改善了局部点云的较大误差。图7c展示了一些定性的例子。可以看出，完整的点云更容易配准，因为它们包含了更大的重叠，那么重叠的区域中很大一部分是PCN补全的。请注意，我们的补全结果带来的改善不仅针对于ICP，还可以应用到任意的配准算法中。</p>
+<p><img src="/images/1651809426934-e8c547f0-9e73-4d15-9b65-b6bc1eef7a7c.png"></p>
+<p>图7：点云配准的改进。在(a)和(b)中，x-轴表示不同的配准实例。蓝色竖条的高度表示相比局部点云配准，补全点云配准的改进程度。红色曲线是局部点云的配准误差。红色曲线和蓝色竖条之间的差是补全点云的配准误差。在(c)中，同样的实例配准后的局部点云（左）和配准后的补全点云（右）</p>
+<h1 id="Sec06-讨论"><a href="#Sec06-讨论" class="headerlink" title="Sec06 讨论"></a>Sec06 讨论</h1><p>根据我们的模型，已经可以确定两个主要的错误模式：</p>
+<ol>
+<li>有些对象实例由多个断开的部件组成。我们的模型没有意识到这一点，并且错误地将部件连接到一起。这很可能是从训练数据集中学到的强先验导致的结果，因为数据集中的对象几乎都是连接在一起的 。</li>
+<li>有些对象包含非常细薄的结构，例如：电线。我们的模型有的时候不能恢复这样的结构。这存在两种可能： <ol>
+<li>来自这些结构的点通常是稀疏的，因为它们的表面积很小使得3D特征抽取更加困难</li>
+<li>与大多数对象的表面不同，细薄结构的局部几何性质与2D栅格没有相似性，这使得我们的模型很难将2D栅格变形为这类细薄结构。</li>
+</ol>
+</li>
+</ol>
+<p>这些失败案例的部分可视化参见图8。</p>
+<p><img src="/images/1651809437250-036bec51-2681-4d3e-a6d0-8d205c555c90.png"></p>
+<p>图8：失败模式：细薄结构（上）和断开组件（下）</p>
+<h1 id="Sec07-结论"><a href="#Sec07-结论" class="headerlink" title="Sec07 结论"></a>Sec07 结论</h1><p>我们已经提出了一种使用点云而无需体素化执行形状补全的新方法。为此，我们设计了一个深度学习架构，结合了现存结构的优点使用一种从粗到细的方式去生成稠密点云，相比基于体素的模型使用更少的参数实现高分辨率补全。我们的方法对于多种对象类别都有效。此外，模型对于未见过的对象和真实世界的数据表现了很强的泛化性能。我们的基于点的补全方法相比基于体素的方法更具扩展性和稳健性，这使得它更适合处理更加复杂的数据（如：场景数据）。</p>
+<h1 id="附录"><a href="#附录" class="headerlink" title="附录"></a>附录</h1><h2 id="A-概论"><a href="#A-概论" class="headerlink" title="A.概论"></a>A.概论</h2><p>在本文的主体中，我们提供了技术细节和附加的定量与定性结果。接下来：</p>
+<ul>
+<li>SecB。我们描述了局部折叠操作的细节；</li>
+<li>SecC。提供对比Sec0502模型的特定参数；</li>
+<li>SecD和SecE。展示了在ShapeNet和KITTI上的更多结果与失败案例；</li>
+<li>SecF。提供了网络设计的进一步分析；</li>
+<li>SecG。显示了更多可视化结果。</li>
+</ul>
+<h2 id="B-局部折叠操作"><a href="#B-局部折叠操作" class="headerlink" title="B.局部折叠操作"></a>B.局部折叠操作</h2><p>在这里，我们详细描述了Sec0402中提及的局部折叠操作。如图10所示，折叠操作在粗略输出<img src="https://g.yuque.com/gr/latex?Y_%7Bcoarse%7D#card=math&code=Y_%7Bcoarse%7D&id=FheQo">和<img src="https://g.yuque.com/gr/latex?k#card=math&code=k&id=tBC6z">维全局特征<img src="https://g.yuque.com/gr/latex?%5Cmathbf%7Bv%7D#card=math&code=%5Cmathbf%7Bv%7D&id=xneqQ">中取点<img src="https://g.yuque.com/gr/latex?%5Cmathbf%7Bq%7D_i#card=math&code=%5Cmathbf%7Bq%7D_i&id=eagAb">作为输入，并且在以<img src="https://g.yuque.com/gr/latex?%5Cmathbf%7Bq%7D_i#card=math&code=%5Cmathbf%7Bq%7D_i&id=AmXd4">为中心的局部坐标中通过变形<img src="https://g.yuque.com/gr/latex?u%5Ctimes%20u#card=math&code=u%5Ctimes%20u&id=KdUjN">栅格生成<img src="https://g.yuque.com/gr/latex?t=u%5E2#card=math&code=t%3Du%5E2&id=ThaiI">个点的块。它首先在以零点为中心的边长为<img src="https://g.yuque.com/gr/latex?r#card=math&code=r&id=c9Pmy">（<img src="https://g.yuque.com/gr/latex?r#card=math&code=r&id=lP339">控制输出块的尺寸）的<img src="https://g.yuque.com/gr/latex?u%5Ctimes%20u#card=math&code=u%5Ctimes%20u&id=X4lw0">大小的栅格中取点，然后组织它们的坐标为<img src="https://g.yuque.com/gr/latex?t%5Ctimes2#card=math&code=t%5Ctimes2&id=ZB3wi">的矩阵<img src="https://g.yuque.com/gr/latex?G#card=math&code=G&id=qoCg7">。然后，它使用中心点<img src="https://g.yuque.com/gr/latex?%5Cmathbf%7Bq%7D_i#card=math&code=%5Cmathbf%7Bq%7D_i&id=P9uHa">和全局特征向量<img src="https://g.yuque.com/gr/latex?%5Cmathbf%7Bv%7D#card=math&code=%5Cmathbf%7Bv%7D&id=XcxEB">的坐标拼接<img src="https://g.yuque.com/gr/latex?G#card=math&code=G&id=o5Pk1">的每一行，并且通过共享的MLP传递结果矩阵生成<img src="https://g.yuque.com/gr/latex?t%5Ctimes3#card=math&code=t%5Ctimes3&id=mwmrZ">的矩阵<img src="https://g.yuque.com/gr/latex?Q#card=math&code=Q&id=uXxiV">，即以<img src="https://g.yuque.com/gr/latex?%5Cmathbf%7Bq%7D_i#card=math&code=%5Cmathbf%7Bq%7D_i&id=fiCRr">为中心的局部块。这个共享MLP可以被解释为一个非线性变换，用于将2D栅格变换为3D空间中的平滑的2D流形。注意到相同的MLP被用于为每个<img src="https://g.yuque.com/gr/latex?%5Cmathbf%7Bq%7D_i#card=math&code=%5Cmathbf%7Bq%7D_i&id=MRh6O">的局部块生成中，因此参数的数目在局部折叠操作不会增长得超过输出的大小。</p>
+<p><img src="/images/1651809456488-1dad5fe7-de03-4c51-bad0-2ee15a06d5f4.png"></p>
+<p>图10：折叠操作</p>
+<h2 id="C-网络架构细节"><a href="#C-网络架构细节" class="headerlink" title="C.网络架构细节"></a>C.网络架构细节</h2><p>在这里，我们介绍了相比Sec0502的模型架构的细节。我们使用的3D-EPN模型是3D-EPN-unet-class，来自于[^9]的最佳效果模型。对于见过的类别，我们使用<img src="https://g.yuque.com/gr/latex?128%5E3#card=math&code=128%5E3&id=qQVb5">输出，其中包含了附加数据集的检索步骤。对于未见过的类别，我们使用原始的来自于模型的<img src="https://g.yuque.com/gr/latex?32%5E3#card=math&code=32%5E3&id=UKIie">的输出。</p>
+<p>堆叠的PN编码器用在了全连接网络（FC）、折叠网络（Folding）、PCN-CN和PCN-EMD（包含2个PN层）中。共享MLP在第一个PN层拥有2个层（128，256）。共享MLP在第二个PN层拥有两个层（512，1024）。我们模型拥有的PN2编码器与SSG网络[^38]中是相同的架构。</p>
+<ul>
+<li>FC网络的解码器包含3个全连接层（1024，1024，<img src="https://g.yuque.com/gr/latex?16384%5Ctimes3#card=math&code=16384%5Ctimes3&id=dvOXM">）</li>
+<li>Folding网络的解码器2个折叠层，如[^60]，其中第二层取第一层的输出来代替2D栅格。请注意这些折叠层与SecB中描述的并不相同，这里的折叠层并不取中心点坐标作为输入。每个折叠层拥有一个3层（512，512，3）的共享MLP。栅格的大小<img src="https://g.yuque.com/gr/latex?u=128#card=math&code=u%3D128&id=vRy1W">，栅格的尺度<img src="https://g.yuque.com/gr/latex?r=0.5#card=math&code=r%3D0.5&id=VKrwX">。</li>
+<li>PCN-CD和PCN-EMD中的多阶段解码器拥有3个全连接层（1024，1024，<img src="https://g.yuque.com/gr/latex?1024%5Ctimes3#card=math&code=1024%5Ctimes3&id=FDPhL">），后面紧跟一个SecB中描述的折叠层，其中栅格大小<img src="https://g.yuque.com/gr/latex?u=4#card=math&code=u%3D4&id=UmCDo">，栅格尺度<img src="https://g.yuque.com/gr/latex?r=0.05#card=math&code=r%3D0.05&id=u7hdA">。折叠层包含三层共享MLP（512，512，3）。</li>
+</ul>
+<h2 id="D-ShapeNet的其他结果"><a href="#D-ShapeNet的其他结果" class="headerlink" title="D.ShapeNet的其他结果"></a>D.ShapeNet的其他结果</h2><p>表3：关键点数目对比输入点数目</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>点的平均数</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>输入</td>
+<td>1105</td>
+</tr>
+<tr>
+<td>关键点（第一个PN层）</td>
+<td>101</td>
+</tr>
+<tr>
+<td>关键点（第二个PN层）</td>
+<td>363</td>
+</tr>
+</tbody></table>
+<p>表4：ShapeNet数据集中已知类别的倒角距离（CD）</p>
+<p><img src="/images/1651809478396-f7a30dfb-b5be-4136-8fd8-38591ec74b24.png"><br>表5：ShapeNet数据集中已知类别的地动距离（EMD）</p>
+<p><img src="/images/1651809489131-78c60ce6-6878-4f76-a904-1ce93ad149d5.png"></p>
+<p>表6：ShapeNet数据集中未知类别的倒角距离（CD）</p>
+<p><img src="/images/1651809492287-c8d2e276-385a-4ee4-828d-c0469946316d.png"></p>
+<p>表7：ShapeNet数据集中未知类别的地动距离（EMD）</p>
+<p><img src="/images/1651809498577-5108a462-5798-47fe-baca-3404e92b7450.png"></p>
+<p>表4，5，6和7显示了来自ShapeNet的测试实例的定量结果，与论文主体中的表 3形成了对比。图9展示了来自于已知类别和未知类别的形状的定性比较。如我们所见，3D-EPN的输出经常包含缺失的或者多余的部件；FC的输出是精确的，但是点过于集中在某些区域；Folding的输出包含了许多浮动的点；PN2的输出是模糊的；我们的模型的输出在全局几何性质和局部点密度上与基准数据匹配地最好。</p>
+<h2 id="E-KITTI的其他结果"><a href="#E-KITTI的其他结果" class="headerlink" title="E.KITTI的其他结果"></a>E.KITTI的其他结果</h2><p><img src="/images/1651809522362-41bbabb2-a25b-45a8-b2b4-6494be254d57.png"><br>图11：在KITTI汽车补全中保真度误差和最小匹配距离的分布</p>
+<p><img src="/images/1651809528428-1f19a026-c39e-43a8-b492-917334bb2dac.png"></p>
+<p>图12：KITTI的汽车模型（左）、补全模型（中）和匹配模型（右）。右边的匹配模型是来自ShapeNet中的基于倒角距离最接近补全输出的汽车点云。图（上）展示了成功的补全，图（下）展示了由于错误的分割导致的失败案例。</p>
+<p>图11显示了在KITTI的补全结果上保真度误差和最小匹配距离的分布。可以看出存在少量的错误案例拥有非常高的误差导致Sec0503中报告的均值发生偏差。图12展示了一些定性的案例。我们基于大量的这种案例观测可知，我们的模型生成了一个有效的汽车形状，同时这个形状与ShapeNet中匹配的模型不同，结果如图12（上）所示。然而，我们还观察到某些失败的案例，如：图12（下）由地面上的额外点或者汽车边界框内的附近物体引起的。这个问题可以通过在传递局部点云到PCN之前增加一个分割步骤给予隐性地解决。</p>
+<h2 id="F-更多的架构分析"><a href="#F-更多的架构分析" class="headerlink" title="F.更多的架构分析"></a>F.更多的架构分析</h2><h3 id="堆叠PN层的效果"><a href="#堆叠PN层的效果" class="headerlink" title="堆叠PN层的效果"></a>堆叠PN层的效果</h3><p>在这里，我们测试了在编码器中拥有不同数目的堆叠PN层的PCN-CD。图13展示了ShapeNet测试集的均值CD和EMD。显而易见，使用2个堆叠PN层好过使用1个的，使用多个堆叠PN层的好处是微乎其微。这里说明2个堆叠PN层在输入中充分地混合了局部的和全局的几何信息。因此，我们在实验中使用2个堆叠PN层，即使使用更多的PN层能够进一步改善PCN的性能。</p>
+<p><img src="/images/1651809540100-19a6d685-5be7-4f9d-b34c-b63c433f38da.png"><br>图13：PN层的不同数目的测试错误</p>
+<h3 id="瓶颈大小的影响"><a href="#瓶颈大小的影响" class="headerlink" title="瓶颈大小的影响"></a>瓶颈大小的影响</h3><p>在这里，我们测试了不同瓶颈大小的PCN-EMD，即全局特征向量<img src="https://g.yuque.com/gr/latex?%5Cmathbf%7Bv%7D#card=math&code=%5Cmathbf%7Bv%7D&id=CLvsv">的长度。ShapeNet测试集上的CD的和EMD的均值如图14所示。可以看出PCN的性能随着瓶颈尺寸变大而变好。在我们的实验中，我们选择瓶颈尺寸为1024，因为更大的瓶颈尺寸2048的模型无法装入到单个GPU内存中。这个意味着使用多个GPU进行训练，PCN的的性能会随着瓶颈尺寸变大而变好。</p>
+<p><img src="/images/1651809546055-2105063a-c0bf-4be0-a0bc-7e73eb1a9a8f.png"></p>
+<p>图14：不同的瓶颈大小的测试错误</p>
+<h2 id="G-更多的可视化"><a href="#G-更多的可视化" class="headerlink" title="G.更多的可视化"></a>G.更多的可视化</h2><h3 id="关键点可视化"><a href="#关键点可视化" class="headerlink" title="关键点可视化"></a>关键点可视化</h3><p>如[^37]中所述，PN层可以被解释为用于描述形状所选择的关键点的集合。更具体地说，共享MLP的每个输出单元都可以被看作点云的函数。点云中选择的关键点是达到了这些点函数中至少一个达到了最大值的点。换句话说，它们是其特征值被最大池化操作“选择”到最终特征向量中的点。请注意，通过实现多个特征函数的最大值，可以多次选择相同的点。事实上，如表3所示，通常情况下，关键点的数量远小于瓶颈大小（1024）或者输入点的数量。这意味着只要这些关键点被保留下来，那么所学到的特征就不会改变。这个性质保证了我们的模型对噪声的稳健性。</p>
+<p>在图15中，我们将堆叠PN编码器中的两个PN层选择的关键点进行了可视化。观察得到，两个PN层以从粗到细的方式总结了形状：</p>
+<ul>
+<li>第一层仅选择了组成形状轮廓的一些点</li>
+<li>第二层选择了更多的点来进一步描绘可见表面</li>
+</ul>
+<p><img src="/images/1651809556089-22d64180-3389-4203-9436-88153f9bab82.png"></p>
+<p>图15：关键点可视化</p>
+<p>请注意，这种从粗到细的描述是在没有任何显式地有监督的情况下出现的。</p>
+<h3 id="特征空间可视化"><a href="#特征空间可视化" class="headerlink" title="特征空间可视化"></a>特征空间可视化</h3><p>在图17中，我们使用t-SNE[^27]将ShapeNet测试案例中的1024维的全局特征嵌入表示到2D空间中。可以看出形状通过它们的语义分类聚集在一起。请注意，这个依然是没有任何有监督的情况下发生的行为，因为我们没有在全部训练期间使用分类标签。</p>
+<p><img src="/images/1651809565002-9a32301c-2264-494d-9168-559fe1daa74d.png"></p>
+<p>图17：在局部点云上学习得到的特征的T-SNE嵌入表示</p>
+
+    </div>
+
+    
+    
+    
+        <div class="reward-container">
+  <div></div>
+  <button onclick="var qr = document.getElementById('qr'); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/images/wechatpay.png" alt="SindreYang 微信支付">
+        <p>微信支付</p>
+      </div>
+      
+      <div style="display: inline-block;">
+        <img src="/images/alipay.png" alt="SindreYang 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>SindreYang
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://blog.mviai.com/2025/%E8%AE%BA%E6%96%87%E7%BF%BB%E8%AF%91_PCN-%E7%82%B9%E8%A1%A5%E5%85%A8%E7%BD%91%E7%BB%9C/" title="论文翻译_PCN-点补全网络">http://blog.mviai.com/2025/论文翻译_PCN-点补全网络/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <span class="exturl" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC9kZWVkLnpo"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</span> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+        
+
+  <div class="followme">
+    <p>欢迎关注我的其它发布渠道</p>
+
+    <div class="social-list">
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="/images/wechat.png">
+            <span class="icon">
+              <i class="fa fa-wechat"></i>
+            </span>
+
+            <span class="label">WeChat</span>
+          </a>
+        </div>
+    </div>
+  </div>
+
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2025/%E8%AE%BA%E6%96%87%E7%BF%BB%E8%AF%91_TANet-%E8%BF%88%E5%90%91%E5%85%A8%E8%87%AA%E5%8A%A8%E6%8E%92%E7%89%99/" rel="prev" title="论文翻译_TANet-迈向全自动排牙">
+      <i class="fa fa-chevron-left"></i> 论文翻译_TANet-迈向全自动排牙
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2025/%E8%AE%BA%E6%96%87%E7%BF%BB%E8%AF%91_MeshSegNet-%E7%89%99%E9%BD%BF%E5%88%86%E5%89%B2%E7%BD%91%E7%BB%9C/" rel="next" title="论文翻译_MeshSegNet-牙齿分割网络">
+      论文翻译_MeshSegNet-牙齿分割网络 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    
+  <div class="comments">
+    <div id="SOHUCS"></div>
+  </div>
+  
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#PCN%EF%BC%9A%E7%82%B9%E8%A1%A5%E5%85%A8%E7%BD%91%E7%BB%9C"><span class="nav-number">1.</span> <span class="nav-text">PCN：点补全网络</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%91%98%E8%A6%81"><span class="nav-number">2.</span> <span class="nav-text">摘要</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Ch01-%E4%BB%8B%E7%BB%8D"><span class="nav-number">3.</span> <span class="nav-text">Ch01 介绍</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Sec02-%E7%9B%B8%E5%85%B3%E5%B7%A5%E4%BD%9C"><span class="nav-number">4.</span> <span class="nav-text">Sec02 相关工作</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#3D%E5%BD%A2%E7%8A%B6%E8%A1%A5%E5%85%A8"><span class="nav-number">4.1.</span> <span class="nav-text">3D形状补全</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%82%B9%E4%BA%91%E4%B8%8A%E7%9A%84%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0"><span class="nav-number">4.2.</span> <span class="nav-text">点云上的深度学习</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Sec03-%E9%97%AE%E9%A2%98%E9%99%88%E8%BF%B0"><span class="nav-number">5.</span> <span class="nav-text">Sec03 问题陈述</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Sec04-%E7%82%B9%E8%A1%A5%E5%85%A8%E7%BD%91%E7%BB%9C"><span class="nav-number">6.</span> <span class="nav-text">Sec04 点补全网络</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Sec0401-%E7%82%B9%E7%89%B9%E5%BE%81%E7%BC%96%E7%A0%81"><span class="nav-number">6.1.</span> <span class="nav-text">Sec0401 点特征编码</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Sec0402-%E5%A4%9A%E9%98%B6%E6%AE%B5%E7%82%B9%E7%94%9F%E6%88%90"><span class="nav-number">6.2.</span> <span class="nav-text">Sec0402 多阶段点生成</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Sec0403-%E6%8D%9F%E5%A4%B1%E5%87%BD%E6%95%B0"><span class="nav-number">6.3.</span> <span class="nav-text">Sec0403 损失函数</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Sec05-%E5%AE%9E%E9%AA%8C"><span class="nav-number">7.</span> <span class="nav-text">Sec05 实验</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Sec0501-%E6%95%B0%E6%8D%AE%E7%94%9F%E6%88%90%E4%B8%8E%E6%A8%A1%E5%9E%8B%E8%AE%AD%E7%BB%83"><span class="nav-number">7.1.</span> <span class="nav-text">Sec0501 数据生成与模型训练</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Sec0502-ShapeNet%E7%9A%84%E8%A1%A5%E5%85%A8%E7%BB%93%E6%9E%9C"><span class="nav-number">7.2.</span> <span class="nav-text">Sec0502 ShapeNet的补全结果</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9F%BA%E7%BA%BF"><span class="nav-number">7.2.1.</span> <span class="nav-text">基线</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B5%8B%E8%AF%95%E9%9B%86"><span class="nav-number">7.2.2.</span> <span class="nav-text">测试集</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BA%A6%E9%87%8F"><span class="nav-number">7.2.3.</span> <span class="nav-text">度量</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%96%B0%E9%A2%96%E5%AF%B9%E8%B1%A1%E7%9A%84%E6%B3%9B%E5%8C%96%E6%80%A7"><span class="nav-number">7.2.4.</span> <span class="nav-text">新颖对象的泛化性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%93%E7%B4%A0%E6%96%B9%E6%B3%95%E7%9A%84%E6%AF%94%E8%BE%83"><span class="nav-number">7.2.5.</span> <span class="nav-text">体素方法的比较</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%A7%A3%E7%A0%81%E5%99%A8%E7%9A%84%E6%AF%94%E8%BE%83"><span class="nav-number">7.2.6.</span> <span class="nav-text">解码器的比较</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BC%96%E7%A0%81%E5%99%A8%E6%AF%94%E8%BE%83"><span class="nav-number">7.2.7.</span> <span class="nav-text">编码器比较</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%82%E6%95%B0%E6%95%B0%E9%87%8F"><span class="nav-number">7.2.8.</span> <span class="nav-text">参数数量</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%81%AE%E6%8C%A1%E5%92%8C%E5%99%AA%E5%A3%B0%E7%9A%84%E7%A8%B3%E5%81%A5%E6%80%A7"><span class="nav-number">7.2.9.</span> <span class="nav-text">遮挡和噪声的稳健性</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Sec0503-KITTI%E7%9A%84%E8%A1%A5%E5%85%A8%E7%BB%93%E6%9E%9C"><span class="nav-number">7.3.</span> <span class="nav-text">Sec0503 KITTI的补全结果</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Sec0504-%E5%9F%BA%E4%BA%8E%E8%A1%A5%E5%85%A8%E5%AE%9E%E7%8E%B0%E7%82%B9%E4%BA%91%E9%85%8D%E5%87%86"><span class="nav-number">7.4.</span> <span class="nav-text">Sec0504 基于补全实现点云配准</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Sec06-%E8%AE%A8%E8%AE%BA"><span class="nav-number">8.</span> <span class="nav-text">Sec06 讨论</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Sec07-%E7%BB%93%E8%AE%BA"><span class="nav-number">9.</span> <span class="nav-text">Sec07 结论</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%99%84%E5%BD%95"><span class="nav-number">10.</span> <span class="nav-text">附录</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#A-%E6%A6%82%E8%AE%BA"><span class="nav-number">10.1.</span> <span class="nav-text">A.概论</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#B-%E5%B1%80%E9%83%A8%E6%8A%98%E5%8F%A0%E6%93%8D%E4%BD%9C"><span class="nav-number">10.2.</span> <span class="nav-text">B.局部折叠操作</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#C-%E7%BD%91%E7%BB%9C%E6%9E%B6%E6%9E%84%E7%BB%86%E8%8A%82"><span class="nav-number">10.3.</span> <span class="nav-text">C.网络架构细节</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#D-ShapeNet%E7%9A%84%E5%85%B6%E4%BB%96%E7%BB%93%E6%9E%9C"><span class="nav-number">10.4.</span> <span class="nav-text">D.ShapeNet的其他结果</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#E-KITTI%E7%9A%84%E5%85%B6%E4%BB%96%E7%BB%93%E6%9E%9C"><span class="nav-number">10.5.</span> <span class="nav-text">E.KITTI的其他结果</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#F-%E6%9B%B4%E5%A4%9A%E7%9A%84%E6%9E%B6%E6%9E%84%E5%88%86%E6%9E%90"><span class="nav-number">10.6.</span> <span class="nav-text">F.更多的架构分析</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A0%86%E5%8F%A0PN%E5%B1%82%E7%9A%84%E6%95%88%E6%9E%9C"><span class="nav-number">10.6.1.</span> <span class="nav-text">堆叠PN层的效果</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%93%B6%E9%A2%88%E5%A4%A7%E5%B0%8F%E7%9A%84%E5%BD%B1%E5%93%8D"><span class="nav-number">10.6.2.</span> <span class="nav-text">瓶颈大小的影响</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#G-%E6%9B%B4%E5%A4%9A%E7%9A%84%E5%8F%AF%E8%A7%86%E5%8C%96"><span class="nav-number">10.7.</span> <span class="nav-text">G.更多的可视化</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%B3%E9%94%AE%E7%82%B9%E5%8F%AF%E8%A7%86%E5%8C%96"><span class="nav-number">10.7.1.</span> <span class="nav-text">关键点可视化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%89%B9%E5%BE%81%E7%A9%BA%E9%97%B4%E5%8F%AF%E8%A7%86%E5%8C%96"><span class="nav-number">10.7.2.</span> <span class="nav-text">特征空间可视化</span></a></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="SindreYang"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">SindreYang</p>
+  <div class="site-description" itemprop="description">沉淀后我愿意做一个温暖的人。有自己的喜好，有自己的原则，有自己的信仰，不急功近利，不浮夸轻薄，宠辱不惊，淡定安逸，心静如水。------不忘初心，方得始终</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">321</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">72</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL1NpbmRyZVlhbmc=" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;SindreYang"><i class="fa fa-fw fa-github"></i>GitHub</span>
+      </span>
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="bWFpbHRvOnl4QG12aWFpLmNvbQ==" title="E-Mail → mailto:yx@mviai.com"><i class="fa fa-fw fa-envelope"></i>E-Mail</span>
+      </span>
+  </div>
+  <div class="cc-license motion-element" itemprop="license">
+    <span class="exturl cc-opacity" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC9kZWVkLnpo"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+  <div class="languages">
+    <label class="lang-select-label">
+      <i class="fa fa-language"></i>
+      <span>简体中文</span>
+      <i class="fa fa-angle-up" aria-hidden="true"></i>
+    </label>
+    <select class="lang-select" data-canonical="">
+      
+        <option value="zh-CN" data-href="/2025/%E8%AE%BA%E6%96%87%E7%BF%BB%E8%AF%91_PCN-%E7%82%B9%E8%A1%A5%E5%85%A8%E7%BD%91%E7%BB%9C/" selected="">
+          简体中文
+        </option>
+      
+        <option value="en" data-href="/en/2025/%E8%AE%BA%E6%96%87%E7%BF%BB%E8%AF%91_PCN-%E7%82%B9%E8%A1%A5%E5%85%A8%E7%BD%91%E7%BB%9C/" selected="">
+          English
+        </option>
+      
+    </select>
+  </div>
+
+        
+
+<div class="copyright">
+  
+  &copy; 2018 – 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">SindreYang</span>
+</div><!-- 页面点击小红心 -->
+<script type="text/javascript" src="/js/love.js"></script>
+<!-- 背景波浪 -->
+<script color="0,0,255" opacity="0.5" zIndex="-1" count="99" src="https://cdn.jsdelivr.net/npm/canvas-nest.js@1/dist/canvas-nest.js"></script>
+
+
+<!-- 腾讯企业邮箱 -->
+<style>
+.bizmail_loginpanel {
+    font-size: 12px;
+    width: 300px;
+    height: auto;
+    background: transparent;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.bizmail_LoginBox {
+    padding: 10px 15px;
+}
+
+
+.bizmail_loginpanel form {
+    margin: 0;
+    padding: 0;
+}
+
+.bizmail_loginpanel input.text {
+    font-size: 12px;
+    width: 100px;
+    height: 20px;
+    margin: 0 2px;
+    background-color: transparent;
+    border:1px solid transparent;
+    box-shadow: none;
+    color: black;
+}
+
+.bizmail_loginpanel .bizmail_column {
+    height: 28px;
+}
+
+.bizmail_loginpanel .bizmail_column label {
+    display: block;
+    float: left;
+    width: 30px;
+    height: 24px;
+    line-height: 24px;
+    font-size: 12px;
+}
+
+.bizmail_loginpanel .bizmail_column .bizmail_inputArea {
+    float: left;
+    width: 240px;
+}
+
+.bizmail_loginpanel .bizmail_column span {
+    font-size: 12px;
+    word-wrap: break-word;
+    margin-left: 2px;
+    line-height: 200%;
+}
+
+.bizmail_loginpanel .bizmail_SubmitArea {
+    margin-left: 30px;
+    clear: both;
+}
+
+.bizmail_loginpanel .bizmail_SubmitArea a {
+    font-size: 12px;
+    margin-left: 5px;
+}
+
+.bizmail_loginpanel select {
+    width: 110px;
+    height: 20px;
+    margin: 0 2px;
+}
+.bizmail_loginpanel input {
+
+    background-color: rgba(83, 126, 236, 0.562);
+}
+
+
+</style>
+
+<script type="text/javascript">
+function checkInput() {
+    var e = document.form1.uin,
+        i = document.form1.pwd;
+    return 0 == e.value.length ? e.focus() : 0 == i.value.length ? i.focus() : (document.form1.submit(), setTimeout(" document.form1.pwd.value = '' ", 500)), !1
+}
+
+function writeLoginPanel(e) {
+    if (e && e.domainlist && -1 != e.domainlist.indexOf(".")) {
+        var a = "return checkInput()",
+            t = '<div id="divLoginpanelHor" class="bizmail_loginpanel" style="width:550px;"><div class="bizmail_LoginBox"><form name="form1" action="https://exmail.qq.com/cgi-bin/login" target="_blank" method="post" onsubmit="' + a + '"><input type="hidden" name="firstlogin" value="false" /><input type="hidden" name="errtemplate" value="dm_loginpage" /><input type="hidden" name="aliastype" value="other" /><input type="hidden" name="dmtype" value="bizmail" /><input type="hidden" name="p" value="" /><label>\u8d26\u53f7:</label><input type="text" name="uin" class="text" value="" />@#domainlist#<label>&nbsp&nbsp&nbsp;\u5bc6\u7801:</label><input type="password" name="pwd" class="text" value="" /><input type="submit" class="" name="" value="\u767b\u5f55" />&nbsp;<a href="https://exmail.qq.com/cgi-bin/readtemplate?check=false&t=biz_rf_portal#recovery" target="_blank">\u5fd8\u8bb0\u5bc6\u7801\uff1f</a></form></div></div>',
+            n = '<div id="divLoginpanelVer" class="bizmail_loginpanel"><div class="bizmail_LoginBox"><form name="form1" action="https://exmail.qq.com/cgi-bin/login" target="_blank" method="post" onsubmit="' + a + '"><input type="hidden" name="firstlogin" value="false" /><input type="hidden" name="errtemplate" value="dm_loginpage" /><input type="hidden" name="aliastype" value="other" /><input type="hidden" name="dmtype" value="bizmail" /><input type="hidden" name="p" value="" /><div class="bizmail_column"><label>\u8d26\u53f7:</label><div class="bizmail_inputArea"><input type="text" name="uin" class="text" value="" />@#domainlist#</div></div><div class="bizmail_column"><label>\u5bc6\u7801:</label><div class="bizmail_inputArea"><input type="password" name="pwd" class="text" value="" /></div></div><div class="bizmail_SubmitArea"><input type="submit" class="" name="" style="width:66px;" value="\u767b\u5f55" /><a href="https://exmail.qq.com/cgi-bin/readtemplate?check=false&t=biz_rf_portal#recovery" target="_blank">\u5fd8\u8bb0\u5bc6\u7801\uff1f</a></div></form></div></div>',
+            l = e.domainlist.split(";");
+        if (1 == l.length) var m = '<span>#domain#</span><input type="hidden" name="domain" value="#domain#" />'.replace(/#domain#/g, l[0]);
+        else {
+            m = '<select name="domain">';
+            for (i = 0; i < l.length; i++) m += '<option value="' + l[i] + '">' + l[i] + "</option>";
+            m += "</select>"
+        }
+        e.mode && "vertical" != e.mode && "both" != e.mode || document.write(n.replace(/#domainlist#/g, m)), "horizontal" != e.mode && "both" != e.mode || document.write(t.replace(/#domainlist#/g, m))
+    }
+}
+
+</script>      
+
+<script type="text/javascript"> writeLoginPanel({domainlist:"mviai.com", mode:"horizontal"});</script>      
+
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script size="300" alpha="0.6" zIndex="-1" src="/lib/canvas-ribbon/canvas-ribbon.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/medium-zoom@1/dist/medium-zoom.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+  <script defer src="/lib/three/three.min.js"></script>
+    <script defer src="/lib/three/three-waves.min.js"></script>
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+<script>
+document.querySelectorAll('.pdfobject-container').forEach(element => {
+  let url = element.dataset.target;
+  let pdfOpenParams = {
+    navpanes : 0,
+    toolbar  : 0,
+    statusbar: 0,
+    pagemode : 'thumbs',
+    view     : 'FitH'
+  };
+  let pdfOpenFragment = '#' + Object.entries(pdfOpenParams).map(([key, value]) => `${key}=${encodeURIComponent(value)}`).join('&');
+  let fullURL = `/lib/pdf/web/viewer.html?file=${encodeURIComponent(url)}${pdfOpenFragment}`;
+
+  if (NexT.utils.supportsPDFs()) {
+    element.innerHTML = `<embed class="pdfobject" src="${url + pdfOpenFragment}" type="application/pdf" style="height: ${element.dataset.height};">`;
+  } else {
+    element.innerHTML = `<iframe src="${fullURL}" style="height: ${element.dataset.height};" frameborder="0"></iframe>`;
+  }
+});
+</script>
+
+
+
+
+  
+
+  
+
+  <script>
+  NexT.utils.loadComments(document.querySelector('#SOHUCS'), () => {
+    var appid = 'cyxmItxjS';
+    var conf = 'e5e71132d9086bb54aeeba6e88e87df9';
+    var width = window.innerWidth || document.documentElement.clientWidth;
+    if (width < 960) {
+      window.document.write('<script id="changyan_mobile_js" charset="utf-8" type="text/javascript" src="https://cy-cdn.kuaizhan.com/upload/mobile/wap-js/changyan_mobile.js?client_id=' + appid + '&conf=' + conf + '"><\/script>');
+    } else {
+      var loadJs=function(d,a){var c=document.getElementsByTagName("head")[0]||document.head||document.documentElement;var b=document.createElement("script");b.setAttribute("type","text/javascript");b.setAttribute("charset","UTF-8");b.setAttribute("src",d);if(typeof a==="function"){if(window.attachEvent){b.onreadystatechange=function(){var e=b.readyState;if(e==="loaded"||e==="complete"){b.onreadystatechange=null;a()}}}else{b.onload=a}}c.appendChild(b)};loadJs("https://changyan.sohu.com/upload/changyan.js",function(){window.changyan.api.config({appid:appid,conf:conf})});
+    }
+  });
+  </script>
+  <script src="https://cy-cdn.kuaizhan.com/upload/plugins/plugins.count.js"></script>
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/z16.model.json"},"display":{"position":"left","width":75,"height":150},"mobile":{"show":true},"log":false});</script></body>
+</html>
+
+
+
+

@@ -1,0 +1,1860 @@
+<!DOCTYPE html>
+<html lang="zh-CN,en,default">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" href="/lib/pace/pace-theme-minimal.min.css">
+  <script src="/lib/pace/pace.min.js"></script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"blog.mviai.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":true,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":true,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="自动摘要: 	正畸分牙需求分析	20220218阮灵梅		20220314修改			一、需求背景		1.模型前处理后的牙齿模型是一个整体的模型，其中包含了牙齿和牙龈部分；		1.需要将该 ……..">
+<meta property="og:type" content="article">
+<meta property="og:title" content="正畸分牙需求分析">
+<meta property="og:url" content="http://blog.mviai.com/2025/%E6%AD%A3%E7%95%B8%E5%88%86%E7%89%99%E9%9C%80%E6%B1%82%E5%88%86%E6%9E%90/index.html">
+<meta property="og:site_name" content="落叶无痕">
+<meta property="og:description" content="自动摘要: 	正畸分牙需求分析	20220218阮灵梅		20220314修改			一、需求背景		1.模型前处理后的牙齿模型是一个整体的模型，其中包含了牙齿和牙龈部分；		1.需要将该 ……..">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://blog.mviai.com/images/1661493547000-327333c2-623e-49ba-93a7-4265eb3d6b7e.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1661493547966-7302b012-1ca1-41d5-ab26-8ada4a4dc12b.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1661493548629-2530a590-1056-4dd3-b1c6-b3b3439c8da7.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1661493549133-1cfca81a-470e-4210-ad81-8dafae349ff4.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1661493549564-4285629f-f3b7-4dcc-9af0-95366dbbebc7.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1661493550023-7b1629ff-64d1-4f7c-a93d-3d96d480c06c.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1661493550817-60c3cc59-e967-4760-813a-e8a794c2c65c.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1661493551698-24deface-3fff-46db-8713-5b1e75c3698b.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1661493552432-05f6c69b-c950-40cd-9713-adaefd90a146.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1661493552893-155263e9-f858-4cb5-adcf-51fbdb2979bd.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1661493553560-58706f69-1c42-44ea-9fcb-6cfc53486934.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1661493554021-12d2a568-15f5-4695-bf5e-2de0f08cc58e.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1661493555443-f261a6d1-25c1-468f-987e-d287915dc9af.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1661493555948-3bde5c36-15c5-477a-b721-b5f8d90f6b7a.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1661493556526-e5c105e2-db3f-4706-ad29-104878554f8e.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1661493557112-4ae7566c-98e6-4a1f-a98f-2913044a4a9d.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1661493557636-e0090184-e6f2-4d14-9f4c-bd30870f2b6d.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1661493558199-e3587d40-ab78-441f-b1d9-26f86bb568f4.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1661493558659-992b4f5b-459f-4554-a806-f2d6f220f7f2.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1661493559106-bc5e5360-f434-48ac-a092-f21d53f1c850.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1661493560033-fd8353b8-f2a1-4fa9-927e-27ac51522a90.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1661493561321-105ec6e9-d708-443b-b71f-120d8eda22a7.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1661493561923-4830920e-bfeb-439e-9147-16c641f7bf6e.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1661493562803-4838c825-9e04-472b-a489-f718e9b8385f.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1661493563433-da3be423-730d-48dd-950c-3c36991deeec.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1661493563933-222dd315-ee41-45ac-83f2-6d91fa08a444.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1661493564466-a5afe467-cd60-4311-a320-5fbec40b34d5.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1661493564974-99965141-89da-47e4-9f02-3bafdbd08d71.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1661493565453-eef918cb-0ebd-4ab9-ab10-5b25da33117a.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1661493565924-60b0f05c-6f33-4049-85c2-d525192a383b.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1661493566473-973cf39e-ff5e-4765-8891-b75130af4a19.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1661493567066-bc20e763-0c85-4a21-a3f9-386f05e0d2e8.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1661493568077-9881da7d-9c6c-45cf-92b3-97b5e4354cd4.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1661493568590-31ec14fe-8939-4a94-8ea8-beb89607c4c7.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1661493569117-74cc3a5b-b817-4a5d-9626-3383b1409175.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1661493569635-92165fcc-b4b9-4219-8843-0e609384c2ef.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1661493570151-58993c86-669b-4913-aedf-3977c700b883.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1661493570692-224f7d7e-a7d6-490b-8c1a-62760b5896e9.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1661493571220-8cc16087-8ee5-4527-8796-15a2fafab36c.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1661493571735-7ed3ef4c-47dd-4152-ac90-725c8fa80fb4.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1661493572145-2e1d3c49-c5d7-4260-be86-5d012a4c3302.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1661493572675-b0c150aa-a968-4603-a710-5f07b0529d06.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1661493573145-300868dd-761a-4bab-94db-35a6aaa087f6.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1661493573685-3bdd4f2e-57d8-4ba2-990b-c775bd051f21.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1661493574274-ad363762-459e-4ad5-98b3-be86cd45e37b.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1661493574876-c63d33be-3616-4075-aa23-6fc1c0907526.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1661493575499-b969b552-5226-47e4-9da2-9d748acab830.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1661493575787-99556999-e8c8-46da-a600-e9cef1a32f36.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1661493576195-d7dca02b-4793-4011-b41d-5e4d089112f8.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1661493576689-707990e5-8677-4f8f-af62-a8f0a0aab722.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1661493577015-a6ed732c-ebe9-444f-a0e0-f0aff2214b34.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1661493577320-ff8fecf6-d0d3-47b5-a63b-6df99473f73e.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1661493577633-5b6daafe-3da1-4c2a-bf56-497eb778a39e.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1661493577998-b8f7ad8c-99f3-42ad-88a8-297d69edf1d4.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1661493578384-3d3d978a-f6b9-4e2f-871f-cd3e738f0231.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1661493578751-2b2eb545-64d2-4f38-a5cf-e3d1749def2c.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1661493579074-b07fb10b-7fb2-41e6-9fc1-413ffdcb8e3f.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1661493579835-f7346448-20c6-4653-bbaa-6ceb7a510511.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1661493580237-5271ec71-6b4f-4f79-9bb1-63a77882f86a.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1661493581257-235b074b-2b8c-4a02-b5f2-98eba9d320a9.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1661493582260-229d599c-16e0-4d9d-b356-a4e654e173b6.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1661493582742-93e56083-383b-4327-8b37-0a729213d906.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1661493583372-a7a5d844-72cc-4a12-8bed-c46eebb9eb68.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1661493583702-c4645281-8413-4558-852e-5b0daf3a49cb.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1661493584298-fd913cca-0ddc-4e09-9b0d-9beefb36ba69.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1661493584747-ae8f6272-5eaf-4c2e-b748-2333d29a3402.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1661493585389-81b422d2-4dc7-4876-b177-d68d1cbfce62.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1661493585883-a031a23f-faa4-4163-abf9-7d4e3984ef6a.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1661493586399-e3ff6692-dd7c-4fe7-9292-ee8407bdca91.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1661493587451-d3111e7b-16e7-4daf-9299-48f87ce7b5b8.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1661493588090-bac8743d-af74-4ed0-b649-f7505a216a62.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1661493588556-5e06917a-9fb7-4d68-9fcf-087662f96574.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1661493589055-a3fae489-6e31-4d31-9498-95a87495c711.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1661493589629-7226d1c7-2d77-4260-94f3-9aa74a47654c.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1661493590202-5640b93b-8daf-4a70-9b38-0633664abfc5.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1661493591014-4d3bf75d-178b-4b46-970b-6465ab39029d.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1661493591622-742471ec-fff8-45e4-8919-1abb541af2a9.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1661493592214-9db14c03-5b2b-4043-acb5-5769b0c54f4b.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1661493592796-0e06dd88-e262-4b03-b4f8-3561c8bceb5d.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1661493593803-767baed8-8848-474e-a651-d3422bf586af.png">
+<meta property="article:published_time" content="2025-01-22T04:37:41.000Z">
+<meta property="article:modified_time" content="2025-01-22T12:37:41.454Z">
+<meta property="article:author" content="SindreYang">
+<meta property="article:tag" content="生活">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://blog.mviai.com/images/1661493547000-327333c2-623e-49ba-93a7-4265eb3d6b7e.png">
+
+<link rel="canonical" href="http://blog.mviai.com/2025/%E6%AD%A3%E7%95%B8%E5%88%86%E7%89%99%E9%9C%80%E6%B1%82%E5%88%86%E6%9E%90/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>正畸分牙需求分析 | 落叶无痕</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">落叶无痕</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类<span class="badge">72</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档<span class="badge">321</span></a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+  <span class="exturl github-corner" data-url="aHR0cHM6Ly9naXRodWIuY29tL1NpbmRyZVlhbmc=" title="Follow me on GitHub" aria-label="Follow me on GitHub"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></span>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://blog.mviai.com/2025/%E6%AD%A3%E7%95%B8%E5%88%86%E7%89%99%E9%9C%80%E6%B1%82%E5%88%86%E6%9E%90/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="SindreYang">
+      <meta itemprop="description" content="沉淀后我愿意做一个温暖的人。有自己的喜好，有自己的原则，有自己的信仰，不急功近利，不浮夸轻薄，宠辱不惊，淡定安逸，心静如水。------不忘初心，方得始终">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="落叶无痕">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          正畸分牙需求分析
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2025-01-22 12:37:41 / 修改时间：20:37:41" itemprop="dateCreated datePublished" datetime="2025-01-22T12:37:41+08:00">2025-01-22</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%AD%A3%E7%95%B8%E9%A1%B9%E7%9B%AE/" itemprop="url" rel="index"><span itemprop="name">正畸项目</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">Changyan：</span>
+    
+    
+      <a title="changyan" href="/2025/%E6%AD%A3%E7%95%B8%E5%88%86%E7%89%99%E9%9C%80%E6%B1%82%E5%88%86%E6%9E%90/#SOHUCS" itemprop="discussionUrl">
+        <span id="changyan_count_unit" class="post-comments-count hc-comment-count" data-xid="2025/正畸分牙需求分析/" itemprop="commentCount"></span>
+      </a>
+    
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>自动摘要: 	正畸分牙需求分析	20220218阮灵梅		20220314修改			一、需求背景		1.模型前处理后的牙齿模型是一个整体的模型，其中包含了牙齿和牙龈部分；		1.需要将该 ……..</p>
+<span id="more"></span>
+
+<h1 id="正畸分牙需求分析"><a href="#正畸分牙需求分析" class="headerlink" title="正畸分牙需求分析"></a>正畸分牙需求分析</h1><p>2022-02-18 阮灵梅</p>
+<p>2022-03-14–修改</p>
+<h1 id="一、需求背景"><a href="#一、需求背景" class="headerlink" title="一、需求背景"></a>一、需求背景</h1><ol>
+<li><p>模型前处理后的牙齿模型是一个整体的模型，其中包含了牙齿和牙龈部分；</p>
+</li>
+<li><p>需要将该模型上的牙齿和 牙龈分离开来，以便于后期排牙做准备；</p>
+</li>
+<li><p>排牙时需要将每颗牙齿任意调整，调整到牙弓的合适位置上完成操作；</p>
+</li>
+</ol>
+<h2 id="1-1-输入数据源"><a href="#1-1-输入数据源" class="headerlink" title="1.1 输入数据源"></a>1.1 输入数据源</h2><ol>
+<li><p><strong>上下颌模型</strong>：上、下颌的牙齿全部存在，或有个别缺失，及符合正畸适应症的情况；</p>
+</li>
+<li><p>仅上颌或下颌模型：有些患者只矫正半口；</p>
+</li>
+<li><p><strong>来源</strong>：</p>
+</li>
+</ol>
+<p>1）通过在患者口内取印模及咬蜡后，扫描印模获得扫描数据 upperjaw.stl、lowerjaw.stl 、咬蜡.stl；</p>
+<p>2）不在同一坐标系 ；</p>
+<p>3）通过口扫获取口扫数据；</p>
+<p>4）通过藻酸盐取模获取的石膏模型数据后，扫描石膏模型获得扫描数据；</p>
+<h2 id="1-2-输出数据"><a href="#1-2-输出数据" class="headerlink" title="1.2 输出数据"></a>1.2 输出数据</h2><ol>
+<li>牙齿的牙冠数据</li>
+</ol>
+<p><img src="/images/1661493547000-327333c2-623e-49ba-93a7-4265eb3d6b7e.png"></p>
+<ol>
+<li>每个牙齿的独立坐标</li>
+</ol>
+<p><img src="/images/1661493547966-7302b012-1ca1-41d5-ab26-8ada4a4dc12b.png"></p>
+<ol>
+<li>牙齿的牙位号</li>
+</ol>
+<p><img src="/images/1661493548629-2530a590-1056-4dd3-b1c6-b3b3439c8da7.png"></p>
+<ol>
+<li><strong>FID牙位表示法：</strong>每颗牙用两位阿拉伯数字表示，第一位表示牙齿所在的象限：病人的右上、左上、左下、右下在恒牙为1、2、3、4，在乳牙为5、6、7、8；第二位表示牙齿的位置：从中门齿到第三臼齿为1-8</li>
+</ol>
+<p><img src="/images/1661493549133-1cfca81a-470e-4210-ad81-8dafae349ff4.png"></p>
+<ol>
+<li><strong>通用记录法：</strong>牙医学中的<strong>通用记录法</strong>是一种牙位表示法，以右上颌-左上颌-左下颌-右下颌的顺序编号，恒牙1-32，乳牙1d-20d或者字母A-T。</li>
+</ol>
+<p><img src="/images/1661493549564-4285629f-f3b7-4dcc-9af0-95366dbbebc7.png"></p>
+<ol>
+<li>虚拟牙根</li>
+</ol>
+<p><img src="/images/1661493550023-7b1629ff-64d1-4f7c-a93d-3d96d480c06c.png"></p>
+<ol>
+<li><p>真实牙龈、虚拟牙龈</p>
+<ol>
+<li>真实牙龈，扫描件颈缘线标识后的非牙冠部分</li>
+</ol>
+</li>
+</ol>
+<p><img src="/images/1661493550817-60c3cc59-e967-4760-813a-e8a794c2c65c.png"><br><img src="/images/1661493551698-24deface-3fff-46db-8713-5b1e75c3698b.png"></p>
+<ol>
+<li>虚拟牙龈，根据颈缘线数据自动生成的虚拟牙龈</li>
+</ol>
+<p><img src="/images/1661493552432-05f6c69b-c950-40cd-9713-adaefd90a146.png"></p>
+<h1 id="二、分牙流程及功能"><a href="#二、分牙流程及功能" class="headerlink" title="二、分牙流程及功能"></a>二、分牙流程及功能</h1><h2 id="2-1-订单管理（需要另外写需求）"><a href="#2-1-订单管理（需要另外写需求）" class="headerlink" title="2.1 订单管理（需要另外写需求）"></a>2.1 订单管理（需要另外写需求）</h2><ol>
+<li><p>启动订单管理</p>
+</li>
+<li><p>新建订单，患者信息、阶段号等</p>
+</li>
+<li><p>导入上下颌模型</p>
+</li>
+<li><p>首次进入时弹出窗口填写患者信息</p>
+</li>
+</ol>
+<p>。。。。。。。。。。。。。。。。。。</p>
+<ol>
+<li><p>启动正畸分牙</p>
+</li>
+<li><p>进入正畸分牙界面</p>
+</li>
+</ol>
+<h2 id="2-2-分牙流程"><a href="#2-2-分牙流程" class="headerlink" title="2.2 分牙流程"></a>2.2 分牙流程</h2><p><strong>牙颌轴向</strong>（辅助）**–&gt;咬合关系<strong>（辅助）</strong>–&gt;切分<strong>（主操作）</strong>–&gt;虚拟牙根<strong>（主操作）</strong>–&gt;虚拟牙龈<strong>（主操作）</strong>–&gt;工具<strong>（辅助）</strong>–&gt;导出**（主操作）</p>
+<h2 id=""><a href="#" class="headerlink" title=""></a><img src="/images/1661493552893-155263e9-f858-4cb5-adcf-51fbdb2979bd.png"></h2><p>2.1 牙颌轴向</p>
+<p><strong>目的：</strong>用于调整牙弓对称关系，辅助生成正确的牙位号；拖拽器指向牙弓两个<strong>中切牙</strong>的中心位置，通过该标记可生成左侧的牙位号为11,12,13,14,15,16,17,18；右侧的牙位号为21,22,23,24,25,26,27,28；</p>
+<p><img src="/images/1661493553560-58706f69-1c42-44ea-9fcb-6cfc53486934.png"></p>
+<p><strong>功能：</strong></p>
+<ol>
+<li><p>调整dragger的X轴指向牙模型的中线位置，为后期标识牙位号做准备；</p>
+</li>
+<li><p><strong>编辑</strong>：只要中心点的位置不会太差可以考虑只需操作旋转即可，不需要平移操作；</p>
+</li>
+<li><p>拖拽器调整时显示旋转角度；</p>
+</li>
+<li><p>仅调整模型的牙轴坐标，模型不会跟着旋转；</p>
+</li>
+<li><p>撤销恢复</p>
+</li>
+</ol>
+<p><img src="/images/1661493554021-12d2a568-15f5-4695-bf5e-2de0f08cc58e.png"></p>
+<h2 id="2-2-咬合关系"><a href="#2-2-咬合关系" class="headerlink" title="2.2 咬合关系"></a>2.2 咬合关系</h2><p><strong>目的：</strong>若咬合关系不合适时，可以通过拖住器微调整咬合关系；</p>
+<p><strong>功能：</strong></p>
+<ol>
+<li><p>通过调整dragger来调整上下颌模型的位置；</p>
+</li>
+<li><p><strong>编辑：</strong>需要平移和旋转的功能；</p>
+</li>
+<li><p>拖拽器旋转时显示旋转角度、平移时显示平移值</p>
+</li>
+<li><p>调整模型的牙轴坐标，模型会跟着坐标同时平移、旋转；</p>
+</li>
+<li><p>自动调整咬合（第一版先不考虑）</p>
+</li>
+</ol>
+<p>1）根据接触点自动计算，咬合的接触点范围越大，咬合越准确</p>
+<p><img src="/images/1661493555443-f261a6d1-25c1-468f-987e-d287915dc9af.png"></p>
+<ol>
+<li>影像资料</li>
+</ol>
+<p>1）口内照（左侧咬合，右侧咬合，正中咬合，上颌，下颌）</p>
+<p>2）正面照、正面微笑和侧面照（左侧，右侧）</p>
+<p>3）头颅侧位片</p>
+<p>4）X光片</p>
+<ol>
+<li>撤销恢复</li>
+</ol>
+<h2 id="2-3-分牙"><a href="#2-3-分牙" class="headerlink" title="2.3 分牙"></a>2.3 分牙</h2><p><strong>目的：</strong>标识出每颗牙齿的颈缘线位置，用于切分牙齿；</p>
+<p><strong>功能：</strong></p>
+<ol>
+<li><p>识别出每个牙位的颈缘线</p>
+</li>
+<li><p>识别出每个牙位的坐标</p>
+</li>
+<li><p>预切分按钮</p>
+</li>
+<li><p>全局光顺、局部光顺按钮</p>
+</li>
+<li><p>生成牙位号</p>
+</li>
+<li><p>编辑牙位号</p>
+</li>
+<li><p>撤销恢复</p>
+</li>
+</ol>
+<p><strong>识别颈缘线交互：</strong></p>
+<ol>
+<li><p>在牙位牙合面识别三点，黄色和蓝色代表近远中点，绿色中间点；</p>
+</li>
+<li><p>三点标识在后牙牙合面和前牙切端，连成一条线；</p>
+</li>
+<li><p>绿色中间点用于生成颈缘线的点；</p>
+</li>
+<li><p>黄色和蓝色两个点用于确定牙齿的近远中方向的X轴；</p>
+</li>
+<li><p>Z轴根据识别出来的颈缘线计算得出（如CAM导出排版通过计算最小倒凹的方式识别出的Z轴）；</p>
+</li>
+<li><p>通过X轴的方向和Z轴的方向计算出Y轴；</p>
+</li>
+</ol>
+<p><img src="/images/1661493555948-3bde5c36-15c5-477a-b721-b5f8d90f6b7a.png"></p>
+<ol>
+<li><p>标识点结束后，单击【提取】，场景中生成并显示颈缘线、牙位号信息，牙齿坐标数据不需要显示；</p>
+</li>
+<li><p>右键单击牙齿牙合面上的三点连线，显示右键菜单：<strong>修改牙位、手动切分；</strong></p>
+</li>
+<li><p><strong>相邻牙齿间的颈缘线合成公共边，可以通过合并两个控制点合成一个公共点；</strong></p>
+</li>
+<li><p>可以通过右上角的撤销恢复修改手动编辑颈缘线数据；</p>
+</li>
+</ol>
+<h3 id="2-3-1-颈缘线识别的方法"><a href="#2-3-1-颈缘线识别的方法" class="headerlink" title="2.3.1 颈缘线识别的方法"></a>2.3.1 颈缘线识别的方法</h3><p><strong>方法一：（未知竞品）</strong></p>
+<ol>
+<li><p>鼠标左键单击模型牙合面或切端，全部标识结束后，【提取】按钮变成可编辑；</p>
+<ol>
+<li>选择的牙位点数量和牙位图的数量不一致时，【提取】按钮不会变成激活状态；</li>
+</ol>
+</li>
+</ol>
+<p><img src="/images/1661493556526-e5c105e2-db3f-4706-ad29-104878554f8e.png"><br><img src="/images/1661493557112-4ae7566c-98e6-4a1f-a98f-2913044a4a9d.png"></p>
+<ol>
+<li>单击【提取】后自动生成所有的颈缘线，同时【提取】按钮变成【重做】；</li>
+</ol>
+<p><img src="/images/1661493557636-e0090184-e6f2-4d14-9f4c-bd30870f2b6d.png"></p>
+<ol>
+<li>单击【重做】按钮，弹窗提示；是，清空颈缘线数据，【重做】按钮变成【提取】按钮；</li>
+</ol>
+<p><img src="/images/1661493558199-e3587d40-ab78-441f-b1d9-26f86bb568f4.png"></p>
+<ol>
+<li>编辑过程中可以右键单击牙齿颌面上的识别点，切换成手动切分—牵引识别；</li>
+</ol>
+<p><img src="/images/1661493558659-992b4f5b-459f-4554-a806-f2d6f220f7f2.png"></p>
+<ol>
+<li>【提取线】颈缘线成功后，牙齿邻接触的颈缘线自动合成公共边；</li>
+</ol>
+<p><img src="/images/1661493559106-bc5e5360-f434-48ac-a092-f21d53f1c850.png"></p>
+<ol>
+<li><p>标识颈缘线后可以通过光顺提高颈缘线平滑度；</p>
+<ol>
+<li><p>全局光顺：对所有牙位的颈缘线进行平滑处理（单颌）；</p>
+</li>
+<li><p>局部光顺：只对选中牙位颈缘线进行平滑处理；</p>
+</li>
+</ol>
+</li>
+</ol>
+<p><img src="/images/1661493560033-fd8353b8-f2a1-4fa9-927e-27ac51522a90.png"></p>
+<ol>
+<li>标识颈缘线后可以通过右上角交互切分牙齿，并生成虚拟牙根和真实牙龈渲染成粉色；</li>
+</ol>
+<p><img src="/images/1661493561321-105ec6e9-d708-443b-b71f-120d8eda22a7.png"></p>
+<p><img src="/images/1661493561923-4830920e-bfeb-439e-9147-16c641f7bf6e.png"></p>
+<p><strong>方法二：（UP3D）</strong></p>
+<ol>
+<li>UP3D现有方法：ctrl+左键单击牙齿牙合面实时生成当前牙位的颈缘线；</li>
+</ol>
+<p><img src="/images/1661493562803-4838c825-9e04-472b-a489-f718e9b8385f.png"></p>
+<ol>
+<li>颈缘线添加的条数不受限制，每操作一次即可自动添加一条颈缘线和牙位号；</li>
+</ol>
+<p><img src="/images/1661493563433-da3be423-730d-48dd-950c-3c36991deeec.png"></p>
+<ol>
+<li>编辑过程中可以切换成手动编辑，三点识别，牵引识别；激活手动编辑会自动删除当前编辑状态的颈缘线；</li>
+</ol>
+<p><img src="/images/1661493563933-222dd315-ee41-45ac-83f2-6d91fa08a444.png"></p>
+<p><strong>方法三：（隐适美）</strong></p>
+<ol>
+<li>隐适美的两点识别方式，一点在牙齿颊侧，一点在牙齿切端；</li>
+</ol>
+<p><img src="/images/1661493564466-a5afe467-cd60-4311-a320-5fbec40b34d5.png"></p>
+<ol>
+<li><p>自动标识两点，自动识别；</p>
+</li>
+<li><p>当出现有牙位标识错误时可以手动在牙位上添加；</p>
+</li>
+</ol>
+<p>1）右键单击，显示右键菜单，可以选择添加或删除颈缘线；</p>
+<p><img src="/images/1661493564974-99965141-89da-47e4-9f02-3bafdbd08d71.png"><br><img src="/images/1661493565453-eef918cb-0ebd-4ab9-ab10-5b25da33117a.png"></p>
+<p><strong>方法四：AI自动切分牙齿</strong></p>
+<ol>
+<li>单击【AI自动分牙】按钮，场景自动识别出牙列上的牙齿，并标识出不同的颜色，和牙位号；</li>
+</ol>
+<h3 id="2-3-2-牙位图"><a href="#2-3-2-牙位图" class="headerlink" title="2.3.2 牙位图"></a>2.3.2 牙位图</h3><ol>
+<li>牙位图标识牙齿数量，是否是修复体、种植牙、埋伏牙；</li>
+</ol>
+<p><img src="/images/1661493565924-60b0f05c-6f33-4049-85c2-d525192a383b.png"></p>
+<ol>
+<li>单击场景中的牙齿修改牙位编号</li>
+</ol>
+<p><img src="/images/1661493566473-973cf39e-ff5e-4765-8891-b75130af4a19.png"></p>
+<h2 id="2-4-虚拟牙根（算法）"><a href="#2-4-虚拟牙根（算法）" class="headerlink" title="2.4 虚拟牙根（算法）"></a>2.4 虚拟牙根（算法）</h2><p><strong>目的：</strong>生成虚拟牙根，防止牙根移动时产生碰撞；</p>
+<ol>
+<li><p>根据牙齿坐标生成牙根：生成短根，仅供参考</p>
+<ol>
+<li>根据分牙步骤牙位的Z轴方向生成牙根方向；（可以参考CAM中生成个别方向的算法）</li>
+</ol>
+</li>
+</ol>
+<p><img src="/images/1661493567066-bc20e763-0c85-4a21-a3f9-386f05e0d2e8.png"></p>
+<ol>
+<li><p>后期考虑导入CBCT数据的牙根</p>
+<ol>
+<li>预留导入CBCT的牙根数据接口，后期可能会导入真实牙根数据作为参考；</li>
+</ol>
+</li>
+</ol>
+<p><img src="/images/1661493568077-9881da7d-9c6c-45cf-92b3-97b5e4354cd4.png"></p>
+<ol>
+<li><p>与切分牙齿步骤的操作关系：</p>
+<ol>
+<li><p>单击“√”时会自动进入该步骤生成虚拟牙根；</p>
+</li>
+<li><p>单击“×”退出切分步骤，再次单击【虚拟牙根】按钮，检测有数据变化进入该步骤会自动更新虚拟牙根数据；</p>
+</li>
+</ol>
+</li>
+</ol>
+<h2 id="2-5-虚拟牙龈（算法）"><a href="#2-5-虚拟牙龈（算法）" class="headerlink" title="2.5 虚拟牙龈（算法）"></a>2.5 虚拟牙龈（算法）</h2><p><strong>目的：</strong>生成虚拟牙龈</p>
+<ol>
+<li><p>保留真实牙龈</p>
+<ol>
+<li><p>切分出来的真实牙龈（暂时没有其他作用）</p>
+</li>
+<li><p>牙齿切分后自动根据裁剪提取牙齿后，剩余的部分变成牙龈色；</p>
+</li>
+<li><p>修改颈缘线位置生成的牙龈</p>
+</li>
+</ol>
+</li>
+</ol>
+<p><img src="/images/1661493568590-31ec14fe-8939-4a94-8ea8-beb89607c4c7.png"><br><img src="/images/1661493569117-74cc3a5b-b817-4a5d-9626-3383b1409175.png"></p>
+<ol>
+<li>邻牙区域的牙龈</li>
+</ol>
+<p><img src="/images/1661493569635-92165fcc-b4b9-4219-8843-0e609384c2ef.png"><br><img src="/images/1661493570151-58993c86-669b-4913-aedf-3977c700b883.png"></p>
+<ol>
+<li><p>生成虚拟牙龈</p>
+<ol>
+<li>生成虚拟牙龈：排牙时需要用到，牙齿移动时需要自适应重新生成虚拟牙龈</li>
+</ol>
+</li>
+</ol>
+<h2 id="2-6-工具"><a href="#2-6-工具" class="headerlink" title="2.6 工具"></a>2.6 工具</h2><p><strong>目的</strong>：切分后生成的牙齿，可以通过塑形微微修改下形态，比如有气泡导致的坑坑洼洼</p>
+<ol>
+<li><p><strong>平滑</strong></p>
+<ol>
+<li><p>仅可以操作于切分后的牙齿模型，不可以平滑牙根和牙龈，及扫描模型；</p>
+</li>
+<li><p>通过拖拽条调整平滑的半径和强度，再牙齿模型上操作即可；</p>
+</li>
+</ol>
+</li>
+<li><p><strong>雕刻</strong>：加蜡、减蜡</p>
+<ol>
+<li><p>仅可以操作于切分后的牙齿模型，不可以平滑牙根和牙龈，及扫描模型；</p>
+</li>
+<li><p>通过拖拽条调整雕刻的半径和强度，再牙齿模型上操作即可；</p>
+</li>
+</ol>
+</li>
+<li><p>该步骤不是必要执行步骤，可以选择性操作；</p>
+</li>
+</ol>
+<h2 id="2-7-导出"><a href="#2-7-导出" class="headerlink" title="2.7 导出"></a>2.7 导出</h2><p><strong>目的</strong>：导出分牙数据，或启动排牙软件；</p>
+<ol>
+<li><p>导出：导出数据，可以传输数据给其他角色或其他电脑的用户，操作后续的排牙操作；</p>
+</li>
+<li><p>启动排牙：当前电脑直接启动排牙软件，操作排牙；</p>
+</li>
+</ol>
+<h1 id="三、原型及交互"><a href="#三、原型及交互" class="headerlink" title="三、原型及交互"></a>三、原型及交互</h1><p><strong>名词解释及提示</strong></p>
+<ol>
+<li><p>新订单：没有任何保存记录；</p>
+</li>
+<li><p>旧订单：有历史保存记录；</p>
+<ol>
+<li><p>整个流程都已经有历史保存数据；</p>
+</li>
+<li><p>部分步骤保存了历史数据；</p>
+<ol>
+<li><p>牙颌轴向和咬合步骤可以选择性操作，不需要提示；</p>
+</li>
+<li><p><strong>若完成当前步骤操作，单击右上角“√”时，自动进入下一步；</strong></p>
+</li>
+<li><p>塑形步骤：以上均不包含塑形步骤提示</p>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<p>① 塑形步骤仅可以操作切分后的牙齿模型，不可以塑形其他模型，如扫描模型、牙根、牙龈；</p>
+<p>② 切分步骤的数据已经“√”保存，则进入塑形步骤显示的是切分后的牙齿</p>
+<h2 id="3-1-分牙主界面"><a href="#3-1-分牙主界面" class="headerlink" title="3.1 分牙主界面"></a>3.1 分牙主界面</h2><ol>
+<li>启动正畸分牙，进入正畸分牙主界面</li>
+</ol>
+<p><img src="/images/1661493570692-224f7d7e-a7d6-490b-8c1a-62760b5896e9.png"></p>
+<ol>
+<li><p>菜单栏</p>
+<ol>
+<li>菜单栏右上角关闭：自动保存，再次打开时恢复上次操作时的界面；</li>
+</ol>
+</li>
+<li><p>可见导航栏</p>
+</li>
+<li><p>功能面板</p>
+<ol>
+<li><p>新订单：除“工具”步骤外的其他步骤功能按钮都会显示一个标记（表示未打开过）；</p>
+</li>
+<li><p>旧订单：没有进入过的标记步骤依然会显示标记；</p>
+</li>
+<li><p>打开界面后，标记会消失；</p>
+</li>
+<li><p>没有切分数据时，‘虚拟牙根’和‘虚拟牙龈’的按钮置灰，不可编辑；</p>
+<ol>
+<li><p>生成切分数据保存后，【虚拟牙根】按钮可编辑；</p>
+</li>
+<li><p>生成虚拟牙根数据保存后，【虚拟牙龈】按钮可编辑；</p>
+</li>
+</ol>
+</li>
+<li><p><strong>切换：</strong>功能面板的按钮，可以直接切换步骤</p>
+<ol>
+<li><p>切换功能按钮时，自动保存当前步骤数据；相当于应用面板的“√”；</p>
+</li>
+<li><p>若虚拟牙根记录没有更新，‘切分数据修改’直接切换到到虚拟牙龈步骤时，检测并提示：分牙数据发生变化，请重新生成虚拟牙根！–OK；</p>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+<li><p>场景界面</p>
+<ol>
+<li><p>进入主界面时，场景显示上下颌扫描件的正面咬合视图；</p>
+</li>
+<li><p>若生成了虚拟牙龈，虚拟牙根和牙齿，则场景显示最后的状态；</p>
+</li>
+</ol>
+</li>
+<li><p>场景中显示上下颌模型；</p>
+<ol>
+<li><p>若是新订单，进入分牙界面，场景中显示初始STL模型数据（扫描数据）；</p>
+</li>
+<li><p>若是旧订单，进入分牙界面，场景中显示真实牙龈和分割后的牙齿；</p>
+</li>
+</ol>
+</li>
+</ol>
+<p><img src="/images/1661493571220-8cc16087-8ee5-4527-8796-15a2fafab36c.png"></p>
+<ol>
+<li><p>场景左侧是功能按钮，新订单首次进入操作时，功能按钮上会有一个标记点，表示没有进入过该流程；</p>
+</li>
+<li><p>功能按钮：</p>
+</li>
+</ol>
+<p><strong>牙颌轴向：</strong>辅助步骤，有默认的牙轴坐标，不是必要操作步骤；</p>
+<p><strong>咬合关系：</strong>辅助步骤，一般咬合关系是OK的，不是必要操作步骤；</p>
+<p><strong>切分：</strong>主要步骤，必须操作，只有切分后才会进入虚拟牙根和虚拟牙龈步骤；</p>
+<p><strong>虚拟牙根：</strong>主要步骤，切分后才可以生成；</p>
+<p><strong>虚拟牙龈</strong>：主要步骤，生成牙根后才可以生成；</p>
+<p><strong>工具</strong>：辅助步骤，不是必要操作步骤，切分后生成的牙齿可以辅助雕刻、平滑；</p>
+<p><strong>导出：</strong>主要步骤，需要‘导出数据’或‘启动排牙’软件时才需要用到；</p>
+<h3 id="3-1-1-菜单栏显示"><a href="#3-1-1-菜单栏显示" class="headerlink" title="3.1.1 菜单栏显示"></a>3.1.1 菜单栏显示</h3><p><img src="/images/1661493571735-7ed3ef4c-47dd-4152-ac90-725c8fa80fb4.png"></p>
+<ol>
+<li><p>左上角显示正畸软件名称<img src="/images/1661493572145-2e1d3c49-c5d7-4260-be86-5d012a4c3302.png"></p>
+</li>
+<li><p>右上角显示患者信息<img src="/images/1661493572675-b0c150aa-a968-4603-a710-5f07b0529d06.png"><br>，单击“患者信息”按钮，显示‘患者信息窗口’；独立窗口，可以任意移动移动，默认生成在右侧；</p>
+</li>
+</ol>
+<p><img src="/images/1661493573145-300868dd-761a-4bab-94db-35a6aaa087f6.png"></p>
+<p><strong>患者信息窗口包含：</strong></p>
+<ol>
+<li><p>订单信息：订单编号，阶段号；不可以编辑，从平台获取；</p>
+<ol>
+<li><p>订单编号命名格式：同平台的病历号；</p>
+</li>
+<li><p>阶段号命名格式：从平台获取；或按照格式P年-月-日-性别-阶段；如：P220312B01—-2022年03月12日男阶段1；P220312G02—-2022年03月12日女阶段2</p>
+</li>
+</ol>
+</li>
+<li><p>患者基本信息：姓名，性别，年龄；基本信息不可以编辑，从平台中获取；</p>
+</li>
+<li><p>影像信息：面相照、口内照、头颅侧位片、曲断片；从平台获取（或在该订单的路径中获取）</p>
+<ol>
+<li><p>单击【影像资料】按钮，另外显示一个窗口，窗口可以任意拖动，默认生成在右侧；同时患者信息窗口收起；</p>
+</li>
+<li><p>展开【影像资料】窗口，显示口内照、面相照、X片；可以收起不需要的部分；</p>
+</li>
+<li><p>单击【患者信息】窗口展开，‘患者信息窗口’置于‘影像资料窗口’顶层；</p>
+</li>
+</ol>
+</li>
+</ol>
+<p><img src="/images/1661493573685-3bdd4f2e-57d8-4ba2-990b-c775bd051f21.png"><br><img src="/images/1661493574274-ad363762-459e-4ad5-98b3-be86cd45e37b.png"></p>
+<ol>
+<li><p>右上角显示最大&#x2F;最小化窗口、关闭窗口<img src="/images/1661493574876-c63d33be-3616-4075-aa23-6fc1c0907526.png"></p>
+<ol>
+<li><p>最大化时将整个屏幕占满</p>
+</li>
+<li><p>最小化时电脑的菜单栏会显示，鼠标在切分界面的菜单栏中可以拖动窗口</p>
+</li>
+<li><p>关闭窗口时，保存数据后直接退出切分界面</p>
+</li>
+</ol>
+</li>
+</ol>
+<h3 id="3-1-2-可见导航显示"><a href="#3-1-2-可见导航显示" class="headerlink" title="3.1.2 可见导航显示"></a>3.1.2 可见导航显示</h3><p>可见导航每一个步骤的显示均相同，当没有对应数据时单击没有反应；如牙龈和牙位号没有生成时单击不会有反应。</p>
+<p><img src="/images/1661493575499-b969b552-5226-47e4-9da2-9d748acab830.png"></p>
+<ol>
+<li><p><img src="/images/1661493575787-99556999-e8c8-46da-a600-e9cef1a32f36.png"><br>只显示上颌（鼠标悬浮显示）：单击后场景只显示上颌模型，模型视图不会发生变化，按钮恢复；</p>
+</li>
+<li><p><img src="/images/1661493576195-d7dca02b-4793-4011-b41d-5e4d089112f8.png"><br>只显示下颌（鼠标悬浮显示）：单击后场景只显示下颌模型，模型视图不会发生变化，按钮恢复；</p>
+</li>
+<li><p><img src="/images/1661493576689-707990e5-8677-4f8f-af62-a8f0a0aab722.png"><br>上颌正视图（鼠标悬浮显示）：单击后场景显示上颌模型正视图，模型视图发生变化，按钮恢复；</p>
+</li>
+<li><p><img src="/images/1661493577015-a6ed732c-ebe9-444f-a0e0-f0aff2214b34.png"><br>右视图（鼠标悬浮显示）：单击后场景显示上下颌右视图，模型视图发生变化（咬合正视图方向向右侧旋转45度角度），按钮恢复；</p>
+</li>
+<li><p><img src="/images/1661493577320-ff8fecf6-d0d3-47b5-a63b-6df99473f73e.png"><br>正视图（鼠标悬浮显示）：单击后场景显示上下颌正视图，模型视图发生变化，按钮恢复；</p>
+</li>
+<li><p><img src="/images/1661493577633-5b6daafe-3da1-4c2a-bf56-497eb778a39e.png"><br>后视图（鼠标悬浮显示）：单击后场景显示上下颌后视图，模型视图发生变化，按钮恢复；</p>
+</li>
+<li><p><img src="/images/1661493577998-b8f7ad8c-99f3-42ad-88a8-297d69edf1d4.png"><br>左视图（鼠标悬浮显示）：单击后场景显示上下颌左视图，模型视图发生变化（咬合正视图方向向左侧旋转45度角度），按钮恢复；</p>
+</li>
+<li><p><img src="/images/1661493578384-3d3d978a-f6b9-4e2f-871f-cd3e738f0231.png"><br>下颌正视图（鼠标悬浮显示）：单击后场景下颌模型正视图，模型视图发生变化，按钮恢复；</p>
+</li>
+<li><p><img src="/images/1661493578751-2b2eb545-64d2-4f38-a5cf-e3d1749def2c.png"><br>扫描模型（鼠标悬浮显示）：单击后显示扫描模型，按钮恢复；再次单击隐藏扫描模型；</p>
+</li>
+<li><p><img src="/images/1661493579074-b07fb10b-7fb2-41e6-9fc1-413ffdcb8e3f.png"><br>隐藏牙龈（鼠标悬浮显示）：单击后隐藏牙龈，按钮恢复；再次单击显示牙龈，按钮恢复；</p>
+</li>
+<li><p><img src="/images/1661493579835-f7346448-20c6-4653-bbaa-6ceb7a510511.png"><br>牙位号（鼠标悬浮显示）：单击后显示牙位号，按钮恢复；再次单击，隐藏牙位号，按钮恢复；</p>
+</li>
+</ol>
+<h2 id="3-2-牙颌轴向"><a href="#3-2-牙颌轴向" class="headerlink" title="3.2 牙颌轴向"></a>3.2 牙颌轴向</h2><p><img src="/images/1661493580237-5271ec71-6b4f-4f79-9bb1-63a77882f86a.png"></p>
+<h3 id="3-2-1-场景显示"><a href="#3-2-1-场景显示" class="headerlink" title="3.2.1 场景显示"></a>3.2.1 场景显示</h3><ol>
+<li><p>单击【牙颌轴向】按钮，按钮激活状态，进入牙颌轴向调整界面；（退出界面时按钮恢复）；</p>
+</li>
+<li><p><strong>场景显示</strong>：</p>
+<ol>
+<li><p>场景中显示上下颌的咬合正视图；通过可见导航显示隐藏上颌或下颌；</p>
+</li>
+<li><p>场景左侧显示功能按钮；</p>
+</li>
+<li><p>场景上方正中位置显示可见导航；</p>
+</li>
+<li><p>场景左上方显示属性面板；</p>
+</li>
+</ol>
+</li>
+</ol>
+<h3 id="3-2-2-牙颌轴向调整"><a href="#3-2-2-牙颌轴向调整" class="headerlink" title="3.2.2 牙颌轴向调整"></a>3.2.2 牙颌轴向调整</h3><ol>
+<li><p>可以其他步骤都操作完成后再来修改；</p>
+<ol>
+<li>生成牙位编号后再来修改牙颌轴向关系，要自动计算牙位编号顺序；（若检测到有牙位修改编辑的操作，则不会重新计算）</li>
+</ol>
+</li>
+<li><p>单击上颌或下颌模型显示牙轴坐标，即可调整牙轴坐标；</p>
+</li>
+<li><p>上下颌都有各自独立的牙轴坐标；</p>
+</li>
+</ol>
+<h3 id="3-2-3-属性面板"><a href="#3-2-3-属性面板" class="headerlink" title="3.2.3 属性面板"></a>3.2.3 属性面板</h3><ol>
+<li><p><strong>应用面板：</strong>为独立窗口，可以任意移动；</p>
+</li>
+<li><p><strong>撤销恢复：</strong>可以通过属性面板操作撤销恢复，或快捷键ctrl+Z&#x2F;ctrl+Y；</p>
+<ol>
+<li>对象：牙轴坐标的旋转操作；</li>
+</ol>
+</li>
+<li><p>调整结束后，单击属性面板“√”保存数据，自动进入‘咬合关系步骤’；</p>
+</li>
+<li><p>调整结束后，单击属性面板“×”保存数据，退出当前界面到主界面；</p>
+</li>
+</ol>
+<h2 id="3-3-咬合关系"><a href="#3-3-咬合关系" class="headerlink" title="3.3 咬合关系"></a>3.3 咬合关系</h2><p><img src="/images/1661493581257-235b074b-2b8c-4a02-b5f2-98eba9d320a9.png"></p>
+<h3 id="3-3-1-场景显示"><a href="#3-3-1-场景显示" class="headerlink" title="3.3.1 场景显示"></a>3.3.1 场景显示</h3><ol>
+<li><p>单击【咬合关系】按钮，按钮激活状态，进入咬合关系调整界面；（退出界面时按钮恢复）；</p>
+</li>
+<li><p><strong>场景显示</strong>：</p>
+<ol>
+<li><p>场景中显示上下颌的咬合正视图；通过可见导航显示隐藏上颌或下颌；</p>
+</li>
+<li><p>场景左侧显示功能按钮；</p>
+</li>
+<li><p>场景上方正中位置显示可见导航；</p>
+</li>
+<li><p>场景左上方显示属性面板；</p>
+</li>
+</ol>
+</li>
+</ol>
+<h3 id="3-3-2-咬合关系调整"><a href="#3-3-2-咬合关系调整" class="headerlink" title="3.3.2 咬合关系调整"></a>3.3.2 咬合关系调整</h3><ol>
+<li><p>可以其他步骤都操作完成后再来修改；</p>
+<ol>
+<li>操作其他步骤后来调整咬合关系，要自动更新所有步骤的咬合关系数据；</li>
+</ol>
+</li>
+<li><p>单击上颌或下颌模型显示牙轴坐标，即可调整咬合关系；</p>
+</li>
+<li><p>上下颌都有各自独立的牙轴坐标；</p>
+</li>
+<li><p><strong>属性面板：</strong>显示咬合碰撞和咬合照片按钮，可以调整咬合时参考；</p>
+<ol>
+<li><p><strong>显示咬合碰撞：</strong>勾选后，场景中的模型显示咬合碰撞深度；</p>
+</li>
+<li><p><strong>显示咬合照片</strong>：勾选后，显示咬合照片</p>
+<ol>
+<li><p>左侧、正中、右侧咬合照互斥</p>
+</li>
+<li><p>选中后图片显示对应咬合照片</p>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<h3 id="3-3-3-属性面板"><a href="#3-3-3-属性面板" class="headerlink" title="3.3.3 属性面板"></a>3.3.3 属性面板</h3><ol>
+<li><p><strong>应用面板：</strong>为独立窗口，可以任意移动；</p>
+</li>
+<li><p><strong>撤销恢复：</strong>可以通过属性面板操作撤销恢复，或快捷键ctrl+Z&#x2F;ctrl+Y；</p>
+<ol>
+<li>对象：牙轴坐标的旋转和平移操作；</li>
+</ol>
+</li>
+<li><p>调整结束后，单击属性面板“√”保存数据，自动进入‘分牙步骤’；</p>
+</li>
+<li><p>调整结束后，单击属性面板“×”保存数据，退出当前界面到主界面；</p>
+</li>
+</ol>
+<h2 id="3-4-分牙"><a href="#3-4-分牙" class="headerlink" title="3.4 分牙"></a>3.4 分牙</h2><p><img src="/images/1661493582260-229d599c-16e0-4d9d-b356-a4e654e173b6.png"></p>
+<h3 id="3-4-1-场景显示"><a href="#3-4-1-场景显示" class="headerlink" title="3.4.1 场景显示"></a>3.4.1 场景显示</h3><ol>
+<li><p>单击【分牙】按钮，按钮激活状态，进入分牙界面；（退出界面时按钮恢复）；</p>
+</li>
+<li><p><strong>场景显示</strong>：</p>
+<ol>
+<li><p>场景中显示上颌扫描模型的正视图，牙位图默认选中上颌；通过可见导航显示隐藏上颌或下颌；</p>
+</li>
+<li><p>场景左侧显示功能按钮；</p>
+</li>
+<li><p>场景上方正中位置显示可见导航；</p>
+</li>
+<li><p>场景左上方显示属性面板；</p>
+</li>
+</ol>
+</li>
+</ol>
+<h3 id="3-4-2-分牙"><a href="#3-4-2-分牙" class="headerlink" title="3.4.2 分牙"></a>3.4.2 分牙</h3><h4 id="3-4-2-1-常规分牙方式"><a href="#3-4-2-1-常规分牙方式" class="headerlink" title="3.4.2.1 常规分牙方式"></a>3.4.2.1 常规分牙方式</h4><ol>
+<li><p><strong>牙位图</strong>：在牙位图上标出和场景模型相应的牙位情况；</p>
+<ol>
+<li><p>牙位图上的牙位默认所有牙位都是选中；</p>
+</li>
+<li><p>牙位图的牙位数量和场景模型的牙位数量保持一致；</p>
+</li>
+<li><p>牙位图中显示标识修复牙后的显示效果，标记牙位显示一致；</p>
+</li>
+</ol>
+</li>
+</ol>
+<p><img src="/images/1661493582742-93e56083-383b-4327-8b37-0a729213d906.png"></p>
+<ol>
+<li><strong>标识出牙列中的修复牙：</strong>缺失牙，烤瓷牙（乳白色）、种植牙（深灰）、埋伏牙（粉色）类型，牙位图变色；同时切分出来的牙齿场景中也要显示相应的颜色；</li>
+</ol>
+<p><strong>方法一：</strong></p>
+<ol>
+<li><p>牙列中的缺失牙位，单击该牙位，牙位变成未被选中（灰色），再次单击变成选中色；</p>
+</li>
+<li><p>在牙位图上右键单击牙位，显示右键菜单，选择标出修复牙；</p>
+</li>
+</ol>
+<p><strong>方法二：</strong></p>
+<ol>
+<li><p>在操作面板上选择好修复类型，在再牙位图上标出；比如，选择缺失牙，在牙位图上单击选择的牙位显示均为缺失牙；选择烤瓷牙，在牙位图上选择的牙位均为烤瓷牙；</p>
+</li>
+<li><p><strong>埋伏牙</strong>：标识埋伏牙和缺失牙一样，不需要识别颈缘线；</p>
+</li>
+<li><p><strong>颈缘线识别：</strong>牙位图上的牙位数量和扫描模型一致后，在扫描模型每个牙位咬合面单击三点；</p>
+</li>
+</ol>
+<p><img src="/images/1661493583372-a7a5d844-72cc-4a12-8bed-c46eebb9eb68.png"></p>
+<ol>
+<li><p>上颌标识结束，单击【提取线】按钮，生成颈缘线，颈缘线提取后，【提取线】按钮变成【重做】按钮；</p>
+</li>
+<li><p>默认显示控制点，【提取线】按钮变成【重做】按钮后，控制点按钮变成可编辑，可以隐藏控制点；</p>
+</li>
+<li><p>单击【重做】按钮，弹窗提示：清空上颌颈缘线记录？是–清空，关闭弹窗；否–保留，关闭弹窗；</p>
+</li>
+<li><p>清空数据后，可以在场景中继续标识，【重做】按钮变成【提取线】，标识完成重新提取线数据。</p>
+</li>
+<li><p><strong>光滑数据的范围</strong>：（算法出来后设定），默认值？步长？范围区间？</p>
+</li>
+<li><p><strong>颈缘线编辑：</strong></p>
+<ol>
+<li><p>可以通过<strong>光顺</strong>平滑颈缘线；</p>
+<ul>
+<li><p>全局光顺：上颌或者下颌标识的颈缘线全部光顺（执行单位：半口）</p>
+</li>
+<li><p>选中光顺：上颌或者下颌中选中的牙位颈缘线被光顺（执行单位：每颗）</p>
+</li>
+</ul>
+</li>
+<li><p>可以通过草绘调整颈缘线，（控制点显示和隐藏时均可以使用）</p>
+</li>
+</ol>
+</li>
+</ol>
+<p><img src="/images/1661493583702-c4645281-8413-4558-852e-5b0daf3a49cb.png"></p>
+<pre><code>  1. 可以通过调整控制点编辑颈缘线；
+</code></pre>
+<p>① 添加控制点：在颈缘线上需要添加控制点的区域，鼠标滑过颈缘线变成黄色，单击左键可增加一个控制点；</p>
+<p><img src="/images/1661493584298-fd913cca-0ddc-4e09-9b0d-9beefb36ba69.png"><br><img src="/images/1661493584747-ae8f6272-5eaf-4c2e-b748-2333d29a3402.png"></p>
+<p>② 删除控制点：左键鼠标滑到控制点上控制点变成黄色，单击控制点删除或按【Delete】键，删除控制点；</p>
+<p>③ 控制点间距：按Ctrl+鼠标滚轮，可调整控制点间距</p>
+<ol>
+<li>提取颈缘线的同时生成牙位号，同隐适美；右键单击颈缘线，显示右键菜单：修改牙位号、删除颈缘线；删除牙位号同时删除颈缘线；删除颈缘线时，右键单击牙位显示右键菜单，选择手动切分–牵引识别，可以重新标识颈缘线；</li>
+</ol>
+<p><img src="/images/1661493585389-81b422d2-4dc7-4876-b177-d68d1cbfce62.png"></p>
+<ol>
+<li><p>若将牙位修改后，后面的牙位号会自动刷新，不会有重复的牙位号；如11改成12，则牙位号依次变成,11–&gt;12,12–&gt;13,13–&gt;14,14–&gt;15,–15–&gt;16,16–&gt;17;</p>
+</li>
+<li><p><strong>预切分</strong>：单击【预切分】显示切分后的牙齿效果，‘取消预切分’时显示提取颈缘线状态；</p>
+</li>
+</ol>
+<p><img src="/images/1661493585883-a031a23f-faa4-4163-abf9-7d4e3984ef6a.png"></p>
+<ol>
+<li><p>单击【预切分】后自动分割出牙冠，并且在牙冠上生成牙位编号；同时‘预切分’按钮变成‘取消预切分’按钮；</p>
+</li>
+<li><p>预切分操作对应执行操作面板上的上颌或下颌；</p>
+</li>
+<li><p>切换到下颌，牙位图显示下颌，场景中显示下颌正视图，或者单击可见导航的下颌正视图，牙位图默认切换到下颌；同上颌操作；</p>
+</li>
+<li><p><strong>切换手动编辑：</strong>在标识点过程中若某些牙位较为特殊可以右键单击任意标识点，显示【手动切分】按钮，选择手动切分；</p>
+<ol>
+<li><p>可以是标识点的任意一个点；</p>
+</li>
+<li><p>可以是开始编辑第一点时右键单击编辑点，或或编辑时的第二个点，或编辑时的第三个点；</p>
+</li>
+</ol>
+</li>
+</ol>
+<p><img src="/images/1661493586399-e3ff6692-dd7c-4fe7-9292-ee8407bdca91.png"></p>
+<ol>
+<li><p>提取颈缘线后若需要重新【手动切分】可以选中颈缘线后右键单击，显示【手动切分】，选择手动切分后会自动删除现有的颈缘线，直接编辑即可；</p>
+</li>
+<li><p>手动切分：仅支持<strong>牵引识别</strong>的功能；</p>
+</li>
+</ol>
+<h4 id="3-4-2-2-AI自动分牙方式"><a href="#3-4-2-2-AI自动分牙方式" class="headerlink" title="3.4.2.2 AI自动分牙方式"></a>3.4.2.2 AI自动分牙方式</h4><p><img src="/images/1661493587451-d3111e7b-16e7-4daf-9299-48f87ce7b5b8.png"></p>
+<ol>
+<li><p>进入切分界面，默认显示上颌正视图；</p>
+</li>
+<li><p><strong>AI自动切分</strong>：单击操作面板中的【AI自动切分】按钮，按钮单击后立即恢复，场景中自动绘制出牙列上牙齿的颜色；</p>
+<ol>
+<li>操作面板选择上颌时，执行上颌的分牙，操作面板选择下颌时执行下颌的分牙；</li>
+</ol>
+</li>
+<li><p><strong>绘制：</strong>单击【绘制】按钮，按钮一直高亮；</p>
+<ol>
+<li><p>操作面板上的【加】【减】变成可编辑状态；默认选中【加】；【加】【减】选中状态互斥；</p>
+</li>
+<li><p>场景中显示绘制小球，可以修改绘制边界范围；</p>
+</li>
+</ol>
+</li>
+</ol>
+<p><img src="/images/1661493588090-bac8743d-af74-4ed0-b649-f7505a216a62.png"></p>
+<ol>
+<li><p>当选中‘加’时，单击边界，绘制颜色范围增加；</p>
+</li>
+<li><p>当选中‘减’时，单击边界，绘制颜色范围减少；</p>
+</li>
+<li><p>绘制小球只能从边界往里或往外减少或增加范围；</p>
+</li>
+<li><p>绘制小球的半径可以调整；</p>
+<ol>
+<li><p>通过拖拽条调整半径大小，场景小球半径实时变化；</p>
+</li>
+<li><p>半径范围：0.1mm-2.5mm；</p>
+</li>
+</ol>
+</li>
+<li><p><strong>牙位号</strong>：牙位号在‘AI自动分牙’时也会自动识别出来；若牙位号识别错误，可以右键单击牙位，显示右键菜单，修改牙位号（牙位号改为？如下右键菜单）；</p>
+<ol>
+<li><p>增加牙位号：单击增加牙位号，牙位号值加大；该牙位之后的牙位号自动更新；</p>
+</li>
+<li><p>减少牙位号：单击减少牙位号，牙位号值减小；该牙位之后的牙位号自动更新；</p>
+</li>
+<li><p>删除牙位号：单击删除，该牙齿绘制区域被删除；左右两边的牙位号不会变化；</p>
+</li>
+</ol>
+</li>
+</ol>
+<p><img src="/images/1661493588556-5e06917a-9fb7-4d68-9fcf-087662f96574.png"></p>
+<ol>
+<li><p><strong>预切分</strong>：自动分牙后，边界确认OK，单击【预切分】按钮，将绘制有颜色的区域切分，并显示为乳白色；</p>
+<ol>
+<li><p>若牙位被标记修复属性，则<strong>修复牙</strong>显示较深的乳白色；<strong>种植牙</strong>显示乳白色的深度比修复牙更深；</p>
+</li>
+<li><p>预切分后，按钮会变成‘取消预切分’，只有‘取消预切分’才可以再次调整绘制边界；</p>
+</li>
+<li><p>取消预切分时，场景显示AI自动分牙时绘制的状态；</p>
+</li>
+<li><p>预切分操作对应执行操作面板上的上颌或下颌；</p>
+</li>
+</ol>
+</li>
+<li><p><strong>标识牙列中的修复牙：</strong>单击【AI自动分牙】按钮后，场景中显示各种颜色的牙齿，可以标识出牙列中的修复牙，如<strong>修复冠，种植牙</strong>；</p>
+<ol>
+<li><p>在操作面板上选中修复牙按钮，如单击【种植牙】按钮，按钮一直高亮，可以在场景中选择种植牙，选择结束，再次单击【种植牙】按钮，按钮恢复；‘修复冠’同样的操作；</p>
+</li>
+<li><p>牙列上的修复类型被标记后会显示和操作面板上的图标一样的颜色；</p>
+</li>
+<li><p>修复牙的属性会一直存在，会和切分出来的牙齿显示不一样的颜色便于识别；</p>
+</li>
+<li><p>属性会传给排牙软件；</p>
+</li>
+</ol>
+</li>
+</ol>
+<h3 id="3-4-3-属性面板"><a href="#3-4-3-属性面板" class="headerlink" title="3.4.3 属性面板"></a>3.4.3 属性面板</h3><ol>
+<li><p><strong>应用面板：</strong>为独立窗口，可以任意移动；</p>
+</li>
+<li><p><strong>操作面板：</strong>窗口为独立窗口，可以任意移动；可以收起窗口；</p>
+</li>
+<li><p><strong>撤销恢复：</strong>可以通过属性面板操作撤销恢复，或快捷键ctrl+Z&#x2F;ctrl+Y；</p>
+<ol>
+<li>对象：撤销恢复手动编辑的操作；如调整颈缘线；（绘制小球的操作）</li>
+</ol>
+</li>
+<li><p>单击属性面板“√”执行切分牙齿，自动进入‘虚拟牙根步骤’；</p>
+</li>
+<li><p>单击属性面板“×”不会执行切分，保存提取颈缘线数据，并退出当前界面到主界面；</p>
+<ol>
+<li><p>单击“√”时，必须是上下颌颈缘线都提取完成；</p>
+<ol>
+<li>若只是标识了一部分数据，这时候单击“√”时，提示：上颌未标识！或下颌未标识！—OK；只能单击“x”保存现有数据，退出到主界面；</li>
+</ol>
+</li>
+<li><p>单击“×”时</p>
+<ol>
+<li>若只是标识了一部分数据，这时候单击“×”时，保存数据直接退出当前界面到主界面；</li>
+</ol>
+</li>
+</ol>
+</li>
+<li><p><strong>修改切分数据</strong>：当流程已经完成，返回修改数据时，检测数据发生变化时</p>
+<ol>
+<li><p>单击“√”时，会直接进入虚拟牙根步骤；</p>
+<ol>
+<li>分牙数据发生变化，进入虚拟牙根步骤后，单击“x”，会检测数据并提示：虚拟牙根数据发生变化，请重新生成虚拟牙龈！—OK</li>
+</ol>
+</li>
+<li><p>单击“x”时，提示：分牙数据发生变化，请重新生成虚拟牙根和虚拟牙龈！—OK；退出到主界面；</p>
+</li>
+<li><p>单击【虚拟牙根和虚拟牙龈】功能按钮进入虚拟牙根步骤或虚拟牙龈步骤即可以重新读入最新数据，生成最新的虚拟牙根和虚拟牙龈数据。</p>
+</li>
+</ol>
+</li>
+</ol>
+<h2 id="3-5-虚拟牙根"><a href="#3-5-虚拟牙根" class="headerlink" title="3.5 虚拟牙根"></a>3.5 虚拟牙根</h2><p><img src="/images/1661493589055-a3fae489-6e31-4d31-9498-95a87495c711.png"></p>
+<h3 id="3-5-1-场景显示"><a href="#3-5-1-场景显示" class="headerlink" title="3.5.1 场景显示"></a>3.5.1 场景显示</h3><ol>
+<li><p>单击【虚拟牙根】按钮，按钮激活状态，进入虚拟牙根界面；（退出界面时按钮恢复）；</p>
+<ol>
+<li>没有分牙数据时，该按钮置灰不可以激活；</li>
+</ol>
+</li>
+<li><p><strong>场景显示</strong>：</p>
+<ol>
+<li><p>场景中显示‘切分’步骤进入该步骤时的视图状态；通过可见导航显示隐藏上颌或下颌；</p>
+</li>
+<li><p>场景左侧显示功能按钮；</p>
+</li>
+<li><p>场景上方正中位置显示可见导航；</p>
+</li>
+<li><p>场景左上方显示属性面板；</p>
+</li>
+</ol>
+</li>
+</ol>
+<h3 id="3-5-2-虚拟牙根"><a href="#3-5-2-虚拟牙根" class="headerlink" title="3.5.2 虚拟牙根"></a>3.5.2 虚拟牙根</h3><ol>
+<li><p>单击【虚拟牙根】按钮，进入虚拟牙根界面，自动生成虚拟牙根；</p>
+</li>
+<li><p>根据颈缘线生成的Z轴方向生成 虚拟牙根；</p>
+</li>
+<li><p>生成一个短牙根，牙根颈1&#x2F;3即可；</p>
+</li>
+<li><p>可以通过“属性面板”显示隐藏坐标，调整坐标轴。</p>
+<ol>
+<li><p>显示当前坐标：单击选中牙齿，显示当前牙位坐标，可以调整坐标轴，同时牙根会根据新的坐标重新生成。</p>
+</li>
+<li><p>显示所有坐标：选中‘显示所有坐标’场景中上下颌的牙齿坐标全部显示，查看坐标情况，选中需要调整坐标的牙齿，调整坐标，同时牙根会根据新的坐标重新生成。</p>
+</li>
+<li><p>显示当前坐标和显示所有坐标，可以同时不选中，都不选中是，单击场景，牙齿不会显示坐标。</p>
+</li>
+<li><p>默认选中“显示当前坐标”，选中时按钮互斥，不会同时被选中</p>
+</li>
+</ol>
+</li>
+<li><p>生成虚拟牙根的同时将真实牙龈变成粉色；</p>
+</li>
+</ol>
+<h3 id="3-5-3-属性面板"><a href="#3-5-3-属性面板" class="headerlink" title="3.5.3 属性面板"></a>3.5.3 属性面板</h3><ol>
+<li><p><strong>应用面板：</strong>为独立窗口，可以任意移动；</p>
+</li>
+<li><p><strong>撤销恢复：</strong>撤销恢复按钮置灰；<strong>或不显示</strong>；</p>
+</li>
+<li><p>单击“√”保存牙根数据，自动进入‘虚拟牙龈步骤’；</p>
+</li>
+<li><p>单击“×”保存牙根数据，退出当前界面到主界面；</p>
+</li>
+</ol>
+<h2 id="3-6-虚拟牙龈"><a href="#3-6-虚拟牙龈" class="headerlink" title="3.6 虚拟牙龈"></a>3.6 虚拟牙龈</h2><p><img src="/images/1661493589629-7226d1c7-2d77-4260-94f3-9aa74a47654c.png"></p>
+<h3 id="3-6-1-场景显示"><a href="#3-6-1-场景显示" class="headerlink" title="3.6.1 场景显示"></a>3.6.1 场景显示</h3><ol>
+<li><p>单击【虚拟牙龈】按钮，按钮激活状态，进入虚拟牙龈界面；（退出界面时按钮恢复）；</p>
+<ol>
+<li>没有虚拟牙根数据时，该按钮置灰不可以激活；</li>
+</ol>
+</li>
+<li><p><strong>场景显示</strong>：</p>
+<ol>
+<li><p>场景中显示虚拟牙根进入该步骤时的视图状态；通过可见导航显示隐藏上颌或下颌；</p>
+</li>
+<li><p>场景左侧显示功能按钮；</p>
+</li>
+<li><p>场景上方正中位置显示可见导航；</p>
+</li>
+<li><p>场景左上方显示属性面板；</p>
+</li>
+</ol>
+</li>
+</ol>
+<h3 id="3-6-2-虚拟牙龈"><a href="#3-6-2-虚拟牙龈" class="headerlink" title="3.6.2 虚拟牙龈"></a>3.6.2 虚拟牙龈</h3><ol>
+<li><p>进入虚拟牙龈步骤，自动生成牙龈；</p>
+</li>
+<li><p>生成的牙龈可以在‘属性面板’调整牙龈高度和宽度，调整后场景实时变化（实时很慢的话可以加个<strong>【预览】</strong>的按钮）</p>
+</li>
+<li><p>生成虚拟牙龈后，仅该步骤和主界面显示虚拟牙龈，其他步骤均显示真实牙龈；</p>
+</li>
+</ol>
+<h3 id="3-6-3-属性面板"><a href="#3-6-3-属性面板" class="headerlink" title="3.6.3 属性面板"></a>3.6.3 属性面板</h3><ol>
+<li><p><strong>应用面板：</strong>为独立窗口，可以任意移动；</p>
+</li>
+<li><p>操作面板：为独立窗口，可以任意移动；可以收起；</p>
+</li>
+<li><p><strong>撤销恢复：</strong>撤销恢复按钮置灰；<strong>或不显示</strong>；</p>
+</li>
+<li><p>单击“√”保存牙龈数据，自动进入‘导出步骤’；</p>
+</li>
+<li><p>单击“×”保存牙龈数据，退出当前界面到主界面；</p>
+</li>
+</ol>
+<h2 id="3-7-工具"><a href="#3-7-工具" class="headerlink" title="3.7 工具"></a>3.7 工具</h2><p><img src="/images/1661493590202-5640b93b-8daf-4a70-9b38-0633664abfc5.png"></p>
+<h3 id="3-7-1-场景显示"><a href="#3-7-1-场景显示" class="headerlink" title="3.7.1 场景显示"></a>3.7.1 场景显示</h3><ol>
+<li><p>单击【工具】按钮，按钮激活状态，展开子工具，选择需要进入的工具按钮，如塑形；（退出界面时按钮恢复）；</p>
+</li>
+<li><p><strong>场景显示</strong>：</p>
+<ol>
+<li><p>场景中显示虚拟牙根进入该步骤时的视图状态；通过可见导航显示隐藏上颌或下颌；</p>
+</li>
+<li><p>场景左侧显示功能按钮；</p>
+</li>
+<li><p>场景上方正中位置显示可见导航；</p>
+</li>
+<li><p>场景左上方显示属性面板；</p>
+</li>
+</ol>
+</li>
+</ol>
+<h3 id="3-7-2-塑形"><a href="#3-7-2-塑形" class="headerlink" title="3.7.2 塑形"></a>3.7.2 塑形</h3><ol>
+<li><p>进入塑形步骤，可以通过选择属性面板：平滑、塑形，然后在模型上进行修复；</p>
+<ol>
+<li><p>通过拖拽调整半径和强度值</p>
+</li>
+<li><p>单击平滑、或者雕刻按钮选择塑形操作</p>
+</li>
+<li><p>选择雕刻操作时默认加蜡</p>
+</li>
+</ol>
+</li>
+<li><p><strong>仅用于生成牙龈后的牙齿塑形操作，扫描模型不可以用这个塑形；</strong></p>
+</li>
+</ol>
+<h3 id="3-7-3-属性面板"><a href="#3-7-3-属性面板" class="headerlink" title="3.7.3 属性面板"></a>3.7.3 属性面板</h3><ol>
+<li><p><strong>应用面板：</strong>为独立窗口，可以任意移动</p>
+</li>
+<li><p><strong>操作面板：</strong>为独立窗口，可以任意移动；可以收起；</p>
+</li>
+<li><p><strong>撤销恢复：</strong>可以通过右上角撤销恢复操作，或快捷键ctrl+Z&#x2F;ctrl+Y；</p>
+<ol>
+<li>塑形的操作均可以撤销恢复；</li>
+</ol>
+</li>
+<li><p>单击“√”保存数据，退出当前界面到主界面；</p>
+</li>
+<li><p>“x”按钮可以不显示；</p>
+</li>
+</ol>
+<h2 id="3-8-导出"><a href="#3-8-导出" class="headerlink" title="3.8 导出"></a>3.8 导出</h2><p><img src="/images/1661493591014-4d3bf75d-178b-4b46-970b-6465ab39029d.png"></p>
+<h3 id="3-8-1-场景显示"><a href="#3-8-1-场景显示" class="headerlink" title="3.8.1 场景显示"></a>3.8.1 场景显示</h3><ol>
+<li><p>单击【导出】按钮，按钮激活状态，进入导出步骤；（退出界面时按钮恢复）；</p>
+</li>
+<li><p><strong>场景显示</strong>：</p>
+<ol>
+<li><p>场景中显示进入该步骤时的视图状态；通过可见导航显示隐藏上颌或下颌；</p>
+<ol>
+<li>显示牙齿+牙根，虚拟牙龈；</li>
+</ol>
+</li>
+<li><p>场景左侧显示功能按钮；</p>
+</li>
+<li><p>场景上方正中位置显示可见导航；</p>
+</li>
+<li><p>场景左上方显示属性面板；</p>
+</li>
+</ol>
+</li>
+</ol>
+<h3 id="3-8-2-导出"><a href="#3-8-2-导出" class="headerlink" title="3.8.2 导出"></a>3.8.2 导出</h3><ol>
+<li><p>进入导出步骤，可以通过选择属性面板：导出数据或启动排牙；</p>
+</li>
+<li><p><strong>导出</strong>：单击【导出】按钮，会导出分牙数据，当前电脑没有安装排牙软件或要给其他角色操作时，可以传送导出数据给其他电脑或其他角色，用于后续排牙操作；</p>
+<ol>
+<li>单击【导出】，选择保存路径；或直接保存到指定路径；</li>
+</ol>
+</li>
+<li><p><strong>启动排牙</strong>：当前电脑必须安转了排牙软件，即可直接启动当前电脑的排牙软件，自动将数据传递到排牙软件中；</p>
+</li>
+<li><p><strong>修改数据：</strong>当流程已经完成，再次进入分牙步骤修改数据，没有重新生成虚拟牙根和虚拟牙龈，则单击【导出】和【启动排牙】时会拦截提示；</p>
+<ol>
+<li><p>分牙数据发生变化，虚拟牙根和虚拟牙龈没有重新生成，单击【导出】时检测并提示：分牙数据发生变化，请重新生成虚拟牙根和虚拟牙龈！–OK；</p>
+</li>
+<li><p>若只有虚拟牙龈数据没有更新，则提示：虚拟牙根数据发生变化，请重新生成虚拟牙龈！–OK；</p>
+</li>
+</ol>
+</li>
+<li><p>注意：<strong>辅助步骤</strong>数据发生变化时实时更新到保存目录下，不影响主流程操作；</p>
+</li>
+</ol>
+<h3 id="3-8-3-属性面板"><a href="#3-8-3-属性面板" class="headerlink" title="3.8.3 属性面板"></a>3.8.3 属性面板</h3><ol>
+<li><p><strong>属性面板：</strong>为独立窗口，可以任意移动；</p>
+</li>
+<li><p><strong>操作面板</strong>：为独立窗口，可以任意移动；</p>
+</li>
+<li><p><strong>撤销恢复：</strong>按钮置灰，或不显示；</p>
+</li>
+<li><p>单击“√”，退出当前界面到主界面；</p>
+</li>
+<li><p>“x”按钮可以不显示；</p>
+</li>
+</ol>
+<h1 id="四、从分牙软件需要带到排牙软件的信息"><a href="#四、从分牙软件需要带到排牙软件的信息" class="headerlink" title="四、从分牙软件需要带到排牙软件的信息"></a>四、从分牙软件需要带到排牙软件的信息</h1><h2 id="4-1-模型"><a href="#4-1-模型" class="headerlink" title="4.1 模型"></a>4.1 模型</h2><ol>
+<li><p>最终生成的模型（牙冠+牙根一体、牙龈）</p>
+<ol>
+<li><p>每个切分出来的牙齿数据</p>
+<ol>
+<li>牙冠+牙根融合成一体的数据</li>
+</ol>
+</li>
+<li><p>牙龈数据：虚拟牙龈数据</p>
+</li>
+</ol>
+</li>
+</ol>
+<h2 id="4-2-牙位扩展信息"><a href="#4-2-牙位扩展信息" class="headerlink" title="4.2 牙位扩展信息"></a>4.2 牙位扩展信息</h2><ol>
+<li><p>牙位上的数据</p>
+<ol>
+<li><p>牙位号</p>
+</li>
+<li><p>牙齿的边缘线</p>
+</li>
+<li><p>每颗牙的局部坐标系</p>
+</li>
+<li><p>牙齿的类型：种植牙、烤瓷牙、普通牙、多生牙、缺失牙、埋伏牙、阻生牙等</p>
+</li>
+<li><p>牙齿标记的点的属性（原先在扫描模型上，需要同样的属性转移到切分后的牙齿上）</p>
+</li>
+</ol>
+</li>
+<li><p>牙位上测量的数据</p>
+<ol>
+<li><p>牙冠的长、宽、拥挤度、bltton比等</p>
+<ol>
+<li>牙冠高度：冠唇面颈缘线中央点和切缘处中央点的连线</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<p><img src="/images/1661493591622-742471ec-fff8-45e4-8919-1abb541af2a9.png"></p>
+<pre><code>  1. 近远中径：冠咬合面上近远中点的连线
+</code></pre>
+<p><img src="/images/1661493592214-9db14c03-5b2b-4043-acb5-5769b0c54f4b.png"></p>
+<pre><code>  1. 颊舌径：冠颈部颊侧点和舌侧点的连线
+</code></pre>
+<p><img src="/images/1661493592796-0e06dd88-e262-4b03-b4f8-3561c8bceb5d.png"></p>
+<pre><code>  1. **拥挤度**：是指牙齿在唇颊向观察的重叠程度。
+</code></pre>
+<p>① 前牙拥挤度（3-3）：前牙3-3的近远中径之和-前牙弓应有长度的值</p>
+<p>② 全牙拥挤度（6-6）：全牙6-6的近远中径之和-全牙弓应有长度的值</p>
+<p><strong>注：</strong>轻度拥挤（I 度拥挤）：2&lt;牙列拥挤度&lt;4</p>
+<p>中度拥挤（II度拥挤）：4mm&lt;牙列拥挤度&lt;8mm</p>
+<p>重度拥挤（III度拥挤度）:牙列拥挤度&gt;8mm</p>
+<pre><code>  1. **bltton比：**Bolton比例不调测量的是上下牙弓牙量的不匹配。
+</code></pre>
+<p>①<strong>3—3（前牙比）：</strong>前牙比不调定义如下：设R为下颌3-3牙量与上颌3-3牙量之比。如果[R-0.772]&lt;0.001，那么前牙Bolton比不调为0；否则，前牙Bolton比例不调等于上颌3-3牙量与（1.0-R、0.772）的乘积。如果Bolton比例不调大于0，表示上颌3-3牙量相对较大；否则，表示下颌3-3牙量相对较大。</p>
+<p>②** 6—6（全牙比）：**全牙比不调定义：设R为下颌6-6牙量与上颌6-6 牙量之比。如果[R-0.913]&lt;0.001，那么全牙Bolton比例不调为0；否则，全牙Bolton比例不调等于上颌6-6牙量与（1.0-R&#x2F;0.913）的乘积。如果Bolton比例不调大于0，表示上颌6-6牙量相对较大；否则表示下颌6-6牙量相对较大。</p>
+<ol>
+<li><p>牙弓线</p>
+<ol>
+<li>需要获取上下颌的数据：左右两侧第二磨牙（或第一磨牙）上的咬合面点，两个中切牙近中接触点，尖牙点；五个点连成的抛物线；</li>
+</ol>
+</li>
+</ol>
+<p><img src="/images/1661493593803-767baed8-8848-474e-a651-d3422bf586af.png"></p>
+<ol>
+<li>其他可以在分牙软件中计算出的数据（待添加）</li>
+</ol>
+<h2 id="4-3-修改颈缘线数据—0610"><a href="#4-3-修改颈缘线数据—0610" class="headerlink" title="4.3 修改颈缘线数据—0610"></a>4.3 修改颈缘线数据—0610</h2><ol>
+<li>当分牙完成启动排牙软件排牙后，发现颈缘处边界不正确需要重新调整时，可以进入分牙软件重新修改牙位颈缘线。</li>
+</ol>
+<p>1）重新进入分牙软件时提示：分牙已完成，确定要重新分牙？确定–进入，取消—不进入。</p>
+<ol>
+<li><p>修改颈缘线完成后，需要重新生成虚拟牙根和虚拟牙龈，仅参与修改颈缘线的牙位需要重新生成。</p>
+</li>
+<li><p>重新进入排牙步骤</p>
+</li>
+</ol>
+<p>1）仅修改颈缘线边界位置，排牙数据不会丢失。</p>
+<p>2）当在分牙步骤删除颈缘线或标记缺失牙位后，会被判定为拔牙或缺失牙。重新进入排牙步骤，牙位数据会丢失。</p>
+
+    </div>
+
+    
+    
+    
+        <div class="reward-container">
+  <div></div>
+  <button onclick="var qr = document.getElementById('qr'); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/images/wechatpay.png" alt="SindreYang 微信支付">
+        <p>微信支付</p>
+      </div>
+      
+      <div style="display: inline-block;">
+        <img src="/images/alipay.png" alt="SindreYang 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>SindreYang
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://blog.mviai.com/2025/%E6%AD%A3%E7%95%B8%E5%88%86%E7%89%99%E9%9C%80%E6%B1%82%E5%88%86%E6%9E%90/" title="正畸分牙需求分析">http://blog.mviai.com/2025/正畸分牙需求分析/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <span class="exturl" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC9kZWVkLnpo"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</span> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+        
+
+  <div class="followme">
+    <p>欢迎关注我的其它发布渠道</p>
+
+    <div class="social-list">
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="/images/wechat.png">
+            <span class="icon">
+              <i class="fa fa-wechat"></i>
+            </span>
+
+            <span class="label">WeChat</span>
+          </a>
+        </div>
+    </div>
+  </div>
+
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2025/%E6%AD%A3%E7%95%B8%E8%87%AA%E5%8A%A8%E5%88%86%E7%89%99%E9%9C%80%E6%B1%82V2.1.2/" rel="prev" title="正畸自动分牙需求V2">
+      <i class="fa fa-chevron-left"></i> 正畸自动分牙需求V2
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2025/%E6%A4%85%E6%97%81%E8%AE%BE%E8%AE%A1%E6%96%87%E6%A1%A3/" rel="next" title="椅旁设计文档">
+      椅旁设计文档 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    
+  <div class="comments">
+    <div id="SOHUCS"></div>
+  </div>
+  
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%AD%A3%E7%95%B8%E5%88%86%E7%89%99%E9%9C%80%E6%B1%82%E5%88%86%E6%9E%90"><span class="nav-number">1.</span> <span class="nav-text">正畸分牙需求分析</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%B8%80%E3%80%81%E9%9C%80%E6%B1%82%E8%83%8C%E6%99%AF"><span class="nav-number">2.</span> <span class="nav-text">一、需求背景</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-1-%E8%BE%93%E5%85%A5%E6%95%B0%E6%8D%AE%E6%BA%90"><span class="nav-number">2.1.</span> <span class="nav-text">1.1 输入数据源</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-2-%E8%BE%93%E5%87%BA%E6%95%B0%E6%8D%AE"><span class="nav-number">2.2.</span> <span class="nav-text">1.2 输出数据</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BA%8C%E3%80%81%E5%88%86%E7%89%99%E6%B5%81%E7%A8%8B%E5%8F%8A%E5%8A%9F%E8%83%BD"><span class="nav-number">3.</span> <span class="nav-text">二、分牙流程及功能</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#2-1-%E8%AE%A2%E5%8D%95%E7%AE%A1%E7%90%86%EF%BC%88%E9%9C%80%E8%A6%81%E5%8F%A6%E5%A4%96%E5%86%99%E9%9C%80%E6%B1%82%EF%BC%89"><span class="nav-number">3.1.</span> <span class="nav-text">2.1 订单管理（需要另外写需求）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-2-%E5%88%86%E7%89%99%E6%B5%81%E7%A8%8B"><span class="nav-number">3.2.</span> <span class="nav-text">2.2 分牙流程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link"><span class="nav-number">3.3.</span> <span class="nav-text"></span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-2-%E5%92%AC%E5%90%88%E5%85%B3%E7%B3%BB"><span class="nav-number">3.4.</span> <span class="nav-text">2.2 咬合关系</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-3-%E5%88%86%E7%89%99"><span class="nav-number">3.5.</span> <span class="nav-text">2.3 分牙</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3-1-%E9%A2%88%E7%BC%98%E7%BA%BF%E8%AF%86%E5%88%AB%E7%9A%84%E6%96%B9%E6%B3%95"><span class="nav-number">3.5.1.</span> <span class="nav-text">2.3.1 颈缘线识别的方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3-2-%E7%89%99%E4%BD%8D%E5%9B%BE"><span class="nav-number">3.5.2.</span> <span class="nav-text">2.3.2 牙位图</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-4-%E8%99%9A%E6%8B%9F%E7%89%99%E6%A0%B9%EF%BC%88%E7%AE%97%E6%B3%95%EF%BC%89"><span class="nav-number">3.6.</span> <span class="nav-text">2.4 虚拟牙根（算法）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-5-%E8%99%9A%E6%8B%9F%E7%89%99%E9%BE%88%EF%BC%88%E7%AE%97%E6%B3%95%EF%BC%89"><span class="nav-number">3.7.</span> <span class="nav-text">2.5 虚拟牙龈（算法）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-6-%E5%B7%A5%E5%85%B7"><span class="nav-number">3.8.</span> <span class="nav-text">2.6 工具</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-7-%E5%AF%BC%E5%87%BA"><span class="nav-number">3.9.</span> <span class="nav-text">2.7 导出</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%B8%89%E3%80%81%E5%8E%9F%E5%9E%8B%E5%8F%8A%E4%BA%A4%E4%BA%92"><span class="nav-number">4.</span> <span class="nav-text">三、原型及交互</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#3-1-%E5%88%86%E7%89%99%E4%B8%BB%E7%95%8C%E9%9D%A2"><span class="nav-number">4.1.</span> <span class="nav-text">3.1 分牙主界面</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-1-1-%E8%8F%9C%E5%8D%95%E6%A0%8F%E6%98%BE%E7%A4%BA"><span class="nav-number">4.1.1.</span> <span class="nav-text">3.1.1 菜单栏显示</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-1-2-%E5%8F%AF%E8%A7%81%E5%AF%BC%E8%88%AA%E6%98%BE%E7%A4%BA"><span class="nav-number">4.1.2.</span> <span class="nav-text">3.1.2 可见导航显示</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-2-%E7%89%99%E9%A2%8C%E8%BD%B4%E5%90%91"><span class="nav-number">4.2.</span> <span class="nav-text">3.2 牙颌轴向</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-2-1-%E5%9C%BA%E6%99%AF%E6%98%BE%E7%A4%BA"><span class="nav-number">4.2.1.</span> <span class="nav-text">3.2.1 场景显示</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-2-2-%E7%89%99%E9%A2%8C%E8%BD%B4%E5%90%91%E8%B0%83%E6%95%B4"><span class="nav-number">4.2.2.</span> <span class="nav-text">3.2.2 牙颌轴向调整</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-2-3-%E5%B1%9E%E6%80%A7%E9%9D%A2%E6%9D%BF"><span class="nav-number">4.2.3.</span> <span class="nav-text">3.2.3 属性面板</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-3-%E5%92%AC%E5%90%88%E5%85%B3%E7%B3%BB"><span class="nav-number">4.3.</span> <span class="nav-text">3.3 咬合关系</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-3-1-%E5%9C%BA%E6%99%AF%E6%98%BE%E7%A4%BA"><span class="nav-number">4.3.1.</span> <span class="nav-text">3.3.1 场景显示</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-3-2-%E5%92%AC%E5%90%88%E5%85%B3%E7%B3%BB%E8%B0%83%E6%95%B4"><span class="nav-number">4.3.2.</span> <span class="nav-text">3.3.2 咬合关系调整</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-3-3-%E5%B1%9E%E6%80%A7%E9%9D%A2%E6%9D%BF"><span class="nav-number">4.3.3.</span> <span class="nav-text">3.3.3 属性面板</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-4-%E5%88%86%E7%89%99"><span class="nav-number">4.4.</span> <span class="nav-text">3.4 分牙</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-4-1-%E5%9C%BA%E6%99%AF%E6%98%BE%E7%A4%BA"><span class="nav-number">4.4.1.</span> <span class="nav-text">3.4.1 场景显示</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-4-2-%E5%88%86%E7%89%99"><span class="nav-number">4.4.2.</span> <span class="nav-text">3.4.2 分牙</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#3-4-2-1-%E5%B8%B8%E8%A7%84%E5%88%86%E7%89%99%E6%96%B9%E5%BC%8F"><span class="nav-number">4.4.2.1.</span> <span class="nav-text">3.4.2.1 常规分牙方式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-4-2-2-AI%E8%87%AA%E5%8A%A8%E5%88%86%E7%89%99%E6%96%B9%E5%BC%8F"><span class="nav-number">4.4.2.2.</span> <span class="nav-text">3.4.2.2 AI自动分牙方式</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-4-3-%E5%B1%9E%E6%80%A7%E9%9D%A2%E6%9D%BF"><span class="nav-number">4.4.3.</span> <span class="nav-text">3.4.3 属性面板</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-5-%E8%99%9A%E6%8B%9F%E7%89%99%E6%A0%B9"><span class="nav-number">4.5.</span> <span class="nav-text">3.5 虚拟牙根</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-5-1-%E5%9C%BA%E6%99%AF%E6%98%BE%E7%A4%BA"><span class="nav-number">4.5.1.</span> <span class="nav-text">3.5.1 场景显示</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-5-2-%E8%99%9A%E6%8B%9F%E7%89%99%E6%A0%B9"><span class="nav-number">4.5.2.</span> <span class="nav-text">3.5.2 虚拟牙根</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-5-3-%E5%B1%9E%E6%80%A7%E9%9D%A2%E6%9D%BF"><span class="nav-number">4.5.3.</span> <span class="nav-text">3.5.3 属性面板</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-6-%E8%99%9A%E6%8B%9F%E7%89%99%E9%BE%88"><span class="nav-number">4.6.</span> <span class="nav-text">3.6 虚拟牙龈</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-6-1-%E5%9C%BA%E6%99%AF%E6%98%BE%E7%A4%BA"><span class="nav-number">4.6.1.</span> <span class="nav-text">3.6.1 场景显示</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-6-2-%E8%99%9A%E6%8B%9F%E7%89%99%E9%BE%88"><span class="nav-number">4.6.2.</span> <span class="nav-text">3.6.2 虚拟牙龈</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-6-3-%E5%B1%9E%E6%80%A7%E9%9D%A2%E6%9D%BF"><span class="nav-number">4.6.3.</span> <span class="nav-text">3.6.3 属性面板</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-7-%E5%B7%A5%E5%85%B7"><span class="nav-number">4.7.</span> <span class="nav-text">3.7 工具</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-7-1-%E5%9C%BA%E6%99%AF%E6%98%BE%E7%A4%BA"><span class="nav-number">4.7.1.</span> <span class="nav-text">3.7.1 场景显示</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-7-2-%E5%A1%91%E5%BD%A2"><span class="nav-number">4.7.2.</span> <span class="nav-text">3.7.2 塑形</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-7-3-%E5%B1%9E%E6%80%A7%E9%9D%A2%E6%9D%BF"><span class="nav-number">4.7.3.</span> <span class="nav-text">3.7.3 属性面板</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-8-%E5%AF%BC%E5%87%BA"><span class="nav-number">4.8.</span> <span class="nav-text">3.8 导出</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-8-1-%E5%9C%BA%E6%99%AF%E6%98%BE%E7%A4%BA"><span class="nav-number">4.8.1.</span> <span class="nav-text">3.8.1 场景显示</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-8-2-%E5%AF%BC%E5%87%BA"><span class="nav-number">4.8.2.</span> <span class="nav-text">3.8.2 导出</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-8-3-%E5%B1%9E%E6%80%A7%E9%9D%A2%E6%9D%BF"><span class="nav-number">4.8.3.</span> <span class="nav-text">3.8.3 属性面板</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%9B%9B%E3%80%81%E4%BB%8E%E5%88%86%E7%89%99%E8%BD%AF%E4%BB%B6%E9%9C%80%E8%A6%81%E5%B8%A6%E5%88%B0%E6%8E%92%E7%89%99%E8%BD%AF%E4%BB%B6%E7%9A%84%E4%BF%A1%E6%81%AF"><span class="nav-number">5.</span> <span class="nav-text">四、从分牙软件需要带到排牙软件的信息</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#4-1-%E6%A8%A1%E5%9E%8B"><span class="nav-number">5.1.</span> <span class="nav-text">4.1 模型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-2-%E7%89%99%E4%BD%8D%E6%89%A9%E5%B1%95%E4%BF%A1%E6%81%AF"><span class="nav-number">5.2.</span> <span class="nav-text">4.2 牙位扩展信息</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-3-%E4%BF%AE%E6%94%B9%E9%A2%88%E7%BC%98%E7%BA%BF%E6%95%B0%E6%8D%AE%E2%80%940610"><span class="nav-number">5.3.</span> <span class="nav-text">4.3 修改颈缘线数据—0610</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="SindreYang"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">SindreYang</p>
+  <div class="site-description" itemprop="description">沉淀后我愿意做一个温暖的人。有自己的喜好，有自己的原则，有自己的信仰，不急功近利，不浮夸轻薄，宠辱不惊，淡定安逸，心静如水。------不忘初心，方得始终</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">321</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">72</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL1NpbmRyZVlhbmc=" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;SindreYang"><i class="fa fa-fw fa-github"></i>GitHub</span>
+      </span>
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="bWFpbHRvOnl4QG12aWFpLmNvbQ==" title="E-Mail → mailto:yx@mviai.com"><i class="fa fa-fw fa-envelope"></i>E-Mail</span>
+      </span>
+  </div>
+  <div class="cc-license motion-element" itemprop="license">
+    <span class="exturl cc-opacity" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC9kZWVkLnpo"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+  <div class="languages">
+    <label class="lang-select-label">
+      <i class="fa fa-language"></i>
+      <span>简体中文</span>
+      <i class="fa fa-angle-up" aria-hidden="true"></i>
+    </label>
+    <select class="lang-select" data-canonical="">
+      
+        <option value="zh-CN" data-href="/2025/%E6%AD%A3%E7%95%B8%E5%88%86%E7%89%99%E9%9C%80%E6%B1%82%E5%88%86%E6%9E%90/" selected="">
+          简体中文
+        </option>
+      
+        <option value="en" data-href="/en/2025/%E6%AD%A3%E7%95%B8%E5%88%86%E7%89%99%E9%9C%80%E6%B1%82%E5%88%86%E6%9E%90/" selected="">
+          English
+        </option>
+      
+    </select>
+  </div>
+
+        
+
+<div class="copyright">
+  
+  &copy; 2018 – 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">SindreYang</span>
+</div><!-- 页面点击小红心 -->
+<script type="text/javascript" src="/js/love.js"></script>
+<!-- 背景波浪 -->
+<script color="0,0,255" opacity="0.5" zIndex="-1" count="99" src="https://cdn.jsdelivr.net/npm/canvas-nest.js@1/dist/canvas-nest.js"></script>
+
+
+<!-- 腾讯企业邮箱 -->
+<style>
+.bizmail_loginpanel {
+    font-size: 12px;
+    width: 300px;
+    height: auto;
+    background: transparent;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.bizmail_LoginBox {
+    padding: 10px 15px;
+}
+
+
+.bizmail_loginpanel form {
+    margin: 0;
+    padding: 0;
+}
+
+.bizmail_loginpanel input.text {
+    font-size: 12px;
+    width: 100px;
+    height: 20px;
+    margin: 0 2px;
+    background-color: transparent;
+    border:1px solid transparent;
+    box-shadow: none;
+    color: black;
+}
+
+.bizmail_loginpanel .bizmail_column {
+    height: 28px;
+}
+
+.bizmail_loginpanel .bizmail_column label {
+    display: block;
+    float: left;
+    width: 30px;
+    height: 24px;
+    line-height: 24px;
+    font-size: 12px;
+}
+
+.bizmail_loginpanel .bizmail_column .bizmail_inputArea {
+    float: left;
+    width: 240px;
+}
+
+.bizmail_loginpanel .bizmail_column span {
+    font-size: 12px;
+    word-wrap: break-word;
+    margin-left: 2px;
+    line-height: 200%;
+}
+
+.bizmail_loginpanel .bizmail_SubmitArea {
+    margin-left: 30px;
+    clear: both;
+}
+
+.bizmail_loginpanel .bizmail_SubmitArea a {
+    font-size: 12px;
+    margin-left: 5px;
+}
+
+.bizmail_loginpanel select {
+    width: 110px;
+    height: 20px;
+    margin: 0 2px;
+}
+.bizmail_loginpanel input {
+
+    background-color: rgba(83, 126, 236, 0.562);
+}
+
+
+</style>
+
+<script type="text/javascript">
+function checkInput() {
+    var e = document.form1.uin,
+        i = document.form1.pwd;
+    return 0 == e.value.length ? e.focus() : 0 == i.value.length ? i.focus() : (document.form1.submit(), setTimeout(" document.form1.pwd.value = '' ", 500)), !1
+}
+
+function writeLoginPanel(e) {
+    if (e && e.domainlist && -1 != e.domainlist.indexOf(".")) {
+        var a = "return checkInput()",
+            t = '<div id="divLoginpanelHor" class="bizmail_loginpanel" style="width:550px;"><div class="bizmail_LoginBox"><form name="form1" action="https://exmail.qq.com/cgi-bin/login" target="_blank" method="post" onsubmit="' + a + '"><input type="hidden" name="firstlogin" value="false" /><input type="hidden" name="errtemplate" value="dm_loginpage" /><input type="hidden" name="aliastype" value="other" /><input type="hidden" name="dmtype" value="bizmail" /><input type="hidden" name="p" value="" /><label>\u8d26\u53f7:</label><input type="text" name="uin" class="text" value="" />@#domainlist#<label>&nbsp&nbsp&nbsp;\u5bc6\u7801:</label><input type="password" name="pwd" class="text" value="" /><input type="submit" class="" name="" value="\u767b\u5f55" />&nbsp;<a href="https://exmail.qq.com/cgi-bin/readtemplate?check=false&t=biz_rf_portal#recovery" target="_blank">\u5fd8\u8bb0\u5bc6\u7801\uff1f</a></form></div></div>',
+            n = '<div id="divLoginpanelVer" class="bizmail_loginpanel"><div class="bizmail_LoginBox"><form name="form1" action="https://exmail.qq.com/cgi-bin/login" target="_blank" method="post" onsubmit="' + a + '"><input type="hidden" name="firstlogin" value="false" /><input type="hidden" name="errtemplate" value="dm_loginpage" /><input type="hidden" name="aliastype" value="other" /><input type="hidden" name="dmtype" value="bizmail" /><input type="hidden" name="p" value="" /><div class="bizmail_column"><label>\u8d26\u53f7:</label><div class="bizmail_inputArea"><input type="text" name="uin" class="text" value="" />@#domainlist#</div></div><div class="bizmail_column"><label>\u5bc6\u7801:</label><div class="bizmail_inputArea"><input type="password" name="pwd" class="text" value="" /></div></div><div class="bizmail_SubmitArea"><input type="submit" class="" name="" style="width:66px;" value="\u767b\u5f55" /><a href="https://exmail.qq.com/cgi-bin/readtemplate?check=false&t=biz_rf_portal#recovery" target="_blank">\u5fd8\u8bb0\u5bc6\u7801\uff1f</a></div></form></div></div>',
+            l = e.domainlist.split(";");
+        if (1 == l.length) var m = '<span>#domain#</span><input type="hidden" name="domain" value="#domain#" />'.replace(/#domain#/g, l[0]);
+        else {
+            m = '<select name="domain">';
+            for (i = 0; i < l.length; i++) m += '<option value="' + l[i] + '">' + l[i] + "</option>";
+            m += "</select>"
+        }
+        e.mode && "vertical" != e.mode && "both" != e.mode || document.write(n.replace(/#domainlist#/g, m)), "horizontal" != e.mode && "both" != e.mode || document.write(t.replace(/#domainlist#/g, m))
+    }
+}
+
+</script>      
+
+<script type="text/javascript"> writeLoginPanel({domainlist:"mviai.com", mode:"horizontal"});</script>      
+
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script size="300" alpha="0.6" zIndex="-1" src="/lib/canvas-ribbon/canvas-ribbon.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/medium-zoom@1/dist/medium-zoom.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+  <script defer src="/lib/three/three.min.js"></script>
+    <script defer src="/lib/three/three-waves.min.js"></script>
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+<script>
+document.querySelectorAll('.pdfobject-container').forEach(element => {
+  let url = element.dataset.target;
+  let pdfOpenParams = {
+    navpanes : 0,
+    toolbar  : 0,
+    statusbar: 0,
+    pagemode : 'thumbs',
+    view     : 'FitH'
+  };
+  let pdfOpenFragment = '#' + Object.entries(pdfOpenParams).map(([key, value]) => `${key}=${encodeURIComponent(value)}`).join('&');
+  let fullURL = `/lib/pdf/web/viewer.html?file=${encodeURIComponent(url)}${pdfOpenFragment}`;
+
+  if (NexT.utils.supportsPDFs()) {
+    element.innerHTML = `<embed class="pdfobject" src="${url + pdfOpenFragment}" type="application/pdf" style="height: ${element.dataset.height};">`;
+  } else {
+    element.innerHTML = `<iframe src="${fullURL}" style="height: ${element.dataset.height};" frameborder="0"></iframe>`;
+  }
+});
+</script>
+
+
+
+
+  
+
+  
+
+  <script>
+  NexT.utils.loadComments(document.querySelector('#SOHUCS'), () => {
+    var appid = 'cyxmItxjS';
+    var conf = 'e5e71132d9086bb54aeeba6e88e87df9';
+    var width = window.innerWidth || document.documentElement.clientWidth;
+    if (width < 960) {
+      window.document.write('<script id="changyan_mobile_js" charset="utf-8" type="text/javascript" src="https://cy-cdn.kuaizhan.com/upload/mobile/wap-js/changyan_mobile.js?client_id=' + appid + '&conf=' + conf + '"><\/script>');
+    } else {
+      var loadJs=function(d,a){var c=document.getElementsByTagName("head")[0]||document.head||document.documentElement;var b=document.createElement("script");b.setAttribute("type","text/javascript");b.setAttribute("charset","UTF-8");b.setAttribute("src",d);if(typeof a==="function"){if(window.attachEvent){b.onreadystatechange=function(){var e=b.readyState;if(e==="loaded"||e==="complete"){b.onreadystatechange=null;a()}}}else{b.onload=a}}c.appendChild(b)};loadJs("https://changyan.sohu.com/upload/changyan.js",function(){window.changyan.api.config({appid:appid,conf:conf})});
+    }
+  });
+  </script>
+  <script src="https://cy-cdn.kuaizhan.com/upload/plugins/plugins.count.js"></script>
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/z16.model.json"},"display":{"position":"left","width":75,"height":150},"mobile":{"show":true},"log":false});</script></body>
+</html>
+
+
+
+

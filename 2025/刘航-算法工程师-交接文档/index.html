@@ -1,0 +1,938 @@
+<!DOCTYPE html>
+<html lang="zh-CN,en,default">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" href="/lib/pace/pace-theme-minimal.min.css">
+  <script src="/lib/pace/pace.min.js"></script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"blog.mviai.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":true,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":true,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="自动摘要: 工作交接文档		前言		本人在云甲工作一年零三个月，主要负责以下工作：数据标注，数据标注工具开发，算法部署，二维图像算法开发，参与椅旁软件开发。非常感谢公司给我这个机会，也感谢在整个工作过程中 ……..">
+<meta property="og:type" content="article">
+<meta property="og:title" content="刘航-算法工程师-交接文档">
+<meta property="og:url" content="http://blog.mviai.com/2025/%E5%88%98%E8%88%AA-%E7%AE%97%E6%B3%95%E5%B7%A5%E7%A8%8B%E5%B8%88-%E4%BA%A4%E6%8E%A5%E6%96%87%E6%A1%A3/index.html">
+<meta property="og:site_name" content="落叶无痕">
+<meta property="og:description" content="自动摘要: 工作交接文档		前言		本人在云甲工作一年零三个月，主要负责以下工作：数据标注，数据标注工具开发，算法部署，二维图像算法开发，参与椅旁软件开发。非常感谢公司给我这个机会，也感谢在整个工作过程中 ……..">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://blog.mviai.com/images/b997589c-555f-4eb9-a65c-a3a9b97338b4.png">
+<meta property="og:image" content="http://blog.mviai.com/images/a406eff5-a335-448c-93ee-9d23a0e96fef.png">
+<meta property="og:image" content="http://blog.mviai.com/images/4f240cce-4855-47f5-8701-9ee9014a7bec.png">
+<meta property="og:image" content="http://blog.mviai.com/images/d9c0d929-e2d0-4374-8c54-a34aab0d7d4c.png">
+<meta property="og:image" content="http://blog.mviai.com/images/219b25e2-4d5b-4442-9faa-0c2415291e1a.png">
+<meta property="og:image" content="http://blog.mviai.com/images/3f03b442-dec5-4805-8ce4-a7c7655e989b.png">
+<meta property="og:image" content="http://blog.mviai.com/images/ad0f4c1c-efdf-41a3-a31f-01cc47e2a69f.png">
+<meta property="og:image" content="http://blog.mviai.com/images/136db555-f230-4062-a519-95ef4120022e.png">
+<meta property="og:image" content="http://blog.mviai.com/images/8af6c57e-8bdb-4390-9846-bde11a995806.png">
+<meta property="og:image" content="http://blog.mviai.com/images/0be5cbe1-787e-4407-b7b0-4c0c7fea362c.png">
+<meta property="og:image" content="http://blog.mviai.com/images/5dab855f-b45b-4c44-9737-b12c5341d0b9.png">
+<meta property="og:image" content="http://blog.mviai.com/images/9d5fe916-5bca-4136-881a-b33777ceda14.png">
+<meta property="og:image" content="http://blog.mviai.com/images/82de7dd7-94c8-4d4a-ac5b-58b4c9867ffc.png">
+<meta property="og:image" content="http://blog.mviai.com/images/c730b45e-7692-4da3-b442-0add4793dfb6.png">
+<meta property="og:image" content="http://blog.mviai.com/images/34771471-8999-415c-a41b-630cdf89ca50.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1ae97ab5-ba61-46e5-b2f0-1f076ba32831.png">
+<meta property="og:image" content="http://blog.mviai.com/images/fcf0dedf-9dda-4bf9-adff-5c2714940580.png">
+<meta property="article:published_time" content="2025-01-22T04:37:41.000Z">
+<meta property="article:modified_time" content="2025-01-22T12:37:41.394Z">
+<meta property="article:author" content="SindreYang">
+<meta property="article:tag" content="生活">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://blog.mviai.com/images/b997589c-555f-4eb9-a65c-a3a9b97338b4.png">
+
+<link rel="canonical" href="http://blog.mviai.com/2025/%E5%88%98%E8%88%AA-%E7%AE%97%E6%B3%95%E5%B7%A5%E7%A8%8B%E5%B8%88-%E4%BA%A4%E6%8E%A5%E6%96%87%E6%A1%A3/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>刘航-算法工程师-交接文档 | 落叶无痕</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">落叶无痕</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类<span class="badge">72</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档<span class="badge">321</span></a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+  <span class="exturl github-corner" data-url="aHR0cHM6Ly9naXRodWIuY29tL1NpbmRyZVlhbmc=" title="Follow me on GitHub" aria-label="Follow me on GitHub"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></span>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://blog.mviai.com/2025/%E5%88%98%E8%88%AA-%E7%AE%97%E6%B3%95%E5%B7%A5%E7%A8%8B%E5%B8%88-%E4%BA%A4%E6%8E%A5%E6%96%87%E6%A1%A3/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="SindreYang">
+      <meta itemprop="description" content="沉淀后我愿意做一个温暖的人。有自己的喜好，有自己的原则，有自己的信仰，不急功近利，不浮夸轻薄，宠辱不惊，淡定安逸，心静如水。------不忘初心，方得始终">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="落叶无痕">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          刘航-算法工程师-交接文档
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2025-01-22 12:37:41 / 修改时间：20:37:41" itemprop="dateCreated datePublished" datetime="2025-01-22T12:37:41+08:00">2025-01-22</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E7%A6%BB%E8%81%8C%E4%BA%A4%E6%8E%A5/" itemprop="url" rel="index"><span itemprop="name">离职交接</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">Changyan：</span>
+    
+    
+      <a title="changyan" href="/2025/%E5%88%98%E8%88%AA-%E7%AE%97%E6%B3%95%E5%B7%A5%E7%A8%8B%E5%B8%88-%E4%BA%A4%E6%8E%A5%E6%96%87%E6%A1%A3/#SOHUCS" itemprop="discussionUrl">
+        <span id="changyan_count_unit" class="post-comments-count hc-comment-count" data-xid="2025/刘航-算法工程师-交接文档/" itemprop="commentCount"></span>
+      </a>
+    
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>自动摘要: 工作交接文档		前言		本人在云甲工作一年零三个月，主要负责以下工作：数据标注，数据标注工具开发，算法部署，二维图像算法开发，参与椅旁软件开发。非常感谢公司给我这个机会，也感谢在整个工作过程中 ……..</p>
+<span id="more"></span>
+<h1 id="工作交接文档"><a href="#工作交接文档" class="headerlink" title="工作交接文档"></a>工作交接文档</h1><h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>本人在云甲工作一年零三个月，主要负责以下工作：数据标注，数据标注工具开发，算法部署，二维图像算法开发，参与椅旁软件开发。非常感谢公司给我这个机会，也感谢在整个工作过程中杨新组长的指导，使我从中受益良多。</p>
+<h1 id="工作成果"><a href="#工作成果" class="headerlink" title="工作成果"></a>工作成果</h1><h2 id="1-数据标注"><a href="#1-数据标注" class="headerlink" title="1.数据标注"></a>1.数据标注</h2><p>在职期间所有数据均已存放在51服务器中</p>
+<h3 id="1-1-排牙"><a href="#1-1-排牙" class="headerlink" title="1.1 排牙"></a>1.1 排牙</h3><p><strong>数据存放路径：</strong>\192.168.1.51\产品部\13 正畸模拟器验收订单\AI训练集</p>
+<p>排牙数据详细情况见如下：</p>
+<table>
+<thead>
+<tr>
+<th><strong>数据类型</strong></th>
+<th><strong>数据量</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>正常牙训练数据</td>
+<td>250</td>
+</tr>
+<tr>
+<td>缺失牙训练数据(4、5号牙)</td>
+<td>1740</td>
+</tr>
+<tr>
+<td>医生排牙数据</td>
+<td>123</td>
+</tr>
+</tbody></table>
+<p><span class="exturl" data-url="aHR0cHM6Ly9hbGlkb2NzLmRpbmd0YWxrLmNvbS9pL25vZGVzL3IxUjdxM1FtV2U3eG0xRTFUNE1ZbkJ3cEp4a1hPRVAyP2RvY190eXBlPXdpa2lfZG9j" title="https://alidocs.dingtalk.com/i/nodes/r1R7q3QmWe7xm1E1T4MYnBwpJxkXOEP2?doc_type=wiki_doc">排牙数据详细记录文档<i class="fa fa-external-link"></i></span></p>
+<h3 id="1-2-全冠"><a href="#1-2-全冠" class="headerlink" title="1.2 全冠"></a>1.2 全冠</h3><p><strong>数据存放路径：</strong>\192.168.1.51\产品部\0_AI数据\AI冠训练数据</p>
+<p>全冠数据详细情况如下：</p>
+<table>
+<thead>
+<tr>
+<th><strong>牙齿编号</strong></th>
+<th><strong>上颌</strong></th>
+<th><strong>下颌</strong></th>
+<th><strong>总计</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>4号牙</td>
+<td>79</td>
+<td>81</td>
+<td>160</td>
+</tr>
+<tr>
+<td>5号牙</td>
+<td>129</td>
+<td>88</td>
+<td>217</td>
+</tr>
+<tr>
+<td>6号牙</td>
+<td>148</td>
+<td>175</td>
+<td>323</td>
+</tr>
+</tbody></table>
+<p><span class="exturl" data-url="aHR0cHM6Ly9hbGlkb2NzLmRpbmd0YWxrLmNvbS9pL25vZGVzLzIwZU1LanlwODFSYkVaeFpjQW9HWjNlZVd4QVpCMUd2P2RvY190eXBlPXdpa2lfZG9j" title="https://alidocs.dingtalk.com/i/nodes/20eMKjyp81RbEZxZcAoGZ3eeWxAZB1Gv?doc_type=wiki_doc">全冠数据详细记录文档<i class="fa fa-external-link"></i></span></p>
+<h3 id="1-3-齿龈分离"><a href="#1-3-齿龈分离" class="headerlink" title="1.3 齿龈分离"></a>1.3 齿龈分离</h3><p><strong>数据存放路径：</strong>\192.168.1.51\产品部\0_齿龈分离</p>
+<p>齿龈分离数据详细情况如下：</p>
+<table>
+<thead>
+<tr>
+<th><strong>任务</strong></th>
+<th><strong>数据量</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>齿龈分离(口扫)</td>
+<td>5431份</td>
+</tr>
+<tr>
+<td>齿龈分离(模扫)</td>
+<td>3284份</td>
+</tr>
+</tbody></table>
+<h3 id="1-4-数据自动标注"><a href="#1-4-数据自动标注" class="headerlink" title="1.4 数据自动标注"></a>1.4 数据自动标注</h3><p>关于半自动标注数据请查看此<span class="exturl" data-url="aHR0cHM6Ly9hbGlkb2NzLmRpbmd0YWxrLmNvbS9pL25vZGVzL2RwWUxhZXptVk5MZDcxYjFmRHZFWFlkYThyTXFQeFg2P2RvY190eXBlPXdpa2lfZG9jJmlmcmFtZVF1ZXJ5PXV0bV9zb3VyY2U9cG9ydGFsJnV0bV9tZWRpdW09cG9ydGFsX3JlY2VudCZybmQ9MC4zNTEwMDUyODgyMTk1MzgyNQ==" title="https://alidocs.dingtalk.com/i/nodes/dpYLaezmVNLd71b1fDvEXYda8rMqPxX6?doc_type=wiki_doc&iframeQuery=utm_source=portal&utm_medium=portal_recent&rnd=0.35100528821953825">文档<i class="fa fa-external-link"></i></span></p>
+<p>备注：1、口&#x2F;模扫标注工具模型训练代码及使用方式；</p>
+<p>代码位置：&#x2F;home&#x2F;liuhang&#x2F;project&#x2F;ultralytics</p>
+<ol>
+<li><strong>数据处理</strong></li>
+</ol>
+<p><img src="/images/b997589c-555f-4eb9-a65c-a3a9b97338b4.png"></p>
+<pre><code># 1.激活环境
+conda activate myyolov8
+
+# 2.将labelme格式数据转换成yolo格式
+cd data/labelme2YoloV8-segment/
+
+python labelme2YoloV8-segment/convert_folder.py  dataset/Ks traindata/Ks_tooth 0.8 
+(输入路径)    (输出路径)   (训练集占比)
+</code></pre>
+<ol start="2">
+<li><p><strong>训练</strong></p>
+<h1 id="1-训练"><a href="#1-训练" class="headerlink" title="1.训练"></a>1.训练</h1><p>nohup sh train.sh &gt; log&#x2F;logname.log 2&gt;&amp;1 &amp;</p>
+<h1 id="2-预测"><a href="#2-预测" class="headerlink" title="2.预测"></a>2.预测</h1><p>yolo task&#x3D;segment mode&#x3D;predict model&#x3D;runs&#x2F;segment&#x2F;train&#x2F;weights&#x2F;best.pt source&#x3D;data&#x2F;traindata&#x2F;ks_implant_abandon_tooth&#x2F;images&#x2F;val device&#x3D;0</p>
+<h1 id="3-导出onnx"><a href="#3-导出onnx" class="headerlink" title="3.导出onnx"></a>3.导出onnx</h1><p>yolo task&#x3D;segment mode&#x3D;export model&#x3D;runs&#x2F;segment&#x2F;train&#x2F;weights&#x2F;best.pt format&#x3D;onnx</p>
+</li>
+<li><p><strong>编写配置文件</strong></p>
+<h1 id="在此基础上修改即可"><a href="#在此基础上修改即可" class="headerlink" title="在此基础上修改即可"></a>在此基础上修改即可</h1><p>type: yolov8_seg<br>name: yolov8x-seg-r20230620<br>display_name: YOLOv8x-Seg Ultralytics<br>model_path: ks-seg.onnx  #训练的标注模型的名字<br>nms_threshold: 0.45<br>confidence_threshold: 0.25<br>classes:  #有新增类别 请在下面添加</p>
+<ul>
+<li>abandon</li>
+<li>tooth</li>
+<li>implant</li>
+</ul>
+</li>
+</ol>
+<p>更详细的内容，可<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL0NWSHViNTIwL1gtQW55TGFiZWxpbmc=" title="https://github.com/CVHub520/X-AnyLabeling">查看<i class="fa fa-external-link"></i></span></p>
+<p>    2、AI特征点标注工具代码：F:\Code\pyProject</p>
+<p><img src="/images/a406eff5-a335-448c-93ee-9d23a0e96fef.png"></p>
+<h2 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h2><h4 id="1-齿龈分离（模扫）"><a href="#1-齿龈分离（模扫）" class="headerlink" title="1.齿龈分离（模扫）"></a>1.齿龈分离（模扫）</h4><p><strong>背景：</strong></p>
+<ol>
+<li><p>口扫齿龈分离要求在cpu的推理环境下进行推理</p>
+</li>
+<li><p>目前支持的类别有tooth 和 implant</p>
+</li>
+</ol>
+<p><strong>代码位置：</strong>服务器192.168.1.53</p>
+<p><strong>路径：</strong>&#x2F;home&#x2F;liuhang&#x2F;project&#x2F;PaddleSeg</p>
+<p>结构详解：</p>
+<p><img src="/images/4f240cce-4855-47f5-8701-9ee9014a7bec.png"></p>
+<p><img src="/images/d9c0d929-e2d0-4374-8c54-a34aab0d7d4c.png"></p>
+<p>模扫齿龈分离选用paddlepaddleSeg框架中的ppmobileseg 网络进行训练，现在只区分牙齿区域，其余区域均不分割。准确率大致在97%左右。</p>
+<p><strong>如何使用：</strong></p>
+<pre><code># 1.激活对应环境
+conda activate paddleseg
+
+# 2.运行data路径下的数据预处理代码，整理数据
+cd data
+python dataProduce.py 
+
+# 3.将数据处理成训练格式
+cd ..
+python tools/data/labelme2seg.py data/dataset(输入) data/ms_tooth/(输出)
+
+# 4.划分训练集与测试集
+python tools/data/split_dataset_list.py data/ms_tooth images annotations --split 0.8 0.1 0.1 --format bmp png   (图片格式 要求以后都提供bmp)
+# TODO： 修改train_ppmobileseg.sh中的save_dir参数
+# 5.训练
+nohup sh tools/trainsh/train_ppmobileseg.sh &gt; tools/log/ppmobileseg_7_29.log 2&gt;&amp;1 &amp;
+
+# 6.预测
+python tools/predict.py \
+       --config tools/configs/pp_mobileseg/pp_mobileseg_ms_1400x1600.yml \
+       --model_path output/pp_mobileseg_tooth_7_29/best_model/model.pdparams \
+       --image_path data/1.bmp \
+       --save_dir output/result/pp_moble_7_29 
+
+# 7.导出预测模型
+python tools/export.py \
+       --config tools/configs/pp_mobileseg/pp_mobileseg_ms_1400x1600.yml \
+       --model_path output/pp_mobileseg_tooth_7_29/best_model/model.pdparams \
+       --input_shape 1 3 512 640 \
+       --save_dir output/inference_model/ppmobileseg_tooth_7_29
+
+# 8.导出onnx模型
+paddle2onnx --model_dir output/inference_model/ppmobileseg_tooth_7_29 \
+            --model_filename model.pdmodel \
+            --params_filename model.pdiparams \
+            --opset_version 11 \
+            --save_file ppmobileseg.onnx
+</code></pre>
+<p><strong>中断后训练</strong></p>
+<p><img src="/images/219b25e2-4d5b-4442-9faa-0c2415291e1a.png"><br><img src="/images/3f03b442-dec5-4805-8ce4-a7c7655e989b.png"></p>
+<h4 id="2-齿龈分离（口扫）"><a href="#2-齿龈分离（口扫）" class="headerlink" title="2.齿龈分离（口扫）"></a>2.齿龈分离（口扫）</h4><p><strong>数据存放路径：</strong>\192.168.1.51\产品部\齿龈分离</p>
+<p><strong>代码位置：</strong>服务器192.168.1.53</p>
+<p><strong>路径：</strong>&#x2F;home&#x2F;liuhang&#x2F;mmlab&#x2F;mmsegmentation</p>
+<p><img src="/images/ad0f4c1c-efdf-41a3-a31f-01cc47e2a69f.png"></p>
+<p>齿龈分离(口扫)目前训练两个版本的模型：</p>
+<p>第一种：种植杆，无关区域      </p>
+<p>第二种：种植杆，无关区域，牙齿</p>
+<p>第一种效果尚可，第二种在添加完牙齿数据后，种植杆数据效果会变差准确率在92%左右。</p>
+<p><strong>使用方法：</strong></p>
+<ol>
+<li><strong>数据预处理</strong></li>
+</ol>
+<p>找到本地数据预处理代码：F:\Code\pyProject</p>
+<p><strong>注意：新增label需要修改此处</strong></p>
+<p><img src="/images/136db555-f230-4062-a519-95ef4120022e.png"></p>
+<p><strong>注意：这是部署代码里面的标签，classes中的标签顺序要与case顺序一致；训练代码中的****voc.py中同理</strong></p>
+<p><img src="/images/8af6c57e-8bdb-4390-9846-bde11a995806.png"></p>
+<p>数据处理步骤</p>
+<p><img src="/images/0be5cbe1-787e-4407-b7b0-4c0c7fea362c.png"><br><img src="/images/5dab855f-b45b-4c44-9737-b12c5341d0b9.png"></p>
+<p>执行完毕后上传数据至：&#x2F;home&#x2F;liuhang&#x2F;mmlab&#x2F;mmsegmentation&#x2F;data&#x2F;tooth 路径下即可</p>
+<ol start="2">
+<li><strong>训练前修改配置文件</strong></li>
+</ol>
+<p>共需修改两个配置文件</p>
+<p>&#x2F;home&#x2F;liuhang&#x2F;mmlab&#x2F;mmsegmentation&#x2F;mmseg&#x2F;datasets&#x2F;voc.py</p>
+<p><img src="/images/9d5fe916-5bca-4136-881a-b33777ceda14.png"></p>
+<p>&#x2F;home&#x2F;liuhang&#x2F;mmlab&#x2F;mmsegmentation&#x2F;tools&#x2F;test_model&#x2F;segformer_20240222_3class.py</p>
+<p><img src="/images/82de7dd7-94c8-4d4a-ac5b-58b4c9867ffc.png"></p>
+<p><img src="/images/c730b45e-7692-4da3-b442-0add4793dfb6.png"></p>
+<p><img src="/images/34771471-8999-415c-a41b-630cdf89ca50.png"></p>
+<ol start="3">
+<li><strong>训练</strong></li>
+</ol>
+<p>运行&#x2F;home&#x2F;liuhang&#x2F;mmlab&#x2F;mmsegmentation&#x2F;tools下的tarin.py</p>
+<pre><code># 1.激活环境
+conda activate myopenmmlab
+
+# 2.开始训练
+cd tools
+python train.py
+</code></pre>
+<ol start="4">
+<li><strong>导出</strong></li>
+</ol>
+<p>&#x2F;home&#x2F;liuhang&#x2F;mmlab&#x2F;mmdeploy  打开当前项目</p>
+<p>需要上传两个文件：</p>
+<p>1.替换训练时所用的配置文件 :”segformer_20240222_3class.py”;</p>
+<p>2.上传训练模型 “iter_100000.pth”</p>
+<p><img src="/images/1ae97ab5-ba61-46e5-b2f0-1f076ba32831.png"></p>
+<pre><code># 1.激活环境
+conda activate myopenmmlab
+
+# 2.转换模型
+cd tools
+python torch2onnx_seg.py 
+</code></pre>
+<p><img src="/images/fcf0dedf-9dda-4bf9-adff-5c2714940580.png"></p>
+<h1 id="个人遗憾"><a href="#个人遗憾" class="headerlink" title="个人遗憾"></a>个人遗憾</h1><p>本人作为部署工程师，其实一直想实现一个通用的算法部署框架，即一套代码部署所有算法二维三维均可兼容，每个算法封装成单独的element，后续根据具体的业务需求，能够将多个element组合成对应的业务pipline。但由本人实现算法有限，目前仅封装了齿龈分离的element。齿龈分离的部署代码就是依据这种结构进行开发目前暂命名为AI2Dlibrary。</p>
+<h1 id="团队期望"><a href="#团队期望" class="headerlink" title="团队期望"></a>团队期望</h1><p>作为一名部署工程师我还是期望团队能有自己的部署框架，且要将业务端和部署端分离，其次就是希望团队内多一些技术分享会，大家可以交流沟通一些自己探索的技术，来拓宽眼界和技术栈。</p>
+
+    </div>
+
+    
+    
+    
+        <div class="reward-container">
+  <div></div>
+  <button onclick="var qr = document.getElementById('qr'); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/images/wechatpay.png" alt="SindreYang 微信支付">
+        <p>微信支付</p>
+      </div>
+      
+      <div style="display: inline-block;">
+        <img src="/images/alipay.png" alt="SindreYang 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>SindreYang
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://blog.mviai.com/2025/%E5%88%98%E8%88%AA-%E7%AE%97%E6%B3%95%E5%B7%A5%E7%A8%8B%E5%B8%88-%E4%BA%A4%E6%8E%A5%E6%96%87%E6%A1%A3/" title="刘航-算法工程师-交接文档">http://blog.mviai.com/2025/刘航-算法工程师-交接文档/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <span class="exturl" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC9kZWVkLnpo"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</span> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+        
+
+  <div class="followme">
+    <p>欢迎关注我的其它发布渠道</p>
+
+    <div class="social-list">
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="/images/wechat.png">
+            <span class="icon">
+              <i class="fa fa-wechat"></i>
+            </span>
+
+            <span class="label">WeChat</span>
+          </a>
+        </div>
+    </div>
+  </div>
+
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2025/%E5%88%9B%E5%BB%BA%E4%BA%8E2021-10-08%E7%9A%84%E5%B0%8F%E8%AE%B0/" rel="prev" title="创建于2021-10-08的小记">
+      <i class="fa fa-chevron-left"></i> 创建于2021-10-08的小记
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2025/%E5%88%86%E5%89%B2%E5%9F%B9%E8%AE%AD%E8%AE%A1%E5%88%92/" rel="next" title="分割培训计划">
+      分割培训计划 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    
+  <div class="comments">
+    <div id="SOHUCS"></div>
+  </div>
+  
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%B7%A5%E4%BD%9C%E4%BA%A4%E6%8E%A5%E6%96%87%E6%A1%A3"><span class="nav-number">1.</span> <span class="nav-text">工作交接文档</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-number">2.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%B7%A5%E4%BD%9C%E6%88%90%E6%9E%9C"><span class="nav-number">3.</span> <span class="nav-text">工作成果</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-%E6%95%B0%E6%8D%AE%E6%A0%87%E6%B3%A8"><span class="nav-number">3.1.</span> <span class="nav-text">1.数据标注</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1-%E6%8E%92%E7%89%99"><span class="nav-number">3.1.1.</span> <span class="nav-text">1.1 排牙</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-2-%E5%85%A8%E5%86%A0"><span class="nav-number">3.1.2.</span> <span class="nav-text">1.2 全冠</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-3-%E9%BD%BF%E9%BE%88%E5%88%86%E7%A6%BB"><span class="nav-number">3.1.3.</span> <span class="nav-text">1.3 齿龈分离</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-4-%E6%95%B0%E6%8D%AE%E8%87%AA%E5%8A%A8%E6%A0%87%E6%B3%A8"><span class="nav-number">3.1.4.</span> <span class="nav-text">1.4 数据自动标注</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#1-%E8%AE%AD%E7%BB%83"><span class="nav-number">4.</span> <span class="nav-text">1.训练</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-%E9%A2%84%E6%B5%8B"><span class="nav-number">5.</span> <span class="nav-text">2.预测</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-%E5%AF%BC%E5%87%BAonnx"><span class="nav-number">6.</span> <span class="nav-text">3.导出onnx</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%9C%A8%E6%AD%A4%E5%9F%BA%E7%A1%80%E4%B8%8A%E4%BF%AE%E6%94%B9%E5%8D%B3%E5%8F%AF"><span class="nav-number">7.</span> <span class="nav-text">在此基础上修改即可</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%A3%E7%A0%81"><span class="nav-number">7.1.</span> <span class="nav-text">代码</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-%E9%BD%BF%E9%BE%88%E5%88%86%E7%A6%BB%EF%BC%88%E6%A8%A1%E6%89%AB%EF%BC%89"><span class="nav-number">7.1.0.1.</span> <span class="nav-text">1.齿龈分离（模扫）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-%E9%BD%BF%E9%BE%88%E5%88%86%E7%A6%BB%EF%BC%88%E5%8F%A3%E6%89%AB%EF%BC%89"><span class="nav-number">7.1.0.2.</span> <span class="nav-text">2.齿龈分离（口扫）</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%B8%AA%E4%BA%BA%E9%81%97%E6%86%BE"><span class="nav-number">8.</span> <span class="nav-text">个人遗憾</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%9B%A2%E9%98%9F%E6%9C%9F%E6%9C%9B"><span class="nav-number">9.</span> <span class="nav-text">团队期望</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="SindreYang"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">SindreYang</p>
+  <div class="site-description" itemprop="description">沉淀后我愿意做一个温暖的人。有自己的喜好，有自己的原则，有自己的信仰，不急功近利，不浮夸轻薄，宠辱不惊，淡定安逸，心静如水。------不忘初心，方得始终</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">321</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">72</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL1NpbmRyZVlhbmc=" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;SindreYang"><i class="fa fa-fw fa-github"></i>GitHub</span>
+      </span>
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="bWFpbHRvOnl4QG12aWFpLmNvbQ==" title="E-Mail → mailto:yx@mviai.com"><i class="fa fa-fw fa-envelope"></i>E-Mail</span>
+      </span>
+  </div>
+  <div class="cc-license motion-element" itemprop="license">
+    <span class="exturl cc-opacity" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC9kZWVkLnpo"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+  <div class="languages">
+    <label class="lang-select-label">
+      <i class="fa fa-language"></i>
+      <span>简体中文</span>
+      <i class="fa fa-angle-up" aria-hidden="true"></i>
+    </label>
+    <select class="lang-select" data-canonical="">
+      
+        <option value="zh-CN" data-href="/2025/%E5%88%98%E8%88%AA-%E7%AE%97%E6%B3%95%E5%B7%A5%E7%A8%8B%E5%B8%88-%E4%BA%A4%E6%8E%A5%E6%96%87%E6%A1%A3/" selected="">
+          简体中文
+        </option>
+      
+        <option value="en" data-href="/en/2025/%E5%88%98%E8%88%AA-%E7%AE%97%E6%B3%95%E5%B7%A5%E7%A8%8B%E5%B8%88-%E4%BA%A4%E6%8E%A5%E6%96%87%E6%A1%A3/" selected="">
+          English
+        </option>
+      
+    </select>
+  </div>
+
+        
+
+<div class="copyright">
+  
+  &copy; 2018 – 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">SindreYang</span>
+</div><!-- 页面点击小红心 -->
+<script type="text/javascript" src="/js/love.js"></script>
+<!-- 背景波浪 -->
+<script color="0,0,255" opacity="0.5" zIndex="-1" count="99" src="https://cdn.jsdelivr.net/npm/canvas-nest.js@1/dist/canvas-nest.js"></script>
+
+
+<!-- 腾讯企业邮箱 -->
+<style>
+.bizmail_loginpanel {
+    font-size: 12px;
+    width: 300px;
+    height: auto;
+    background: transparent;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.bizmail_LoginBox {
+    padding: 10px 15px;
+}
+
+
+.bizmail_loginpanel form {
+    margin: 0;
+    padding: 0;
+}
+
+.bizmail_loginpanel input.text {
+    font-size: 12px;
+    width: 100px;
+    height: 20px;
+    margin: 0 2px;
+    background-color: transparent;
+    border:1px solid transparent;
+    box-shadow: none;
+    color: black;
+}
+
+.bizmail_loginpanel .bizmail_column {
+    height: 28px;
+}
+
+.bizmail_loginpanel .bizmail_column label {
+    display: block;
+    float: left;
+    width: 30px;
+    height: 24px;
+    line-height: 24px;
+    font-size: 12px;
+}
+
+.bizmail_loginpanel .bizmail_column .bizmail_inputArea {
+    float: left;
+    width: 240px;
+}
+
+.bizmail_loginpanel .bizmail_column span {
+    font-size: 12px;
+    word-wrap: break-word;
+    margin-left: 2px;
+    line-height: 200%;
+}
+
+.bizmail_loginpanel .bizmail_SubmitArea {
+    margin-left: 30px;
+    clear: both;
+}
+
+.bizmail_loginpanel .bizmail_SubmitArea a {
+    font-size: 12px;
+    margin-left: 5px;
+}
+
+.bizmail_loginpanel select {
+    width: 110px;
+    height: 20px;
+    margin: 0 2px;
+}
+.bizmail_loginpanel input {
+
+    background-color: rgba(83, 126, 236, 0.562);
+}
+
+
+</style>
+
+<script type="text/javascript">
+function checkInput() {
+    var e = document.form1.uin,
+        i = document.form1.pwd;
+    return 0 == e.value.length ? e.focus() : 0 == i.value.length ? i.focus() : (document.form1.submit(), setTimeout(" document.form1.pwd.value = '' ", 500)), !1
+}
+
+function writeLoginPanel(e) {
+    if (e && e.domainlist && -1 != e.domainlist.indexOf(".")) {
+        var a = "return checkInput()",
+            t = '<div id="divLoginpanelHor" class="bizmail_loginpanel" style="width:550px;"><div class="bizmail_LoginBox"><form name="form1" action="https://exmail.qq.com/cgi-bin/login" target="_blank" method="post" onsubmit="' + a + '"><input type="hidden" name="firstlogin" value="false" /><input type="hidden" name="errtemplate" value="dm_loginpage" /><input type="hidden" name="aliastype" value="other" /><input type="hidden" name="dmtype" value="bizmail" /><input type="hidden" name="p" value="" /><label>\u8d26\u53f7:</label><input type="text" name="uin" class="text" value="" />@#domainlist#<label>&nbsp&nbsp&nbsp;\u5bc6\u7801:</label><input type="password" name="pwd" class="text" value="" /><input type="submit" class="" name="" value="\u767b\u5f55" />&nbsp;<a href="https://exmail.qq.com/cgi-bin/readtemplate?check=false&t=biz_rf_portal#recovery" target="_blank">\u5fd8\u8bb0\u5bc6\u7801\uff1f</a></form></div></div>',
+            n = '<div id="divLoginpanelVer" class="bizmail_loginpanel"><div class="bizmail_LoginBox"><form name="form1" action="https://exmail.qq.com/cgi-bin/login" target="_blank" method="post" onsubmit="' + a + '"><input type="hidden" name="firstlogin" value="false" /><input type="hidden" name="errtemplate" value="dm_loginpage" /><input type="hidden" name="aliastype" value="other" /><input type="hidden" name="dmtype" value="bizmail" /><input type="hidden" name="p" value="" /><div class="bizmail_column"><label>\u8d26\u53f7:</label><div class="bizmail_inputArea"><input type="text" name="uin" class="text" value="" />@#domainlist#</div></div><div class="bizmail_column"><label>\u5bc6\u7801:</label><div class="bizmail_inputArea"><input type="password" name="pwd" class="text" value="" /></div></div><div class="bizmail_SubmitArea"><input type="submit" class="" name="" style="width:66px;" value="\u767b\u5f55" /><a href="https://exmail.qq.com/cgi-bin/readtemplate?check=false&t=biz_rf_portal#recovery" target="_blank">\u5fd8\u8bb0\u5bc6\u7801\uff1f</a></div></form></div></div>',
+            l = e.domainlist.split(";");
+        if (1 == l.length) var m = '<span>#domain#</span><input type="hidden" name="domain" value="#domain#" />'.replace(/#domain#/g, l[0]);
+        else {
+            m = '<select name="domain">';
+            for (i = 0; i < l.length; i++) m += '<option value="' + l[i] + '">' + l[i] + "</option>";
+            m += "</select>"
+        }
+        e.mode && "vertical" != e.mode && "both" != e.mode || document.write(n.replace(/#domainlist#/g, m)), "horizontal" != e.mode && "both" != e.mode || document.write(t.replace(/#domainlist#/g, m))
+    }
+}
+
+</script>      
+
+<script type="text/javascript"> writeLoginPanel({domainlist:"mviai.com", mode:"horizontal"});</script>      
+
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script size="300" alpha="0.6" zIndex="-1" src="/lib/canvas-ribbon/canvas-ribbon.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/medium-zoom@1/dist/medium-zoom.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+  <script defer src="/lib/three/three.min.js"></script>
+    <script defer src="/lib/three/three-waves.min.js"></script>
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+<script>
+document.querySelectorAll('.pdfobject-container').forEach(element => {
+  let url = element.dataset.target;
+  let pdfOpenParams = {
+    navpanes : 0,
+    toolbar  : 0,
+    statusbar: 0,
+    pagemode : 'thumbs',
+    view     : 'FitH'
+  };
+  let pdfOpenFragment = '#' + Object.entries(pdfOpenParams).map(([key, value]) => `${key}=${encodeURIComponent(value)}`).join('&');
+  let fullURL = `/lib/pdf/web/viewer.html?file=${encodeURIComponent(url)}${pdfOpenFragment}`;
+
+  if (NexT.utils.supportsPDFs()) {
+    element.innerHTML = `<embed class="pdfobject" src="${url + pdfOpenFragment}" type="application/pdf" style="height: ${element.dataset.height};">`;
+  } else {
+    element.innerHTML = `<iframe src="${fullURL}" style="height: ${element.dataset.height};" frameborder="0"></iframe>`;
+  }
+});
+</script>
+
+
+
+
+  
+
+  
+
+  <script>
+  NexT.utils.loadComments(document.querySelector('#SOHUCS'), () => {
+    var appid = 'cyxmItxjS';
+    var conf = 'e5e71132d9086bb54aeeba6e88e87df9';
+    var width = window.innerWidth || document.documentElement.clientWidth;
+    if (width < 960) {
+      window.document.write('<script id="changyan_mobile_js" charset="utf-8" type="text/javascript" src="https://cy-cdn.kuaizhan.com/upload/mobile/wap-js/changyan_mobile.js?client_id=' + appid + '&conf=' + conf + '"><\/script>');
+    } else {
+      var loadJs=function(d,a){var c=document.getElementsByTagName("head")[0]||document.head||document.documentElement;var b=document.createElement("script");b.setAttribute("type","text/javascript");b.setAttribute("charset","UTF-8");b.setAttribute("src",d);if(typeof a==="function"){if(window.attachEvent){b.onreadystatechange=function(){var e=b.readyState;if(e==="loaded"||e==="complete"){b.onreadystatechange=null;a()}}}else{b.onload=a}}c.appendChild(b)};loadJs("https://changyan.sohu.com/upload/changyan.js",function(){window.changyan.api.config({appid:appid,conf:conf})});
+    }
+  });
+  </script>
+  <script src="https://cy-cdn.kuaizhan.com/upload/plugins/plugins.count.js"></script>
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/z16.model.json"},"display":{"position":"left","width":75,"height":150},"mobile":{"show":true},"log":false});</script></body>
+</html>
+
+
+
+

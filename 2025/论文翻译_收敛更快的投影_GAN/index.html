@@ -1,0 +1,1086 @@
+<!DOCTYPE html>
+<html lang="zh-CN,en,default">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" href="/lib/pace/pace-theme-minimal.min.css">
+  <script src="/lib/pace/pace.min.js"></script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"blog.mviai.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":true,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":true,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="自动摘要: 	标题		投影后的GAN收敛更快		SauerA,ChittaK,MüllerJ,etal.ProjectedGANsConvergeFaster[J].Advance ……..">
+<meta property="og:type" content="article">
+<meta property="og:title" content="论文翻译_收敛更快的投影_GAN">
+<meta property="og:url" content="http://blog.mviai.com/2025/%E8%AE%BA%E6%96%87%E7%BF%BB%E8%AF%91_%E6%94%B6%E6%95%9B%E6%9B%B4%E5%BF%AB%E7%9A%84%E6%8A%95%E5%BD%B1_GAN/index.html">
+<meta property="og:site_name" content="落叶无痕">
+<meta property="og:description" content="自动摘要: 	标题		投影后的GAN收敛更快		SauerA,ChittaK,MüllerJ,etal.ProjectedGANsConvergeFaster[J].Advance ……..">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://blog.mviai.com/images/1651808177470-e6eefd4e-fc9d-42dc-ad0e-b5b21c0963e3.png">
+<meta property="og:image" content="https://g.yuque.com/gr/latex?1024%5Ctimes%201024#card=math&code=1024%5Ctimes%201024&id=xdkiR">
+<meta property="og:image" content="https://g.yuque.com/gr/latex?%5Cmathbb%7BP%7D_z#card=math&code=%5Cmathbb%7BP%7D_z&id=z0WcH">
+<meta property="og:image" content="https://g.yuque.com/gr/latex?%5Cmathbf%7Bz%7D#card=math&code=%5Cmathbf%7Bz%7D&id=pxrvy">
+<meta property="og:image" content="https://g.yuque.com/gr/latex?G(%5Cmathbf%7Bz%7D)#card=math&code=G%28%5Cmathbf%7Bz%7D%29&id=z84mk">
+<meta property="og:image" content="https://g.yuque.com/gr/latex?%5Cmathbf%7Bx%7D%5Csim%5Cmathbb%7BP%7D_%5Cmathbf%7Bz%7D#card=math&code=%5Cmathbf%7Bx%7D%5Csim%5Cmathbb%7BP%7D_%5Cmathbf%7Bz%7D&id=junoC">
+<meta property="og:image" content="https://g.yuque.com/gr/latex?G(%5Cmathbf%7Bz%7D)%5Csim%5Cmathbb%7BP%7D_%7BG(%5Cmathbf%7Bz%7D)%7D#card=math&code=G%28%5Cmathbf%7Bz%7D%29%5Csim%5Cmathbb%7BP%7D_%7BG%28%5Cmathbf%7Bz%7D%29%7D&id=X6XQ7">
+<meta property="og:image" content="https://g.yuque.com/gr/latex?%5Cmin_G%5Cmax_D(%5Cmathbb%7BE%7D_%5Cmathbf%7Bx%7D%5B%5Clog%20D(%5Cmathbf%7Bx%7D)%5D+%5Cmathbb%7BE%7D_%5Cmathbf%7Bz%7D%5B%5Clog(1-D(G(%5Cmathbf%7Bz%7D)))%5D)%0A#card=math&code=%5Cmin_G%5Cmax_D%28%5Cmathbb%7BE%7D_%5Cmathbf%7Bx%7D%5B%5Clog%20D%28%5Cmathbf%7Bx%7D%29%5D%2B%5Cmathbb%7BE%7D_%5Cmathbf%7Bz%7D%5B%5Clog%281-D%28G%28%5Cmathbf%7Bz%7D%29%29%29%5D%29%0A&id=dDFVA">
+<meta property="og:image" content="https://g.yuque.com/gr/latex?%5C%7BP_1%5C%7D#card=math&code=%5C%7BP_1%5C%7D&id=gCBMQ">
+<meta property="og:image" content="https://g.yuque.com/gr/latex?%5Cmin_G%5Cmax_%7B%5C%7BD_l%5C%7D%7D%5Csum_%7Bl%5Cin%5Cmathcal%7BL%7D%7D(%5Cmathbb%7BE%7D_%5Cmathbf%7Bx%7D%5B%5Clog%20D_l(P_l(%5Cmathbf%7Bx%7D))%5D+%5Cmathbb%7BE%7D_%5Cmathbf%7Bz%7D%5B%5Clog(1-D_l(P_l(G(%5Cmathbf%7Bz%7D))))%5D)%0A#card=math&code=%5Cmin_G%5Cmax_%7B%5C%7BD_l%5C%7D%7D%5Csum_%7Bl%5Cin%5Cmathcal%7BL%7D%7D%28%5Cmathbb%7BE%7D_%5Cmathbf%7Bx%7D%5B%5Clog%20D_l%28P_l%28%5Cmathbf%7Bx%7D%29%29%5D%2B%5Cmathbb%7BE%7D_%5Cmathbf%7Bz%7D%5B%5Clog%281-D_l%28P_l%28G%28%5Cmathbf%7Bz%7D%29%29%29%29%5D%29%0A&id=TfOU2">
+<meta property="og:image" content="https://g.yuque.com/gr/latex?%5C%7BD_l%5C%7D#card=math&code=%5C%7BD_l%5C%7D&id=bDg28">
+<meta property="og:image" content="https://g.yuque.com/gr/latex?%5C%7BP_l%5C%7D#card=math&code=%5C%7BP_l%5C%7D&id=XJTD8">
+<meta property="og:image" content="https://g.yuque.com/gr/latex?G#card=math&code=G&id=a9A37">
+<meta property="og:image" content="https://g.yuque.com/gr/latex?%5C%7BD_l%5C%7D#card=math&code=%5C%7BD_l%5C%7D&id=iOLRN">
+<meta property="og:image" content="https://g.yuque.com/gr/latex?%5C%7BP_l%5C%7D#card=math&code=%5C%7BP_l%5C%7D&id=QzGhU">
+<meta property="og:image" content="https://g.yuque.com/gr/latex?%5C%7BP_l%5C%7D#card=math&code=%5C%7BP_l%5C%7D&id=jQ1nk">
+<meta property="og:image" content="https://g.yuque.com/gr/latex?%5Cmathbb%7BP%7D_T#card=math&code=%5Cmathbb%7BP%7D_T&id=KwaEq">
+<meta property="og:image" content="https://g.yuque.com/gr/latex?%5Cmathbb%7BP%7D_T#card=math&code=%5Cmathbb%7BP%7D_T&id=mOcyA">
+<meta property="og:image" content="https://g.yuque.com/gr/latex?%5Cmathbb%7BP%7D_G#card=math&code=%5Cmathbb%7BP%7D_G&id=KgGYN">
+<meta property="og:image" content="https://g.yuque.com/gr/latex?P_l%5Ccirc%20T#card=math&code=P_l%5Ccirc%20T&id=pnQRU">
+<meta property="og:image" content="https://g.yuque.com/gr/latex?P_l%5Ccirc%20G#card=math&code=P_l%5Ccirc%20G&id=ziXTs">
+<meta property="og:image" content="https://g.yuque.com/gr/latex?P_l#card=math&code=P_l&id=kMk8Q">
+<meta property="og:image" content="https://g.yuque.com/gr/latex?%5Cmathbf%7By%7D#card=math&code=%5Cmathbf%7By%7D&id=bCDAQ">
+<meta property="og:image" content="https://g.yuque.com/gr/latex?G#card=math&code=G&id=LHz3L">
+<meta property="og:image" content="https://g.yuque.com/gr/latex?D%5E*_%7Bl,G%7D(%5Cmathbf%7By%7D)=%5Cfrac%7B%5Cmathbb%7BP%7D_%7BP_l%5Ccirc%20T%7D(%5Cmathbf%7By%7D)%7D%7B%5Cmathbb%7BP%7D_%7BP_l%5Ccirc%20T%7D(%5Cmathbf%7By%7D)+%5Cmathbb%7BP%7D_%7BP_l%5Ccirc%20G%7D(%5Cmathbf%7By%7D)%7D%0A#card=math&code=D%5E%2A_%7Bl%2CG%7D%28%5Cmathbf%7By%7D%29%3D%5Cfrac%7B%5Cmathbb%7BP%7D_%7BP_l%5Ccirc%20T%7D%28%5Cmathbf%7By%7D%29%7D%7B%5Cmathbb%7BP%7D_%7BP_l%5Ccirc%20T%7D%28%5Cmathbf%7By%7D%29%2B%5Cmathbb%7BP%7D_%7BP_l%5Ccirc%20G%7D%28%5Cmathbf%7By%7D%29%7D%0A&id=z8biN">
+<meta property="og:image" content="https://g.yuque.com/gr/latex?l%5Cin%5Cmathcal%7BL%7D#card=math&code=l%5Cin%5Cmathcal%7BL%7D&id=jJhao">
+<meta property="og:image" content="https://g.yuque.com/gr/latex?G#card=math&code=G&id=bqVbe">
+<meta property="og:image" content="https://g.yuque.com/gr/latex?l%5Cin%5Cmathcal%7BL%7D#card=math&code=l%5Cin%5Cmathcal%7BL%7D&id=TzSua">
+<meta property="og:image" content="https://g.yuque.com/gr/latex?%5Cmathbb%7BP%7D_%7BP_l%5Ccirc%20T%7D=%5Cmathbb%7BP%7D_%7BP_l%5Ccirc%20G%7D#card=math&code=%5Cmathbb%7BP%7D_%7BP_l%5Ccirc%20T%7D%3D%5Cmathbb%7BP%7D_%7BP_l%5Ccirc%20G%7D&id=zj09C">
+<meta property="og:image" content="https://g.yuque.com/gr/latex?P_l#card=math&code=P_l&id=qF52J">
+<meta property="og:image" content="https://g.yuque.com/gr/latex?D_l#card=math&code=D_l&id=zoQAI">
+<meta property="og:image" content="https://g.yuque.com/gr/latex?P_l#card=math&code=P_l&id=BeHzr">
+<meta property="og:image" content="https://g.yuque.com/gr/latex?G#card=math&code=G&id=aeZRv">
+<meta property="og:image" content="https://g.yuque.com/gr/latex?P_l#card=math&code=P_l&id=fFQKa">
+<meta property="og:image" content="https://g.yuque.com/gr/latex?P_l#card=math&code=P_l&id=AMHDO">
+<meta property="og:image" content="https://g.yuque.com/gr/latex?D_l#card=math&code=D_l&id=q8fY2">
+<meta property="og:image" content="https://g.yuque.com/gr/latex?L_1=64%5E2,L_2=32%5E2,L_3=16%5E2,L_4=8%5E2#card=math&code=L_1%3D64%5E2%2CL_2%3D32%5E2%2CL_3%3D16%5E2%2CL_4%3D8%5E2&id=fAAsX">
+<meta property="og:image" content="https://g.yuque.com/gr/latex?F#card=math&code=F&id=qmjQx">
+<meta property="og:image" content="https://g.yuque.com/gr/latex?L_l#card=math&code=L_l&id=X6DqW">
+<meta property="og:image" content="https://g.yuque.com/gr/latex?D_l#card=math&code=D_l&id=zwsUI">
+<meta property="og:image" content="https://g.yuque.com/gr/latex?L_l#card=math&code=L_l&id=NzkSn">
+<meta property="og:image" content="https://g.yuque.com/gr/latex?D_l#card=math&code=D_l&id=kg496">
+<meta property="og:image" content="https://g.yuque.com/gr/latex?F#card=math&code=F&id=yABYw">
+<meta property="og:image" content="https://g.yuque.com/gr/latex?1%5Ctimes%201#card=math&code=1%5Ctimes%201&id=TfDON">
+<meta property="og:image" content="https://g.yuque.com/gr/latex?1%5Ctimes%201#card=math&code=1%5Ctimes%201&id=hn9Kw">
+<meta property="og:image" content="http://blog.mviai.com/images/1651808222721-8687c9f0-eb8a-4300-a4f2-00adcb00ea30.png">
+<meta property="og:image" content="https://g.yuque.com/gr/latex?1%5Ctimes%201#card=math&code=1%5Ctimes%201&id=tCJhM">
+<meta property="og:image" content="https://g.yuque.com/gr/latex?3%5Ctimes%203#card=math&code=3%5Ctimes%203&id=BbiH6">
+<meta property="og:image" content="https://g.yuque.com/gr/latex?256%5E2#card=math&code=256%5E2&id=mVA4w">
+<meta property="og:image" content="https://g.yuque.com/gr/latex?G#card=math&code=G&id=IdQeS">
+<meta property="og:image" content="https://g.yuque.com/gr/latex?G#card=math&code=G&id=i1o06">
+<meta property="og:image" content="https://g.yuque.com/gr/latex?L_1#card=math&code=L_1&id=iZy5n">
+<meta property="og:image" content="https://g.yuque.com/gr/latex?L_1,L_2#card=math&code=L_1%2CL_2&id=had6t">
+<meta property="og:image" content="https://g.yuque.com/gr/latex?L_1,L_2,L_3#card=math&code=L_1%2CL_2%2CL_3&id=mrvVo">
+<meta property="og:image" content="https://g.yuque.com/gr/latex?L_1,L_2,L_3,L_4#card=math&code=L_1%2CL_2%2CL_3%2CL_4&id=jcvBh">
+<meta property="og:image" content="https://g.yuque.com/gr/latex?L_2,L_3,L_4#card=math&code=L_2%2CL_3%2CL_4&id=h9uh7">
+<meta property="og:image" content="https://g.yuque.com/gr/latex?L_3,L_4#card=math&code=L_3%2CL_4&id=KDFjc">
+<meta property="og:image" content="https://g.yuque.com/gr/latex?L_4#card=math&code=L_4&id=mwJzB">
+<meta property="og:image" content="https://g.yuque.com/gr/latex?D#card=math&code=D&id=eEkAB">
+<meta property="og:image" content="https://g.yuque.com/gr/latex?L_1#card=math&code=L_1&id=lfEB9">
+<meta property="og:image" content="https://g.yuque.com/gr/latex?L_1,L_2#card=math&code=L_1%2CL_2&id=tiCDY">
+<meta property="og:image" content="https://g.yuque.com/gr/latex?L_1,L_2,L_3#card=math&code=L_1%2CL_2%2CL_3&id=SAfmb">
+<meta property="og:image" content="https://g.yuque.com/gr/latex?L_1,L_2,L_3,L_4#card=math&code=L_1%2CL_2%2CL_3%2CL_4&id=fAu9P">
+<meta property="og:image" content="https://g.yuque.com/gr/latex?D#card=math&code=D&id=cYT2I">
+<meta property="og:image" content="https://g.yuque.com/gr/latex?L_1#card=math&code=L_1&id=aj7e1">
+<meta property="og:image" content="https://g.yuque.com/gr/latex?L_1,L_2#card=math&code=L_1%2CL_2&id=ZhvV1">
+<meta property="og:image" content="https://g.yuque.com/gr/latex?L_1,L_2,L_3#card=math&code=L_1%2CL_2%2CL_3&id=hQzKB">
+<meta property="og:image" content="https://g.yuque.com/gr/latex?L_1,L_2,L_3,L_4#card=math&code=L_1%2CL_2%2CL_3%2CL_4&id=wW4q8">
+<meta property="og:image" content="https://g.yuque.com/gr/latex?D#card=math&code=D&id=puMrD">
+<meta property="og:image" content="http://blog.mviai.com/images/1651808273270-998a2b70-5a6d-4782-9cef-c31eba71f3a4.png">
+<meta property="og:image" content="https://g.yuque.com/gr/latex?F#card=math&code=F&id=waA0K">
+<meta property="og:image" content="https://g.yuque.com/gr/latex?F#card=math&code=F&id=PBrTN">
+<meta property="og:image" content="https://g.yuque.com/gr/latex?rel-FD_i#card=math&code=rel-FD_i&id=r6zRY">
+<meta property="og:image" content="https://g.yuque.com/gr/latex?FD#card=math&code=FD&id=GYO05">
+<meta property="og:image" content="https://g.yuque.com/gr/latex?rel-FD_i#card=math&code=rel-FD_i&id=yenFC">
+<meta property="og:image" content="https://g.yuque.com/gr/latex?L_1,L_2,L_3,L_4#card=math&code=L_1%2CL_2%2CL_3%2CL_4&id=jQIUq">
+<meta property="og:image" content="https://g.yuque.com/gr/latex?rel_FD#card=math&code=rel_FD&id=X9uaS">
+<meta property="og:image" content="https://g.yuque.com/gr/latex?G#card=math&code=G&id=XJCk2">
+<meta property="og:image" content="https://g.yuque.com/gr/latex?i#card=math&code=i&id=I8M1X">
+<meta property="og:image" content="https://g.yuque.com/gr/latex?FD_i#card=math&code=FD_i&id=iHO7H">
+<meta property="og:image" content="https://g.yuque.com/gr/latex?FD#card=math&code=FD&id=T9v0c">
+<meta property="og:image" content="https://g.yuque.com/gr/latex?FD_i%5E%7BRGB%7D#card=math&code=FD_i%5E%7BRGB%7D&id=cAOpX">
+<meta property="og:image" content="https://g.yuque.com/gr/latex?rel-FD_i=FD_i/FD_i%5E%7BRGB%7D#card=math&code=rel-FD_i%3DFD_i%2FFD_i%5E%7BRGB%7D&id=GgGM8">
+<meta property="og:image" content="https://g.yuque.com/gr/latex?rel-FD_i#card=math&code=rel-FD_i&id=OWeNw">
+<meta property="og:image" content="http://blog.mviai.com/images/1651808283185-85cd96db-47bb-48ad-9268-d45efd717355.png">
+<meta property="og:image" content="https://g.yuque.com/gr/latex?256%5E2#card=math&code=256%5E2&id=WAWbd">
+<meta property="og:image" content="https://g.yuque.com/gr/latex?1024%5E2#card=math&code=1024%5E2&id=R9m0A">
+<meta property="og:image" content="https://g.yuque.com/gr/latex?R1#card=math&code=R1&id=i1yjm">
+<meta property="og:image" content="https://g.yuque.com/gr/latex?256%5E2#card=math&code=256%5E2&id=NsB3y">
+<meta property="og:image" content="http://blog.mviai.com/images/1651808298082-e588dee9-1390-4474-bb31-b6bfc42d9e91.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1651808306652-a4d97aa6-d16c-422e-8337-6bfbc34413e2.png">
+<meta property="og:image" content="https://g.yuque.com/gr/latex?256%5E2#card=math&code=256%5E2&id=koUCC">
+<meta property="og:image" content="https://g.yuque.com/gr/latex?k#card=math&code=k&id=T7w7O">
+<meta property="og:image" content="https://g.yuque.com/gr/latex?%5Cmathbf%7Bz%7D#card=math&code=%5Cmathbf%7Bz%7D&id=ioQqR">
+<meta property="og:image" content="https://g.yuque.com/gr/latex?%5Cmathbf%7Bz%7D#card=math&code=%5Cmathbf%7Bz%7D&id=dfvTr">
+<meta property="og:image" content="https://g.yuque.com/gr/latex?%5Cmathbf%7Bz%7D#card=math&code=%5Cmathbf%7Bz%7D&id=I1BmX">
+<meta property="og:image" content="http://blog.mviai.com/images/1651808319394-21e007f8-8257-42fe-bfca-42ca95eba232.png">
+<meta property="og:image" content="https://g.yuque.com/gr/latex?1024%5E2#card=math&code=1024%5E2&id=FFIf9">
+<meta property="og:image" content="https://g.yuque.com/gr/latex?512%5E2#card=math&code=512%5E2&id=yoQ99">
+<meta property="og:image" content="http://blog.mviai.com/images/1651808330763-b7adb842-17c3-412c-8b83-e1b42aad097f.png">
+<meta property="og:image" content="https://g.yuque.com/gr/latex?256%5E2#card=math&code=256%5E2&id=HLdMO">
+<meta property="og:image" content="https://g.yuque.com/gr/latex?256%5E2#card=math&code=256%5E2&id=o4Acv">
+<meta property="og:image" content="https://g.yuque.com/gr/latex?256%5E2#card=math&code=256%5E2&id=ywKet">
+<meta property="og:image" content="https://g.yuque.com/gr/latex?256%5E2#card=math&code=256%5E2&id=ciyTm">
+<meta property="og:image" content="https://g.yuque.com/gr/latex?512%5E2#card=math&code=512%5E2&id=K6B95">
+<meta property="og:image" content="https://g.yuque.com/gr/latex?256%5E2#card=math&code=256%5E2&id=vb7kQ">
+<meta property="og:image" content="https://g.yuque.com/gr/latex?512%5E2#card=math&code=512%5E2&id=MV0Ps">
+<meta property="og:image" content="https://g.yuque.com/gr/latex?512%5E2#card=math&code=512%5E2&id=YWcIt">
+<meta property="og:image" content="http://blog.mviai.com/images/1651808340869-e769f82f-31ff-479a-99e8-436aaa3b0064.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1651808351816-a8384c29-fd44-44fd-99f6-c64457192e93.png">
+<meta property="article:published_time" content="2025-01-22T04:37:40.000Z">
+<meta property="article:modified_time" content="2025-01-22T12:37:40.726Z">
+<meta property="article:author" content="SindreYang">
+<meta property="article:tag" content="生活">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://blog.mviai.com/images/1651808177470-e6eefd4e-fc9d-42dc-ad0e-b5b21c0963e3.png">
+
+<link rel="canonical" href="http://blog.mviai.com/2025/%E8%AE%BA%E6%96%87%E7%BF%BB%E8%AF%91_%E6%94%B6%E6%95%9B%E6%9B%B4%E5%BF%AB%E7%9A%84%E6%8A%95%E5%BD%B1_GAN/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>论文翻译_收敛更快的投影_GAN | 落叶无痕</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">落叶无痕</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类<span class="badge">72</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档<span class="badge">321</span></a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+  <span class="exturl github-corner" data-url="aHR0cHM6Ly9naXRodWIuY29tL1NpbmRyZVlhbmc=" title="Follow me on GitHub" aria-label="Follow me on GitHub"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></span>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://blog.mviai.com/2025/%E8%AE%BA%E6%96%87%E7%BF%BB%E8%AF%91_%E6%94%B6%E6%95%9B%E6%9B%B4%E5%BF%AB%E7%9A%84%E6%8A%95%E5%BD%B1_GAN/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="SindreYang">
+      <meta itemprop="description" content="沉淀后我愿意做一个温暖的人。有自己的喜好，有自己的原则，有自己的信仰，不急功近利，不浮夸轻薄，宠辱不惊，淡定安逸，心静如水。------不忘初心，方得始终">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="落叶无痕">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          论文翻译_收敛更快的投影_GAN
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2025-01-22 12:37:40 / 修改时间：20:37:40" itemprop="dateCreated datePublished" datetime="2025-01-22T12:37:40+08:00">2025-01-22</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/GAN%E7%B3%BB%E5%88%97/" itemprop="url" rel="index"><span itemprop="name">GAN系列</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">Changyan：</span>
+    
+    
+      <a title="changyan" href="/2025/%E8%AE%BA%E6%96%87%E7%BF%BB%E8%AF%91_%E6%94%B6%E6%95%9B%E6%9B%B4%E5%BF%AB%E7%9A%84%E6%8A%95%E5%BD%B1_GAN/#SOHUCS" itemprop="discussionUrl">
+        <span id="changyan_count_unit" class="post-comments-count hc-comment-count" data-xid="2025/论文翻译_收敛更快的投影_GAN/" itemprop="commentCount"></span>
+      </a>
+    
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>自动摘要: 	标题		投影后的GAN收敛更快		SauerA,ChittaK,MüllerJ,etal.ProjectedGANsConvergeFaster[J].Advance ……..</p>
+<span id="more"></span>
+
+<h1 id="标题"><a href="#标题" class="headerlink" title="标题"></a>标题</h1><p>投影后的 GAN 收敛更快</p>
+<p>Sauer A, Chitta K, Müller J, et al. Projected GANs Converge Faster[J]. Advances in Neural Information Processing Systems, 2021, 34.</p>
+<h1 id="摘要"><a href="#摘要" class="headerlink" title="摘要"></a>摘要</h1><p>生成式对抗网络（Generative Adversarial Networks, GANs）产生的图像质量很高，但是训练难度很大。因为其需要仔细地正则化、大量的计算和代价极高的超参数扫描。我们通过将生成的真实样本投影到一个固定的预处理是预处理特征空间中，从而在这些问题上取得了重大的进展。我们是基于鉴别器不能充分利用预训练模型更深层的特征这一发现，提出了一种更加有效地跨越通道和分辨率的混合特征策略。我们的投影 GAN 改善了图像的质量、样本效率和收敛速度，还与分辨率高达100万像素的图像兼容，并在 22 个基准数据集上发展了 Frechet Inception 距离（FID）。最重要的是，投影GAN对应以前最低的 FID 值时可以加速40倍，在相同的计算资源下，将挂钟时间从5天缩短到3个小时。</p>
+<h2 id="关键词"><a href="#关键词" class="headerlink" title="关键词"></a>关键词</h2><p>GAN, FID, Projected GAN,</p>
+<h1 id="Sec01-介绍"><a href="#Sec01-介绍" class="headerlink" title="Sec01 介绍"></a>Sec01 介绍</h1><p>GAN是由生成器和鉴别器组成。对于图像合成，生成器的任务是生成一幅 RGB 图像；鉴别器的目标是区分真假样本。仔细观察，鉴别器的任务是双重的：</p>
+<ol>
+<li>它将真实样本和伪造样本投影到一个有意义的空间，即学习输入空间的表示；</li>
+<li>它基于表示进行鉴别。</li>
+</ol>
+<p>不幸的是，联合训练鉴别器和生成器是众所周知的困难任务。虽然鉴别器正则化技术有助于平衡对抗游戏[43]，但是像梯度惩罚[50]这样的标准正则化方法容易受到超参数选择[33]的影响，并且可能导致性能大幅下降[5]。</p>
+<p>在本文中，我们探讨了预训练表示在改善和稳定 GAN 的训练中的应用。在计算机视觉中[40][41][62]和自然语言处理中[24][59][61]，使用预训练表示已经无所不在。虽然将预训练感知机网络[^73]与 GAN（用于图像到图像转换）相结合已经产生了令从印象深刻的结果[19][63][75][8]，但是这个概念还没有在无条件的噪声到图像的合成任务中实现。事实上，我们也证实了这个想法的简单应用并不会导致很棒的结果（Sec04），因为强大的预训练特征使得鉴别器主导了联合训练过程，导致了生成器的梯度消失[^2]。在本文中，我们展示了如何克服这些困难，并且确定了利用预训练感知特征空间的全部潜能进行 GAN 训练的两个关键组成部分：<strong>特征金字塔，以实现具有多个鉴别器的多尺度反馈；随机投影，更好地利用预训练网络的更深层。</strong></p>
+<p><img src="/images/1651808177470-e6eefd4e-fc9d-42dc-ad0e-b5b21c0963e3.png"></p>
+<p>图1：投影 GAN 的收敛性。在 AFHQ-Dog 数据集上，训练期间固定隐编码的样本进化[^7]。我们发现在投影特征空间中的鉴别器特征加速了收敛性并产生了更低的FID值。这个发现在许多数据集上都保持了一致性。</p>
+<p>我们在分辨率高达<img src="https://g.yuque.com/gr/latex?1024%5Ctimes%201024#card=math&code=1024%5Ctimes%201024&id=xdkiR">的小型和大型数据集上进行了大量的实验。在所有的数据集上，我们展示了最先进的图像合成结果，即训练时间显著减少（图1）。我们还发现投影 GAN 提高了数据的效率，并且避免了额外的正则化，使得高代价的超参数扫描也不再需要。代码、模型和补充的视频可以参考项目主页：<span class="exturl" data-url="aHR0cHM6Ly9zaXRlcy5nb29nbGUuY29tL3ZpZXcv" title="https://sites.google.com/view/">https://sites.google.com/view/<i class="fa fa-external-link"></i></span></p>
+<h1 id="Sec02-相关工作"><a href="#Sec02-相关工作" class="headerlink" title="Sec02 相关工作"></a>Sec02 相关工作</h1><p>我们将相关工作分为两个主要领域：GAN的预训练和鉴别器的设计。</p>
+<p>用于 GAN 训练的预训练模型。在 GAN 中利用预训练表示的工作可以分为两大类：</p>
+<ol>
+<li>将 GAN 的一部分转移到新的数据集中[21][52][82][88]；</li>
+<li>使用预训练模型来控制和改善 GAN。</li>
+</ol>
+<p>因为后者不需要对抗，因此其预训练更有优势。我们的工作也属于第二类，预训练模型可以被用作一种引导机制，用于解锁因果生成因子[69]，用于文本驱动的图像操作[58]，将生成器的激活与反向的分类器匹配[25][71]，或者在生成器的隐空间中通过梯度上升来生成图像。[^68]中的非对抗性方法在预训练模型中学习带有矩匹配的生成模型；然而，与标准的 GAN 相比，结果仍然相关甚远。一种既定的方法是对抗性损失和感知损失的混合[28]。通常，损失是加性混合的[15][19][45][67][81]。然而，只有在重建目标可用的情况下，即成对的图像到图像的转换设置[92]，加性混合才是可能的。为了代替拥有重建目标的预训练网络，Sungatullina等人[75]提出在冻结了VGG特征后优化对抗损失。在图像转换任务中，他们展示这个方法改善了 CycleGAN[92]。在相似的主题中，[63]提出了不同的感知机鉴别器。他们使用一个预训练的 VGG，并且将其特征与预训练分割网络的预测连接在一起。这最后两个方法是特定于图像到图像的转换任务。我们解释了这些方法在更有挑战性的无条件设置中不能很好地工作，这个设置是从一从此随机的隐编码中合成整个图像的内容。</p>
+<p>鉴别器的设计。GAN的许多研究都关注于新的生成器结构[5][33][34][86], 而鉴别器经常使用一个标准的卷积神经网络或者是生成器的镜像。显著的不同是[70][87]，它们使用“编码器–解码器”鉴别器架构。然而，与我们的相比，他们既没有使用预训练特征，也没有随机投影。一个不同的工作领域考虑的是设置多个鉴别器，既可以应用于生成的 RGB 图像[13][18]，也可以应用于低维投影[1][54]。使用多个鉴别器可以提高样本多样性、模型训练速度和模型训练的稳定性。然而，这些方法在当前最先进的系统中没有被使用，因为与增加的计算工作量相比收益递减。使用一个或者多个鉴别器提供多尺度反馈对于图像合成[30][31]和图像到图像的转换[57][81]都有帮助。虽然这些工作以不同的分辨率对 RGB 图像进行插值，但是我们的发现指出多尺度特征图的重要性，并且展示了与金字塔网络在对象检测[48]工作上成功的相似性。最后，为了防止鉴别器的过拟合，最近还提出了可微分的数据增强方法[32][79][89][^90]。我们发现，采用这些策略有助于充分挖掘预训练表示在GAN训练中的潜能。</p>
+<h1 id="Sec03-投影-GAN"><a href="#Sec03-投影-GAN" class="headerlink" title="Sec03 投影 GAN"></a>Sec03 投影 GAN</h1><p>GAN 的目标是对给定训练集的分布进行建模。</p>
+<ul>
+<li>生成器 G 将从简单分布 <img src="https://g.yuque.com/gr/latex?%5Cmathbb%7BP%7D_z#card=math&code=%5Cmathbb%7BP%7D_z&id=z0WcH">（通常是正态分布）采样的隐向量 <img src="https://g.yuque.com/gr/latex?%5Cmathbf%7Bz%7D#card=math&code=%5Cmathbf%7Bz%7D&id=pxrvy"> 映射到相应的生成样本 <img src="https://g.yuque.com/gr/latex?G(%5Cmathbf%7Bz%7D)#card=math&code=G%28%5Cmathbf%7Bz%7D%29&id=z84mk"></li>
+<li>鉴别器 D 将真实样本 <img src="https://g.yuque.com/gr/latex?%5Cmathbf%7Bx%7D%5Csim%5Cmathbb%7BP%7D_%5Cmathbf%7Bz%7D#card=math&code=%5Cmathbf%7Bx%7D%5Csim%5Cmathbb%7BP%7D_%5Cmathbf%7Bz%7D&id=junoC"> 与生成样本 <img src="https://g.yuque.com/gr/latex?G(%5Cmathbf%7Bz%7D)%5Csim%5Cmathbb%7BP%7D_%7BG(%5Cmathbf%7Bz%7D)%7D#card=math&code=G%28%5Cmathbf%7Bz%7D%29%5Csim%5Cmathbb%7BP%7D_%7BG%28%5Cmathbf%7Bz%7D%29%7D&id=X6XQ7"> 区分开。</li>
+</ul>
+<p>这个基本思想导致了下面的极小极大目标：</p>
+<p><img src="https://g.yuque.com/gr/latex?%5Cmin_G%5Cmax_D(%5Cmathbb%7BE%7D_%5Cmathbf%7Bx%7D%5B%5Clog%20D(%5Cmathbf%7Bx%7D)%5D+%5Cmathbb%7BE%7D_%5Cmathbf%7Bz%7D%5B%5Clog(1-D(G(%5Cmathbf%7Bz%7D)))%5D)%0A#card=math&code=%5Cmin_G%5Cmax_D%28%5Cmathbb%7BE%7D_%5Cmathbf%7Bx%7D%5B%5Clog%20D%28%5Cmathbf%7Bx%7D%29%5D%2B%5Cmathbb%7BE%7D_%5Cmathbf%7Bz%7D%5B%5Clog%281-D%28G%28%5Cmathbf%7Bz%7D%29%29%29%5D%29%0A&id=dDFVA"></p>
+<p>我们引入一组特征投影器 <img src="https://g.yuque.com/gr/latex?%5C%7BP_1%5C%7D#card=math&code=%5C%7BP_1%5C%7D&id=gCBMQ">，将真实的图像和生成的图像映射到鉴别器的输入空位是。投影 GAN 训练可以基于下面的公式：</p>
+<p><img src="https://g.yuque.com/gr/latex?%5Cmin_G%5Cmax_%7B%5C%7BD_l%5C%7D%7D%5Csum_%7Bl%5Cin%5Cmathcal%7BL%7D%7D(%5Cmathbb%7BE%7D_%5Cmathbf%7Bx%7D%5B%5Clog%20D_l(P_l(%5Cmathbf%7Bx%7D))%5D+%5Cmathbb%7BE%7D_%5Cmathbf%7Bz%7D%5B%5Clog(1-D_l(P_l(G(%5Cmathbf%7Bz%7D))))%5D)%0A#card=math&code=%5Cmin_G%5Cmax_%7B%5C%7BD_l%5C%7D%7D%5Csum_%7Bl%5Cin%5Cmathcal%7BL%7D%7D%28%5Cmathbb%7BE%7D_%5Cmathbf%7Bx%7D%5B%5Clog%20D_l%28P_l%28%5Cmathbf%7Bx%7D%29%29%5D%2B%5Cmathbb%7BE%7D_%5Cmathbf%7Bz%7D%5B%5Clog%281-D_l%28P_l%28G%28%5Cmathbf%7Bz%7D%29%29%29%29%5D%29%0A&id=TfOU2"></p>
+<p>其中，<img src="https://g.yuque.com/gr/latex?%5C%7BD_l%5C%7D#card=math&code=%5C%7BD_l%5C%7D&id=bDg28">是一组独立的鉴别器，用于对不同的特征投影。请注意，我们在公式(4)中固定了<img src="https://g.yuque.com/gr/latex?%5C%7BP_l%5C%7D#card=math&code=%5C%7BP_l%5C%7D&id=XJTD8">，仅优化 <img src="https://g.yuque.com/gr/latex?G#card=math&code=G&id=a9A37"> 和 <img src="https://g.yuque.com/gr/latex?%5C%7BD_l%5C%7D#card=math&code=%5C%7BD_l%5C%7D&id=iOLRN"> 的参数。特征投影器 <img src="https://g.yuque.com/gr/latex?%5C%7BP_l%5C%7D#card=math&code=%5C%7BP_l%5C%7D&id=QzGhU"> 应该满足两个必要条件：必须可微，并且提供它们的输入的足够的统计特征，即它们应该保存重要的信息。此外，我们旨在找出特征投影器 <img src="https://g.yuque.com/gr/latex?%5C%7BP_l%5C%7D#card=math&code=%5C%7BP_l%5C%7D&id=jQ1nk"> 能够将公式(1)中（难以优化的）目标转化为更适合基于梯度优化的目标。在指定我们的特征投影器的细节之前，投影 GAN 确实匹配投影特征空间中的分布。</p>
+<h2 id="3-1-一致性"><a href="#3-1-一致性" class="headerlink" title="3.1 一致性"></a>3.1 一致性</h2><p>公式(4)中投影 GAN 的目标不再是直接优化以匹配真实分布 <img src="https://g.yuque.com/gr/latex?%5Cmathbb%7BP%7D_T#card=math&code=%5Cmathbb%7BP%7D_T&id=KwaEq">。为了理解理想条件下的训练性质，我们考虑了[^54]中一致性理论更加广义化的形式：</p>
+<p>定理1。假设 <img src="https://g.yuque.com/gr/latex?%5Cmathbb%7BP%7D_T#card=math&code=%5Cmathbb%7BP%7D_T&id=mOcyA"> 表示真实数据分布的密度，<img src="https://g.yuque.com/gr/latex?%5Cmathbb%7BP%7D_G#card=math&code=%5Cmathbb%7BP%7D_G&id=KgGYN"> 表示生成器 G 产生的数据分布的密度。<img src="https://g.yuque.com/gr/latex?P_l%5Ccirc%20T#card=math&code=P_l%5Ccirc%20T&id=pnQRU"> 和 <img src="https://g.yuque.com/gr/latex?P_l%5Ccirc%20G#card=math&code=P_l%5Ccirc%20G&id=ziXTs"> 是可微的固定函数 <img src="https://g.yuque.com/gr/latex?P_l#card=math&code=P_l&id=kMk8Q"> 和真实的或生成的数据分布的函数组合，并且 <img src="https://g.yuque.com/gr/latex?%5Cmathbf%7By%7D#card=math&code=%5Cmathbf%7By%7D&id=bCDAQ"> 鉴别器的变换输入。对于固定的 <img src="https://g.yuque.com/gr/latex?G#card=math&code=G&id=LHz3L">，最优鉴别器由下面的公式得出</p>
+<p><img src="https://g.yuque.com/gr/latex?D%5E*_%7Bl,G%7D(%5Cmathbf%7By%7D)=%5Cfrac%7B%5Cmathbb%7BP%7D_%7BP_l%5Ccirc%20T%7D(%5Cmathbf%7By%7D)%7D%7B%5Cmathbb%7BP%7D_%7BP_l%5Ccirc%20T%7D(%5Cmathbf%7By%7D)+%5Cmathbb%7BP%7D_%7BP_l%5Ccirc%20G%7D(%5Cmathbf%7By%7D)%7D%0A#card=math&code=D%5E%2A_%7Bl%2CG%7D%28%5Cmathbf%7By%7D%29%3D%5Cfrac%7B%5Cmathbb%7BP%7D_%7BP_l%5Ccirc%20T%7D%28%5Cmathbf%7By%7D%29%7D%7B%5Cmathbb%7BP%7D_%7BP_l%5Ccirc%20T%7D%28%5Cmathbf%7By%7D%29%2B%5Cmathbb%7BP%7D_%7BP_l%5Ccirc%20G%7D%28%5Cmathbf%7By%7D%29%7D%0A&id=z8biN"></p>
+<p>对于所有的 <img src="https://g.yuque.com/gr/latex?l%5Cin%5Cmathcal%7BL%7D#card=math&code=l%5Cin%5Cmathcal%7BL%7D&id=jJhao">。在这种情况下，基于公式(4)得到的最优 <img src="https://g.yuque.com/gr/latex?G#card=math&code=G&id=bqVbe"> 当且仅当所有 <img src="https://g.yuque.com/gr/latex?l%5Cin%5Cmathcal%7BL%7D#card=math&code=l%5Cin%5Cmathcal%7BL%7D&id=TzSua"> 时 <img src="https://g.yuque.com/gr/latex?%5Cmathbb%7BP%7D_%7BP_l%5Ccirc%20T%7D=%5Cmathbb%7BP%7D_%7BP_l%5Ccirc%20G%7D#card=math&code=%5Cmathbb%7BP%7D_%7BP_l%5Ccirc%20T%7D%3D%5Cmathbb%7BP%7D_%7BP_l%5Ccirc%20G%7D&id=zj09C">。</p>
+<p>附录中提供了定理的证明。从该定理，我们得出结论：特征投影器 <img src="https://g.yuque.com/gr/latex?P_l#card=math&code=P_l&id=qF52J"> 及其相关的鉴别器 <img src="https://g.yuque.com/gr/latex?D_l#card=math&code=D_l&id=zoQAI"> 促使生成器沿着 <img src="https://g.yuque.com/gr/latex?P_l#card=math&code=P_l&id=BeHzr"> 的边缘匹配真实分布。因此，在收敛时，<img src="https://g.yuque.com/gr/latex?G#card=math&code=G&id=aeZRv"> 在特征空间中匹配生成数据的分布与真实数据的分布。当使用随机数据增强时[^32]，在确定投影 <img src="https://g.yuque.com/gr/latex?P_l#card=math&code=P_l&id=fFQKa"> 之前，该定理也成立。</p>
+<h2 id="3-2-模型概述"><a href="#3-2-模型概述" class="headerlink" title="3.2 模型概述"></a>3.2 模型概述</h2><p>在预训练的特征空间中投影和训练为问题开辟了新的领域。本节提供一个通用系统的描述，随后是对每个设计选择进行的大量的消融实验。由于我们的特征投影会影响鉴别器，所以我们在本节集中讨论 <img src="https://g.yuque.com/gr/latex?P_l#card=math&code=P_l&id=AMHDO"> 和 <img src="https://g.yuque.com/gr/latex?D_l#card=math&code=D_l&id=q8fY2">，并将生成器架构的讨论推迟到（Sec05）。</p>
+<p><strong>多尺度鉴别器（Multi-Scale Discriminator）</strong>。我们以一定的分辨率（<img src="https://g.yuque.com/gr/latex?L_1=64%5E2,L_2=32%5E2,L_3=16%5E2,L_4=8%5E2#card=math&code=L_1%3D64%5E2%2CL_2%3D32%5E2%2CL_3%3D16%5E2%2CL_4%3D8%5E2&id=fAAsX">）从预处理特征网络 <img src="https://g.yuque.com/gr/latex?F#card=math&code=F&id=qmjQx"> 的四个层 <img src="https://g.yuque.com/gr/latex?L_l#card=math&code=L_l&id=X6DqW"> 中获得特征。将单独的鉴别器 <img src="https://g.yuque.com/gr/latex?D_l#card=math&code=D_l&id=zwsUI"> 在层 <img src="https://g.yuque.com/gr/latex?L_l#card=math&code=L_l&id=NzkSn"> 与特征相关联。每个鉴别器 <img src="https://g.yuque.com/gr/latex?D_l#card=math&code=D_l&id=kg496"> 在每个卷积层使用具有谱归一化的简单卷积结构[51]。如果所有鉴别器在相同的分辨率（$4^2$）输出分对数将会有更好的性能。因此，我们对于低分辨率的输入可以使用更少的下采样块。按照惯例，我们对所有的分对数求和来计算总损失。为了使生成器能够通过检测，我们对所有鉴别器的损失求和。更加复杂的策略[1][^18]并没有提高我们实验的性能。</p>
+<p><strong>随机投影（Random Projection）</strong>。我们观察到更深层的特征也明显更难覆盖，在（Sec04）的实验中也得到了证明。我们假设鉴别器可以只关注特征空间中的一个子集，而完全忽略其他部分。在更深的层、更多语义的层上，这个问题可能具有突出的表现。因此，我们提出了两种不同的策略来淡化显著特征，鼓励鉴别器平等地使用所有的可用信息。这两种策略的共同之处在于，它们使用固定的、可微的随机投影来混合特征，即在随机初始化之后，这些层的参数不被训练。</p>
+<p><strong>跨通道混合（Cross-Channel Mixing，CCM）</strong>。根据经验，我们找到两个需要的属性：</p>
+<ol>
+<li>随机投影的信息应该保留，从而充分利用网络 <img src="https://g.yuque.com/gr/latex?F#card=math&code=F&id=yABYw"> 的表示能力；</li>
+<li>随机投影不应该是很容易可逆的。</li>
+</ol>
+<p>最简单的跨越通道的混合是 <img src="https://g.yuque.com/gr/latex?1%5Ctimes%201#card=math&code=1%5Ctimes%201&id=TfDON"> 的卷积。一个 <img src="https://g.yuque.com/gr/latex?1%5Ctimes%201#card=math&code=1%5Ctimes%201&id=hn9Kw"> 的卷积的输入与输出通道的数目相同，它是排列的泛化[38]，并且结果保存了输入的信息。在实践中，我们发现更多的输出通道导致更好的性能，因为映射保持了单射，因此信息被保留。Kingma等人[38]初始化卷积层时使用随机旋转矩阵作为优化的起始点，而这个操作在我们的实验中没有改善 GAN 的性能（参见附录），可讨论的是因为它与第二条属性有冲突。因此我们先和 Kaiming 初始化卷积层的权重，再随机地初始化卷积层的权重。我们应用这个随机投影在四个尺度每一层，并且前馈变换后的特征到鉴别器（详见图2）。</p>
+<p><img src="/images/1651808222721-8687c9f0-eb8a-4300-a4f2-00adcb00ea30.png"></p>
+<p>图2：CCM（蓝色虚线箭头）使用随机权重的 <img src="https://g.yuque.com/gr/latex?1%5Ctimes%201#card=math&code=1%5Ctimes%201&id=tCJhM"> 卷积。</p>
+<p>交叉尺度混合（Cross-Scale Mixing，CSM）。为了强化特征通过尺度混合，CSM 使用 <img src="https://g.yuque.com/gr/latex?3%5Ctimes%203#card=math&code=3%5Ctimes%203&id=BbiH6"> 卷积和双线性上采样扩展了 CCM，产生了 U-Net[^65]结构（参见图3）。然而，我们的 CSM 专人相比基本的U-Net更简单：我们仅使用单个卷积层在每个尺度。对于 CCM，我们使用 Kaiming 初始化所有权重。</p>
+<p>预训练特征网络（Pretrained Feature Network）。我们在不同的特征网络上进行了消融实验。</p>
+<ol>
+<li>我们研究了不同版本的 EfficientNet，这种网络允许直接控制模型的大小及对应的性能。EfficientNet 是基于 ImageNet 上训练的图像分类模型，并且设计用于提供良好的精度与计算的平衡。</li>
+<li>我们使用了不同尺度的 ResNet。为了分析 ImageNet 特征（Sec 4.3）的依赖，在4亿个成对的“图像-文字”数据集上，我们还考虑了 R50-CLIP[^60]，它是一个使用成对的语言-图像对象优化的 ResNet。</li>
+<li>我们使用一个视觉变换架构（Vision Transformer Architecture，ViT-Base）[^14]，及其有效的后续（DeiT-small 蒸馏模型）[^78]。我们没有选择 Inception 网络[^76]是为也避开其与评价指标 FID[^23]的强相关性。在附录中，我们还评价了几个神经网络和非神经网络的指标去排除相关性。这个附加的指标反应了从 FID 中获得的地位。</li>
+</ol>
+<p>后续，在与最先进的技术比较之前，我们实施了合成消融研究去分析在投影 GAN 模型中每个成分的重要性和最佳配置。</p>
+<h1 id="Sec04-消融研究"><a href="#Sec04-消融研究" class="headerlink" title="Sec04 消融研究"></a>Sec04 消融研究</h1><p>为了确定鉴别器、混合策略和预训练特征网络的最佳配置，我们 LSUN-Church 数据集上[^84]进行了实验，这个数据集是中等尺度（12万张图像），并且有合理的视觉复杂度，使用的分辨率为 <img src="https://g.yuque.com/gr/latex?256%5E2#card=math&code=256%5E2&id=mVA4w"> 个像素。对于生成器 <img src="https://g.yuque.com/gr/latex?G#card=math&code=G&id=IdQeS">，我们使用 FastGAN[^49]的生成器架构，它是由多个上采样块组成，每个块都带有额外的跳接层激励块。使用 Hinge 损失[^47]，我们训练的批大小为64，直到1百万个真实图像被展示给鉴别器，这对于<img src="https://g.yuque.com/gr/latex?G#card=math&code=G&id=i1o06">的收敛数据量是足够的。如果没有特别说明，我们在本节中使用 EfficientNet-Lite1[77]特征网络。我们发现鉴别器的增强[32][79][89][90]能够同样地改善所有方法的性能，并且能够满足要求达到最先进的性能。我们利用可微的数据增强[89]，这个方法与 FastGAN 生成器的结合可以产生最佳的结果。</p>
+<table>
+<thead>
+<tr>
+<th>鉴别器</th>
+<th>rel-FD1 ↓</th>
+<th>rel-FD2 ↓</th>
+<th>rel-FD3 ↓</th>
+<th>rel-FD4 ↓</th>
+<th>rel-FID ↓</th>
+</tr>
+</thead>
+<tbody><tr>
+<td></td>
+<td></td>
+<td>没有投影</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>on <img src="https://g.yuque.com/gr/latex?L_1#card=math&code=L_1&id=iZy5n"></td>
+<td>0.56</td>
+<td>0.23</td>
+<td>0.31</td>
+<td>0.55</td>
+<td>。066</td>
+</tr>
+<tr>
+<td>on <img src="https://g.yuque.com/gr/latex?L_1,L_2#card=math&code=L_1%2CL_2&id=had6t"></td>
+<td>0.35</td>
+<td>0.21</td>
+<td>0.23</td>
+<td>0.47</td>
+<td>0.53</td>
+</tr>
+<tr>
+<td>on <img src="https://g.yuque.com/gr/latex?L_1,L_2,L_3#card=math&code=L_1%2CL_2%2CL_3&id=mrvVo"></td>
+<td>0.42</td>
+<td>0.26</td>
+<td>0.28</td>
+<td>0.64</td>
+<td>0.90</td>
+</tr>
+<tr>
+<td>on <img src="https://g.yuque.com/gr/latex?L_1,L_2,L_3,L_4#card=math&code=L_1%2CL_2%2CL_3%2CL_4&id=jcvBh"></td>
+<td>0.46</td>
+<td>0.34</td>
+<td>0.38</td>
+<td>0.79</td>
+<td>1.15</td>
+</tr>
+<tr>
+<td>on <img src="https://g.yuque.com/gr/latex?L_2,L_3,L_4#card=math&code=L_2%2CL_3%2CL_4&id=h9uh7"></td>
+<td>0.95</td>
+<td>0.67</td>
+<td>0.71</td>
+<td>1.19</td>
+<td>1.99</td>
+</tr>
+<tr>
+<td>on <img src="https://g.yuque.com/gr/latex?L_3,L_4#card=math&code=L_3%2CL_4&id=KDFjc"></td>
+<td>2.14</td>
+<td>1.41</td>
+<td>1.18</td>
+<td>1.99</td>
+<td>3.46</td>
+</tr>
+<tr>
+<td>on <img src="https://g.yuque.com/gr/latex?L_4#card=math&code=L_4&id=mwJzB"></td>
+<td>10.92</td>
+<td>5.74</td>
+<td>2.56</td>
+<td>2.79</td>
+<td>5.08</td>
+</tr>
+<tr>
+<td>感知机 <img src="https://g.yuque.com/gr/latex?D#card=math&code=D&id=eEkAB"></td>
+<td>2.98</td>
+<td>1.76</td>
+<td>1.20</td>
+<td>1.89</td>
+<td>2.73</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td>CCM</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>on <img src="https://g.yuque.com/gr/latex?L_1#card=math&code=L_1&id=lfEB9"></td>
+<td>0.27</td>
+<td>0.21</td>
+<td>0.26</td>
+<td>0.50</td>
+<td>0.59</td>
+</tr>
+<tr>
+<td>on <img src="https://g.yuque.com/gr/latex?L_1,L_2#card=math&code=L_1%2CL_2&id=tiCDY"></td>
+<td>0.27</td>
+<td>0.18</td>
+<td>0.21</td>
+<td>0.41</td>
+<td>0.48</td>
+</tr>
+<tr>
+<td>on <img src="https://g.yuque.com/gr/latex?L_1,L_2,L_3#card=math&code=L_1%2CL_2%2CL_3&id=SAfmb"></td>
+<td>0.31</td>
+<td>0.25</td>
+<td>0.24</td>
+<td>0.54</td>
+<td>0.67</td>
+</tr>
+<tr>
+<td>on <img src="https://g.yuque.com/gr/latex?L_1,L_2,L_3,L_4#card=math&code=L_1%2CL_2%2CL_3%2CL_4&id=fAu9P"></td>
+<td>0.53</td>
+<td>0.34</td>
+<td>0.34</td>
+<td>0.59</td>
+<td>0.77</td>
+</tr>
+<tr>
+<td>感知机 <img src="https://g.yuque.com/gr/latex?D#card=math&code=D&id=cYT2I"></td>
+<td>5.33</td>
+<td>3.06</td>
+<td>2.14</td>
+<td>1.09</td>
+<td>4.77</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td>CCM+CSM</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>on <img src="https://g.yuque.com/gr/latex?L_1#card=math&code=L_1&id=aj7e1"></td>
+<td>0.34</td>
+<td>0.25</td>
+<td>0.19</td>
+<td>0.35</td>
+<td>0.44</td>
+</tr>
+<tr>
+<td>on <img src="https://g.yuque.com/gr/latex?L_1,L_2#card=math&code=L_1%2CL_2&id=ZhvV1"></td>
+<td>0.21</td>
+<td>0.18</td>
+<td>0.16</td>
+<td>0.27</td>
+<td>0.31</td>
+</tr>
+<tr>
+<td>on <img src="https://g.yuque.com/gr/latex?L_1,L_2,L_3#card=math&code=L_1%2CL_2%2CL_3&id=hQzKB"></td>
+<td>0.41</td>
+<td>0.26</td>
+<td>0.17</td>
+<td>0.23</td>
+<td>0.29</td>
+</tr>
+<tr>
+<td>on <img src="https://g.yuque.com/gr/latex?L_1,L_2,L_3,L_4#card=math&code=L_1%2CL_2%2CL_3%2CL_4&id=wW4q8"></td>
+<td>0.26</td>
+<td>0.16</td>
+<td>0.13</td>
+<td>0.16</td>
+<td>0.24</td>
+</tr>
+<tr>
+<td>感知机 <img src="https://g.yuque.com/gr/latex?D#card=math&code=D&id=puMrD"></td>
+<td>2.53</td>
+<td>1.37</td>
+<td>0.89</td>
+<td>0.43</td>
+<td>2.13</td>
+</tr>
+</tbody></table>
+<p><img src="/images/1651808273270-998a2b70-5a6d-4782-9cef-c31eba71f3a4.png"></p>
+<p>表1：特征空间 Frechet 距离。我们的目标是找到鉴别器和随机投影的最佳组合来拟合特征网络 <img src="https://g.yuque.com/gr/latex?F#card=math&code=F&id=waA0K"> 的分布。我们在网络 <img src="https://g.yuque.com/gr/latex?F#card=math&code=F&id=PBrTN"> 的不同层（<img src="https://g.yuque.com/gr/latex?rel-FD_i#card=math&code=rel-FD_i&id=r6zRY">）上展示了 LSUN-Church 的5万个生成图像和真实图像之间相对<img src="https://g.yuque.com/gr/latex?FD#card=math&code=FD&id=GYO05">。对带有标准的单个 RGB 图像鉴别器的模型使用基线 Frechet 距离对<img src="https://g.yuque.com/gr/latex?rel-FD_i#card=math&code=rel-FD_i&id=yenFC">进行归一化。我们报告了四个层（<img src="https://g.yuque.com/gr/latex?L_1,L_2,L_3,L_4#card=math&code=L_1%2CL_2%2CL_3%2CL_4&id=jQIUq">）的 <img src="https://g.yuque.com/gr/latex?rel_FD#card=math&code=rel_FD&id=X9uaS">，层都来自于 EfficientNet（层都是从浅到深），还报告了相关的 Frechet Inception 距离（FID)[23]。请注意，$rel-FD_i$不能在不同的特征空间之间进行比较，即只有列内比较才有意义。蓝色高亮的层通过独立鉴别器进行监督。绿色高亮对应感知机器[75]，这个标记在所有的特征图中都立刻应用了。</p>
+<h2 id="4-1-哪些特征网络层的信息量更大"><a href="#4-1-哪些特征网络层的信息量更大" class="headerlink" title="4.1 哪些特征网络层的信息量更大"></a>4.1 哪些特征网络层的信息量更大</h2><p>我们首先研究的是多尺度鉴别器之间的相关性。对于这个实验，我们没有使用特征混合。为了衡量 <img src="https://g.yuque.com/gr/latex?G#card=math&code=G&id=XJCk2"> 与特定的特征空间的匹配程度，我们在按层<img src="https://g.yuque.com/gr/latex?i#card=math&code=i&id=I8M1X">来描述的<img src="https://g.yuque.com/gr/latex?FD_i#card=math&code=FD_i&id=iHO7H">的空间池化特征上采用了 Frechet 距离（FD）[^17]。跨越不同特征空间的 <img src="https://g.yuque.com/gr/latex?FD#card=math&code=FD&id=T9v0c"> 是不能直接比较的。因此，我们使用了标准的 RGB 鉴别器训练了一个 GAN 的基线，在每一层记录 <img src="https://g.yuque.com/gr/latex?FD_i%5E%7BRGB%7D#card=math&code=FD_i%5E%7BRGB%7D&id=cAOpX">，通过片段 <img src="https://g.yuque.com/gr/latex?rel-FD_i=FD_i/FD_i%5E%7BRGB%7D#card=math&code=rel-FD_i%3DFD_i%2FFD_i%5E%7BRGB%7D&id=GgGM8"> 量化相关的改进。我们也研究了感知机鉴别器[^75]，其中特征图被卷入相同鉴别器的不同层中用于预测一个单个的分对数。</p>
+<p>表1（非投影，No Projection）展示了两个鉴别器比一个效果好，并且改进了常用 RGB 的基线。令人惊讶的是，在深层添加鉴别器反而会伤害性能。我们可以得出结论这些更具有语义的特征不能很好地反应直接的对抗损失。我们还在原始图片的不同尺寸上对鉴别器进行实验，但是没有找到超参数和结构的设置能够改善单个图像的基线。删除浅层特征的鉴别器会降低性能符合我们的预期，因为这些层包含了原始图像的大部分信息。相似的影响在特征翻转[^16]上也能观察到，即层越深，输入重建就越难。最后，我们还观察到独立的鉴别器显著地好过感知器鉴别器。</p>
+<h2 id="4-2-怎样才能最好地使用预训练特征？"><a href="#4-2-怎样才能最好地使用预训练特征？" class="headerlink" title="4.2 怎样才能最好地使用预训练特征？"></a>4.2 怎样才能最好地使用预训练特征？</h2><p>根据上一节的见解，我们的目标是改善深度特征的使用。对于这个实验，我们仅仅研究了在高分辨率下包含鉴别器的配置。表1（CCM和CCM+CSM）展示了两种混合策略。CCM适度地减少了所有配置的 FD，证明了我们的假设，即混合通道为生成器产生了更好的反馈。当加入 CSM 时，我们在所有配置上获得了另一个显著的改善。特别是 <img src="https://g.yuque.com/gr/latex?rel-FD_i#card=math&code=rel-FD_i&id=OWeNw"> 在更深的层上显著地减少，证明 CSM 在利用深层语义特征上的有效性。有趣的是，我们观察到混合四个鉴别器可以获得最好的性能。一个感知机鉴别器再次弱于多重鉴别器。我们还注意到，在合成原始图像的问题上，通过独立的鉴别器或者CCM或者CSM总会产生更差的性能。这个失败建议使用投影对抗优化来朴素地组合非投影会损害训练的动态性。</p>
+<p><img src="/images/1651808283185-85cd96db-47bb-48ad-9268-d45efd717355.png"></p>
+<p>表2：预训练特征网络研究。我们使用不同的预训练特征网络训练投影 GAN，发现紧凑的 EfficientNet 比 ResNet和Transformer都好。</p>
+<h2 id="4-3-哪个特征网络架构更加有效？"><a href="#4-3-哪个特征网络架构更加有效？" class="headerlink" title="4.3 哪个特征网络架构更加有效？"></a>4.3 哪个特征网络架构更加有效？</h2><p>使用由上述实验确定的最佳设置（最佳设置来自于具有四个鉴别器的 CCM+CSM 的实验），我们研究了用于投影 GAN 训练的各种感知机特征网络结构的有效性。为了确保整合，也为了更大的架构，我们训练了 1000 万个图像。表2报告了在 LSUN-Church 上得到的 FID。令人惊讶的是，我们发现与 ImageNet 的准确性没有相关性。相反，我们观察到较小的模型（如：EfficientNets-lite）的 FID 越低。这一观察表明，更加紧凑的表示是有益的，并且还同时减少了计算开销，从而减少了训练时间。R50-CLIP 略优于 R50，说明不需要 ImageNet 的特征就能实现低 FID。为了保证完整性，我们还使用随机初始化的特征网络进行了训练，然而这些特征网络收敛到更高的 FID 值（参见附录）。接下来，我们使用 EfficientNet-Lite 作为我们的特征网络。</p>
+<h1 id="Sec05-与最先进模型的比较"><a href="#Sec05-与最先进模型的比较" class="headerlink" title="Sec05 与最先进模型的比较"></a>Sec05 与最先进模型的比较</h1><p>本节进行了全面的分析，展示了与最先进模型的对比，证明了 投影GAN 的优势。我们的实验被分成三个部分：</p>
+<ol>
+<li>收敛速度和数据效率的评估（5.1）</li>
+<li>比较大规模基准数据集（5.2）和小规模基准数据集（5.3）。</li>
+</ol>
+<p>我们涵盖了各种各样的数据集，有不同大小的（几百到几百万个样本）、不同分辨率的（<img src="https://g.yuque.com/gr/latex?256%5E2#card=math&code=256%5E2&id=WAWbd"> 到 <img src="https://g.yuque.com/gr/latex?1024%5E2#card=math&code=1024%5E2&id=R9m0A">）和不同的视觉复杂性的（剪贴画、绘画和照片）。</p>
+<p>评估协议。我们使用 Frechet Inception 距离（FID）[23]来评估图像的质量。遵循[33][^34]，我们报告了5万个生成的与所有的真实图像之间的 FID。我们为每种方法选择具有最佳 FID 的快照。除了图像质量外，我们还包括了一个评估收敛性的指标。就像在[^32]中一样，我们基于向鉴别器展示的真实图像数目（Imgs）来评估训练的进度。在整个训练中，我们报告了模型要达到最佳FID的5%的值时所需要的图像的数量。在附录中，我们还报告了在 GAN 的文献中出现过，但是很少作为基准的指标：KID[4]、SwAV-FID[53]、准确率和召回率[66]。除非另有说明，我们遵循[26]的评估协议以推动公平的比较。具体来说，我们比较了所有的方法，图像的数目是给定的、相同的固定数量（1000万）。在这种设置下，每个实验大致需要100~200个 Nvidia V100 GPU 小时，更多细节参考我们的附录。</p>
+<p>基线。我们使用 StyleGAN2-ADA[32]和FastGAN[49]作为基线。依照样本质量区分，StyleGAN2-ADA在大多数数据集上是最强的模型，而 FastGAN 在训练速度方面表现出色。我们实现了我们的投影GAN，还基于 StyleGAN2-ADA 作者提供的代码实现了基线。对于每个模型，我们运行了两种数据增强：可微数据增强[89]和自适应鉴别器增强[32]。我们为每个模型选择了性能更好的增强策略。</p>
+<p>对于所有的基线和数据集，我们通过x-翻转进行了数据增强。对于所有的实验，投影GAN使用相同的生成器和鉴别器架构，以及训练的超参数（学习率和批处理大小）。对于高分辨率图像生成，生成器中包含了额外的上采样块，以匹配所需要的输出分辨率。我们仔细地调整两个基线的所有超参数以获得最佳结果：我们发现 FastGAN 对于批处理大小很敏感；而 StyleGAN2-ADA 对学习率和 <img src="https://g.yuque.com/gr/latex?R1#card=math&code=R1&id=i1yjm"> 惩罚很敏感。附录记录了我们在每个实验中使用的附加的实现细节。</p>
+<h2 id="5-1-收敛速度和数据效率"><a href="#5-1-收敛速度和数据效率" class="headerlink" title="5.1 收敛速度和数据效率"></a>5.1 收敛速度和数据效率</h2><p>遵循[26][85]，我们在图像分辨率为 <img src="https://g.yuque.com/gr/latex?256%5E2#card=math&code=256%5E2&id=NsB3y"> 像素的 LSUN-Church 数据集上和 7万张图像的 CLEVR 数据集[^29]上分析了投影 GAN 的训练属性。在本节中，我们在必要时候也训练过多于 1000万图像的数据集，因为我们希望了解其收敛性质。</p>
+<p><img src="/images/1651808298082-e588dee9-1390-4474-bb31-b6bfc42d9e91.png"></p>
+<p>图4：训练性质。左：在 LSUN-Church 数据集上，投影FastGAN的FID（110万图像）就超过了 StyleGAN2 的最佳FID（8800万图像）。右：在 CLEVR 的 1千和 1万样本子集上，投影FastGAN也显著改善了FID值。</p>
+<p>收敛速度。我们应用投影GAN训练 StyleGAN2 的基于风格的生成器和 FastGAN 的包含单个输入噪声微量的标准生成器。如图4所示（左），FastGAN收敛更快，但是稳定在高 FID。StyleGAN2 收敛更慢（8800万图像），但是达到更低的 FID。投影GAN训练改善了两个生成器。特别是FastGAN，同时改善了收敛速度和最终的FID；但是对于StyleGAN2的改善效果就没有那么显著了。令人注目的是，投影FastGAN 仅在110万图像时就达到了StyleGAN2在8800万图像时得到的最佳FID。反应时间也从5天变成了3个小时。因此，从现在开始，我们使用FastGAN的生成器，并将这种模型简称为投影GAN。</p>
+<p><img src="/images/1651808306652-a4d97aa6-d16c-422e-8337-6bfbc34413e2.png"></p>
+<p>图5：在 <img src="https://g.yuque.com/gr/latex?256%5E2#card=math&code=256%5E2&id=koUCC"> 像素的 LSUN-Church 数据集上的训练过程。展示的是覆盖 <img src="https://g.yuque.com/gr/latex?k#card=math&code=k&id=T7w7O"> 个图像后固定噪声向量<img src="https://g.yuque.com/gr/latex?%5Cmathbf%7Bz%7D#card=math&code=%5Cmathbf%7Bz%7D&id=ioQqR">的输出样本。从上到下：FastGAN、StyleGAN2-ADA、投影GAN。</p>
+<p>图5展示了在 LSUN-Church 数据集上固定噪声向量<img src="https://g.yuque.com/gr/latex?%5Cmathbf%7Bz%7D#card=math&code=%5Cmathbf%7Bz%7D&id=dfvTr">输出的样本。对于FastGAN和StyleGAN来说，纹理的Patch会逐渐变成一个整体结构。对于投影GAN，我们直接观察到结构的出现，随着时间的推移，结构变得更加细致。有趣的是，投影GAN的隐空间表现得动荡，即对于固定的<img src="https://g.yuque.com/gr/latex?%5Cmathbf%7Bz%7D#card=math&code=%5Cmathbf%7Bz%7D&id=I1BmX">，图像在训练过程中经历了显著的感知变化。在非投影案例中，这些变化则更加平缓。我们假设这种由鉴别器诱使的振荡性相比传统的 RGB 损失提供了更多的语义反馈。这样的语义反馈可能在训练阶段引入更多的随机性，从而交替改善收敛性和性能。我们还观察到在整个训练阶段，鉴别器的有符号的实分对数保持在相同的水平（参见附录）。平稳的有符号的分对数表明鉴别器没有受过拟合的影响。</p>
+<p>样本效率。预训练模型的使用通常都能改善样本的效率。为了评估这个性质，我们还创建了 CLEVR数据集（7万图像）的两个子集：（分别抽取的）1千图像和1万图像。如图4（右）所示，我们的投影GAN显著地改善了所有数据集分割的两个基线。</p>
+<h2 id="5-2-大型数据集"><a href="#5-2-大型数据集" class="headerlink" title="5.2 大型数据集"></a>5.2 大型数据集</h2><p>除了 CLEVR 和 LSUN-Church，我们还在另外三个大型数据集上以各种最先进的模型作为基准对投影GAN进行了测试，这三个数据集是：LSUN-Bedroom[84]（300万室内卧室场景）、FFHQ[77]（7万脸部图像）和Cityscapes[9]（2.5万从汽车上捕捉的驾驶场景）。对于所有的数据集，我们使用的图像分辨率都是$256^2$像素。因为Cityscape和CLEVR图像不是$1:1$的比例，我们将它们的尺寸变化为$256^2$用于训练。除了StyleGAN2-ADA和FastGAN模型，我们还比较了SAGAN[86]和GANsformers[^26]。所有的模型训练1000万图像。对于大型数据集，我们还报告了StyleGAN2训练图像的数目（超过1000万图像），和在以前的文献中获得的最低的FID值（记作 StyleGAN2*）。在附录中，我们报告了9个更大的数据集的结果。</p>
+<p>表3说明在所有的数据集上，投影GAN在FID值方面优于所有最先进的模型。例如：在LSUN-Bedroom上，它实现了FID值为1.52，相比之下，该设置下以前最好的模型GANsformers为6.15。投影GAN获得最先进的FID值的速度非常快，例如：在LSUN-Church上，它在110万图像后就实现了3.18的FID值。StyleGAN2在8800万图像后获得先前的最低FID值3.39，是投影GAN所需图像的80倍。如表3所示，对于所有其他大型数据集上也实现了的加速。有趣的是，当在FFHQ（3900万图像）上训练更长时间时，我们发现投影GAN进一步改善FID值为2.2。请注意，所有五个数据集都表示不同场景中非常不同的对象。这个证明选择不同的数据集其性能增益也是稳健的，尽管特征网络仅在 ImageNet 上进行了训练。值得注意的是，主要的改进是基于样本多样性，如我们在附录中报告的那样。多样性的改进在大型数据集上是非常显著的，例如：LSUN-Church 的图像保真度与 StyleGAN 的相似。</p>
+<p><img src="/images/1651808319394-21e007f8-8257-42fe-bfca-42ca95eba232.png"></p>
+<p>表3：量化结果。投影GAN 报告了超越最先进模型的点。StyleGAN2报告了在先前的文献中获得的最低的FID值，只要训练时间足够长。</p>
+<h2 id="5-3-小型数据集"><a href="#5-3-小型数据集" class="headerlink" title="5.3 小型数据集"></a>5.3 小型数据集</h2><p>为了进一步评估我们的方法在小样本设置下的性能，我们基于几个小型数据集比较了StyleGAN2-ADA和FastGAN，这几个小型数据集是：WikiArt（1000图像，wikiart.org）、Oxford Flowers（1360图像）[^56]、风景照片（833图像, flickr.com）、AnimalFace-Dog（389图像）[^72]和Pokeman（833图像, pokemon.com）。此外，我们还报告了Pokeman和Art-Painting的高分辨率版本（<img src="https://g.yuque.com/gr/latex?1024%5E2#card=math&code=1024%5E2&id=FFIf9">）的结果。最后，我们还基于分辨率<img src="https://g.yuque.com/gr/latex?512%5E2#card=math&code=512%5E2&id=yoQ99">评估了AFHQ-Cat、AFHQ-Dog和AFHQ-Wild[7]。AFHQ数据集对于每个类别（猫、狗、野生动物）包含大约5000个特写图像。我们没有分发这些数据库的版权，但是我们提供了URL以满足复现，类似于[49]。</p>
+<p>如表3所示，在所有的数据集和所有的分辨率上，投影GAN超越了所有的基线。值得注意的是，我们的模型在观察了不到60万张图像后，在所有的数据集上（分辨率为<img src="/images/1651808330763-b7adb842-17c3-412c-8b83-e1b42aad097f.png"></p>
+<p>图6：真实样本（上一行）与投影GAN的样本（下一行）。数据库（从上左到下右）：CLEVR(<img src="https://g.yuque.com/gr/latex?256%5E2#card=math&code=256%5E2&id=HLdMO">), LSUN-Church(<img src="https://g.yuque.com/gr/latex?256%5E2#card=math&code=256%5E2&id=o4Acv">), Art Painting(<img src="https://g.yuque.com/gr/latex?256%5E2#card=math&code=256%5E2&id=ywKet">), Landscapes(<img src="https://g.yuque.com/gr/latex?256%5E2#card=math&code=256%5E2&id=ciyTm">), AFHQ-wild(<img src="https://g.yuque.com/gr/latex?512%5E2#card=math&code=512%5E2&id=K6B95">), Pokemon(<img src="https://g.yuque.com/gr/latex?256%5E2#card=math&code=256%5E2&id=vb7kQ">), AFHQ-dog(<img src="https://g.yuque.com/gr/latex?512%5E2#card=math&code=512%5E2&id=MV0Ps">), AFHQ-cat(<img src="https://g.yuque.com/gr/latex?512%5E2#card=math&code=512%5E2&id=YWcIt">).</p>
+<h1 id="Sec06-讨论现在与展望未来"><a href="#Sec06-讨论现在与展望未来" class="headerlink" title="Sec06 讨论现在与展望未来"></a>Sec06 讨论现在与展望未来</h1><p>虽然我们大所有数据集上都获得了很低的FID，但是我们也发现了两个系统性的失败案例：如图7中描述的，AFHQ中观察到的悬空头。在少量样本中，图像质量很高，但是在模糊或者平淡的背景上看起来像剪贴画。我们假设当一个突起的物体已经被的描绘出来时，生成一个真实的背景与图像合成就不那么重要了。这个假设来源于这样一个事实，即我们使用图像分类模型进行投影时，应用在去除了背景的物体图像时模型的精度仅略微降低[^83]。在 FFHQ 上，投影GAN有时也会产生错误的比例和不自然的物体，甚至在最先进的FID时，参见图8。</p>
+<p><img src="/images/1651808340869-e769f82f-31ff-479a-99e8-436aaa3b0064.png"></p>
+<p>图7：悬空头</p>
+<p><img src="/images/1651808351816-a8384c29-fd44-44fd-99f6-c64457192e93.png"></p>
+<p>图8：FFHQ中的非自然物体</p>
+<p>就生成器而言，StyleGAN的调优更具挑战性，因为其无法从投影训练中获得好处。FastGAN的生成器的优化速度很快，但同时在隐空间的某些部分产生了不真实的样本————这个问题可以通过类似于StyleGAN映射网络来解决。因此，我们推测将两种架构的优势结合在一起，再加上投影GAN，可能会进一步提高性能。此外，我们对不同的预训练网络的研究表明，有效的模型特别特别适合投影GAN的训练。深入探索这种联系，一般来说，确定所需要的特征空间的性质打开了令人兴奋的新研究机会。最后，我们的工作提高了生成模型的效率。更加高效的模型降低了生成真实图像所需要的计算工作量。更低的门槛加速了生成模型的恶性使用（如：深度伪造），同时也使该领域的研究民主化。</p>
+
+    </div>
+
+    
+    
+    
+        <div class="reward-container">
+  <div></div>
+  <button onclick="var qr = document.getElementById('qr'); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/images/wechatpay.png" alt="SindreYang 微信支付">
+        <p>微信支付</p>
+      </div>
+      
+      <div style="display: inline-block;">
+        <img src="/images/alipay.png" alt="SindreYang 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>SindreYang
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://blog.mviai.com/2025/%E8%AE%BA%E6%96%87%E7%BF%BB%E8%AF%91_%E6%94%B6%E6%95%9B%E6%9B%B4%E5%BF%AB%E7%9A%84%E6%8A%95%E5%BD%B1_GAN/" title="论文翻译_收敛更快的投影_GAN">http://blog.mviai.com/2025/论文翻译_收敛更快的投影_GAN/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <span class="exturl" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC9kZWVkLnpo"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</span> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+        
+
+  <div class="followme">
+    <p>欢迎关注我的其它发布渠道</p>
+
+    <div class="social-list">
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="/images/wechat.png">
+            <span class="icon">
+              <i class="fa fa-wechat"></i>
+            </span>
+
+            <span class="label">WeChat</span>
+          </a>
+        </div>
+    </div>
+  </div>
+
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2025/2024%E6%94%BF%E6%B2%BB/" rel="prev" title="2024政治">
+      <i class="fa fa-chevron-left"></i> 2024政治
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2025/%E8%AE%BA%E6%96%87%E7%BF%BB%E8%AF%91_TSegFormer%E4%BD%BF%E7%94%A8%E5%87%A0%E4%BD%95%E5%BC%95%E5%AF%BC%E5%8F%98%E6%8D%A2%E5%99%A8%E5%9C%A8%E5%8F%A3%E8%85%94%E5%86%85%E6%89%AB%E6%8F%8F%E4%B8%AD%E8%BF%9B%E8%A1%8C%E4%B8%89%E7%BB%B4%E7%89%99%E9%BD%BF%E5%88%86%E5%89%B2/" rel="next" title="论文翻译_TSegFormer使用几何引导变换器在口腔内扫描中进行三维牙齿分割">
+      论文翻译_TSegFormer使用几何引导变换器在口腔内扫描中进行三维牙齿分割 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    
+  <div class="comments">
+    <div id="SOHUCS"></div>
+  </div>
+  
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%A0%87%E9%A2%98"><span class="nav-number">1.</span> <span class="nav-text">标题</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%91%98%E8%A6%81"><span class="nav-number">2.</span> <span class="nav-text">摘要</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%B3%E9%94%AE%E8%AF%8D"><span class="nav-number">2.1.</span> <span class="nav-text">关键词</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Sec01-%E4%BB%8B%E7%BB%8D"><span class="nav-number">3.</span> <span class="nav-text">Sec01 介绍</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Sec02-%E7%9B%B8%E5%85%B3%E5%B7%A5%E4%BD%9C"><span class="nav-number">4.</span> <span class="nav-text">Sec02 相关工作</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Sec03-%E6%8A%95%E5%BD%B1-GAN"><span class="nav-number">5.</span> <span class="nav-text">Sec03 投影 GAN</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#3-1-%E4%B8%80%E8%87%B4%E6%80%A7"><span class="nav-number">5.1.</span> <span class="nav-text">3.1 一致性</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-2-%E6%A8%A1%E5%9E%8B%E6%A6%82%E8%BF%B0"><span class="nav-number">5.2.</span> <span class="nav-text">3.2 模型概述</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Sec04-%E6%B6%88%E8%9E%8D%E7%A0%94%E7%A9%B6"><span class="nav-number">6.</span> <span class="nav-text">Sec04 消融研究</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#4-1-%E5%93%AA%E4%BA%9B%E7%89%B9%E5%BE%81%E7%BD%91%E7%BB%9C%E5%B1%82%E7%9A%84%E4%BF%A1%E6%81%AF%E9%87%8F%E6%9B%B4%E5%A4%A7"><span class="nav-number">6.1.</span> <span class="nav-text">4.1 哪些特征网络层的信息量更大</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-2-%E6%80%8E%E6%A0%B7%E6%89%8D%E8%83%BD%E6%9C%80%E5%A5%BD%E5%9C%B0%E4%BD%BF%E7%94%A8%E9%A2%84%E8%AE%AD%E7%BB%83%E7%89%B9%E5%BE%81%EF%BC%9F"><span class="nav-number">6.2.</span> <span class="nav-text">4.2 怎样才能最好地使用预训练特征？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-3-%E5%93%AA%E4%B8%AA%E7%89%B9%E5%BE%81%E7%BD%91%E7%BB%9C%E6%9E%B6%E6%9E%84%E6%9B%B4%E5%8A%A0%E6%9C%89%E6%95%88%EF%BC%9F"><span class="nav-number">6.3.</span> <span class="nav-text">4.3 哪个特征网络架构更加有效？</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Sec05-%E4%B8%8E%E6%9C%80%E5%85%88%E8%BF%9B%E6%A8%A1%E5%9E%8B%E7%9A%84%E6%AF%94%E8%BE%83"><span class="nav-number">7.</span> <span class="nav-text">Sec05 与最先进模型的比较</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#5-1-%E6%94%B6%E6%95%9B%E9%80%9F%E5%BA%A6%E5%92%8C%E6%95%B0%E6%8D%AE%E6%95%88%E7%8E%87"><span class="nav-number">7.1.</span> <span class="nav-text">5.1 收敛速度和数据效率</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-2-%E5%A4%A7%E5%9E%8B%E6%95%B0%E6%8D%AE%E9%9B%86"><span class="nav-number">7.2.</span> <span class="nav-text">5.2 大型数据集</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-3-%E5%B0%8F%E5%9E%8B%E6%95%B0%E6%8D%AE%E9%9B%86"><span class="nav-number">7.3.</span> <span class="nav-text">5.3 小型数据集</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Sec06-%E8%AE%A8%E8%AE%BA%E7%8E%B0%E5%9C%A8%E4%B8%8E%E5%B1%95%E6%9C%9B%E6%9C%AA%E6%9D%A5"><span class="nav-number">8.</span> <span class="nav-text">Sec06 讨论现在与展望未来</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="SindreYang"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">SindreYang</p>
+  <div class="site-description" itemprop="description">沉淀后我愿意做一个温暖的人。有自己的喜好，有自己的原则，有自己的信仰，不急功近利，不浮夸轻薄，宠辱不惊，淡定安逸，心静如水。------不忘初心，方得始终</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">321</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">72</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL1NpbmRyZVlhbmc=" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;SindreYang"><i class="fa fa-fw fa-github"></i>GitHub</span>
+      </span>
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="bWFpbHRvOnl4QG12aWFpLmNvbQ==" title="E-Mail → mailto:yx@mviai.com"><i class="fa fa-fw fa-envelope"></i>E-Mail</span>
+      </span>
+  </div>
+  <div class="cc-license motion-element" itemprop="license">
+    <span class="exturl cc-opacity" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC9kZWVkLnpo"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+  <div class="languages">
+    <label class="lang-select-label">
+      <i class="fa fa-language"></i>
+      <span>简体中文</span>
+      <i class="fa fa-angle-up" aria-hidden="true"></i>
+    </label>
+    <select class="lang-select" data-canonical="">
+      
+        <option value="zh-CN" data-href="/2025/%E8%AE%BA%E6%96%87%E7%BF%BB%E8%AF%91_%E6%94%B6%E6%95%9B%E6%9B%B4%E5%BF%AB%E7%9A%84%E6%8A%95%E5%BD%B1_GAN/" selected="">
+          简体中文
+        </option>
+      
+        <option value="en" data-href="/en/2025/%E8%AE%BA%E6%96%87%E7%BF%BB%E8%AF%91_%E6%94%B6%E6%95%9B%E6%9B%B4%E5%BF%AB%E7%9A%84%E6%8A%95%E5%BD%B1_GAN/" selected="">
+          English
+        </option>
+      
+    </select>
+  </div>
+
+        
+
+<div class="copyright">
+  
+  &copy; 2018 – 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">SindreYang</span>
+</div><!-- 页面点击小红心 -->
+<script type="text/javascript" src="/js/love.js"></script>
+<!-- 背景波浪 -->
+<script color="0,0,255" opacity="0.5" zIndex="-1" count="99" src="https://cdn.jsdelivr.net/npm/canvas-nest.js@1/dist/canvas-nest.js"></script>
+
+
+<!-- 腾讯企业邮箱 -->
+<style>
+.bizmail_loginpanel {
+    font-size: 12px;
+    width: 300px;
+    height: auto;
+    background: transparent;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.bizmail_LoginBox {
+    padding: 10px 15px;
+}
+
+
+.bizmail_loginpanel form {
+    margin: 0;
+    padding: 0;
+}
+
+.bizmail_loginpanel input.text {
+    font-size: 12px;
+    width: 100px;
+    height: 20px;
+    margin: 0 2px;
+    background-color: transparent;
+    border:1px solid transparent;
+    box-shadow: none;
+    color: black;
+}
+
+.bizmail_loginpanel .bizmail_column {
+    height: 28px;
+}
+
+.bizmail_loginpanel .bizmail_column label {
+    display: block;
+    float: left;
+    width: 30px;
+    height: 24px;
+    line-height: 24px;
+    font-size: 12px;
+}
+
+.bizmail_loginpanel .bizmail_column .bizmail_inputArea {
+    float: left;
+    width: 240px;
+}
+
+.bizmail_loginpanel .bizmail_column span {
+    font-size: 12px;
+    word-wrap: break-word;
+    margin-left: 2px;
+    line-height: 200%;
+}
+
+.bizmail_loginpanel .bizmail_SubmitArea {
+    margin-left: 30px;
+    clear: both;
+}
+
+.bizmail_loginpanel .bizmail_SubmitArea a {
+    font-size: 12px;
+    margin-left: 5px;
+}
+
+.bizmail_loginpanel select {
+    width: 110px;
+    height: 20px;
+    margin: 0 2px;
+}
+.bizmail_loginpanel input {
+
+    background-color: rgba(83, 126, 236, 0.562);
+}
+
+
+</style>
+
+<script type="text/javascript">
+function checkInput() {
+    var e = document.form1.uin,
+        i = document.form1.pwd;
+    return 0 == e.value.length ? e.focus() : 0 == i.value.length ? i.focus() : (document.form1.submit(), setTimeout(" document.form1.pwd.value = '' ", 500)), !1
+}
+
+function writeLoginPanel(e) {
+    if (e && e.domainlist && -1 != e.domainlist.indexOf(".")) {
+        var a = "return checkInput()",
+            t = '<div id="divLoginpanelHor" class="bizmail_loginpanel" style="width:550px;"><div class="bizmail_LoginBox"><form name="form1" action="https://exmail.qq.com/cgi-bin/login" target="_blank" method="post" onsubmit="' + a + '"><input type="hidden" name="firstlogin" value="false" /><input type="hidden" name="errtemplate" value="dm_loginpage" /><input type="hidden" name="aliastype" value="other" /><input type="hidden" name="dmtype" value="bizmail" /><input type="hidden" name="p" value="" /><label>\u8d26\u53f7:</label><input type="text" name="uin" class="text" value="" />@#domainlist#<label>&nbsp&nbsp&nbsp;\u5bc6\u7801:</label><input type="password" name="pwd" class="text" value="" /><input type="submit" class="" name="" value="\u767b\u5f55" />&nbsp;<a href="https://exmail.qq.com/cgi-bin/readtemplate?check=false&t=biz_rf_portal#recovery" target="_blank">\u5fd8\u8bb0\u5bc6\u7801\uff1f</a></form></div></div>',
+            n = '<div id="divLoginpanelVer" class="bizmail_loginpanel"><div class="bizmail_LoginBox"><form name="form1" action="https://exmail.qq.com/cgi-bin/login" target="_blank" method="post" onsubmit="' + a + '"><input type="hidden" name="firstlogin" value="false" /><input type="hidden" name="errtemplate" value="dm_loginpage" /><input type="hidden" name="aliastype" value="other" /><input type="hidden" name="dmtype" value="bizmail" /><input type="hidden" name="p" value="" /><div class="bizmail_column"><label>\u8d26\u53f7:</label><div class="bizmail_inputArea"><input type="text" name="uin" class="text" value="" />@#domainlist#</div></div><div class="bizmail_column"><label>\u5bc6\u7801:</label><div class="bizmail_inputArea"><input type="password" name="pwd" class="text" value="" /></div></div><div class="bizmail_SubmitArea"><input type="submit" class="" name="" style="width:66px;" value="\u767b\u5f55" /><a href="https://exmail.qq.com/cgi-bin/readtemplate?check=false&t=biz_rf_portal#recovery" target="_blank">\u5fd8\u8bb0\u5bc6\u7801\uff1f</a></div></form></div></div>',
+            l = e.domainlist.split(";");
+        if (1 == l.length) var m = '<span>#domain#</span><input type="hidden" name="domain" value="#domain#" />'.replace(/#domain#/g, l[0]);
+        else {
+            m = '<select name="domain">';
+            for (i = 0; i < l.length; i++) m += '<option value="' + l[i] + '">' + l[i] + "</option>";
+            m += "</select>"
+        }
+        e.mode && "vertical" != e.mode && "both" != e.mode || document.write(n.replace(/#domainlist#/g, m)), "horizontal" != e.mode && "both" != e.mode || document.write(t.replace(/#domainlist#/g, m))
+    }
+}
+
+</script>      
+
+<script type="text/javascript"> writeLoginPanel({domainlist:"mviai.com", mode:"horizontal"});</script>      
+
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script size="300" alpha="0.6" zIndex="-1" src="/lib/canvas-ribbon/canvas-ribbon.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/medium-zoom@1/dist/medium-zoom.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+  <script defer src="/lib/three/three.min.js"></script>
+    <script defer src="/lib/three/three-waves.min.js"></script>
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+<script>
+document.querySelectorAll('.pdfobject-container').forEach(element => {
+  let url = element.dataset.target;
+  let pdfOpenParams = {
+    navpanes : 0,
+    toolbar  : 0,
+    statusbar: 0,
+    pagemode : 'thumbs',
+    view     : 'FitH'
+  };
+  let pdfOpenFragment = '#' + Object.entries(pdfOpenParams).map(([key, value]) => `${key}=${encodeURIComponent(value)}`).join('&');
+  let fullURL = `/lib/pdf/web/viewer.html?file=${encodeURIComponent(url)}${pdfOpenFragment}`;
+
+  if (NexT.utils.supportsPDFs()) {
+    element.innerHTML = `<embed class="pdfobject" src="${url + pdfOpenFragment}" type="application/pdf" style="height: ${element.dataset.height};">`;
+  } else {
+    element.innerHTML = `<iframe src="${fullURL}" style="height: ${element.dataset.height};" frameborder="0"></iframe>`;
+  }
+});
+</script>
+
+
+
+
+  
+
+  
+
+  <script>
+  NexT.utils.loadComments(document.querySelector('#SOHUCS'), () => {
+    var appid = 'cyxmItxjS';
+    var conf = 'e5e71132d9086bb54aeeba6e88e87df9';
+    var width = window.innerWidth || document.documentElement.clientWidth;
+    if (width < 960) {
+      window.document.write('<script id="changyan_mobile_js" charset="utf-8" type="text/javascript" src="https://cy-cdn.kuaizhan.com/upload/mobile/wap-js/changyan_mobile.js?client_id=' + appid + '&conf=' + conf + '"><\/script>');
+    } else {
+      var loadJs=function(d,a){var c=document.getElementsByTagName("head")[0]||document.head||document.documentElement;var b=document.createElement("script");b.setAttribute("type","text/javascript");b.setAttribute("charset","UTF-8");b.setAttribute("src",d);if(typeof a==="function"){if(window.attachEvent){b.onreadystatechange=function(){var e=b.readyState;if(e==="loaded"||e==="complete"){b.onreadystatechange=null;a()}}}else{b.onload=a}}c.appendChild(b)};loadJs("https://changyan.sohu.com/upload/changyan.js",function(){window.changyan.api.config({appid:appid,conf:conf})});
+    }
+  });
+  </script>
+  <script src="https://cy-cdn.kuaizhan.com/upload/plugins/plugins.count.js"></script>
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/z16.model.json"},"display":{"position":"left","width":75,"height":150},"mobile":{"show":true},"log":false});</script></body>
+</html>
+
+
+
+

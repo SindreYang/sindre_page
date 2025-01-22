@@ -1,0 +1,1251 @@
+<!DOCTYPE html>
+<html lang="zh-CN,en,default">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" href="/lib/pace/pace-theme-minimal.min.css">
+  <script src="/lib/pace/pace.min.js"></script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"blog.mviai.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":true,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":true,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="自动摘要: 		背景		1、可自动分割牙齿，测量接触点间距离进行拥挤度计算，并以正负数值标记，模拟拔牙或IPR（邻面去釉）完成自动虚拟排牙。			一、产品概述		1.版本信息		版本号：V1. ……..">
+<meta property="og:type" content="article">
+<meta property="og:title" content="正畸自动排牙需求V1">
+<meta property="og:url" content="http://blog.mviai.com/2025/%E6%AD%A3%E7%95%B8%E8%87%AA%E5%8A%A8%E6%8E%92%E7%89%99%E9%9C%80%E6%B1%82V1.1.1/index.html">
+<meta property="og:site_name" content="落叶无痕">
+<meta property="og:description" content="自动摘要: 		背景		1、可自动分割牙齿，测量接触点间距离进行拥挤度计算，并以正负数值标记，模拟拔牙或IPR（邻面去釉）完成自动虚拟排牙。			一、产品概述		1.版本信息		版本号：V1. ……..">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://blog.mviai.com/images/1634611843960-0dec4f9a-4b15-406b-9a38-20a1306fdf93.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1653294423904-2c5a3b69-9c97-49f4-9893-61e49106376d.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1653294516656-7f8cb024-4d38-4f0a-81f8-1e7f5d4ce8b0.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1653294721299-33cec93b-a8e0-4fbc-ad17-41ad82c02841.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1653294770063-b17148c6-e371-4820-9125-2326f22db277.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1629038355812-65f9dad2-a3fc-44af-89b2-6503edd7c86a.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1634613363203-2d5f7de4-2816-4326-9656-602136252573.jpeg">
+<meta property="og:image" content="http://blog.mviai.com/images/1655264307782-2ac795c4-d20b-48cb-87e0-5e4919ab68c2.jpeg">
+<meta property="og:image" content="http://blog.mviai.com/images/1634873383918-eff83366-dee7-404f-bb16-6c584dfa2184.png">
+<meta property="og:image" content="http://blog.mviai.com/images/9e01b739d730d2dc04cf1ab72fc6e937.svg">
+<meta property="og:image" content="http://blog.mviai.com/images/1634872030707-71c34a79-61dd-4316-a3e5-7ef379991905.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1634872594012-f95779ed-93c4-4d0b-89ac-498e7f8d06bc.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1634872728379-97b3ed26-46b6-4df4-a2ef-0f9dc03610d2.png">
+<meta property="og:image" content="http://blog.mviai.com/images/52ca80b580d9a98ff216b0f527eb7c0f.svg">
+<meta property="og:image" content="http://blog.mviai.com/images/c15e9bc4c178530cf11922793fc6425a.svg">
+<meta property="og:image" content="http://blog.mviai.com/images/1f89d44271b6e49e919d2f29cc0eaec7.svg">
+<meta property="og:image" content="http://blog.mviai.com/images/efec4c7613d672f28f6d7e57cd99df90.svg">
+<meta property="og:image" content="http://blog.mviai.com/images/a7e376b5d1896e978d0505ce68d667b1.svg">
+<meta property="og:image" content="http://blog.mviai.com/images/1634874381417-10c8297f-9972-44e1-b5a7-c7fc381e4b10.png">
+<meta property="og:image" content="http://blog.mviai.com/images/987317e5c3f8856d3522a06f2211c614.svg">
+<meta property="og:image" content="http://blog.mviai.com/images/756b57b94eefb739bc28b66000580415.svg">
+<meta property="og:image" content="http://blog.mviai.com/images/1ccea00c097b218c202eaa8e7271fb1c.svg">
+<meta property="og:image" content="http://blog.mviai.com/images/d73878d02b49b92021471a5da8e6e3e2.svg">
+<meta property="og:image" content="http://blog.mviai.com/images/259c68d36de8424e30ffecc261b50d3e.svg">
+<meta property="og:image" content="http://blog.mviai.com/images/1634882872373-825d524f-996d-4646-8f7e-30ef5d2f1139.png">
+<meta property="og:image" content="http://blog.mviai.com/images/6208856ebe541610444a981506800eaf.svg">
+<meta property="og:image" content="http://blog.mviai.com/images/1634870029515-6fa8c3c1-a41b-4d23-93e5-680078a6efeb.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1634623580482-0615e8a7-e513-41de-baa6-ce810fe53025.png">
+<meta property="og:image" content="http://blog.mviai.com/images/2e3e6c8fc31d963bc42216f4f2a58a52.svg">
+<meta property="og:image" content="http://blog.mviai.com/images/c677f52bafb159d04ce0fb1ded611540.svg">
+<meta property="og:image" content="http://blog.mviai.com/images/4bd01f4a6739d95ec7743e82072870d7.svg">
+<meta property="og:image" content="http://blog.mviai.com/images/9e3669d19b675bd57058fd4664205d2a.svg">
+<meta property="og:image" content="http://blog.mviai.com/images/abdd207c6254eb7b3f3505d3feb78c6e.svg">
+<meta property="og:image" content="http://blog.mviai.com/images/6799f18bc6e3025d6c3434cd6936735d.svg">
+<meta property="og:image" content="http://blog.mviai.com/images/abdd207c6254eb7b3f3505d3feb78c6e.svg">
+<meta property="og:image" content="http://blog.mviai.com/images/2f0e27b03e006c29f15e24181c895e31.svg">
+<meta property="og:image" content="http://blog.mviai.com/images/8f128888b52be3cb4cf7753db25b6051.svg">
+<meta property="og:image" content="http://blog.mviai.com/images/81129fb65c3efbf37aeb041de6453f3a.svg">
+<meta property="og:image" content="http://blog.mviai.com/images/c23a23609ff984e01e670400706f6153.svg">
+<meta property="og:image" content="http://blog.mviai.com/images/1634889160960-fc373eaf-5d84-4f31-8c30-3428e6826728.jpeg">
+<meta property="og:image" content="http://blog.mviai.com/images/1634887554433-16b09bdb-e7aa-42ce-856f-7b18d92fe009.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1653296924915-eb324929-ef1f-49b2-8549-cff9ee9efa7d.png">
+<meta property="article:published_time" content="2025-01-22T04:37:41.000Z">
+<meta property="article:modified_time" content="2025-01-22T12:37:41.813Z">
+<meta property="article:author" content="SindreYang">
+<meta property="article:tag" content="生活">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://blog.mviai.com/images/1634611843960-0dec4f9a-4b15-406b-9a38-20a1306fdf93.png">
+
+<link rel="canonical" href="http://blog.mviai.com/2025/%E6%AD%A3%E7%95%B8%E8%87%AA%E5%8A%A8%E6%8E%92%E7%89%99%E9%9C%80%E6%B1%82V1.1.1/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>正畸自动排牙需求V1 | 落叶无痕</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">落叶无痕</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类<span class="badge">72</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档<span class="badge">321</span></a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+  <span class="exturl github-corner" data-url="aHR0cHM6Ly9naXRodWIuY29tL1NpbmRyZVlhbmc=" title="Follow me on GitHub" aria-label="Follow me on GitHub"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></span>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://blog.mviai.com/2025/%E6%AD%A3%E7%95%B8%E8%87%AA%E5%8A%A8%E6%8E%92%E7%89%99%E9%9C%80%E6%B1%82V1.1.1/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="SindreYang">
+      <meta itemprop="description" content="沉淀后我愿意做一个温暖的人。有自己的喜好，有自己的原则，有自己的信仰，不急功近利，不浮夸轻薄，宠辱不惊，淡定安逸，心静如水。------不忘初心，方得始终">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="落叶无痕">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          正畸自动排牙需求V1
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2025-01-22 12:37:41 / 修改时间：20:37:41" itemprop="dateCreated datePublished" datetime="2025-01-22T12:37:41+08:00">2025-01-22</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E9%9C%80%E6%B1%82%E6%94%B6%E9%9B%86/" itemprop="url" rel="index"><span itemprop="name">需求收集</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">Changyan：</span>
+    
+    
+      <a title="changyan" href="/2025/%E6%AD%A3%E7%95%B8%E8%87%AA%E5%8A%A8%E6%8E%92%E7%89%99%E9%9C%80%E6%B1%82V1.1.1/#SOHUCS" itemprop="discussionUrl">
+        <span id="changyan_count_unit" class="post-comments-count hc-comment-count" data-xid="2025/正畸自动排牙需求V1.1.1/" itemprop="commentCount"></span>
+      </a>
+    
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>自动摘要: 		背景		1、可自动分割牙齿，测量接触点间距离进行拥挤度计算，并以正负数值标记，模拟拔牙或IPR（邻面去釉）完成自动虚拟排牙。			一、产品概述		1.版本信息		版本号：V1. ……..</p>
+<span id="more"></span>
+
+
+<h1 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h1><p>1、可自动分割牙齿，测量接触点间距离进行拥挤度计算，并以正负数值标记，模拟拔牙或IPR （邻面去釉）完成自动虚拟排牙。</p>
+<h1 id="一、产品概述"><a href="#一、产品概述" class="headerlink" title="一、产品概述"></a>一、产品概述</h1><h2 id="1-版本信息"><a href="#1-版本信息" class="headerlink" title="1.版本信息"></a>1.版本信息</h2><ul>
+<li>版本号：V1.0.0</li>
+<li>创建日期：2021-10-19</li>
+<li>审核人：杨新</li>
+</ul>
+<h2 id="2-修订历史"><a href="#2-修订历史" class="headerlink" title="2.修订历史"></a>2.修订历史</h2><table>
+<thead>
+<tr>
+<th><strong>时间</strong></th>
+<th><strong>版本号</strong></th>
+<th><strong>修订人</strong></th>
+<th><strong>主要修订内容</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>2021-10-19</td>
+<td>v1.0.0</td>
+<td>杨新</td>
+<td>初始版本</td>
+</tr>
+<tr>
+<td>2023-03-17</td>
+<td>V1.0.1</td>
+<td>杨新</td>
+<td>重构并梳理需求</td>
+</tr>
+<tr>
+<td>2023-03-20</td>
+<td>V1.1.1</td>
+<td>杨新</td>
+<td>添加深度学习细节</td>
+</tr>
+</tbody></table>
+<h2 id="3-开发周期"><a href="#3-开发周期" class="headerlink" title="3.开发周期"></a>3.开发周期</h2><table>
+<thead>
+<tr>
+<th>目标</th>
+<th>预计时间</th>
+<th>结束日期</th>
+<th>是否完成</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>开发</td>
+<td></td>
+<td></td>
+<td>- [ ]</td>
+</tr>
+</tbody></table>
+<p> |<br>| 测试 |  |  | - [ ] </p>
+<p> |<br>| 上线 |  |  | - [ ] </p>
+<p> |</p>
+<h2 id="4-产品介绍"><a href="#4-产品介绍" class="headerlink" title="4.产品介绍"></a>4.产品介绍</h2><h3 id="4-1-产品名称"><a href="#4-1-产品名称" class="headerlink" title="4.1 产品名称"></a>4.1 产品名称</h3><p>正畸CAD-自动排牙（智能排牙）</p>
+<h3 id="4-2产品简介"><a href="#4-2产品简介" class="headerlink" title="4.2产品简介"></a>4.2产品简介</h3><p>根据特定的约束完成虚拟排牙</p>
+<h3 id="4-3产品构想图"><a href="#4-3产品构想图" class="headerlink" title="4.3产品构想图"></a>4.3产品构想图</h3><p><img src="/images/1634611843960-0dec4f9a-4b15-406b-9a38-20a1306fdf93.png"></p>
+<h3 id="4-4使用场景"><a href="#4-4使用场景" class="headerlink" title="4.4使用场景"></a>4.4使用场景</h3><p>服务于正畸</p>
+<h3 id="4-5产品定位"><a href="#4-5产品定位" class="headerlink" title="4.5产品定位"></a>4.5产品定位</h3><p>1、定位于医患沟通，用于展示2、用于技师生产，对生物力学，结构，美学有较高要求</p>
+<h1 id="二、文档说明"><a href="#二、文档说明" class="headerlink" title="二、文档说明"></a>二、文档说明</h1><h2 id="1、名词解释"><a href="#1、名词解释" class="headerlink" title="1、名词解释"></a>1、名词解释</h2><table>
+<thead>
+<tr>
+<th><strong>术语 &#x2F; 缩略词</strong></th>
+<th><strong>说明</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>生物力学</td>
+<td>保证咬合后受力恰当</td>
+</tr>
+<tr>
+<td>结构</td>
+<td>对排列方式的约束</td>
+</tr>
+<tr>
+<td>美学</td>
+<td>指排列后符合牙齿美学缺陷</td>
+</tr>
+</tbody></table>
+<h1 id="四、需求背景"><a href="#四、需求背景" class="headerlink" title="四、需求背景"></a>四、需求背景</h1><h2 id="1-商业背景"><a href="#1-商业背景" class="headerlink" title="1. 商业背景"></a>1. 商业背景</h2><ol>
+<li>不规则的牙齿排列不仅会导致美学问题，还会损害咀嚼的功能，畸治疗涉及繁琐的手工操作，并且培训专业的正畸医生也是一个漫长而且昂贵的过程，而且治疗质量很大取决于正畸医生的能力与经验</li>
+<li>牙齿排列时正畸治疗中不可少的一步，即给定一组位置不良的牙齿，希望获得理想的牙齿布局。</li>
+<li>希望通过基于学习的方式调整每颗牙在空间中的姿态，即6D位置（3*3平移旋转矩阵）</li>
+</ol>
+<h2 id="2-学术背景"><a href="#2-学术背景" class="headerlink" title="2. 学术背景"></a>2. 学术背景</h2><h3 id="1-模板匹配法"><a href="#1-模板匹配法" class="headerlink" title="1.模板匹配法"></a>1.模板匹配法</h3><ol>
+<li>根据特征或表面法向量进行模板匹配。</li>
+<li>根据点的距离和法向量信息进行点云配准</li>
+<li>基于统计学习和霍夫投票（机器学习)</li>
+<li>基于2D的深度学习</li>
+</ol>
+<h3 id="2-坐标回归法"><a href="#2-坐标回归法" class="headerlink" title="2. 坐标回归法"></a>2. 坐标回归法</h3><ol>
+<li>假设对应3D模型对于训练时已知的，通过点预测估计映射点</li>
+</ol>
+<h2 id="3-相关工作背景"><a href="#3-相关工作背景" class="headerlink" title="3. 相关工作背景"></a>3. 相关工作背景</h2><ol>
+<li><strong>数据库挑选：</strong>现有的排牙根据<strong>启发式规则</strong>进行牙齿排列，牙齿从牙齿数据库中选择最合适的牙列。</li>
+<li><strong>家具布局</strong>：解决3D物体相对于其他3D对象放置的问题，通过<strong>边界框</strong>粗略的估计对象，通过<strong>启发式规则</strong>定义能量函数，预测添加新3D模型的<strong>相对平移量。</strong></li>
+</ol>
+<p><img src="/images/1653294423904-2c5a3b69-9c97-49f4-9893-61e49106376d.png"></p>
+<ol start="3">
+<li><strong>3D生成</strong>：通过<strong>残缺3D模型</strong>或者<strong>图像</strong>生成3D模型。—&gt;<strong>时代天使排牙方案（加入2D脸部信息）</strong></li>
+</ol>
+<p><img src="/images/1653294516656-7f8cb024-4d38-4f0a-81f8-1e7f5d4ce8b0.png"></p>
+<ol start="5">
+<li>通过标准牙齿<strong>模板</strong>训练，生成<strong>完美牙列</strong>，然后<strong>配准</strong>达到预期目标</li>
+</ol>
+<p><img src="/images/1653294721299-33cec93b-a8e0-4fbc-ad17-41ad82c02841.png"><br><img src="/images/1653294770063-b17148c6-e371-4820-9125-2326f22db277.png"></p>
+<p><strong>总结：缺陷：它们没有保留输入对象的几何形状，可能造成位置问题。</strong></p>
+<h2 id="4-风险与应对"><a href="#4-风险与应对" class="headerlink" title="4. 风险与应对"></a>4. 风险与应对</h2><ol>
+<li>数据风险<ol>
+<li>数据获取难度大<ol>
+<li>从分牙数据中，进行仿造</li>
+</ol>
+</li>
+<li>数据处理难度大<ol>
+<li>去除医学牙齿特征，只获取旋转平移矩阵</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>硬件风险<ol>
+<li>显存不够<ol>
+<li>减少batchsize，如果为1还不够，利用CPU</li>
+</ol>
+</li>
+<li>显卡不够<ol>
+<li>将模型进行分割，使用工作电脑，服务器联合训练</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>网络设计风险<ol>
+<li>无法拟合<ol>
+<li>使用当前SOTA配准网络或只使用pointnet</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>损失设计风险<ol>
+<li>无法拟合<ol>
+<li>去除医学特征损失，只要求还原</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>方案失败<ol>
+<li>使用多智能体强化学习</li>
+</ol>
+</li>
+</ol>
+<h2 id="5-数据调研"><a href="#5-数据调研" class="headerlink" title="5. 数据调研"></a>5. 数据调研</h2><blockquote>
+<p>1、数据可以从隐适美获取–吴总</p>
+</blockquote>
+<blockquote>
+<p>最理想</p>
+</blockquote>
+<ol>
+<li>正畸真实病例，有<strong>治疗前</strong>已分割模型和<strong>治疗后</strong>已分割模型。</li>
+<li>牙齿数量统一，至少400对。</li>
+<li>网格不含有非流形。</li>
+<li>没有缺失面片。</li>
+</ol>
+<h2 id="6-竞品分析"><a href="#6-竞品分析" class="headerlink" title="6.竞品分析"></a>6.竞品分析</h2><blockquote>
+<p>列出竞品对比的主要信息和关键结论，可点击插入链接，在此附上详细的竞品分析报告并添加在【附录】中</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th></th>
+<th><strong>主要信息</strong></th>
+<th><strong>关键结论</strong></th>
+<th><strong>截图或视频</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>隐适美</strong></td>
+<td>里面有模拟器（用于医患沟通），评估器（用于技师调式）</td>
+<td>测量接触点间距离进行拥挤度计算，整体排列的并不是多好，但确实有改善</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody></table>
+<h1 id="五、需求范围"><a href="#五、需求范围" class="headerlink" title="五、需求范围"></a>五、需求范围</h1><blockquote>
+<p>可条理性地罗列需求范围或信息架</p>
+</blockquote>
+<h3 id="PC-端"><a href="#PC-端" class="headerlink" title="PC 端"></a>PC 端</h3><table>
+<thead>
+<tr>
+<th><strong>需求</strong></th>
+<th><strong>简要说明</strong></th>
+<th><strong>优先级</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>实现排牙功能</td>
+<td>在不考虑复杂约束情况下，实现牙齿简单排列</td>
+<td>P0</td>
+</tr>
+<tr>
+<td>实现牙龈生成功能</td>
+<td>对排好的牙齿进行牙龈生成</td>
+<td>P1</td>
+</tr>
+<tr>
+<td>实现按约束进行排牙</td>
+<td>考虑约束 特征进行排牙</td>
+<td>P2</td>
+</tr>
+</tbody></table>
+<h1 id="六、功能详细说明"><a href="#六、功能详细说明" class="headerlink" title="六、功能详细说明"></a>六、功能详细说明</h1><h2 id="1-产品流程图"><a href="#1-产品流程图" class="headerlink" title="1.产品流程图"></a>1.产品流程图</h2><blockquote>
+<p>鼠标点击左上角<img src="/images/1629038355812-65f9dad2-a3fc-44af-89b2-6503edd7c86a.png"><br>，点击<strong>画板选择流程图</strong>，即可进入流程图创作你的产品流程图</p>
+</blockquote>
+<p><img src="/images/1634613363203-2d5f7de4-2816-4326-9656-602136252573.jpeg"></p>
+<h2 id="3-功能说明"><a href="#3-功能说明" class="headerlink" title="3.功能说明"></a>3.功能说明</h2><table>
+<thead>
+<tr>
+<th><strong>序号</strong></th>
+<th><strong>模块</strong></th>
+<th><strong>功能</strong></th>
+<th><strong>功能详细说明</strong></th>
+<th><strong>交互图</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1</td>
+<td>数据处理</td>
+<td>- 获取分牙后的数据</td>
+<td>1、对分牙后的数据进行提取3、对目标模型进行分牙约束条件进行提取</td>
+<td></td>
+</tr>
+<tr>
+<td>2</td>
+<td>模型处理</td>
+<td>1、才用传统计算方式2、采用深度学习进行预测</td>
+<td>对分牙后的排列的位置进行预测或者计算</td>
+<td></td>
+</tr>
+<tr>
+<td>3</td>
+<td>优化模型结果</td>
+<td>对结果进行排列</td>
+<td>将结果进行排列，验证与目标位置的损失</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody></table>
+<h1 id="七、非功能需求"><a href="#七、非功能需求" class="headerlink" title="七、非功能需求"></a>七、非功能需求</h1><blockquote>
+<p>1、排牙是否有绝对确定目标，还是相对确定的目标<br>2、排牙后牙龈生成是否需要我们完成<br>3、排牙是否可以自由选择传统算法或者深度学习算法，传统算法遇到什么问题？<br>4、我们数据有多少<br>5、我们有多少时间来攻克这个问题</p>
+</blockquote>
+<h2 id="1-算法简介"><a href="#1-算法简介" class="headerlink" title="1. 算法简介"></a>1. 算法简介</h2><ol>
+<li>开发了一个基于深度学习的自动排牙框架。</li>
+<li>解决由牙齿排列任务引出的结构化姿态预测问题。</li>
+<li>设计个新的损失函数，函数基于排列错乱的牙齿布局的分布构成，它能够通过这个分布的内在差异、空间关系和不确定性，为牙齿对齐提供有效的监督。</li>
+</ol>
+<h2 id="2-算法流程"><a href="#2-算法流程" class="headerlink" title="2. 算法流程"></a>2. 算法流程</h2><p><img src="/images/1655264307782-2ac795c4-d20b-48cb-87e0-5e4919ab68c2.jpeg"></p>
+<h1 id="八、参考资料"><a href="#八、参考资料" class="headerlink" title="八、参考资料"></a>八、参考资料</h1><h3 id="传统算法："><a href="#传统算法：" class="headerlink" title="传统算法："></a>传统算法：</h3><p>**参考论文:  **自动排牙系统的研究及实现@郭策</p>
+<ul>
+<li><strong>Spee曲线</strong><ul>
+<li>该曲线与其咬合平面之间的最大距离作为下颚齐整度的一个指标，通常情况下下颚的咬合点并不是在一个完全的平面上，而是在一个曲面上，</li>
+<li>可以将其看做磨牙与尖牙牙齿尖点所连成的一条曲线，在过咬合的咬合不正病例中，该曲线的曲率十分明显，因此将其变得平坦是解决过咬合的一种可行方法。一个理想的咬合应该具有一条较平滑或变化比较缓慢的Spee曲线。</li>
+<li>在该曲线逐渐平滑的过程中，牙弓拥挤度会变大，造成前牙突出问题。通常情况下可以近似认为，Spee曲线深度每减少1mm，牙弓线拥挤度的增加量也为1mm。<ul>
+<li><p><img src="/images/1634873383918-eff83366-dee7-404f-bb16-6c584dfa2184.png"></p>
+</li>
+<li><p>相应的顶点集合S与咬合平面的距离D’,咬合平面由于可以手工指定，可能会有误差使得其不一定完全与实际相吻合，取min（D），则可以得到spee曲线深度为：</p>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p><img src="/images/9e01b739d730d2dc04cf1ab72fc6e937.svg"></p>
+<ul>
+<li><p><img src="/images/1634872030707-71c34a79-61dd-4316-a3e5-7ef379991905.png"></p>
+</li>
+<li><p><strong>全牙比，前牙比</strong></p>
+<ul>
+<li>前牙比&#x3D;下颌6个前牙牙冠宽度总和&#x2F;下颌6个前牙牙冠宽度总和</li>
+<li>全牙比&#x3D;下颌12个前牙牙冠宽度总和&#x2F;下颌12个前牙牙冠宽度总和<ul>
+<li>中国人建议，前牙比的正常范围为78.8%±1.72%，全牙比为91.5%±1.519%</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p><strong>牙齿轴倾度与转矩</strong></p>
+<ul>
+<li><p><img src="/images/1634872594012-f95779ed-93c4-4d0b-89ac-498e7f8d06bc.png"></p>
+</li>
+<li><p>理想的咬合中，每颗牙齿的轴倾度都保持在一定范围以内，一方面可以保证充分的咀嚼食物，另一方面可以使得上下牙颌之间建立正常的咬合关系通常情况下，</p>
+</li>
+<li><p>中国汉族人的牙齿轴倾度在一定范围以内</p>
+</li>
+</ul>
+</li>
+<li><p><strong>理想牙弓线</strong></p>
+<ul>
+<li><p><img src="/images/1634872728379-97b3ed26-46b6-4df4-a2ef-0f9dc03610d2.png"></p>
+</li>
+<li><p>理想牙弓形态为：<img src="/images/52ca80b580d9a98ff216b0f527eb7c0f.svg"></p>
+</li>
+</ul>
+</li>
+<li><p><strong>原始牙弓线计算</strong></p>
+<ul>
+<li><p>初始牙弓线形态使用一条4次二维曲线</p>
+</li>
+<li><p>提取出的特征点投影到相应咬合面，设投影到平面后相应的点集为<img src="/images/c15e9bc4c178530cf11922793fc6425a.svg"></p>
+</li>
+<li><p>该牙弓线的解析方程F(x)则可通过求解下式的最小值求得F(x)的相应参数来求得当前牙弓线</p>
+<ul>
+<li><p><img src="/images/1f89d44271b6e49e919d2f29cc0eaec7.svg"><br> <img src="/images/efec4c7613d672f28f6d7e57cd99df90.svg"></p>
+<ul>
+<li><p>其中F(x)的解析式形式为<img src="/images/a7e376b5d1896e978d0505ce68d667b1.svg"></p>
+</li>
+<li><p>F(x)所在坐标系的坐标轴原点为牙齿两前尖牙特征点中点，y方向为牙弓深度方向</p>
+</li>
+<li><p><img src="/images/1634874381417-10c8297f-9972-44e1-b5a7-c7fc381e4b10.png"></p>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>当前牙弓拥挤度：</p>
+<ul>
+<li>设每颗牙齿对应的牙齿宽度为W</li>
+<li><img src="data:image/svg+xml;utf8,%3Csvg%20xmlns%3Axlink%3D%22http%3A%2F%2Fwww.w3.org%2F1999%2Fxlink%22%20width%3D%2232.079ex%22%20height%3D%223.843ex%22%20style%3D%22vertical-align%3A%20-1.338ex%3B%22%20viewBox%3D%220%20-1078.4%2013811.9%201654.5%22%20role%3D%22img%22%20focusable%3D%22false%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20aria-labelledby%3D%22MathJax-SVG-1-Title%22%3E%0A%3Ctitle%20id%3D%22MathJax-SVG-1-Title%22%3EC(x)%3D%5Csum%7BW%7D-s%2B%5Ctriangle%7BSpee_%7Bdepth%7D%7D%3C%2Ftitle%3E%0A%3Cdefs%20aria-hidden%3D%22true%22%3E%0A%3Cpath%20stroke-width%3D%221%22%20id%3D%22E1-MJMATHI-43%22%20d%3D%22M50%20252Q50%20367%20117%20473T286%20641T490%20704Q580%20704%20633%20653Q642%20643%20648%20636T656%20626L657%20623Q660%20623%20684%20649Q691%20655%20699%20663T715%20679T725%20690L740%20705H746Q760%20705%20760%20698Q760%20694%20728%20561Q692%20422%20692%20421Q690%20416%20687%20415T669%20413H653Q647%20419%20647%20422Q647%20423%20648%20429T650%20449T651%20481Q651%20552%20619%20605T510%20659Q484%20659%20454%20652T382%20628T299%20572T226%20479Q194%20422%20175%20346T156%20222Q156%20108%20232%2058Q280%2024%20350%2024Q441%2024%20512%2092T606%20240Q610%20253%20612%20255T628%20257Q648%20257%20648%20248Q648%20243%20647%20239Q618%20132%20523%2055T319%20-22Q206%20-22%20128%2053T50%20252Z%22%3E%3C%2Fpath%3E%0A%3Cpath%20stroke-width%3D%221%22%20id%3D%22E1-MJMAIN-28%22%20d%3D%22M94%20250Q94%20319%20104%20381T127%20488T164%20576T202%20643T244%20695T277%20729T302%20750H315H319Q333%20750%20333%20741Q333%20738%20316%20720T275%20667T226%20581T184%20443T167%20250T184%2058T225%20-81T274%20-167T316%20-220T333%20-241Q333%20-250%20318%20-250H315H302L274%20-226Q180%20-141%20137%20-14T94%20250Z%22%3E%3C%2Fpath%3E%0A%3Cpath%20stroke-width%3D%221%22%20id%3D%22E1-MJMATHI-78%22%20d%3D%22M52%20289Q59%20331%20106%20386T222%20442Q257%20442%20286%20424T329%20379Q371%20442%20430%20442Q467%20442%20494%20420T522%20361Q522%20332%20508%20314T481%20292T458%20288Q439%20288%20427%20299T415%20328Q415%20374%20465%20391Q454%20404%20425%20404Q412%20404%20406%20402Q368%20386%20350%20336Q290%20115%20290%2078Q290%2050%20306%2038T341%2026Q378%2026%20414%2059T463%20140Q466%20150%20469%20151T485%20153H489Q504%20153%20504%20145Q504%20144%20502%20134Q486%2077%20440%2033T333%20-11Q263%20-11%20227%2052Q186%20-10%20133%20-10H127Q78%20-10%2057%2016T35%2071Q35%20103%2054%20123T99%20143Q142%20143%20142%20101Q142%2081%20130%2066T107%2046T94%2041L91%2040Q91%2039%2097%2036T113%2029T132%2026Q168%2026%20194%2071Q203%2087%20217%20139T245%20247T261%20313Q266%20340%20266%20352Q266%20380%20251%20392T217%20404Q177%20404%20142%20372T93%20290Q91%20281%2088%20280T72%20278H58Q52%20284%2052%20289Z%22%3E%3C%2Fpath%3E%0A%3Cpath%20stroke-width%3D%221%22%20id%3D%22E1-MJMAIN-29%22%20d%3D%22M60%20749L64%20750Q69%20750%2074%20750H86L114%20726Q208%20641%20251%20514T294%20250Q294%20182%20284%20119T261%2012T224%20-76T186%20-143T145%20-194T113%20-227T90%20-246Q87%20-249%2086%20-250H74Q66%20-250%2063%20-250T58%20-247T55%20-238Q56%20-237%2066%20-225Q221%20-64%20221%20250T66%20725Q56%20737%2055%20738Q55%20746%2060%20749Z%22%3E%3C%2Fpath%3E%0A%3Cpath%20stroke-width%3D%221%22%20id%3D%22E1-MJMAIN-3D%22%20d%3D%22M56%20347Q56%20360%2070%20367H707Q722%20359%20722%20347Q722%20336%20708%20328L390%20327H72Q56%20332%2056%20347ZM56%20153Q56%20168%2072%20173H708Q722%20163%20722%20153Q722%20140%20707%20133H70Q56%20140%2056%20153Z%22%3E%3C%2Fpath%3E%0A%3Cpath%20stroke-width%3D%221%22%20id%3D%22E1-MJSZ2-2211%22%20d%3D%22M60%20948Q63%20950%20665%20950H1267L1325%20815Q1384%20677%201388%20669H1348L1341%20683Q1320%20724%201285%20761Q1235%20809%201174%20838T1033%20881T882%20898T699%20902H574H543H251L259%20891Q722%20258%20724%20252Q725%20250%20724%20246Q721%20243%20460%20-56L196%20-356Q196%20-357%20407%20-357Q459%20-357%20548%20-357T676%20-358Q812%20-358%20896%20-353T1063%20-332T1204%20-283T1307%20-196Q1328%20-170%201348%20-124H1388Q1388%20-125%201381%20-145T1356%20-210T1325%20-294L1267%20-449L666%20-450Q64%20-450%2061%20-448Q55%20-446%2055%20-439Q55%20-437%2057%20-433L590%20177Q590%20178%20557%20222T452%20366T322%20544L56%20909L55%20924Q55%20945%2060%20948Z%22%3E%3C%2Fpath%3E%0A%3Cpath%20stroke-width%3D%221%22%20id%3D%22E1-MJMATHI-57%22%20d%3D%22M436%20683Q450%20683%20486%20682T553%20680Q604%20680%20638%20681T677%20682Q695%20682%20695%20674Q695%20670%20692%20659Q687%20641%20683%20639T661%20637Q636%20636%20621%20632T600%20624T597%20615Q597%20603%20613%20377T629%20138L631%20141Q633%20144%20637%20151T649%20170T666%20200T690%20241T720%20295T759%20362Q863%20546%20877%20572T892%20604Q892%20619%20873%20628T831%20637Q817%20637%20817%20647Q817%20650%20819%20660Q823%20676%20825%20679T839%20682Q842%20682%20856%20682T895%20682T949%20681Q1015%20681%201034%20683Q1048%20683%201048%20672Q1048%20666%201045%20655T1038%20640T1028%20637Q1006%20637%20988%20631T958%20617T939%20600T927%20584L923%20578L754%20282Q586%20-14%20585%20-15Q579%20-22%20561%20-22Q546%20-22%20542%20-17Q539%20-14%20523%20229T506%20480L494%20462Q472%20425%20366%20239Q222%20-13%20220%20-15T215%20-19Q210%20-22%20197%20-22Q178%20-22%20176%20-15Q176%20-12%20154%20304T131%20622Q129%20631%20121%20633T82%20637H58Q51%20644%2051%20648Q52%20671%2064%20683H76Q118%20680%20176%20680Q301%20680%20313%20683H323Q329%20677%20329%20674T327%20656Q322%20641%20318%20637H297Q236%20634%20232%20620Q262%20160%20266%20136L501%20550L499%20587Q496%20629%20489%20632Q483%20636%20447%20637Q428%20637%20422%20639T416%20648Q416%20650%20418%20660Q419%20664%20420%20669T421%20676T424%20680T428%20682T436%20683Z%22%3E%3C%2Fpath%3E%0A%3Cpath%20stroke-width%3D%221%22%20id%3D%22E1-MJMAIN-2212%22%20d%3D%22M84%20237T84%20250T98%20270H679Q694%20262%20694%20250T679%20230H98Q84%20237%2084%20250Z%22%3E%3C%2Fpath%3E%0A%3Cpath%20stroke-width%3D%221%22%20id%3D%22E1-MJMATHI-73%22%20d%3D%22M131%20289Q131%20321%20147%20354T203%20415T300%20442Q362%20442%20390%20415T419%20355Q419%20323%20402%20308T364%20292Q351%20292%20340%20300T328%20326Q328%20342%20337%20354T354%20372T367%20378Q368%20378%20368%20379Q368%20382%20361%20388T336%20399T297%20405Q249%20405%20227%20379T204%20326Q204%20301%20223%20291T278%20274T330%20259Q396%20230%20396%20163Q396%20135%20385%20107T352%2051T289%207T195%20-10Q118%20-10%2086%2019T53%2087Q53%20126%2074%20143T118%20160Q133%20160%20146%20151T160%20120Q160%2094%20142%2076T111%2058Q109%2057%20108%2057T107%2055Q108%2052%20115%2047T146%2034T201%2027Q237%2027%20263%2038T301%2066T318%2097T323%20122Q323%20150%20302%20164T254%20181T195%20196T148%20231Q131%20256%20131%20289Z%22%3E%3C%2Fpath%3E%0A%3Cpath%20stroke-width%3D%221%22%20id%3D%22E1-MJMAIN-2B%22%20d%3D%22M56%20237T56%20250T70%20270H369V420L370%20570Q380%20583%20389%20583Q402%20583%20409%20568V270H707Q722%20262%20722%20250T707%20230H409V-68Q401%20-82%20391%20-82H389H387Q375%20-82%20369%20-68V230H70Q56%20237%2056%20250Z%22%3E%3C%2Fpath%3E%0A%3Cpath%20stroke-width%3D%221%22%20id%3D%22E1-MJMAIN-25B3%22%20d%3D%22M75%200L72%202Q69%203%2067%205T62%2011T59%2020Q59%2024%2062%2030Q65%2037%20245%20370T428%20707Q428%20708%20430%20710T436%20714T444%20716Q451%20716%20455%20712Q459%20710%20644%20368L828%2027V20Q828%207%20814%200H75ZM610%20347L444%20653Q443%20653%20278%20347T113%2040H775Q775%2042%20610%20347Z%22%3E%3C%2Fpath%3E%0A%3Cpath%20stroke-width%3D%221%22%20id%3D%22E1-MJMATHI-53%22%20d%3D%22M308%2024Q367%2024%20416%2076T466%20197Q466%20260%20414%20284Q308%20311%20278%20321T236%20341Q176%20383%20176%20462Q176%20523%20208%20573T273%20648Q302%20673%20343%20688T407%20704H418H425Q521%20704%20564%20640Q565%20640%20577%20653T603%20682T623%20704Q624%20704%20627%20704T632%20705Q645%20705%20645%20698T617%20577T585%20459T569%20456Q549%20456%20549%20465Q549%20471%20550%20475Q550%20478%20551%20494T553%20520Q553%20554%20544%20579T526%20616T501%20641Q465%20662%20419%20662Q362%20662%20313%20616T263%20510Q263%20480%20278%20458T319%20427Q323%20425%20389%20408T456%20390Q490%20379%20522%20342T554%20242Q554%20216%20546%20186Q541%20164%20528%20137T492%2078T426%2018T332%20-20Q320%20-22%20298%20-22Q199%20-22%20144%2033L134%2044L106%2013Q83%20-14%2078%20-18T65%20-22Q52%20-22%2052%20-14Q52%20-11%20110%20221Q112%20227%20130%20227H143Q149%20221%20149%20216Q149%20214%20148%20207T144%20186T142%20153Q144%20114%20160%2087T203%2047T255%2029T308%2024Z%22%3E%3C%2Fpath%3E%0A%3Cpath%20stroke-width%3D%221%22%20id%3D%22E1-MJMATHI-70%22%20d%3D%22M23%20287Q24%20290%2025%20295T30%20317T40%20348T55%20381T75%20411T101%20433T134%20442Q209%20442%20230%20378L240%20387Q302%20442%20358%20442Q423%20442%20460%20395T497%20281Q497%20173%20421%2082T249%20-10Q227%20-10%20210%20-4Q199%201%20187%2011T168%2028L161%2036Q160%2035%20139%20-51T118%20-138Q118%20-144%20126%20-145T163%20-148H188Q194%20-155%20194%20-157T191%20-175Q188%20-187%20185%20-190T172%20-194Q170%20-194%20161%20-194T127%20-193T65%20-192Q-5%20-192%20-24%20-194H-32Q-39%20-187%20-39%20-183Q-37%20-156%20-26%20-148H-6Q28%20-147%2033%20-136Q36%20-130%2094%20103T155%20350Q156%20355%20156%20364Q156%20405%20131%20405Q109%20405%2094%20377T71%20316T59%20280Q57%20278%2043%20278H29Q23%20284%2023%20287ZM178%20102Q200%2026%20252%2026Q282%2026%20310%2049T356%20107Q374%20141%20392%20215T411%20325V331Q411%20405%20350%20405Q339%20405%20328%20402T306%20393T286%20380T269%20365T254%20350T243%20336T235%20326L232%20322Q232%20321%20229%20308T218%20264T204%20212Q178%20106%20178%20102Z%22%3E%3C%2Fpath%3E%0A%3Cpath%20stroke-width%3D%221%22%20id%3D%22E1-MJMATHI-65%22%20d%3D%22M39%20168Q39%20225%2058%20272T107%20350T174%20402T244%20433T307%20442H310Q355%20442%20388%20420T421%20355Q421%20265%20310%20237Q261%20224%20176%20223Q139%20223%20138%20221Q138%20219%20132%20186T125%20128Q125%2081%20146%2054T209%2026T302%2045T394%20111Q403%20121%20406%20121Q410%20121%20419%20112T429%2098T420%2082T390%2055T344%2024T281%20-1T205%20-11Q126%20-11%2083%2042T39%20168ZM373%20353Q367%20405%20305%20405Q272%20405%20244%20391T199%20357T170%20316T154%20280T149%20261Q149%20260%20169%20260Q282%20260%20327%20284T373%20353Z%22%3E%3C%2Fpath%3E%0A%3Cpath%20stroke-width%3D%221%22%20id%3D%22E1-MJMATHI-64%22%20d%3D%22M366%20683Q367%20683%20438%20688T511%20694Q523%20694%20523%20686Q523%20679%20450%20384T375%2083T374%2068Q374%2026%20402%2026Q411%2027%20422%2035Q443%2055%20463%20131Q469%20151%20473%20152Q475%20153%20483%20153H487H491Q506%20153%20506%20145Q506%20140%20503%20129Q490%2079%20473%2048T445%208T417%20-8Q409%20-10%20393%20-10Q359%20-10%20336%205T306%2036L300%2051Q299%2052%20296%2050Q294%2048%20292%2046Q233%20-10%20172%20-10Q117%20-10%2075%2030T33%20157Q33%20205%2053%20255T101%20341Q148%20398%20195%20420T280%20442Q336%20442%20364%20400Q369%20394%20369%20396Q370%20400%20396%20505T424%20616Q424%20629%20417%20632T378%20637H357Q351%20643%20351%20645T353%20664Q358%20683%20366%20683ZM352%20326Q329%20405%20277%20405Q242%20405%20210%20374T160%20293Q131%20214%20119%20129Q119%20126%20119%20118T118%20106Q118%2061%20136%2044T179%2026Q233%2026%20290%2098L298%20109L352%20326Z%22%3E%3C%2Fpath%3E%0A%3Cpath%20stroke-width%3D%221%22%20id%3D%22E1-MJMATHI-74%22%20d%3D%22M26%20385Q19%20392%2019%20395Q19%20399%2022%20411T27%20425Q29%20430%2036%20430T87%20431H140L159%20511Q162%20522%20166%20540T173%20566T179%20586T187%20603T197%20615T211%20624T229%20626Q247%20625%20254%20615T261%20596Q261%20589%20252%20549T232%20470L222%20433Q222%20431%20272%20431H323Q330%20424%20330%20420Q330%20398%20317%20385H210L174%20240Q135%2080%20135%2068Q135%2026%20162%2026Q197%2026%20230%2060T283%20144Q285%20150%20288%20151T303%20153H307Q322%20153%20322%20145Q322%20142%20319%20133Q314%20117%20301%2095T267%2048T216%206T155%20-11Q125%20-11%2098%204T59%2056Q57%2064%2057%2083V101L92%20241Q127%20382%20128%20383Q128%20385%2077%20385H26Z%22%3E%3C%2Fpath%3E%0A%3Cpath%20stroke-width%3D%221%22%20id%3D%22E1-MJMATHI-68%22%20d%3D%22M137%20683Q138%20683%20209%20688T282%20694Q294%20694%20294%20685Q294%20674%20258%20534Q220%20386%20220%20383Q220%20381%20227%20388Q288%20442%20357%20442Q411%20442%20444%20415T478%20336Q478%20285%20440%20178T402%2050Q403%2036%20407%2031T422%2026Q450%2026%20474%2056T513%20138Q516%20149%20519%20151T535%20153Q555%20153%20555%20145Q555%20144%20551%20130Q535%2071%20500%2033Q466%20-10%20419%20-10H414Q367%20-10%20346%2017T325%2074Q325%2090%20361%20192T398%20345Q398%20404%20354%20404H349Q266%20404%20205%20306L198%20293L164%20158Q132%2028%20127%2016Q114%20-11%2083%20-11Q69%20-11%2059%20-2T48%2016Q48%2030%20121%20320L195%20616Q195%20629%20188%20632T149%20637H128Q122%20643%20122%20645T124%20664Q129%20683%20137%20683Z%22%3E%3C%2Fpath%3E%0A%3C%2Fdefs%3E%0A%3Cg%20stroke%3D%22currentColor%22%20fill%3D%22currentColor%22%20stroke-width%3D%220%22%20transform%3D%22matrix(1%200%200%20-1%200%200)%22%20aria-hidden%3D%22true%22%3E%0A%20%3Cuse%20xlink%3Ahref%3D%22%23E1-MJMATHI-43%22%20x%3D%220%22%20y%3D%220%22%3E%3C%2Fuse%3E%0A%20%3Cuse%20xlink%3Ahref%3D%22%23E1-MJMAIN-28%22%20x%3D%22760%22%20y%3D%220%22%3E%3C%2Fuse%3E%0A%20%3Cuse%20xlink%3Ahref%3D%22%23E1-MJMATHI-78%22%20x%3D%221150%22%20y%3D%220%22%3E%3C%2Fuse%3E%0A%20%3Cuse%20xlink%3Ahref%3D%22%23E1-MJMAIN-29%22%20x%3D%221722%22%20y%3D%220%22%3E%3C%2Fuse%3E%0A%20%3Cuse%20xlink%3Ahref%3D%22%23E1-MJMAIN-3D%22%20x%3D%222389%22%20y%3D%220%22%3E%3C%2Fuse%3E%0A%20%3Cuse%20xlink%3Ahref%3D%22%23E1-MJSZ2-2211%22%20x%3D%223446%22%20y%3D%220%22%3E%3C%2Fuse%3E%0A%20%3Cuse%20xlink%3Ahref%3D%22%23E1-MJMATHI-57%22%20x%3D%225057%22%20y%3D%220%22%3E%3C%2Fuse%3E%0A%20%3Cuse%20xlink%3Ahref%3D%22%23E1-MJMAIN-2212%22%20x%3D%226327%22%20y%3D%220%22%3E%3C%2Fuse%3E%0A%20%3Cuse%20xlink%3Ahref%3D%22%23E1-MJMATHI-73%22%20x%3D%227328%22%20y%3D%220%22%3E%3C%2Fuse%3E%0A%20%3Cuse%20xlink%3Ahref%3D%22%23E1-MJMAIN-2B%22%20x%3D%228020%22%20y%3D%220%22%3E%3C%2Fuse%3E%0A%20%3Cuse%20xlink%3Ahref%3D%22%23E1-MJMAIN-25B3%22%20x%3D%229021%22%20y%3D%220%22%3E%3C%2Fuse%3E%0A%3Cg%20transform%3D%22translate(9910%2C0)%22%3E%0A%20%3Cuse%20xlink%3Ahref%3D%22%23E1-MJMATHI-53%22%20x%3D%220%22%20y%3D%220%22%3E%3C%2Fuse%3E%0A%20%3Cuse%20xlink%3Ahref%3D%22%23E1-MJMATHI-70%22%20x%3D%22645%22%20y%3D%220%22%3E%3C%2Fuse%3E%0A%20%3Cuse%20xlink%3Ahref%3D%22%23E1-MJMATHI-65%22%20x%3D%221149%22%20y%3D%220%22%3E%3C%2Fuse%3E%0A%3Cg%20transform%3D%22translate(1615%2C0)%22%3E%0A%20%3Cuse%20xlink%3Ahref%3D%22%23E1-MJMATHI-65%22%20x%3D%220%22%20y%3D%220%22%3E%3C%2Fuse%3E%0A%3Cg%20transform%3D%22translate(466%2C-150)%22%3E%0A%20%3Cuse%20transform%3D%22scale(0.707)%22%20xlink%3Ahref%3D%22%23E1-MJMATHI-64%22%20x%3D%220%22%20y%3D%220%22%3E%3C%2Fuse%3E%0A%20%3Cuse%20transform%3D%22scale(0.707)%22%20xlink%3Ahref%3D%22%23E1-MJMATHI-65%22%20x%3D%22523%22%20y%3D%220%22%3E%3C%2Fuse%3E%0A%20%3Cuse%20transform%3D%22scale(0.707)%22%20xlink%3Ahref%3D%22%23E1-MJMATHI-70%22%20x%3D%22990%22%20y%3D%220%22%3E%3C%2Fuse%3E%0A%20%3Cuse%20transform%3D%22scale(0.707)%22%20xlink%3Ahref%3D%22%23E1-MJMATHI-74%22%20x%3D%221493%22%20y%3D%220%22%3E%3C%2Fuse%3E%0A%20%3Cuse%20transform%3D%22scale(0.707)%22%20xlink%3Ahref%3D%22%23E1-MJMATHI-68%22%20x%3D%221855%22%20y%3D%220%22%3E%3C%2Fuse%3E%0A%3C%2Fg%3E%0A%3C%2Fg%3E%0A%3C%2Fg%3E%0A%3C%2Fg%3E%0A%3C%2Fsvg%3E#card=math&code=C%28x%29%3D%5Csum%7BW%7D-s%2B%5Ctriangle%7BSpee_%7Bdepth%7D%7D&id=F8jKJ"><ul>
+<li><p>其中 <img src="/images/987317e5c3f8856d3522a06f2211c614.svg"></p>
+</li>
+<li><p>目标是<img src="/images/756b57b94eefb739bc28b66000580415.svg"></p>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p>取值尽量最小</p>
+<ul>
+<li><p><strong>牙弓线拟合</strong></p>
+<ul>
+<li>设理想牙弓曲线拟合度函数为K，</li>
+<li>设相应牙颌的咬合平面方程为，P（x，y，z）<ul>
+<li><p>则可得到相应牙列两前牙连线中点A在该平面的投影点<img src="/images/1ccea00c097b218c202eaa8e7271fb1c.svg"></p>
+</li>
+<li><p>以及过点A与其最后两宽牙点连线的垂足B，得到其在该平面的投影点Bp’</p>
+</li>
+<li><p>同时得到原始三维坐标系在该投影平面的二维坐标系，则可以得到从初始坐标系转换到该坐标系的矩阵M，</p>
+</li>
+<li><p>对于牙齿中心的每个投影点Cp，则经过变换后的点Cp’为M*Cp，之后计算点Cp’与理想牙弓线Y（x）之间的最短距离</p>
+</li>
+<li><p>最短距离<img src="/images/d73878d02b49b92021471a5da8e6e3e2.svg"></p>
+</li>
+<li><p><img src="/images/259c68d36de8424e30ffecc261b50d3e.svg"></p>
+</li>
+<li><p><img src="/images/1634882872373-825d524f-996d-4646-8f7e-30ef5d2f1139.png"></p>
+<ul>
+<li>红色为原始，绿色为理想</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p><strong>对称性评判</strong></p>
+<ul>
+<li><p>对于牙颌中相对应于左右两侧的牙齿来说，首先做出一侧牙齿中心<strong>Cl</strong>关于对称面的对称点**Cl’**，</p>
+</li>
+<li><p>连接另一侧牙齿中心<strong>Cr</strong>与**Cl’**，</p>
+</li>
+<li><p>设Cl、Cr与对称面的距离分别为Dl、Dr，</p>
+</li>
+<li><p>设Cl’、Cr连线的长度为D</p>
+</li>
+<li><p>则非对称度可表示为：<img src="/images/6208856ebe541610444a981506800eaf.svg"></p>
+</li>
+<li><p><strong>值越小，对称度越高</strong></p>
+</li>
+</ul>
+</li>
+<li><p><strong>碰撞检测</strong></p>
+<ul>
+<li>将模型A的中心点作为视点</li>
+<li>A、B模型中心的连线方向作为视线方向渲染模型A、B，</li>
+<li>之后利用其深度缓存区来判断是否发生了相交来判断物体是否发生了碰撞。</li>
+</ul>
+</li>
+<li><p><strong>旋转平移约束条件</strong></p>
+</li>
+<li><p><strong>算法参考</strong></p>
+<ul>
+<li><strong>粒群算法</strong></li>
+<li><strong>帕累托求解</strong></li>
+<li><strong>MOPSO算法</strong></li>
+</ul>
+</li>
+</ul>
+<h3 id="深度学习："><a href="#深度学习：" class="headerlink" title="深度学习："></a>深度学习：</h3><ul>
+<li><p><strong>参考论文: TANet: Towards Fully Automatic Tooth Arrangement</strong></p>
+<ul>
+<li><span class="exturl" data-url="aHR0cHM6Ly9saW5rLnpoaWh1LmNvbS8/dGFyZ2V0PWh0dHA6Ly93d3cuZWN2YS5uZXQvcGFwZXJzL2VjY3ZfMjAyMC9wYXBlcnNfRUNDVi9wYXBlcnMvMTIzNjAwNDc3LnBkZg==" title="https://link.zhihu.com/?target=http://www.ecva.net/papers/eccv_2020/papers_ECCV/papers/123600477.pdf">https://link.zhihu.com/?target=http%3A//www.ecva.net/papers/eccv_2020&#x2F;papers_ECCV&#x2F;papers&#x2F;123600477.pdf<i class="fa fa-external-link"></i></span></li>
+</ul>
+</li>
+<li><p>深度学习，正畸学，牙齿排列，6D位姿预测，结构，图神经网络</p>
+</li>
+<li><p><img src="/images/1634870029515-6fa8c3c1-a41b-4d23-93e5-680078a6efeb.png"></p>
+</li>
+<li><p>论文基于以下论文进行合成<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2pjaGliYW5lL2lmLW5ldA==" title="https://github.com/jchibane/if-net">https://github.com/jchibane/if-net<i class="fa fa-external-link"></i></span></p>
+</li>
+<li><p>6D位姿预测：指预测每颗牙齿在三个维度平移旋转因此产生的六个自由度间信息.</p>
+<ul>
+<li>借鉴论文：李飞飞-<span class="exturl" data-url="aHR0cHM6Ly9vcGVuYWNjZXNzLnRoZWN2Zi5jb20vY29udGVudF9DVlBSXzIwMTkvaHRtbC9XYW5nX0RlbnNlRnVzaW9uXzZEX09iamVjdF9Qb3NlX0VzdGltYXRpb25fYnlfSXRlcmF0aXZlX0RlbnNlX0Z1c2lvbl9DVlBSXzIwMTlfcGFwZXIuaHRtbA==" title="https://openaccess.thecvf.com/content_CVPR_2019/html/Wang_DenseFusion_6D_Object_Pose_Estimation_by_Iterative_Dense_Fusion_CVPR_2019_paper.html">https://openaccess.thecvf.com/content_CVPR_2019&#x2F;html&#x2F;Wang_DenseFusion_6D_Object_Pose_Estimation_by_Iterative_Dense_Fusion_CVPR_2019_paper.html<i class="fa fa-external-link"></i></span></li>
+</ul>
+</li>
+<li><p>网络架构: 基于if-nat网络，进行二次改造</p>
+</li>
+<li><p>分牙处理：FDI标记法 只保留牙冠</p>
+</li>
+<li><p>牙齿中心：采用每颗牙的几何中心为原点</p>
+</li>
+<li><p>特征编码：分别对单科牙和整个牙列进行编码</p>
+</li>
+<li><p>特征增强：牙和相邻牙，和相对称的牙，和一个预先定义的super node（上下颌各一个 位置如图所示）的关系，还有两个supernode之间的关系，共同被输入到FPM模块。</p>
+<ul>
+<li><img src="/images/1634623580482-0615e8a7-e513-41de-baa6-ce810fe53025.png"></li>
+</ul>
+</li>
+<li><p>损失：主要有重建损失，空间损失</p>
+</li>
+<li><p>这是个预测问题</p>
+</li>
+<li><p>其他借鉴思想论文：</p>
+<ul>
+<li>家具排列–<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2Jyb3dudmMvcGxhbml0" title="https://github.com/brownvc/planit">https://github.com/brownvc/planit<i class="fa fa-external-link"></i></span></li>
+<li>重建-SDM-NET-中科院-<strong>源码向官网索取</strong></li>
+</ul>
+</li>
+</ul>
+<h4 id="注-QA："><a href="#注-QA：" class="headerlink" title="注-QA："></a>注-QA：</h4><p><strong>0、数据预处理</strong>在三维牙齿网格上，精确的自动语义分割和标记存在许多现成的方法[^20],[^41],[^43]。我们使用[^41]中的方法，牙齿的标签是根据FDI两位数表示法来标记恒牙。</p>
+<p><strong>1、特征增强如何增强的，超级结点（super node）具体是什么，上颌与下颌如何联系的？</strong></p>
+<ul>
+<li>特征增强：颌骨级特征提供全局特征，牙齿级特征提供局部特征，基于图的特征传播模块实现几何信息的传递。</li>
+<li>特征传播：特征传播模块<img src="/images/2e3e6c8fc31d963bc42216f4f2a58a52.svg"><br>基于[^19]中的传播模型。牙齿图<img src="/images/c677f52bafb159d04ce0fb1ded611540.svg"><br>，其中<img src="/images/4bd01f4a6739d95ec7743e82072870d7.svg"><br>是结点的集合，每个结点对应一个牙齿<img src="/images/9e3669d19b675bd57058fd4664205d2a.svg"><br>，<img src="/images/abdd207c6254eb7b3f3505d3feb78c6e.svg"><br>是图的无方向边的集合，<img src="/images/6799f18bc6e3025d6c3434cd6936735d.svg"><br>是结点嵌入。</li>
+<li>超级结点：两个超级结点分别代表上颌与下颌。</li>
+<li>牙齿图中边集合：<img src="/images/abdd207c6254eb7b3f3505d3feb78c6e.svg"><br>的构成有四种类型的边：<img src="/images/2f0e27b03e006c29f15e24181c895e31.svg"><br>，即<img src="/images/8f128888b52be3cb4cf7753db25b6051.svg"><br>，<ul>
+<li>同一颌中相邻牙齿的关系：<img src="/images/81129fb65c3efbf37aeb041de6453f3a.svg"><br>，</li>
+<li>同一颌中左右对称牙齿关系：<img src="/images/c23a23609ff984e01e670400706f6153.svg"><br>；</li>
+<li>每个牙齿结点与其对应颌的超节点之间的关系：<img src="data:image/svg+xml;utf8,%3Csvg%20xmlns%3Axlink%3D%22http%3A%2F%2Fwww.w3.org%2F1999%2Fxlink%22%20width%3D%222.709ex%22%20height%3D%222.509ex%22%20style%3D%22vertical-align%3A%20-0.671ex%3B%22%20viewBox%3D%220%20-791.3%201166.3%201080.4%22%20role%3D%22img%22%20focusable%3D%22false%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20aria-labelledby%3D%22MathJax-SVG-1-Title%22%3E%0A%3Ctitle%20id%3D%22MathJax-SVG-1-Title%22%3E%5Cmathcal%7BE%7D_C%3C%2Ftitle%3E%0A%3Cdefs%20aria-hidden%3D%22true%22%3E%0A%3Cpath%20stroke-width%3D%221%22%20id%3D%22E1-MJCAL-45%22%20d%3D%22M144%20470Q144%20556%20240%20630T451%20705Q564%20705%20564%20637Q564%20611%20540%20573Q529%20559%20505%20547T464%20534Q448%20534%20448%20545Q448%20552%20455%20562Q463%20577%20463%20591Q463%20600%20462%20604T456%20616T436%20627T400%20635Q396%20635%20390%20635T380%20636Q291%20636%20258%20568Q245%20544%20245%20516Q245%20463%20290%20438T391%20410Q415%20410%20415%20398Q415%20392%20407%20380T376%20356T326%20341Q288%20340%20260%20327Q218%20311%20187%20276T143%20208T130%20151Q130%20113%20156%2088T211%2055T268%2047Q349%2047%20403%20125Q415%20144%20439%20157T483%20171Q499%20171%20499%20160Q499%20148%20475%20120T413%2059T315%203T197%20-22Q124%20-22%2077%2014T30%20105Q30%20126%2039%20154T66%20216T122%20288T209%20354L223%20362Q144%20400%20144%20470Z%22%3E%3C%2Fpath%3E%0A%3Cpath%20stroke-width%3D%221%22%20id%3D%22E1-MJMATHI-43%22%20d%3D%22M50%20252Q50%20367%20117%20473T286%20641T490%20704Q580%20704%20633%20653Q642%20643%20648%20636T656%20626L657%20623Q660%20623%20684%20649Q691%20655%20699%20663T715%20679T725%20690L740%20705H746Q760%20705%20760%20698Q760%20694%20728%20561Q692%20422%20692%20421Q690%20416%20687%20415T669%20413H653Q647%20419%20647%20422Q647%20423%20648%20429T650%20449T651%20481Q651%20552%20619%20605T510%20659Q484%20659%20454%20652T382%20628T299%20572T226%20479Q194%20422%20175%20346T156%20222Q156%20108%20232%2058Q280%2024%20350%2024Q441%2024%20512%2092T606%20240Q610%20253%20612%20255T628%20257Q648%20257%20648%20248Q648%20243%20647%20239Q618%20132%20523%2055T319%20-22Q206%20-22%20128%2053T50%20252Z%22%3E%3C%2Fpath%3E%0A%3C%2Fdefs%3E%0A%3Cg%20stroke%3D%22currentColor%22%20fill%3D%22currentColor%22%20stroke-width%3D%220%22%20transform%3D%22matrix(1%200%200%20-1%200%200)%22%20aria-hidden%3D%22true%22%3E%0A%20%3Cuse%20xlink%3Ahref%3D%22%23E1-MJCAL-45%22%20x%3D%220%22%20y%3D%220%22%3E%3C%2Fuse%3E%0A%20%3Cuse%20transform%3D%22scale(0.707)%22%20xlink%3Ahref%3D%22%23E1-MJMATHI-43%22%20x%3D%22747%22%20y%3D%22-219%22%3E%3C%2Fuse%3E%0A%3C%2Fg%3E%0A%3C%2Fsvg%3E#card=math&code=%5Cmathcal%7BE%7D_C&id=icqxi">；</li>
+<li>两个超级结点之间的关系：<img src="data:image/svg+xml;utf8,%3Csvg%20xmlns%3Axlink%3D%22http%3A%2F%2Fwww.w3.org%2F1999%2Fxlink%22%20width%3D%222.5ex%22%20height%3D%222.509ex%22%20style%3D%22vertical-align%3A%20-0.671ex%3B%22%20viewBox%3D%220%20-791.3%201076.5%201080.4%22%20role%3D%22img%22%20focusable%3D%22false%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20aria-labelledby%3D%22MathJax-SVG-1-Title%22%3E%0A%3Ctitle%20id%3D%22MathJax-SVG-1-Title%22%3E%5Cmathcal%7BE%7D_J%3C%2Ftitle%3E%0A%3Cdefs%20aria-hidden%3D%22true%22%3E%0A%3Cpath%20stroke-width%3D%221%22%20id%3D%22E1-MJCAL-45%22%20d%3D%22M144%20470Q144%20556%20240%20630T451%20705Q564%20705%20564%20637Q564%20611%20540%20573Q529%20559%20505%20547T464%20534Q448%20534%20448%20545Q448%20552%20455%20562Q463%20577%20463%20591Q463%20600%20462%20604T456%20616T436%20627T400%20635Q396%20635%20390%20635T380%20636Q291%20636%20258%20568Q245%20544%20245%20516Q245%20463%20290%20438T391%20410Q415%20410%20415%20398Q415%20392%20407%20380T376%20356T326%20341Q288%20340%20260%20327Q218%20311%20187%20276T143%20208T130%20151Q130%20113%20156%2088T211%2055T268%2047Q349%2047%20403%20125Q415%20144%20439%20157T483%20171Q499%20171%20499%20160Q499%20148%20475%20120T413%2059T315%203T197%20-22Q124%20-22%2077%2014T30%20105Q30%20126%2039%20154T66%20216T122%20288T209%20354L223%20362Q144%20400%20144%20470Z%22%3E%3C%2Fpath%3E%0A%3Cpath%20stroke-width%3D%221%22%20id%3D%22E1-MJMATHI-4A%22%20d%3D%22M447%20625Q447%20637%20354%20637H329Q323%20642%20323%20645T325%20664Q329%20677%20335%20683H352Q393%20681%20498%20681Q541%20681%20568%20681T605%20682T619%20682Q633%20682%20633%20672Q633%20670%20630%20658Q626%20642%20623%20640T604%20637Q552%20637%20545%20623Q541%20610%20483%20376Q420%20128%20419%20127Q397%2064%20333%2021T195%20-22Q137%20-22%2097%208T57%2088Q57%20130%2080%20152T132%20174Q177%20174%20182%20130Q182%2098%20164%2080T123%2056Q115%2054%20115%2053T122%2044Q148%2015%20197%2015Q235%2015%20271%2047T324%20130Q328%20142%20387%20380T447%20625Z%22%3E%3C%2Fpath%3E%0A%3C%2Fdefs%3E%0A%3Cg%20stroke%3D%22currentColor%22%20fill%3D%22currentColor%22%20stroke-width%3D%220%22%20transform%3D%22matrix(1%200%200%20-1%200%200)%22%20aria-hidden%3D%22true%22%3E%0A%20%3Cuse%20xlink%3Ahref%3D%22%23E1-MJCAL-45%22%20x%3D%220%22%20y%3D%220%22%3E%3C%2Fuse%3E%0A%20%3Cuse%20transform%3D%22scale(0.707)%22%20xlink%3Ahref%3D%22%23E1-MJMATHI-4A%22%20x%3D%22747%22%20y%3D%22-213%22%3E%3C%2Fuse%3E%0A%3C%2Fg%3E%0A%3C%2Fsvg%3E#card=math&code=%5Cmathcal%7BE%7D_J&id=qvhfu">是两个超级结点之间包含单条边的集合，即连接了不同颌中上下对称牙齿。</li>
+</ul>
+</li>
+</ul>
+<p><strong>2、特征编码，单颗牙与牙列是否有什么不同？牙齿编码与牙颌编码的区别？</strong>颌骨级特征提供全局特征，牙齿级特征提供局部特征，</p>
+<p><strong>3、牙齿中心，为何选用几何中心，是否可以用向量表示牙齿中心？</strong>使用牙齿的几何中心（Sec3.3.1）使编码器能够采用与平移无关的方式专注于提取几何特征</p>
+<p><strong>4、他的损失是否足够预测排列位置（你认为是否合适）？</strong></p>
+<p><strong>5、本文方法与其他方法之间的区别？****5.1 本文方法与6-自由度姿态估计问题的区别？</strong></p>
+<ul>
+<li>6-自由度姿态估计问题解决的是已知的3D形状的姿态与其图像观察之间的关系；</li>
+<li>牙齿排列问题是预测排列整齐后的牙齿的姿态，是通过学习正畸治疗的临床数据来解决这个问题；</li>
+</ul>
+<p><strong>5.2. 本文方法与家具排列是否有不同点及其相同点？</strong></p>
+<ul>
+<li>人造家具形状具有明显的尖锐特征，而牙齿模型中的牙齿不具备这种明显的特征，无法精确地定义方向；</li>
+<li>家具布置问题为给定的室内场景生成不同的布置，而牙齿排列问题是给出每个特定患者的最佳牙齿排列；</li>
+</ul>
+<p><strong>5.3 本文方法与3D形状生成问题的区别？</strong></p>
+<ul>
+<li>3D形状生成问题旨在根据用户条件从图像或者部分模型中推断来生成逼真的三维形状，但是不会保留输入对象的几何形状；</li>
+<li>牙齿排列问题中保留输入对象的几何形状是一个硬约束；</li>
+</ul>
+<p><strong>6、用你的方式解释下具体网络架构流程，请标注你认为重要的信息</strong><img src="/images/1634889160960-fc373eaf-5d84-4f31-8c30-3428e6826728.jpeg"></p>
+<p><strong>7、他的数据是怎么样的，需要注意哪些关键点？结合下图描述其数据生成方式与数据流动方式？</strong><img src="/images/1634887554433-16b09bdb-e7aa-42ce-856f-7b18d92fe009.png"></p>
+<h3 id="数据预处理"><a href="#数据预处理" class="headerlink" title="数据预处理"></a>数据预处理</h3><ol>
+<li>牙齿的标签是根据FDI两位数表示法来标记恒牙。</li>
+<li>只保留所有牙齿的牙冠用于牙齿排列中的计算。</li>
+<li>用这些冠组成的模型定义一个局部坐标系，通过将其与世界坐标系粗略对齐来标准化位置和方向。得到牙冠标签的集合，及其对应的牙冠的点云。（记得正态归一化）</li>
+<li>提取每颗牙的中心，每个牙齿中心之间的距离以及到达”自定义点”的距离，上下颌两个自定义点直接的距离，如图所示</li>
+<li>可通过自定义变换扩充数据。</li>
+</ol>
+<p><img src="/images/1653296924915-eb324929-ef1f-49b2-8549-cff9ee9efa7d.png"></p>
+<h3 id="网络设计"><a href="#网络设计" class="headerlink" title="网络设计"></a>网络设计</h3><ol>
+<li>利用pointnet处理点云的空间不变性。</li>
+<li>在pointnet嵌入空间变换网络提取变换矩阵。</li>
+<li>不允许对输入点云缩放，扭曲，必须保证点云形态一致性。</li>
+</ol>
+<h3 id="损失设计"><a href="#损失设计" class="headerlink" title="损失设计"></a>损失设计</h3><ol>
+<li>几何重建损失，参考正交Procrustes。</li>
+<li>几何空间关系损失，参考牙齿之间距离取0.5，到自定义点等距等等</li>
+<li>条件加权损失，通过用户要求条件，动态改变</li>
+</ol>
+<h3 id="评价指标"><a href="#评价指标" class="headerlink" title="评价指标"></a>评价指标</h3><ol>
+<li>通过逐点计算距离，度量与真实治疗后的误差百分比。</li>
+</ol>
+<h1 id=""><a href="#" class="headerlink" title=""></a></h1>
+    </div>
+
+    
+    
+    
+        <div class="reward-container">
+  <div></div>
+  <button onclick="var qr = document.getElementById('qr'); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/images/wechatpay.png" alt="SindreYang 微信支付">
+        <p>微信支付</p>
+      </div>
+      
+      <div style="display: inline-block;">
+        <img src="/images/alipay.png" alt="SindreYang 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>SindreYang
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://blog.mviai.com/2025/%E6%AD%A3%E7%95%B8%E8%87%AA%E5%8A%A8%E6%8E%92%E7%89%99%E9%9C%80%E6%B1%82V1.1.1/" title="正畸自动排牙需求V1">http://blog.mviai.com/2025/正畸自动排牙需求V1.1.1/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <span class="exturl" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC9kZWVkLnpo"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</span> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+        
+
+  <div class="followme">
+    <p>欢迎关注我的其它发布渠道</p>
+
+    <div class="social-list">
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="/images/wechat.png">
+            <span class="icon">
+              <i class="fa fa-wechat"></i>
+            </span>
+
+            <span class="label">WeChat</span>
+          </a>
+        </div>
+    </div>
+  </div>
+
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2025/%E6%B7%B1%E5%BA%A6%E5%9B%BE%E8%BF%98%E5%8E%9F%E7%82%B9%E4%BA%91/" rel="prev" title="深度图还原点云">
+      <i class="fa fa-chevron-left"></i> 深度图还原点云
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2025/%E6%AD%A3%E7%95%B8%E8%87%AA%E5%8A%A8%E5%88%86%E7%89%99%E9%9C%80%E6%B1%82V2.1.2/" rel="next" title="正畸自动分牙需求V2">
+      正畸自动分牙需求V2 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    
+  <div class="comments">
+    <div id="SOHUCS"></div>
+  </div>
+  
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%83%8C%E6%99%AF"><span class="nav-number">1.</span> <span class="nav-text">背景</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%B8%80%E3%80%81%E4%BA%A7%E5%93%81%E6%A6%82%E8%BF%B0"><span class="nav-number">2.</span> <span class="nav-text">一、产品概述</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-%E7%89%88%E6%9C%AC%E4%BF%A1%E6%81%AF"><span class="nav-number">2.1.</span> <span class="nav-text">1.版本信息</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-%E4%BF%AE%E8%AE%A2%E5%8E%86%E5%8F%B2"><span class="nav-number">2.2.</span> <span class="nav-text">2.修订历史</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-%E5%BC%80%E5%8F%91%E5%91%A8%E6%9C%9F"><span class="nav-number">2.3.</span> <span class="nav-text">3.开发周期</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-%E4%BA%A7%E5%93%81%E4%BB%8B%E7%BB%8D"><span class="nav-number">2.4.</span> <span class="nav-text">4.产品介绍</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#4-1-%E4%BA%A7%E5%93%81%E5%90%8D%E7%A7%B0"><span class="nav-number">2.4.1.</span> <span class="nav-text">4.1 产品名称</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-2%E4%BA%A7%E5%93%81%E7%AE%80%E4%BB%8B"><span class="nav-number">2.4.2.</span> <span class="nav-text">4.2产品简介</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-3%E4%BA%A7%E5%93%81%E6%9E%84%E6%83%B3%E5%9B%BE"><span class="nav-number">2.4.3.</span> <span class="nav-text">4.3产品构想图</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-4%E4%BD%BF%E7%94%A8%E5%9C%BA%E6%99%AF"><span class="nav-number">2.4.4.</span> <span class="nav-text">4.4使用场景</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-5%E4%BA%A7%E5%93%81%E5%AE%9A%E4%BD%8D"><span class="nav-number">2.4.5.</span> <span class="nav-text">4.5产品定位</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BA%8C%E3%80%81%E6%96%87%E6%A1%A3%E8%AF%B4%E6%98%8E"><span class="nav-number">3.</span> <span class="nav-text">二、文档说明</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1%E3%80%81%E5%90%8D%E8%AF%8D%E8%A7%A3%E9%87%8A"><span class="nav-number">3.1.</span> <span class="nav-text">1、名词解释</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%9B%9B%E3%80%81%E9%9C%80%E6%B1%82%E8%83%8C%E6%99%AF"><span class="nav-number">4.</span> <span class="nav-text">四、需求背景</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-%E5%95%86%E4%B8%9A%E8%83%8C%E6%99%AF"><span class="nav-number">4.1.</span> <span class="nav-text">1. 商业背景</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-%E5%AD%A6%E6%9C%AF%E8%83%8C%E6%99%AF"><span class="nav-number">4.2.</span> <span class="nav-text">2. 学术背景</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E6%A8%A1%E6%9D%BF%E5%8C%B9%E9%85%8D%E6%B3%95"><span class="nav-number">4.2.1.</span> <span class="nav-text">1.模板匹配法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E5%9D%90%E6%A0%87%E5%9B%9E%E5%BD%92%E6%B3%95"><span class="nav-number">4.2.2.</span> <span class="nav-text">2. 坐标回归法</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-%E7%9B%B8%E5%85%B3%E5%B7%A5%E4%BD%9C%E8%83%8C%E6%99%AF"><span class="nav-number">4.3.</span> <span class="nav-text">3. 相关工作背景</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-%E9%A3%8E%E9%99%A9%E4%B8%8E%E5%BA%94%E5%AF%B9"><span class="nav-number">4.4.</span> <span class="nav-text">4. 风险与应对</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-%E6%95%B0%E6%8D%AE%E8%B0%83%E7%A0%94"><span class="nav-number">4.5.</span> <span class="nav-text">5. 数据调研</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-%E7%AB%9E%E5%93%81%E5%88%86%E6%9E%90"><span class="nav-number">4.6.</span> <span class="nav-text">6.竞品分析</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BA%94%E3%80%81%E9%9C%80%E6%B1%82%E8%8C%83%E5%9B%B4"><span class="nav-number">5.</span> <span class="nav-text">五、需求范围</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#PC-%E7%AB%AF"><span class="nav-number">5.0.1.</span> <span class="nav-text">PC 端</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%85%AD%E3%80%81%E5%8A%9F%E8%83%BD%E8%AF%A6%E7%BB%86%E8%AF%B4%E6%98%8E"><span class="nav-number">6.</span> <span class="nav-text">六、功能详细说明</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-%E4%BA%A7%E5%93%81%E6%B5%81%E7%A8%8B%E5%9B%BE"><span class="nav-number">6.1.</span> <span class="nav-text">1.产品流程图</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-%E5%8A%9F%E8%83%BD%E8%AF%B4%E6%98%8E"><span class="nav-number">6.2.</span> <span class="nav-text">3.功能说明</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%B8%83%E3%80%81%E9%9D%9E%E5%8A%9F%E8%83%BD%E9%9C%80%E6%B1%82"><span class="nav-number">7.</span> <span class="nav-text">七、非功能需求</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-%E7%AE%97%E6%B3%95%E7%AE%80%E4%BB%8B"><span class="nav-number">7.1.</span> <span class="nav-text">1. 算法简介</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-%E7%AE%97%E6%B3%95%E6%B5%81%E7%A8%8B"><span class="nav-number">7.2.</span> <span class="nav-text">2. 算法流程</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%85%AB%E3%80%81%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99"><span class="nav-number">8.</span> <span class="nav-text">八、参考资料</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BC%A0%E7%BB%9F%E7%AE%97%E6%B3%95%EF%BC%9A"><span class="nav-number">8.0.1.</span> <span class="nav-text">传统算法：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%EF%BC%9A"><span class="nav-number">8.0.2.</span> <span class="nav-text">深度学习：</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%B3%A8-QA%EF%BC%9A"><span class="nav-number">8.0.2.1.</span> <span class="nav-text">注-QA：</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E9%A2%84%E5%A4%84%E7%90%86"><span class="nav-number">8.0.3.</span> <span class="nav-text">数据预处理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BD%91%E7%BB%9C%E8%AE%BE%E8%AE%A1"><span class="nav-number">8.0.4.</span> <span class="nav-text">网络设计</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%8D%9F%E5%A4%B1%E8%AE%BE%E8%AE%A1"><span class="nav-number">8.0.5.</span> <span class="nav-text">损失设计</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AF%84%E4%BB%B7%E6%8C%87%E6%A0%87"><span class="nav-number">8.0.6.</span> <span class="nav-text">评价指标</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link"><span class="nav-number">9.</span> <span class="nav-text"></span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="SindreYang"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">SindreYang</p>
+  <div class="site-description" itemprop="description">沉淀后我愿意做一个温暖的人。有自己的喜好，有自己的原则，有自己的信仰，不急功近利，不浮夸轻薄，宠辱不惊，淡定安逸，心静如水。------不忘初心，方得始终</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">321</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">72</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL1NpbmRyZVlhbmc=" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;SindreYang"><i class="fa fa-fw fa-github"></i>GitHub</span>
+      </span>
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="bWFpbHRvOnl4QG12aWFpLmNvbQ==" title="E-Mail → mailto:yx@mviai.com"><i class="fa fa-fw fa-envelope"></i>E-Mail</span>
+      </span>
+  </div>
+  <div class="cc-license motion-element" itemprop="license">
+    <span class="exturl cc-opacity" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC9kZWVkLnpo"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+  <div class="languages">
+    <label class="lang-select-label">
+      <i class="fa fa-language"></i>
+      <span>简体中文</span>
+      <i class="fa fa-angle-up" aria-hidden="true"></i>
+    </label>
+    <select class="lang-select" data-canonical="">
+      
+        <option value="zh-CN" data-href="/2025/%E6%AD%A3%E7%95%B8%E8%87%AA%E5%8A%A8%E6%8E%92%E7%89%99%E9%9C%80%E6%B1%82V1.1.1/" selected="">
+          简体中文
+        </option>
+      
+        <option value="en" data-href="/en/2025/%E6%AD%A3%E7%95%B8%E8%87%AA%E5%8A%A8%E6%8E%92%E7%89%99%E9%9C%80%E6%B1%82V1.1.1/" selected="">
+          English
+        </option>
+      
+    </select>
+  </div>
+
+        
+
+<div class="copyright">
+  
+  &copy; 2018 – 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">SindreYang</span>
+</div><!-- 页面点击小红心 -->
+<script type="text/javascript" src="/js/love.js"></script>
+<!-- 背景波浪 -->
+<script color="0,0,255" opacity="0.5" zIndex="-1" count="99" src="https://cdn.jsdelivr.net/npm/canvas-nest.js@1/dist/canvas-nest.js"></script>
+
+
+<!-- 腾讯企业邮箱 -->
+<style>
+.bizmail_loginpanel {
+    font-size: 12px;
+    width: 300px;
+    height: auto;
+    background: transparent;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.bizmail_LoginBox {
+    padding: 10px 15px;
+}
+
+
+.bizmail_loginpanel form {
+    margin: 0;
+    padding: 0;
+}
+
+.bizmail_loginpanel input.text {
+    font-size: 12px;
+    width: 100px;
+    height: 20px;
+    margin: 0 2px;
+    background-color: transparent;
+    border:1px solid transparent;
+    box-shadow: none;
+    color: black;
+}
+
+.bizmail_loginpanel .bizmail_column {
+    height: 28px;
+}
+
+.bizmail_loginpanel .bizmail_column label {
+    display: block;
+    float: left;
+    width: 30px;
+    height: 24px;
+    line-height: 24px;
+    font-size: 12px;
+}
+
+.bizmail_loginpanel .bizmail_column .bizmail_inputArea {
+    float: left;
+    width: 240px;
+}
+
+.bizmail_loginpanel .bizmail_column span {
+    font-size: 12px;
+    word-wrap: break-word;
+    margin-left: 2px;
+    line-height: 200%;
+}
+
+.bizmail_loginpanel .bizmail_SubmitArea {
+    margin-left: 30px;
+    clear: both;
+}
+
+.bizmail_loginpanel .bizmail_SubmitArea a {
+    font-size: 12px;
+    margin-left: 5px;
+}
+
+.bizmail_loginpanel select {
+    width: 110px;
+    height: 20px;
+    margin: 0 2px;
+}
+.bizmail_loginpanel input {
+
+    background-color: rgba(83, 126, 236, 0.562);
+}
+
+
+</style>
+
+<script type="text/javascript">
+function checkInput() {
+    var e = document.form1.uin,
+        i = document.form1.pwd;
+    return 0 == e.value.length ? e.focus() : 0 == i.value.length ? i.focus() : (document.form1.submit(), setTimeout(" document.form1.pwd.value = '' ", 500)), !1
+}
+
+function writeLoginPanel(e) {
+    if (e && e.domainlist && -1 != e.domainlist.indexOf(".")) {
+        var a = "return checkInput()",
+            t = '<div id="divLoginpanelHor" class="bizmail_loginpanel" style="width:550px;"><div class="bizmail_LoginBox"><form name="form1" action="https://exmail.qq.com/cgi-bin/login" target="_blank" method="post" onsubmit="' + a + '"><input type="hidden" name="firstlogin" value="false" /><input type="hidden" name="errtemplate" value="dm_loginpage" /><input type="hidden" name="aliastype" value="other" /><input type="hidden" name="dmtype" value="bizmail" /><input type="hidden" name="p" value="" /><label>\u8d26\u53f7:</label><input type="text" name="uin" class="text" value="" />@#domainlist#<label>&nbsp&nbsp&nbsp;\u5bc6\u7801:</label><input type="password" name="pwd" class="text" value="" /><input type="submit" class="" name="" value="\u767b\u5f55" />&nbsp;<a href="https://exmail.qq.com/cgi-bin/readtemplate?check=false&t=biz_rf_portal#recovery" target="_blank">\u5fd8\u8bb0\u5bc6\u7801\uff1f</a></form></div></div>',
+            n = '<div id="divLoginpanelVer" class="bizmail_loginpanel"><div class="bizmail_LoginBox"><form name="form1" action="https://exmail.qq.com/cgi-bin/login" target="_blank" method="post" onsubmit="' + a + '"><input type="hidden" name="firstlogin" value="false" /><input type="hidden" name="errtemplate" value="dm_loginpage" /><input type="hidden" name="aliastype" value="other" /><input type="hidden" name="dmtype" value="bizmail" /><input type="hidden" name="p" value="" /><div class="bizmail_column"><label>\u8d26\u53f7:</label><div class="bizmail_inputArea"><input type="text" name="uin" class="text" value="" />@#domainlist#</div></div><div class="bizmail_column"><label>\u5bc6\u7801:</label><div class="bizmail_inputArea"><input type="password" name="pwd" class="text" value="" /></div></div><div class="bizmail_SubmitArea"><input type="submit" class="" name="" style="width:66px;" value="\u767b\u5f55" /><a href="https://exmail.qq.com/cgi-bin/readtemplate?check=false&t=biz_rf_portal#recovery" target="_blank">\u5fd8\u8bb0\u5bc6\u7801\uff1f</a></div></form></div></div>',
+            l = e.domainlist.split(";");
+        if (1 == l.length) var m = '<span>#domain#</span><input type="hidden" name="domain" value="#domain#" />'.replace(/#domain#/g, l[0]);
+        else {
+            m = '<select name="domain">';
+            for (i = 0; i < l.length; i++) m += '<option value="' + l[i] + '">' + l[i] + "</option>";
+            m += "</select>"
+        }
+        e.mode && "vertical" != e.mode && "both" != e.mode || document.write(n.replace(/#domainlist#/g, m)), "horizontal" != e.mode && "both" != e.mode || document.write(t.replace(/#domainlist#/g, m))
+    }
+}
+
+</script>      
+
+<script type="text/javascript"> writeLoginPanel({domainlist:"mviai.com", mode:"horizontal"});</script>      
+
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script size="300" alpha="0.6" zIndex="-1" src="/lib/canvas-ribbon/canvas-ribbon.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/medium-zoom@1/dist/medium-zoom.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+  <script defer src="/lib/three/three.min.js"></script>
+    <script defer src="/lib/three/three-waves.min.js"></script>
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+<script>
+document.querySelectorAll('.pdfobject-container').forEach(element => {
+  let url = element.dataset.target;
+  let pdfOpenParams = {
+    navpanes : 0,
+    toolbar  : 0,
+    statusbar: 0,
+    pagemode : 'thumbs',
+    view     : 'FitH'
+  };
+  let pdfOpenFragment = '#' + Object.entries(pdfOpenParams).map(([key, value]) => `${key}=${encodeURIComponent(value)}`).join('&');
+  let fullURL = `/lib/pdf/web/viewer.html?file=${encodeURIComponent(url)}${pdfOpenFragment}`;
+
+  if (NexT.utils.supportsPDFs()) {
+    element.innerHTML = `<embed class="pdfobject" src="${url + pdfOpenFragment}" type="application/pdf" style="height: ${element.dataset.height};">`;
+  } else {
+    element.innerHTML = `<iframe src="${fullURL}" style="height: ${element.dataset.height};" frameborder="0"></iframe>`;
+  }
+});
+</script>
+
+
+
+
+  
+
+  
+
+  <script>
+  NexT.utils.loadComments(document.querySelector('#SOHUCS'), () => {
+    var appid = 'cyxmItxjS';
+    var conf = 'e5e71132d9086bb54aeeba6e88e87df9';
+    var width = window.innerWidth || document.documentElement.clientWidth;
+    if (width < 960) {
+      window.document.write('<script id="changyan_mobile_js" charset="utf-8" type="text/javascript" src="https://cy-cdn.kuaizhan.com/upload/mobile/wap-js/changyan_mobile.js?client_id=' + appid + '&conf=' + conf + '"><\/script>');
+    } else {
+      var loadJs=function(d,a){var c=document.getElementsByTagName("head")[0]||document.head||document.documentElement;var b=document.createElement("script");b.setAttribute("type","text/javascript");b.setAttribute("charset","UTF-8");b.setAttribute("src",d);if(typeof a==="function"){if(window.attachEvent){b.onreadystatechange=function(){var e=b.readyState;if(e==="loaded"||e==="complete"){b.onreadystatechange=null;a()}}}else{b.onload=a}}c.appendChild(b)};loadJs("https://changyan.sohu.com/upload/changyan.js",function(){window.changyan.api.config({appid:appid,conf:conf})});
+    }
+  });
+  </script>
+  <script src="https://cy-cdn.kuaizhan.com/upload/plugins/plugins.count.js"></script>
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/z16.model.json"},"display":{"position":"left","width":75,"height":150},"mobile":{"show":true},"log":false});</script></body>
+</html>
+
+
+
+

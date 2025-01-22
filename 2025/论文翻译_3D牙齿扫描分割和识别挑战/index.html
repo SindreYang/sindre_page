@@ -1,0 +1,1032 @@
+<!DOCTYPE html>
+<html lang="zh-CN,en,default">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" href="/lib/pace/pace-theme-minimal.min.css">
+  <script src="/lib/pace/pace.min.js"></script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"blog.mviai.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":true,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":true,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="自动摘要: &gt;链接：		[3DTeethSeg′22:3DTeethScanSegmentationandLabelingChallenge](https:&#x2F;&#x2F;arxiv.org&#x2F;abs&#x2F;2305 ……..">
+<meta property="og:type" content="article">
+<meta property="og:title" content="论文翻译_3D牙齿扫描分割和识别挑战">
+<meta property="og:url" content="http://blog.mviai.com/2025/%E8%AE%BA%E6%96%87%E7%BF%BB%E8%AF%91_3D%E7%89%99%E9%BD%BF%E6%89%AB%E6%8F%8F%E5%88%86%E5%89%B2%E5%92%8C%E8%AF%86%E5%88%AB%E6%8C%91%E6%88%98/index.html">
+<meta property="og:site_name" content="落叶无痕">
+<meta property="og:description" content="自动摘要: &gt;链接：		[3DTeethSeg′22:3DTeethScanSegmentationandLabelingChallenge](https:&#x2F;&#x2F;arxiv.org&#x2F;abs&#x2F;2305 ……..">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://blog.mviai.com/images/1689928719555-f8546538-21d2-4b82-8341-0a9299ef7316.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1689928971460-4b3d5d0b-e42e-4edc-9370-99c957a74fcd.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1689929189531-ab77d470-3e85-4718-8f8e-d75e71118416.png">
+<meta property="og:image" content="http://blog.mviai.com/images/a97324d7b63603a05f44f6edd143eb70.svg">
+<meta property="og:image" content="http://blog.mviai.com/images/1689932993845-503b1196-a87c-4811-ac8e-6a3b0a03b9aa.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1691031843182-927f78c6-b9fa-468f-b975-68bc25b15847.png">
+<meta property="og:image" content="http://blog.mviai.com/images/f0273be508a98de11d456086b7201a3f.svg">
+<meta property="og:image" content="http://blog.mviai.com/images/1700729449995-6bb65174-f946-4baf-9d45-8601ce29b581.png">
+<meta property="og:image" content="http://blog.mviai.com/images/bbf0920b9f21222367e287a018a2b47e.svg">
+<meta property="og:image" content="http://blog.mviai.com/images/ffd1905f6d4d60accedfa6b91be93ea9.svg">
+<meta property="og:image" content="http://blog.mviai.com/images/65e98f57dd5719b1f9201440058f6927.svg">
+<meta property="og:image" content="http://blog.mviai.com/images/a7bbfad47d9fb4bbc336325cef99a920.svg">
+<meta property="og:image" content="http://blog.mviai.com/images/a7bbfad47d9fb4bbc336325cef99a920.svg">
+<meta property="og:image" content="http://blog.mviai.com/images/18ba3ce8a3c5557582d6e984e1d1d7d9.svg">
+<meta property="og:image" content="http://blog.mviai.com/images/576fe313dc69b6003506bff0dbb841d6.svg">
+<meta property="og:image" content="http://blog.mviai.com/images/6270b40ae5b49af38085914a0c0c0c07.svg">
+<meta property="og:image" content="http://blog.mviai.com/images/e9f977d2a16842d9a6a99e988371943d.svg">
+<meta property="og:image" content="http://blog.mviai.com/images/d615eabb2068ece017a7cc24f29d7c93.svg">
+<meta property="og:image" content="http://blog.mviai.com/images/f0edf8ff63e6eda23ceda62523590677.svg">
+<meta property="og:image" content="http://blog.mviai.com/images/085d2acd96f2760386638a2fa040cb06.svg">
+<meta property="og:image" content="http://blog.mviai.com/images/7984a9f82f1bc07fc241359bd1d51883.svg">
+<meta property="og:image" content="http://blog.mviai.com/images/bec8efd575a1af90f0f9f4246868d573.svg">
+<meta property="og:image" content="http://blog.mviai.com/images/030ef134b278499f7d3af4a82402fea8.svg">
+<meta property="og:image" content="http://blog.mviai.com/images/95255f81872db07332cf4e74dd2f497d.svg">
+<meta property="og:image" content="http://blog.mviai.com/images/1700732286839-9d99d505-cfe2-4d8e-8419-203de4adafe5.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1700733032942-beaea3d0-e847-48dd-adb6-2846bda103fa.png">
+<meta property="og:image" content="http://blog.mviai.com/images/57fc750293ae0c9229df5b2c95e91b89.svg">
+<meta property="og:image" content="http://blog.mviai.com/images/38a3f4d664b7a723d138f9d57be0c783.svg">
+<meta property="og:image" content="http://blog.mviai.com/images/f8885e425367c69d5c1abddbacd4e3a6.svg">
+<meta property="og:image" content="http://blog.mviai.com/images/8397bd103c144eff38d60c4cf4552179.svg">
+<meta property="og:image" content="http://blog.mviai.com/images/1890b9a6c153c25f63c487466741c253.svg">
+<meta property="og:image" content="http://blog.mviai.com/images/fd2e163f467941f53a5442538d421ba5.svg">
+<meta property="og:image" content="http://blog.mviai.com/images/6a77b02bb43293798405605f323a5baa.svg">
+<meta property="og:image" content="http://blog.mviai.com/images/1700812054688-7c67fb7e-e053-4e7e-988a-9b2b30040114.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1700812065770-8672aa6c-75fa-4ff8-8ea8-45286bbb99bc.png">
+<meta property="article:published_time" content="2025-01-22T04:37:39.000Z">
+<meta property="article:modified_time" content="2025-01-22T12:37:39.973Z">
+<meta property="article:author" content="SindreYang">
+<meta property="article:tag" content="生活">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://blog.mviai.com/images/1689928719555-f8546538-21d2-4b82-8341-0a9299ef7316.png">
+
+<link rel="canonical" href="http://blog.mviai.com/2025/%E8%AE%BA%E6%96%87%E7%BF%BB%E8%AF%91_3D%E7%89%99%E9%BD%BF%E6%89%AB%E6%8F%8F%E5%88%86%E5%89%B2%E5%92%8C%E8%AF%86%E5%88%AB%E6%8C%91%E6%88%98/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>论文翻译_3D牙齿扫描分割和识别挑战 | 落叶无痕</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">落叶无痕</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类<span class="badge">72</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档<span class="badge">321</span></a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+  <span class="exturl github-corner" data-url="aHR0cHM6Ly9naXRodWIuY29tL1NpbmRyZVlhbmc=" title="Follow me on GitHub" aria-label="Follow me on GitHub"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></span>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://blog.mviai.com/2025/%E8%AE%BA%E6%96%87%E7%BF%BB%E8%AF%91_3D%E7%89%99%E9%BD%BF%E6%89%AB%E6%8F%8F%E5%88%86%E5%89%B2%E5%92%8C%E8%AF%86%E5%88%AB%E6%8C%91%E6%88%98/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="SindreYang">
+      <meta itemprop="description" content="沉淀后我愿意做一个温暖的人。有自己的喜好，有自己的原则，有自己的信仰，不急功近利，不浮夸轻薄，宠辱不惊，淡定安逸，心静如水。------不忘初心，方得始终">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="落叶无痕">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          论文翻译_3D牙齿扫描分割和识别挑战
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2025-01-22 12:37:39 / 修改时间：20:37:39" itemprop="dateCreated datePublished" datetime="2025-01-22T12:37:39+08:00">2025-01-22</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E7%82%B9%E4%BA%91%E7%B3%BB%E5%88%97/" itemprop="url" rel="index"><span itemprop="name">点云系列</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">Changyan：</span>
+    
+    
+      <a title="changyan" href="/2025/%E8%AE%BA%E6%96%87%E7%BF%BB%E8%AF%91_3D%E7%89%99%E9%BD%BF%E6%89%AB%E6%8F%8F%E5%88%86%E5%89%B2%E5%92%8C%E8%AF%86%E5%88%AB%E6%8C%91%E6%88%98/#SOHUCS" itemprop="discussionUrl">
+        <span id="changyan_count_unit" class="post-comments-count hc-comment-count" data-xid="2025/论文翻译_3D牙齿扫描分割和识别挑战/" itemprop="commentCount"></span>
+      </a>
+    
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>自动摘要: &gt;链接：		[3DTeethSeg′22:3DTeethScanSegmentationandLabelingChallenge](<span class="exturl" data-url="aHR0cHM6Ly9hcnhpdi5vcmcvYWJzLzIzMDU=" title="https://arxiv.org/abs/2305">https://arxiv.org/abs/2305<i class="fa fa-external-link"></i></span> ……..</p>
+<span id="more"></span>
+<blockquote>
+<p>链接：</p>
+</blockquote>
+<p><span class="exturl" data-url="aHR0cHM6Ly9hcnhpdi5vcmcvYWJzLzIzMDUuMTgyNzc=" title="https://arxiv.org/abs/2305.18277">3DTeethSeg′22: 3D Teeth Scan Segmentation and Labeling Challenge<i class="fa fa-external-link"></i></span></p>
+<h1 id="摘要："><a href="#摘要：" class="headerlink" title="摘要："></a>摘要：</h1><p>口腔内3D扫描的牙齿定位、分割和标记是现代牙科的基本任务，以加强牙科诊断、治疗计划和基于人群的口腔健康研究。然而，由于牙齿解剖结构、成像协议的变化以及公共可访问数据的有限可用性，开发牙齿分析的自动化算法带来了重大挑战。为了应对这些挑战，3DTeethSeg’22挑战是与2022年国际医学图像计算和计算机辅助干预会议（MICCAI）联合组织的，呼吁采用算法解决口腔内3D扫描中的牙齿定位、分割和标记问题。准备了一个数据集，包括900名患者的1800次扫描，并通过人机混合算法对每颗牙齿进行单独注释。在这个数据集上总共评估了6种算法。在本研究中，我们介绍了1 arXiv:2305.1827v1[cs.CV]29 May 2023 3DTeethSeg’22挑战的评估结果。3DTeethSeg’22挑战代码可访问：<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2FiZW5oYW1hZG91LzNEVGVldGhTZWcyMl9jaGFsbGVuZ2U=" title="https://github.com/abenhamadou/3DTeethSeg22_challenge">https://github.com/abenhamadou/3DTeethSeg22_challenge<i class="fa fa-external-link"></i></span> ；</p>
+<h1 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h1><p>计算机辅助设计（CAD）工具在现代牙科中越来越流行，用于高度准确的治疗计划。特别地，在口腔CAD系统中，先进的口腔内扫描仪（IOSs）现在被广泛使用，因为它们提供了牙列的精确数字表面模型。这样的模型可以极大地帮助牙医模拟牙齿的拔出、移动、缺失和重排，从而简化治疗结果的预测。因此，数字牙齿模型有可能使牙医摆脱繁琐和耗时的任务。尽管IOS在临床牙科实践中越来越普遍，但文献中关于牙齿分割&#x2F;标记的贡献很少。Lian et al. (2019); Xu et al. (2018); Sun et al. (2020)，没有公开的数据库。IOS数据中出现的一个基本问题是在扫描观察中可靠地分割和识别牙齿的能力。由于牙齿形状之间固有的相似性以及它们在颌骨上的模糊位置，牙齿分割和标记是困难的。此外，它还面临几个挑战：</p>
+<ol>
+<li>受试者的牙齿位置和形状变化。</li>
+<li>牙列异常的存在。例如，牙齿拥挤会导致牙齿错位，从而导致相邻牙齿之间的边界不明确。此外，缺牙和蛀牙在人们中很常见。</li>
+<li>牙齿受损。</li>
+<li>牙套和其他牙科设备的存在。</li>
+</ol>
+<p>我们提出的挑战将特别关注第1点，即受试者的牙齿位置和形状变化。随着现有数据在中长期的扩展，其他问题也将在挑战的后续版本中得到解决。</p>
+<h2 id="专用术语"><a href="#专用术语" class="headerlink" title="专用术语"></a>专用术语</h2><p>在本节中，我们将探讨口腔内3D扫描分析中使用的三个基本术语：<strong>定位、分割和标记</strong>。</p>
+<ul>
+<li><strong>定位</strong>是指对牙齿进行精确识别和定位，包括计算其三维质心。</li>
+<li><strong>分割</strong>涉及识别与检测到的牙齿相关的顶点，从而划分其边界。</li>
+<li><strong>标记</strong>包括为检测到的和分割的牙齿指定一个特定的类别。在这项工作中，我们使用<strong>FDI</strong>牙齿编号系统</li>
+</ul>
+<h2 id="成果"><a href="#成果" class="headerlink" title="成果"></a>成果</h2><p>关于这一主题的大多数相关工作主要分为两类：</p>
+<ol>
+<li>基于人工选取特征的方法；</li>
+<li>基于学习的方法；</li>
+</ol>
+<h2 id="基于人工选取特征的方法"><a href="#基于人工选取特征的方法" class="headerlink" title="基于人工选取特征的方法"></a>基于人工选取特征的方法</h2><p>以前的方法主要基于提取手工制作的几何特征来分割3D牙科扫描。这些方法大致分为三类：</p>
+<ol>
+<li>基于曲面曲率的方法；</li>
+<li>基于等高线的方法；</li>
+<li>基于调谐场的方法；</li>
+</ol>
+<p>表面曲率在IOS中非常重要，用于表征牙齿表面和定位牙齿&#x2F;牙龈。该特征用于（赵等人，2006）提出了一种<strong>基于曲率阈值的半自动牙齿分割方法</strong>，其中牙龈分离后进行三维牙齿边界曲线识别，以确保分割过程。后来，袁等人开发了一种<strong>基于表面最小曲率计算的区域提取和牙齿分离的集成单齿建模方案</strong>（袁等人，2010）。吴等人（Wu et al.，2014）提出了一种<strong>基于形态学骨架的方法</strong>，通过使用<strong>区域生长操作分离牙齿来从IOS中分割牙齿</strong>。同样，（Kronfeld等人，2010）提出了一种基于主<strong>动轮廓模型的牙齿和牙龈边界检测系统</strong>。对于轮廓线方法，牙齿边界标志由用户在牙齿3D扫描上手动选择。</p>
+<p>例如，在（Sinthanayothin&amp;Tharanont，2008；Yaqi和Zhongke，2010）中，所选的齿边界用于<strong>根据其测地线信息计算轮廓线，并生成所需的最终齿边界</strong>。我们还可以提到谐波场方法，它比以前的方法更便于用户进行牙齿分割。与以前的技术相比，这种方法允许用户在分割过程之前选择有限数量的表面点，从而减少了用户交互（Zou et al.，2015；廖等人，2015）。</p>
+<p>当涉及到牙齿3D扫描的鲁棒和全自动分割时，上述方法达不到要求。为基于曲面曲率的方法<strong>设置最佳阈值并不简单</strong>。事实上，这些方法仍然对噪声敏感，并且选择错误的阈值可能会系统地影响分割精度，从而导致过度或不足分割的问题。此外，手动阈值选择将始终使基于曲率的方法远远不能应用于全自动模式。此外，轮廓线方法耗时、难以使用，并且密切依赖于人类互动。最后，<strong>谐波场技术涉及复杂和繁重的预处理步骤</strong>。</p>
+<h2 id="基于学习的方法"><a href="#基于学习的方法" class="headerlink" title="基于学习的方法"></a>基于学习的方法</h2><p>得益于深度学习技术，牙齿分割技术最近已经从手工制作的特征转向学习特征。事实上，现在非常清楚的是，数据驱动的特征提取，例如使用细胞神经网络，在许多计算机视觉任务中优于手工制作的特征，如物体检测（Ren et al.，2015）、图像分类（Wang et al.，2016）等，3D牙齿分割和标记也不例外。根据输入数据的不同，特征学习方法可分为两种主要方法：</p>
+<ol>
+<li>二维图像分割；</li>
+<li>三维网格分割；</li>
+</ol>
+<p>CNNs已经在许多研究中被用于从2D图像中提取相关特征。特别是，Cui等人（Cui et al.，2019）介绍了一种两阶段深度超视神经网络架构，用于从<strong>锥束计算机断层扫描（CBCT）图像中自动分割和识别牙齿实例</strong>。首先用自动编码器CNN从CBCT切片中提取一组边缘图，然后将其提供给Mask R-CNN网络（He et al.，2017）用于牙齿分割和识别。另一项研究对CBCT牙科切片上预先训练的AlexNet网络进行了微调，用于自动牙齿分类（Miki等人，2017）。（Rao et al.，2020）提出了一种对称的全卷积残差神经网络，用于生成CBCT图像中牙齿的分割概率图。随后，分别使用<strong>密集条件随机场技术</strong>和**深度瓶颈结构（ deep bottleneck architecture) **进行牙齿边界平滑和分割增强。张等人（Zhang et al.，2020）将3D牙齿扫描同构映射到2D谐波参数空间中，以生成将被馈送到基于U-Net架构的CNN中的2D图像，用于牙齿图像分割。</p>
+<p>利用深度学习技术和硬件计算能力的最新进展，研究人员开始在3D牙齿网格上直接使用基于深度学习的方法。Sun等人使用<strong>FeaStNet</strong>（Verma等人，2018），这是一种基于图的CNN的架构，用于从3D牙齿扫描中自动分割和标记牙齿（Sun等人，2020）。然后，他们扩展了先前的架构，并提出了一种用于牙齿分割和3D牙齿扫描的密集对应的端到端图卷积网络模型，其中使用<strong>测地图和概率矩阵来提高分割性能</strong>（Sun et al.，2020）。徐等人（Xu et al.，2018）介绍了一种基于深度CNN架构的多阶段框架，用于3D牙齿网格分割，其中通过训练两个独立的CNN来实现牙齿牙龈和牙齿间标记过程。类似地，Zanjani等人提出了一种基于PointNet（Qi et al.，2017a）网络架构的端到端深度学习系统，用于从点云表示中对单个牙齿和牙龈进行语义分割，以及在对抗性学习环境中作为鉴别器的二次神经网络，用于牙齿标记细化（Zanjany et al.，2019b）。Lian等人采用了更广泛的视角，修改了PointNet架构的原始版本，以纳入一组图约束学习模块，从而提取用于3D口腔内扫描的牙齿分割和标记的多尺度局部上下文特征（Lian等人，2020）。与（Lian et al.，2020；Zanjani et al.，2019b）不同的是，4位作者在（Tia et al.，2019）中添加了一个预处理步骤，使用<strong>稀疏体素八叉树分割</strong>对输入的3D扫描进行编码，然后分别提供用于分割过程的三级层次CNN学习和用于牙齿识别的另一个两级层次CNN。最近在（Cui et al.，2020）中提出了一种不同的方法，其中流程分为两个关键组成部分：<strong>第一个CNN专门用于3D质心预测，</strong>作为牙齿定位，然后<strong>第二个CNN分别应用于每个预先定位的裁剪的牙齿</strong>，用于联合牙齿&#x2F;牙龈分割和牙齿类型识别。同样，在（Zanjani et al.，2019a）中，提出了一种<strong>基于蒙特卡洛方法的区域建议网络（RPN）作为牙齿定位</strong>的第一步。该RPN之后是Mask R-CNN-like架构，例如牙齿分割。最后，作为后处理过程，牙齿质心上的查找表将标签分配给检测到的牙齿。在（Ma et al.，2020）中提出了另一种深度神经网络架构，用于基于邻接相似性和相对位置特征向量在3D扫描点云上进行预检测牙齿分类。它试图明确地对相邻牙齿之间的空间关系进行建模以进行识别。</p>
+<p>Zhao et al. (Zhao et al., 2021b) 提出了一种端到端网络，该网络采用一系列图形注意卷积层和全局结构分支，从原始网格数据中提取细粒度的局部几何特征和全局特征。然后，将这些特征融合以学习分割和标记任务。Zhao et al. (Zhao et al., 2022)提出了一种基于双流的图卷积网络（TSGCN），其中第一流从网格三维坐标中捕获牙齿的粗略结构，而第二流从其法向量中提取不同的结构细节。由于目前基于学习的方法主要依赖于昂贵的逐点标注， Qiu et al. (Qiu et al., 2022) 介绍了使用弱的低成本标注数据（标记所有牙齿质心，每次牙齿扫描仅标记少数牙齿）进行3D牙齿实例分割的牙弓（DArch）方法。DArch由两个阶段组成：牙齿质心检测和牙齿实例分割，其中通过Bezier曲线回归初始生成牙弓，然后使用基于图的卷积网络（GCN）进行细化。</p>
+<h1 id="材料和挑战设置"><a href="#材料和挑战设置" class="headerlink" title="材料和挑战设置"></a>材料和挑战设置</h1><h2 id="数据采集和注释"><a href="#数据采集和注释" class="headerlink" title="数据采集和注释"></a>数据采集和注释</h2><h3 id="数据采集"><a href="#数据采集" class="headerlink" title="数据采集"></a>数据采集</h3><p>根据《欧洲通用数据保护条例》（GDPR）协议，我们从主要位于法国和比利时的合作牙科诊所获得了900名患者的3D口腔内扫描，这些患者是由或拥有5年以上专业经验的口腔医生&#x2F;牙科医生获得的。所有数据都是完全匿名的，患者的身份无法透露。为每位患者采集两次3D扫描，分别覆盖上颌和下颌。以下IOS用于扫描采集：Dentsply的Primescan、3Shape的Trios3和iTero Element 2 Plus。这5个扫描仪具有代表性，并生成精度在10到90微米之间、点分辨率在30到80pts&#x2F;mm2之间的3D扫描。在采购过程中，除了内部监督办公室本身之外，没有使用任何其他设备。所有获得的临床数据都是为需要正畸（50%）或牙体治疗（50%）的患者收集的。所提供的数据集遵循真实世界的患者年龄分布：50%为男性，50%为女性，约70%在16岁以下，约27%在16-59岁之间，约3%在60岁以上。</p>
+<h3 id="数据注释和处理"><a href="#数据注释和处理" class="headerlink" title="数据注释和处理"></a>数据注释和处理</h3><p>数据注释，即牙齿分割和标记，是与在正畸、牙科手术和根管学方面拥有10多年专业知识的临床评估人员合作进行的。详细过程如图1所示。它由八个步骤组成。<img src="/images/1689928719555-f8546538-21d2-4b82-8341-0a9299ef7316.png"><br>图1：说明我们的注释过程。输入的3D IOS按照八个步骤进行注释，从预处理和姿势标准化开始，到临床验证结束。临床验证器可以根据所提出的问题将注释返回到步骤2、4或7，所述问题分别对应于缺失的牙齿、牙齿边界问题或不正确的牙齿实例标记。</p>
+<p>首先，对3D扫描进行预处理（图中的步骤1和2。1）通过移除所有退化和冗余的网格面，以及重复和不相关的顶点。然后通过主成分分析将牙齿网格坐标自动居中并与咬合平面对齐。这提高了牙齿的可见性，同时也使所有输入的3D IOS的3D姿势标准化。然后，我们使用自定义工具，用一个紧密的球体从3D扫描中手动裁剪出每颗牙齿6颗，该球体包括检测到的牙齿及其周围环境（即相邻的牙齿和牙龈）。我们决定在步骤3中执行UV映射，以使裁剪的3D网格变平，并显示最大的3D曲率，从而使牙齿边界的注释更容易。这种变换是通过谐波参数化来确保的，谐波参数化是一种固定边界参数化算法，它将扁平修剪牙齿的二维坐标计算为两个谐波函数Eck等人（1995）。然后将这些顶点映射到圆，并使用两个调和函数和圆边界约束计算其余顶点的二维坐标。好处有两个：注释器可以在不改变3D视角的情况下注释界定牙齿的2D多边形，并且3D曲率覆盖是关于牙齿边界的信息。</p>
+<p>在手动注释UV图（图1的步骤4）之后，我们在步骤5中将牙齿边界反向传播到3D裁剪体。在这一点上，每个单独的候选牙齿已经被手动分割，然而它们已经在相同的3D坐标系中表示。下一步的目的是收集所有牙冠，并准备进行手动标记，如图1的步骤7所示。我们遵循了外国直接投资世界牙科联合会的牙齿标签编号系统，如图2所示。</p>
+<p><img src="/images/1689928971460-4b3d5d0b-e42e-4edc-9370-99c957a74fcd.png"><br>图2：FDI世界牙科联合会编码在最后第8步骤的标注过程包括对制作的带注释的3D IOS进行目视检查和验证。这一步骤由我们的临床合作伙伴执行，他们是经验丰富的正畸医生、牙科外科医生和牙髓病学家。他们的检查目标是识别注释问题，如缺牙注释（返回步骤2）、牙齿边界注释不准确（返回步骤4）或牙齿标签不正确（返回步骤7）。重复该验证&#x2F;校正周期，直到整个数据集得到正确注释和临床验证。</p>
+<h1 id="数据记录"><a href="#数据记录" class="headerlink" title="数据记录"></a>数据记录</h1><p>共收集了1800张3D口腔内扫描，分别覆盖了900名患者的上下颌。图3显示了一些示例。<img src="/images/1689929189531-ab77d470-3e85-4718-8f8e-d75e71118416.png"><br>图3：6名随机选择的患者的带注释颌骨的正面和咬合绘制</p>
+<p>数据托管在Figshare平台上。为了在MICCAI 2022上进行分割和标记挑战，将3D扫描数据（obj格式）分为训练数据（1200次扫描，16004颗牙齿）和测试数据（600次扫描，7995颗牙齿）。患者通过其通用唯一标识符（uuid）进行匿名化。obj文件中每个顶点的基本事实牙齿标签和牙齿实例是以JavaScript对象表示法（JSON）格式提供的。JSON文件示例如下所示：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span> </span><br><span class="line">  <span class="attr">&quot; id_patient &quot;</span><span class="punctuation">:</span> <span class="string">&quot; YNKZHRPO &quot;</span><span class="punctuation">,</span>  </span><br><span class="line">  <span class="attr">&quot; jaw &quot;</span><span class="punctuation">:</span> <span class="string">&quot; upper &quot;</span><span class="punctuation">,</span> </span><br><span class="line">  <span class="attr">&quot; labels &quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span><span class="number">0</span><span class="punctuation">,</span> <span class="number">0</span><span class="punctuation">,</span> <span class="number">44</span><span class="punctuation">,</span> <span class="number">33</span><span class="punctuation">,</span> <span class="number">34</span><span class="punctuation">,</span> <span class="number">0</span><span class="punctuation">,</span> <span class="number">0</span><span class="punctuation">,</span> <span class="number">45</span><span class="punctuation">,</span> <span class="number">0</span><span class="punctuation">,</span> ... <span class="punctuation">,</span> </span><br><span class="line">    					<span class="number">41</span><span class="punctuation">,</span> <span class="number">0</span><span class="punctuation">,</span> <span class="number">0</span><span class="punctuation">,</span> <span class="number">37</span><span class="punctuation">,</span> <span class="number">0</span><span class="punctuation">,</span> <span class="number">34</span><span class="punctuation">,</span> <span class="number">45</span><span class="punctuation">,</span> <span class="number">0</span><span class="punctuation">,</span> <span class="number">31</span><span class="punctuation">,</span> <span class="number">36</span><span class="punctuation">]</span><span class="punctuation">,</span>   </span><br><span class="line">  <span class="attr">&quot; instances &quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span><span class="number">0</span><span class="punctuation">,</span> <span class="number">0</span><span class="punctuation">,</span> <span class="number">10</span><span class="punctuation">,</span> <span class="number">2</span><span class="punctuation">,</span> <span class="number">12</span><span class="punctuation">,</span> <span class="number">0</span><span class="punctuation">,</span> <span class="number">0</span><span class="punctuation">,</span> <span class="number">9</span><span class="punctuation">,</span> <span class="number">0</span><span class="punctuation">,</span> ... <span class="punctuation">,</span></span><br><span class="line">    							<span class="number">10</span><span class="punctuation">,</span> <span class="number">0</span><span class="punctuation">,</span> <span class="number">0</span><span class="punctuation">,</span> <span class="number">8</span><span class="punctuation">,</span> <span class="number">0</span><span class="punctuation">,</span> <span class="number">1</span><span class="punctuation">,</span> <span class="number">9</span><span class="punctuation">,</span> <span class="number">0</span><span class="punctuation">,</span> <span class="number">1</span><span class="punctuation">,</span> <span class="number">8</span><span class="punctuation">]</span>  </span><br><span class="line"><span class="punctuation">&#125;</span> </span><br></pre></td></tr></table></figure>
+<p>表“labels”和“instances”的长度与相应3D扫描中的网格顶点总数相同。默认情况下，labels和instances“0”是为牙龈保留的。除“0”外，表“instances”中的唯一数字表示3D扫描中的牙齿编号。</p>
+<h2 id="挑战配置"><a href="#挑战配置" class="headerlink" title="挑战配置"></a>挑战配置</h2><p>3DTeethSeg’22挑战赛作为2022年MICCAI的星活动组织，特别关注使用口腔内3D扫描进行牙齿检测、分割和标记的算法。挑战包括三个不同的阶段：一个训练阶段和两个测试阶段。训练阶段参与者可以获得扫描结果以及相应的注释。这使他们能够使用所提供的数据来设计和训练他们的算法。第一个测试阶段包括初步评估，参与者可以提交他们的算法，并在10次扫描的有限数据集上评估他们的性能。在最后的测试阶段，参与者没有被允许直接访问测试扫描。相反，他们被要求在docker容器中提交代码。然后对隐藏的测试数据进行评估，防止对测试数据进行任何重新训练或通过微调进行过拟合。所有的训练和测试数据，以及它们的公告，现在都是公开的。此外，我们还开放了数据处理和评估脚本，以促进进一步的研究和开发。所有与3DTeethSeg’22挑战相关的材料都可以通过以下链接访问：<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2FiZW5oYW1hZG91LzNEVGVldGhTZWcyMl9jaGFsbGVuZ2U=" title="https://github.com/abenhamadou/3DTeethSeg22_challenge">https://github.com/abenhamadou/3DTeethSeg22_challenge<i class="fa fa-external-link"></i></span></p>
+<h2 id="评价标准"><a href="#评价标准" class="headerlink" title="评价标准"></a>评价标准</h2><h3 id="牙齿定位精度"><a href="#牙齿定位精度" class="headerlink" title="牙齿定位精度"></a>牙齿定位精度</h3><p>牙齿定位精度（TLA）：真实标记的（GT）牙齿质心和最近的定位牙齿质心之间的归一化欧几里得距离的平均值。每个计算的欧几里得距离通过相应GT牙齿的大小进行归一化。在没有质心的情况下（例如，算法崩溃或给定扫描的输出丢失），将给出每个GT齿5的标称惩罚。这相当于实际GT齿尺寸的5倍的距离。由于每位患者的牙齿数量可能是可变的，因此在这里计算两个测试集中所有收集的GT牙齿的平均值。</p>
+<h3 id="牙齿分割精度"><a href="#牙齿分割精度" class="headerlink" title="牙齿分割精度"></a>牙齿分割精度</h3><p>牙齿分割精度（TSA）：计算为所有牙齿点云实例的平均F1分数。每个牙齿实例的F1分数测量为：<img src="/images/a97324d7b63603a05f44f6edd143eb70.svg"></p>
+<h3 id="牙齿识别率"><a href="#牙齿识别率" class="headerlink" title="牙齿识别率"></a>牙齿识别率</h3><p>牙齿识别率（TIR）：计算为两个测试集中真实识别病例相对于所有GT牙齿的百分比。对于给定的GT齿，当检测到的最接近的齿质心位于GT齿尺寸一半以下的距离处，并被赋予与GT齿相同的标签时才是识别成功。</p>
+<h1 id="方法"><a href="#方法" class="headerlink" title="方法"></a>方法</h1><p>3DTeethSeg’22挑战已经收到了500多个数据下载和注册请求。44个团队注册并参加了预赛阶段，只有10个团队将他们提交的材料上传到了挑战赛最后阶段的领导委员会。表1简要介绍了选定的六种排名靠前的方法，这些方法将在本节下文中更详细地介绍。</p>
+<table>
+<thead>
+<tr>
+<th>团队&#x2F;作者</th>
+<th>特征与方法</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>CGIP团队</td>
+<td>牙齿网格的每个顶点的<strong>多阶段</strong>牙齿实例模块标签。基于Point  Transformer骨干网络的点分组模块，用于预测牙齿的语义标签和偏移量。牙齿裁剪模块推断牙齿牙龈mask，以细化牙齿实例标签。</td>
+</tr>
+<tr>
+<td>FiboSeg团队</td>
+<td>在牙科模型的渲染2D视图上训练的残差U-Net模型，其中法向量被编码为RGB分量。多数投票方案为数字模型中的每个面片分配标签，然后进行后处理以去除离群点和边界平滑。</td>
+</tr>
+<tr>
+<td>IGIP 团队</td>
+<td>多阶段，牙齿-牙龈分离，牙齿质心预测，从预测质心周围裁剪的贴片中分割单个牙齿，结合形状和位置特征进行牙齿分类，后处理阶段使用牙弓曲线纠正分类错误。</td>
+</tr>
+<tr>
+<td>TeethSeg 团队</td>
+<td>使用3D U-net模型的多阶段粗分割阶段和利用局部几何特征来提高牙齿和牙龈边缘周围精度的精细分割阶段。考虑到邻域的凸性，并最大限度地减少边缘区域上的移动，采用Random Walker算法来标记牙模的表面</td>
+</tr>
+<tr>
+<td>OS 团队</td>
+<td>两阶段方法，高分辨率网络架构，具有并行操作的子网络，以从2D图像预测牙齿质心，并为输入3D网格的俯视图进行渲染。基于第一阶段的结果对单个牙齿进行裁剪和分割，并将分割的牙齿区域聚合并映射回原始网格。最后一步包括使用K-最近邻算法将抽取的模型上采样到原始扫描模型。</td>
+</tr>
+<tr>
+<td>Champers 团队</td>
+<td>基于Stratified Transformer结构的多级编码器-解码器网络用于牙齿质心预测。牙齿分割阶段采用两个分层Transformer的级联来分割单个牙齿。后处理步骤被应用于合并提案区域、插值分割和为源点云分配标签</td>
+</tr>
+</tbody></table>
+<h2 id="CGIP-团队-Hoyeon-Lim-et-al"><a href="#CGIP-团队-Hoyeon-Lim-et-al" class="headerlink" title="CGIP 团队 - Hoyeon Lim et al."></a>CGIP 团队 - Hoyeon Lim et al.</h2><p>如图4所示，所提出的方法由两个主要模块组成。首先，牙齿实例分割流水线为牙齿网格的每个顶点预测牙齿实例标签。然后，点分组模块获取采样的点云，并输出牙齿语义标签(分类)和牙齿实例标签(分割)。<img src="/images/1689932993845-503b1196-a87c-4811-ac8e-6a3b0a03b9aa.png"><br>图4: CGIP团队提出的方法（a） 牙齿实例分割流程为牙齿网格的每个顶点预先预测牙齿实例标签。（b） 点分组模块获取采样点云，输出牙齿语义标签和牙齿实例标签。这些牙齿实例标签然后由“牙齿裁剪模块”进行细化。实例标签中牙齿的颜色表示每个单独的牙齿实例，而牙齿语义标签的颜色表示牙齿类别。例如，牙齿语义标签中的绿色点对应于犬齿。</p>
+<h3 id="牙齿实例分割流程"><a href="#牙齿实例分割流程" class="headerlink" title="牙齿实例分割流程"></a>牙齿实例分割流程</h3><p>如图4（a）所示，所提出的牙齿实例分割流程获取牙齿网格，并为牙齿网格的每个顶点输出牙齿实例标签。 Tooth Group Network通过采样点的特征并生成牙齿的实例标签。有两种采样方法来获得采样点。</p>
+<p>为了获得最终的实例分割结果，有必要预测牙齿网格的每个顶点的所有牙齿实例标签。非采样点的牙齿实例标签是通过为其指定最近邻居点的标签来确定的。<strong>由于3D扫描仪的性质，牙齿网格的采样率在边界附近很高</strong>。因此，边界附近的点可能与多个标签相关联，这阻止了获得细粒度的牙齿实例标签。为了解决这个问题，<strong>提出了一种称为边界感知点采样方法的解决方案</strong>。该方法旨在增加边界附近的采样点数量。最初，通过利用牙齿网格的顶点上的最远点采样技术对n个点进行采样。Tooth Group Network将这些采样点作为输入，并为它们生成牙齿实例标签。通过检查预测的牙齿实例标签，可以识别位于边界附近的点。随后，使用边界感知点采样方法对边界附近的附加点进行采样。然后采用Tooth Group Network的另一实例来为位于边界附近的这些新采样点生成牙齿实例标签。</p>
+<p>为了获得最终的牙齿实例分割结果，从最远点采样和边界感知点采样聚合牙齿实例标签。每个牙齿实例的类别可以通过在对应牙齿实例内的牙齿语义标签之间进行多数投票来确定。通过将通过最远点采样得到的点输入到牙齿组网络中，可以获得牙齿语义标签（图4（b））。</p>
+<h4 id=""><a href="#" class="headerlink" title=""></a></h4><h3 id="Tooth-Group-Network"><a href="#Tooth-Group-Network" class="headerlink" title="Tooth Group Network"></a>Tooth Group Network</h3><p>如图4（b）所示，Tooth Group Network由点分组模块（PGM）和牙齿裁剪模块（TCM）组成。PGM和TCM的骨干网络是Point Transformerr (Zhao et al., 2021a).。不同之处在于，PGM有一个用于偏移预测的回归头和一个用于牙齿语义标签预测的分类头，而TCM只有一个用于推断牙齿牙龈掩膜的头。</p>
+<p>PGM的流程与Point Group相似（Jiang et al.，2020）。PGM的主干网络采用点云采样，该采样的点云包含n个点的坐标和normals。它预测牙齿的语义标签和偏移量。然后，通过根据偏移将每个点移动到其中心点来获得偏移的点云。将预测为牙龈的点将从此点云中过滤掉。每个点的牙齿实例标签是通过对偏移的点云进行聚类来获得的，因为偏移的点云中彼此更接近的点可能属于同一实例。DBSCAN（Ester等人，1996a）用于对3d点进行分组。基于聚类的牙齿实例标记过程是稳健的，因为每个牙齿实例都具有易于分组的紧凑圆柱体形状。</p>
+<p>在TCM中，采样点云是在预测牙齿实例的中心点周围裁剪的，并将其输入到TCM的骨干网络中。结果，生成作为输出的齿龈掩膜。此掩码用于细化PGM的牙齿实例标签。如果在PGM中预测为牙齿，但在TCM中预测为牙龈，则该点的牙齿实例标签将更改为牙龈。如果该点的牙齿实例标签在PGM中预测为牙龈，但在TCM中预测为牙齿，则该点的牙实例标签由最近邻点的标签确定。</p>
+<p>为了防止在牙齿分割标签变化的边界附近降低牙齿实例分割精度，采用了对比约束学习框架（Tang et al.，2022）。该框架使边界附近的两个点如果具有相似的特征，则它们具有相同的标签。相反，如果它们有不同的标签，骨干网络就会学会为这两点提供对比特征。当头部预测边界附近的牙齿实例标签时，就可以利用偏移的回归头部和用于牙齿语义标签的分类头部这些不同的特征。</p>
+<h2 id="FiboSeg团队-Mathieu-Leclercq-et-al"><a href="#FiboSeg团队-Mathieu-Leclercq-et-al" class="headerlink" title="FiboSeg团队-Mathieu Leclercq et al."></a>FiboSeg团队-Mathieu Leclercq et al.</h2><p>这项工作提出了一种基于深度学习的三维牙齿模型分割方法。它包括获取二维视图和从曲面中提取特征，如法线向量。使用诸如U-NET的2D卷积神经网络来分析渲染的图像。</p>
+<p><img src="/images/1691031843182-927f78c6-b9fa-468f-b975-68bc25b15847.png"><br>图5：FiboSeg团队提出的方法。在训练过程中，随机旋转牙齿模型并移除随机牙齿。从不同的视点渲染视图，并使用RGB组件中编码的法线向量以及用作第四组件的深度图对视图进行着色。在渲染步骤期间还创建地面实况目标图像。图像被馈送到残差U-Net，并且输出图像和目标图像被用于计算DiceCELoss。在推断时，采用多数投票方案为牙齿模型中的每个人脸分配标签。随后，应用离群点去除方法来消除孤立区域，并对分割牙齿的输出边界进行平滑，以获得更精细的结果。</p>
+<h3 id="渲染二维视图"><a href="#渲染二维视图" class="headerlink" title="渲染二维视图"></a>渲染二维视图</h3><p>Pytorch3D框架用于从不同角度渲染3D口腔内表面模型。在端到端的训练过程中，这些二维视图被提供给残差U-Net （2022,Hatamizadeh)。渲染引擎提供了一个映射，该映射将图像中的像素与网格中的面相关联，并允许快速提取点数据（法线、曲率、标签等），以及在推断后将信息设置回网格中。为了获得不同的视图，将随机旋转应用于摄影机，使其在单位球体的表面上移动。对于每个快照，我们生成两个图像。</p>
+<p>第一个包含RGB组件中编码的曲面法线+深度贴图。第二个包含在分割任务中用作目标的地面实况标签图。我们将渲染图像的分辨率设置为320像素。我们使用环境光，这样渲染的图像就没有任何镜面反射组件。</p>
+<h3 id="网络训练"><a href="#网络训练" class="headerlink" title="网络训练"></a>网络训练</h3><p>我们通过应用随机旋转和随机去除牙冠（不包括智齿）来增加数据。使用MONAI3库带有4个输入通道、34个输出通道的和具有2个残差单元的编码器&#x2F;解码器块以及具有步长2的通道（16、32、64、128、256）的残差U-Net来实例化模型。</p>
+<p>我们使用DiceCELoss，它计算骰子损失和交叉熵损失，并返回这两者的加权和。</p>
+<p><img src="/images/f0273be508a98de11d456086b7201a3f.svg"></p>
+<p>使用AdamW优化器将学习率设置为1e−4。需要注意的一件重要事情是，之前没有对网格进行预处理，即点&#x2F;面的子采样，或任何识别上颌或下颌的分类任务。训练学习识别对应于上牙冠和下牙冠的34个不同标签。我们对34个不同的类别使用了一个热编码：除了牙龈和背景之外，还有32个不同的牙冠。</p>
+<h3 id="预测"><a href="#预测" class="headerlink" title="预测"></a>预测</h3><p>预测有三个主要步骤：</p>
+<ol>
+<li>从三维对象渲染二维视图；</li>
+<li>对2D视图进行推理。</li>
+<li>将信息映射回3D网格。</li>
+<li>Pytorch3d光栅化器返回一个映射，该映射跟踪每个像素处最近的人脸，</li>
+</ol>
+<p>在我们对2D视图进行推理后，我们使用加权多数投票方案将信息放回3D网格，因为单个人脸可能由两个单独的视图渲染。被零像素击中的面的值为−1。</p>
+<h3 id="后处理"><a href="#后处理" class="headerlink" title="后处理"></a>后处理</h3><p>如果曲面的某些面在预测结束时未指定给任何标签，我们将应用“离群点去除”方法，该方法将指定最近连接的标签。最后，我们应用形态学闭合运算来平滑分割牙齿的边界</p>
+<h2 id="IGIP-团队-Shaojie-Zhuang-et-al"><a href="#IGIP-团队-Shaojie-Zhuang-et-al" class="headerlink" title="IGIP 团队 -Shaojie Zhuang et al"></a>IGIP 团队 -Shaojie Zhuang et al</h2><p><img src="/images/1700729449995-6bb65174-f946-4baf-9d45-8601ce29b581.png"><br>图 6：IGIP 团队提出的方法。预测每颗牙齿的质心，在此基础上裁剪部分牙颌，然后去除牙冠上的曲率。接下来，在裁剪的牙冠分割阶段，对牙齿标签和masks进行预测并映射回原始模型。最后，应用 pos-processing 阶段来修复错误标签。</p>
+<p>如图6所示，它是一种用于精确牙齿分割的多阶段方法。首先，将点云下采样到 N &#x3D; 32768 个点作为输入。然后，输入被分离成牙齿和牙龈。在牙颌上预测质心，围绕质心点裁剪牙块，并分割每个牙块的单个牙齿。接下来，通过结合局部和全局特征来完成牙齿分类，然后是后处理阶段以纠正潜在的分类错误。</p>
+<ul>
+<li><strong>牙齿与牙龈分离：</strong>第一步，对牙齿和牙龈进行二元分类，去除点云中大部分非牙点，以减少基准模型引起的推理误差；</li>
+<li><strong>质心预测：</strong>通过使用PointNet++ Qi等人（2017b），将具有<img src="/images/bbf0920b9f21222367e287a018a2b47e.svg"><br>个点的输入点云<img src="/images/ffd1905f6d4d60accedfa6b91be93ea9.svg"><br>下采样为具有<img src="/images/65e98f57dd5719b1f9201440058f6927.svg"><br>个点的点云<img src="/images/a7bbfad47d9fb4bbc336325cef99a920.svg"><br>。对属于<img src="/images/a7bbfad47d9fb4bbc336325cef99a920.svg"><br> 的每个点进行回归，得到一个偏移向量 <img src="/images/18ba3ce8a3c5557582d6e984e1d1d7d9.svg"><br>。预测的质心最终由<img src="/images/576fe313dc69b6003506bff0dbb841d6.svg"><br>获得。与Cui et al. （2020）类似，对于每个预测的质心<img src="/images/6270b40ae5b49af38085914a0c0c0c07.svg"><br>，最接近的真值质心<img src="/images/e9f977d2a16842d9a6a99e988371943d.svg"><br>是其目标，网络使用以下损失函数进行监督：<ul>
+<li><p><img src="/images/d615eabb2068ece017a7cc24f29d7c93.svg"></p>
+</li>
+<li><p>其中smooth L1 损失监督预测质心与真值质心之间的距离，<img src="/images/f0edf8ff63e6eda23ceda62523590677.svg"></p>
+</li>
+</ul>
+</li>
+</ul>
+<p>分别以距离<img src="/images/085d2acd96f2760386638a2fa040cb06.svg"><br>的最小距离和第二最小距离真值的质心，用于将预测的质心远离其他真值质心，λ经过验证后设置为0.2，<img src="/images/7984a9f82f1bc07fc241359bd1d51883.svg"><br>为倒角距离损失。在预测后，使用密度峰值聚类算法Rodriguez&amp;Laio（2014）对密集质心进行聚类，以获得最终的质心。</p>
+<ul>
+<li><strong>部分分割：</strong> 在每个预测的质心周围裁剪牙块，牙块大小设置为 <img src="/images/bec8efd575a1af90f0f9f4246868d573.svg"><br>，这可确保一个牙块中至少包含一个完整的牙齿。每个点都附加一个距离权重来标记牙齿，计算公式：<ul>
+<li><p><img src="/images/030ef134b278499f7d3af4a82402fea8.svg"></p>
+</li>
+<li><p>其中 <img src="/images/95255f81872db07332cf4e74dd2f497d.svg"></p>
+</li>
+</ul>
+</li>
+</ul>
+<p>是预测的质心。此外，曲率作为一个特征，能够加强牙齿-牙龈边界处的意义。牙冠处的曲率由第一步获得的二元mask（齿龈分离）去除。输出由交叉熵损失监督。此外，如果牙齿中存在多个质心，则对牙块进行重叠检测，如果预测的两个牙块的mask重叠很多，则将它们合并为一个牙块。</p>
+<ul>
+<li><strong>牙齿分类：</strong>在大多数算法中，牙齿分类的重要性往往被忽视。这是通过实例分割网络输出整个模型的逐点标签的常用方法，但此类算法不考虑单个牙齿的特征。一些方法，如 Im 等人（2022 年）;Lian et al. （2019） 仅将牙齿分为 16、14 或更少的类别，忽略了牙齿所在的象限。Ma et al. （2020） 使用具有邻域关系的牙齿特征向量以获得更好的标记准确性，但它依赖于规则的牙齿分布。<ul>
+<li>为了强调分类，该方法提出了一个新的网络和一个后处理阶段来修复潜在的错误。在对一个牙块中的单个牙齿进行分类时，网络会将从牙块中提取的形状特征与牙齿掩模相结合，以及指示补丁在模型上的位置特征。仅使用形状特征或位置特征不足以准确分类牙齿。这两个特征被连接并馈入一个全连接层，以获得 33-D 输出（32 个齿和一个背景）。这是解决分类问题的一种更像人的方法。输出由交叉熵损失监督。在我们的方法中，不需要关于模型是属于上颌还是下颌的先验信息，因为上下颌的门牙在形状和大小上差异最大，这一步中提取的全局特征可以说明问题。</li>
+</ul>
+</li>
+<li><strong>后处理：</strong>深度学习方法不会每次都能给出正确的标签预测，因此提出了使用牙弓曲线来纠正潜在分类错误的后处理阶段。首先，将预测的质心预测到 xOy 平面上，并将平行曲线拟合为牙弓曲线。然后，根据曲线计算出每颗牙齿的相对位置，并可以修复一些典型的误差。例如，如果两颗牙齿具有相同的标签，则可以通过排序的标签序列来校正它们的标签;或者，如果标签紊乱，可以根据牙齿的顺序重新排序。</li>
+</ul>
+<h2 id="TeethSeg-团队-Tudor-Dascalu-等人"><a href="#TeethSeg-团队-Tudor-Dascalu-等人" class="headerlink" title="TeethSeg 团队 - Tudor Dascalu 等人"></a>TeethSeg 团队 - Tudor Dascalu 等人</h2><p><img src="/images/1700732286839-9d99d505-cfe2-4d8e-8419-203de4adafe5.png"><br>图 7：TeethSeg 团队提出的方法。使用 U-net 模型对网格进行分割。牙齿-牙齿和牙龈边缘周围的不准确性使用局部几何特征进行校正。</p>
+<p>该团队开发了一个多阶段流程，旨在从 3D 牙科铸造网格中标记和分割牙齿（图 7）。第一步包括对牙齿结构进行粗分割。接下来，使用对局部几何特征的分析来优化生成的输出。</p>
+<h3 id="粗分割"><a href="#粗分割" class="headerlink" title="粗分割"></a>粗分割</h3><p>粗分割阶段包括牙齿结构的间接分割。网格被转换为二进制体素图像。然后，使用3D U-net架构对显示牙模的二进制图像进行分割。为下颚和上颚分别训练了单独的U-net模型。每个模型产生一个与牙模输入二进制图像大小相同的N维3D数组。牙齿掩模占据了数组中的N-1个通道，其中1个掩模对应于非牙齿结构。</p>
+<h3 id="精细分割"><a href="#精细分割" class="headerlink" title="精细分割"></a>精细分割</h3><p>为了解决由于二进制图像的分辨率远低于牙模分辨率而导致的牙齿-牙齿和牙齿-牙龈边缘精度损失问题，引入了精细分割阶段。为了生成精细分割，使用二进制U-net结果对输入牙模进行标记，通过找到距离给定网格顶点最近的网格点。由于上述二进制体积图像和网格之间的分辨率差异，这种标记是粗略的。在改进阶段，参与者定义了一个增强靠近边缘区域的顶点的函数f。对于给定顶点v，函数f的输出基于v周围邻域的凸性。然后，使用随机行走算法对牙模的顶点进行标记。种子点设置为属于牙冠顶点和牙龈的区域。从粗略分割输出中提取。对于每个非种子顶点，随机漫游开始在网格空间中导航，直到它们到达种子点。漫游者的运动是用函数f来操纵的，这样他们就不太可能跨过边缘区域。最后Random Walker 算法的结果被用作框架的最终输出。</p>
+<h2 id="os-团队-Tae-Hoon-Yong-et-al"><a href="#os-团队-Tae-Hoon-Yong-et-al" class="headerlink" title="os 团队-Tae-Hoon Yong et al."></a>os 团队-Tae-Hoon Yong et al.</h2><p><img src="/images/1700733032942-beaea3d0-e847-48dd-adb6-2846bda103fa.png"><br>图 8：os团队建议的方法。在第 1 阶段，我们从预处理的输入网格中获取了 2D 捕获的图像，以去除异常值。基于2D编码器-解码器结构的深度学习模型从2D图像中预测了每颗牙齿的质心和FDI数。在第 2 阶段，我们根据第 1 阶段的结果，从少于 50,000 个面的网格中获取了每颗牙齿的裁剪网格。通过冠分割深度学习模型从裁剪网格中分割出的每个冠状区域恢复并聚合到原始网格后，使用 K 最近邻 （KNN） 算法将聚合模型反向投影到原始网格。</p>
+<p>如图8所示，所提出的方法由两个阶段组成，将基于二维图像的牙齿质心预测和分类与国际牙科联合会（FDI）牙科编号系统相结合，以及基于网格表面的单个牙齿分割。</p>
+<h3 id="牙齿质心预测和分类"><a href="#牙齿质心预测和分类" class="headerlink" title="牙齿质心预测和分类"></a>牙齿质心预测和分类</h3><p>给定一个输入网格模型，我们首先提取异常值以获得去除一些噪声的归一化模型。为了识别每颗牙齿的质心，我们获得了从垂直于咬合平面的俯视图渲染中捕获的二维牙齿图像。通过 512×512 捕获的图像，我们使用基于高分辨率网络的热图预测方法预测了每颗牙齿的质心（Wang et al.， 2020），这些网络由子网络组成，并融合了低到高的表示。除了检测质心外，每个地标还被分类为16个通道。由于预测的质心显示出聚类趋势，我们将DBSCAN算法（Schubert等人，2017）应用于所有预测的质心，以去除多余的齿质心。为了还原位于冠部的点中最接近二维坐标的三维坐标，通过将三维坐标投影到二维空间中来计算三维坐标。</p>
+<h3 id="单个牙齿分割"><a href="#单个牙齿分割" class="headerlink" title="单个牙齿分割"></a>单个牙齿分割</h3><p>在基于阶段1结果对每颗牙齿进行裁剪之前，我们将输入网格模型的面数降低到50,000个或更少，以便进行高效计算。根据最近的相邻质心地标，我们计算了单个牙齿的半径，以便将网格裁剪成椭圆形或圆形。圆形应用于磨牙，而椭圆形应用于其他牙齿。为了在裁剪后的单个牙齿面中分割牙齿区域，我们使用了改进的二值化牙齿分割方法，改进了图约束学习模块的实现(Lian等人，2020；Wu等人，2022)。基于分割的单个牙齿结果，我们使用图割算法(Lian等人，2020)对其进行了细化，以获得精确的牙冠区域。在对单个牙齿区域进行细化处理后，我们将每个结果映射到降采样模型中并进行聚合。最后，使用K-最近邻（KNN）算法(Johnson等人，2019)将降采样模型上采样至原始扫描模型，以保留降采样模型的结果。</p>
+<h2 id="Champers-团队-Niels-van-Nistelrooij"><a href="#Champers-团队-Niels-van-Nistelrooij" class="headerlink" title="Champers 团队 - Niels van Nistelrooij"></a>Champers 团队 - Niels van Nistelrooij</h2><h3 id="3D-扫描预处理"><a href="#3D-扫描预处理" class="headerlink" title="3D 扫描预处理"></a>3D 扫描预处理</h3><p>口内扫描通过其顶点以及坐标和法线作为顶点特征进行表示。在预处理过程中，通过覆盖正则网格对顶点进行子采样，并从每个占用的网格单元中抽取一个点。这导致了一个具有可变点数的均匀密度点云，保持比例尺。随机数据增强对坐标进行了缩放，将扫描左右翻转，并围绕纵轴旋转。源扫描上的注释用于确定每个牙齿实例的质心和FDI标签。随后，32个可能的标签被转换成7个类别，删除上&#x2F;下和左&#x2F;右的区分。此外，少数第三磨牙被转换为第二磨牙。</p>
+<h3 id="提议的模型架构"><a href="#提议的模型架构" class="headerlink" title="提议的模型架构"></a>提议的模型架构</h3><p>提出的模型在很大程度上受到TSegNet（Cui等人，2020）的启发，该模型将问题分为两个阶段，分别用于质心预测和牙齿分割。</p>
+<ul>
+<li><strong>编码器-解码器网络：</strong><ul>
+<li>编码器-解码器网络。整个模型中反复使用的编码器-解码器架构是分层转换器（Lai等，2022）。这种用于点云的Vision Transformer使用基于窗口的多头自注意力来学习上下文特征。其编码器路径在后续的Transformer块中使用移位窗口，以有效地学习长程依赖关系（Liu等，2021）。在每组块之后，当前点云通过最远点采样进行二次采样。最初的点用于播种最远点采样是随机抽样的，因此在编码器路径结束时，每次前向传递得到的子采样点云都不同。在解码器路径中，使用加权3个最近邻插值来对较小的点云进行上采样。然后将其特征与来自编码器路径的跳跃连接后的点云的特征相加。解码器路径的结果与输入相同，但具有上下文特征。</li>
+</ul>
+</li>
+<li><strong>牙齿质心的预测：</strong><ul>
+<li>首先，输入的点云通过Stratified Transformer的编码器处理进行处理。由此得到的子采样点云的每个点具有256个特征。这些特征经过两个全连接头进一步处理。第一个头部预测了每个点到其最近牙齿质心的欧氏距离，并受到平滑的L1损失的监督。然后利用这些距离来过滤周边的点，从而仅保留牙弓上的点。第二个头部预测了每个点到其最近牙齿质心的x、y和z偏移量。这些预测值与真实值进行比较，使用以下损失函数：<ul>
+<li><p><img src="/images/57fc750293ae0c9229df5b2c95e91b89.svg"></p>
+<ul>
+<li><img src="/images/38a3f4d664b7a723d138f9d57be0c783.svg"></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p>是真值齿质心的数量;<br>         - <img src="/images/f8885e425367c69d5c1abddbacd4e3a6.svg"><br>  是滤波后的子采样点的坐标;<br>         - <img src="/images/8397bd103c144eff38d60c4cf4552179.svg"><br> 对应预测的偏移量;<br>         - <img src="/images/1890b9a6c153c25f63c487466741c253.svg"><br>是 pi 中离真实值最近的牙齿的质心;<br>         - <img src="/images/fd2e163f467941f53a5442538d421ba5.svg"><br>是以 <img src="/images/6a77b02bb43293798405605f323a5baa.svg"><br> 为质心的牙齿实例的半径;<br>         - 归一化欧几里得函数:<br>            - 计算点与其最近的真值齿质心之间的平方欧几里得距离。通过对具有最接近质心的牙齿实例的半径进行归一化，可以纠正有利于较大牙齿的偏差。此外，真实值的质心是从点的位置选择的，而不是从点的预测最近质心选择的。<br>         - 分离函数：<br>            - 计算从点到其最近和第二最近的真实值质心的距离差。每当模型预测到进一步的质心时，这都会惩罚模型。归一化和分离导致牙齿实例中预测的质心的分层要好得多。质心预测阶段运行了六次，以收集许多质心预测。最后，应用DBSCAN算法将质心聚类到每个牙齿实例的一个点（Ester等人，1996b）。</p>
+<ul>
+<li><strong>牙齿分割：</strong><ul>
+<li>第一步通过Stratified Transformer处理输入点云，从而生成相同的点云，每个点有 48 个特征。对于每个预测的质心，对 3,528 个最近邻进行抽样以形成一个提案。这种提案的每一点都有 52 个特征; 48 个上下文特征、3 个全局坐标以及从预测质心到点的局部距离。</li>
+<li>然后，每个提案都由两个Stratified Transformer的级联独立处理。第一个网络在提案中预测了牙齿的二分类分割。此 1 通道预测按通道连接，形成具有 53 个特征的点的提案。</li>
+<li>这些建议随后由第二个网络处理，该网络也预测了前景分割。两个网络的预测均由二元交叉熵损失监督。</li>
+<li>第二个网络另外预测了前景牙齿的位置，前提是利用第一个网络的分割结果。为了实现这一点，首先对最潜在的维度中的特征应用全局平均池化，然后通过全连接层返回每个提议七个logits。这种分类是以分类交叉熵损失进行监督。由于与分割头相比，分类头的收敛速度要快得多，所以将其学习率降低了十倍。</li>
+<li>牙齿分割阶段运行两次，以收集每个牙齿实例的多个提议预测。对于每次牙齿分割阶段的运行，都使用相同的预测质心。</li>
+</ul>
+</li>
+</ul>
+<h3 id="后处理-1"><a href="#后处理-1" class="headerlink" title="后处理"></a>后处理</h3><p>首先，当前景点的交并比至少为0.35时，对提议进行合并。同时，对于同时出现在两个提议中的点的分割和分类logits进行求和。这自然地将多次运行和具有相同前景牙齿的提议合并在一起，从而提高了有效性。</p>
+<p>然后，对分割结果进行插值，以适应源点云的点。为此，在每个预测的质心周围采样20%的最近邻点。然后将分割logits分段线性地插值到源点上，对于外推，则回退到3个最近邻点。因此，分类logits不会被插值。</p>
+<p>接下来，将预测的位置转换回FDI标签。上颚或下颚是先验信息，左右区分是通过将预测的质心与中切牙提议的质心进行比较来实现的。如果旁边有额外的前第二磨牙，则通过增加第二磨牙的标签来检索第三磨牙。</p>
+<p>最后，将插值牙齿提议投影回源点云。未包含在任何提议中或仅具有负分割logits的源点被赋予牙龈标签。其他源点被赋予使该点具有最高分割logit的提议的FDI标签。此外，为了允许在扫描中具有相同FDI标签的多个牙齿实例，还返回了归因提议的索引。</p>
+<h3 id="实施细节"><a href="#实施细节" class="headerlink" title="实施细节"></a>实施细节</h3><p>质心预测阶段在挑战赛中的1191个扫描中进行了500轮的训练；7个带牙套的扫描被移除，以及2个牙齿严重错位的扫描。</p>
+<p>牙齿分割阶段在1072个扫描中进行了100轮的训练，其中留出了119个扫描用于模型选择。这个90%&#x2F;10%的拆分是基于每个扫描的唯一FDI标签的二阶分层（Szyma´nski &amp; Kajdanowicz, 2017）。</p>
+<p>使用AdamW优化器进行了训练，并使用了权重衰减，以及带有线性预热期的余弦退火学习率调度器（Loshchilov &amp; Hutter, 2017）。最后，所有模型都是使用PyTorch Lightning（Paszke等，2019）从头开始实现的。</p>
+<h1 id="实验结果"><a href="#实验结果" class="headerlink" title="实验结果"></a>实验结果</h1><p>我们对结果进行了定量和定性评价。我们首先介绍参与方法的最终排名以及挑战不同任务的获得结果。后记：我们展示了不同的案例，以直观地检查在挑战的最后阶段获得的预测的质量。</p>
+<h2 id="定量评估"><a href="#定量评估" class="headerlink" title="定量评估"></a>定量评估</h2><table>
+<thead>
+<tr>
+<th>Team</th>
+<th>Exp(-TLA)</th>
+<th>TSA</th>
+<th>TIR</th>
+<th>得分</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>CGIP</td>
+<td>0.9658</td>
+<td><strong>0.9859</strong></td>
+<td>0.9100</td>
+<td><strong>0.9539</strong></td>
+</tr>
+<tr>
+<td>FiboSeg</td>
+<td><strong>0.9924</strong></td>
+<td>0.9293</td>
+<td>0.9223</td>
+<td>0.9480</td>
+</tr>
+<tr>
+<td>IGIP</td>
+<td>0.9244</td>
+<td>0.9750</td>
+<td><strong>0.9289</strong></td>
+<td>0.9427</td>
+</tr>
+<tr>
+<td>TeethSeg</td>
+<td>0.9184</td>
+<td>0.9678</td>
+<td>0.8538</td>
+<td>0.9133</td>
+</tr>
+<tr>
+<td>OS</td>
+<td>0.7845</td>
+<td>0.9693</td>
+<td>0.8940</td>
+<td>0.8826</td>
+</tr>
+<tr>
+<td>Chompers</td>
+<td>0.6242</td>
+<td>0.8886</td>
+<td>0.8795</td>
+<td>0.7974</td>
+</tr>
+</tbody></table>
+<p>表2：获得参赛团队的评估指标。给定的排名基于最终分数（见最后一栏）表 2 中所示的排名由第 2 节前面描述的总体得分决定。值得注意的是，排名可能会因被评估的特定任务或指标而异。在整体性能方面，CGIP团队提出的方法处于领先地位。然而，当专门关注牙齿定位任务时，FiboSeg 团队以 0.9924 的 Exp（-TLA） 获得了最高分。另一方面，CGIP团队在牙齿分割任务中表现出色，获得了0.9859的TSA分数。IGIP团队在牙齿标记任务中表现出色，TIR得分为0.9289。这些结果强调了不同方法的多样性和优势，展示了它们在挑战的特定方面的有效性。</p>
+<h2 id="定性评估"><a href="#定性评估" class="headerlink" title="定性评估"></a>定性评估</h2><p><img src="/images/1700812054688-7c67fb7e-e053-4e7e-988a-9b2b30040114.png"><br><img src="/images/1700812065770-8672aa6c-75fa-4ff8-8ea8-45286bbb99bc.png"><br>图 9：在四个样品（即两个下颌 （a，b） 和两个上颌 （c，d） 上颚上应用竞争方法所获得结果的目视比较。第一行显示了与牙齿分割和标记相关的基本事实。其余行显示团队全局排名后的结果。</p>
+<p>图 9 直观地表示了竞争方法对验证数据集中的四个样本获得的分割结果。总体而言，所获得结果的视觉评估与定量评估中提供的排名一致。CGIP团队表现出了优势，特别是在分割任务中，具有始终如一的准确分割结果。然而，应该注意的是，FiboSeg 团队表现出较低的分割精度，特别是在大多数分割牙齿的牙龈-牙齿边界。</p>
+<p>在多个团队中观察到缺牙检测，但在 IGIP 团队（样本 d）和 OS 团队（例如样本 a 和 b）的结果中更为明显。在 TeethSeg 团队的案例中，在某些情况下，牙齿边界的描绘似乎不准确，这在样本 b、c 和 d 中很明显。这些视觉观察为竞争方法的优缺点提供了额外的见解。</p>
+<h1 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h1><p>3D 牙齿扫描分割和标记挑战赛 （3DTeethSeg’22） 与 MICCAI 2022 联合进行。该挑战提供了一个公开的数据集，该数据集由从 900 名患者获得的 1800 个口内 3D 扫描组成，这是目前最大、最准确的注释口内 3D 扫描数据集。该挑战旨在评估用于牙齿检测、分割和标记任务的六种算法。本文概述了挑战设置，总结了参与算法，并比较了它们的性能。在 3D 牙齿扫描分割和标记挑战赛 （3DTeethSeg’22） 的最后测试阶段，CGIP 团队的算法获得了 0.9539 的最高总分，使其成为性能最佳的解决方案。此外，同一算法在分割任务中获得了最高的性能，TSA 指标的得分为 0.9859。另一方面，FiboSeg 团队的算法在牙齿检测任务中表现出色，在 Exp（-TLA） 指标上以 0.9924 的得分位居榜首。在标记任务中，IGIP团队的算法获得了最高分，TIR指标的值为0.9289。</p>
+<p>未来的方向可能包括在数据集中加入更多的可变性，例如牙齿缺失或受损的更具挑战性的案例以及模棱两可的标签场景，以提供更全面的评估并增强算法有效处理真实场景的能力。此外，在下一次挑战迭代中评估预测牙龈&#x2F;牙齿边界的准确性和平滑度也很重要。在未来的迭代中，评估算法的运行时和计算复杂性将是有益的，因为这些因素是将开发的解决方案集成到牙科中使用的计算机辅助设计 （CAD） 软件中关键考虑因素。</p>
+<blockquote>
+</blockquote>
+<h1 id="引用"><a href="#引用" class="headerlink" title="引用"></a>引用</h1><ol>
+<li>Cui, Z., Li, C., Chen, N., Wei, G., Chen, R., Zhou, Y., &amp; Wang, W. (2020). Tsegnet: an efficient and accurate tooth segmentation network on 3d dental model. Medical Image Analysis, 69 , 101949.（Tsegnet:一种高效准确的三维牙齿分割网络） </li>
+<li>Cui, Z., Li, C., &amp; Wang, W. (2019). Toothnet: Automatic tooth instance segmentation and identification from cone beam ct images. In Proceedings of the IEEE&#x2F;CVF Conference on Computer Vision and Pattern Recognition (pp. 6368–6377).（Toothnet：从锥束CT图像中进行自动牙齿实例分割和识别） </li>
+<li>Eck, M., DeRose, T., Duchamp, T., Hoppe, H., Lounsbery, M., &amp; Stuetzle, W. (1995). Multiresolution analysis of arbitrary meshes. In ACM Conference on Computer graphics and interactive techniques (SIGGRAPH ’95) (pp. 173–182).（任意网格的多分辨率分析） </li>
+<li>Ester, M., Kriegel, H. P., Sander, J., &amp; Xu, X. (1996a). A density-based algorithm for discovering clusters in large spatial databases with noise. In Proceedings of the Second International Conference on Knowledge Discovery and Data Mining (p. 226–231).（一种基于密度的大规模空间数据库中噪声聚类的发现算法） </li>
+<li>Ester, M., Kriegel, H.-P., Sander, J., &amp; Xu, X. (1996b). A density-based algorithm for discovering clusters in large spatial databases with noise. In Proceedings of the Second International Conference on Knowledge Discovery and Data Mining (pp. 226––231).（一种基于密度的大规模空间数据库中噪声聚类的发现算法） </li>
+<li>Hatamizadeh, A., Tang, Y., Nath, V., Yang, D., Myronenko, A., Landman, B., Roth, H. R., &amp; Xu, D. (2022). Unetr: Transformers for 3d medical image segmentation. In Proceedings of the IEEE&#x2F;CVF winter conference on applications of computer vision (pp. 574–584).（Unetr：用于三维医学图像分割的变压器） </li>
+<li>He, K., Gkioxari, G., Dollar, P., &amp; Girshick, R. (2017). Mask r-cnn. In 2017 IEEE International Conference on Computer Vision (ICCV) (pp. 2980–2988).（Mask r-cnn） </li>
+<li>Im, J., Kim, J.-Y., Yu, H.-S., Lee, K.-J., Choi, S.-H., Kim, J.-H., Ahn, H.-K., &amp; Cha, J.-Y. (2022). Accuracy and efficiency of automatic tooth segmentation in digital dental models using deep learning. Scientific Reports, 12 , 1–11.（利用深度学习进行数字牙科模型自动牙齿分割的准确性和效率） </li>
+<li>Jiang, L., Zhao, H., Shi, S., Liu, S., Fu, C., &amp; Jia, J. (2020). Pointgroup: Dual-set point grouping for 3d instance segmentation. In Proceedings of the IEEE&#x2F;CVF International Conference on Computer Vision (pp. 4866–4875).（Pointgroup: 三维实例分割的双集点分组） </li>
+<li>Johnson, J., Douze, M., &amp; J´egou, H. (2019). Billion-scale similarity search with gpus. IEEE Transactions on Big Data, 7 , 535–547.（亿级相似性搜索与GPU） </li>
+<li>Kronfeld, T., Brunner, D., &amp; Brunnett, G. (2010). Snake-based segmentation of teeth from virtual dental casts. Computer-Aided Design and Applications, 7 , 221–233.（基于蛇的虚拟牙科模型牙齿分割） </li>
+<li>Lai, X., Liu, J., Jiang, L., Wang, L., Zhao, H., Liu, S., Qi, X., &amp; Jia, J. (2022). Stratified transformer for 3d point cloud segmentation.（用于三维点云分割的分层变压器） </li>
+<li>Lian, C., Wang, L., Wu, T.-H., Liu, M., Dur´an, F., Ko, C.-C., &amp; Shen, D. (2019). Meshsnet: Deep multi-scale mesh feature learning for end-to-end tooth labeling on 3d dental surfaces. In International Conference on Medical Image Computing and Computer-Assisted Intervention (pp. 837–845). Springer.（Meshsnet：用于三维牙科表面端到端牙齿标记的深度多尺度网格特征学习） </li>
+<li>Lian, C., Wang, L., Wu, T.-H., Wang, F., Yap, P.-T., Ko, C.-C., &amp; Shen, D. (2020). Deep multi-scale mesh feature learning for automated labeling of raw dental surfaces from 3d intraoral scanners. IEEE transactions on medical imaging, 39 , 2440–2450.（用于来自三维口内扫描仪的原始牙科表面自动标记的深度多尺度网格特征学习） </li>
+<li>Liao, S.-h., Liu, S.-j., Zou, B.-j., Ding, X., Liang, Y., &amp; Huang, J.-h. (2015). Automatic tooth segmentation of dental mesh based on harmonic fields. BioMed research international, 2015 .（基于谐波场的牙科网格的自动牙齿分割） </li>
+<li>Liu, Z., Lin, Y., Cao, Y., Hu, H., Wei, Y., Zhang, Z., Lin, S., &amp; Guo, B. (2021). Swin transformer: Hierarchical vision transformer using shifted windows.（Swin transformer：使用偏移窗口的分层视觉变换器） </li>
+<li>Loshchilov, I., &amp; Hutter, F. (2017). Decoupled weight decay regularization.（解耦权重衰减正则化） </li>
+<li>Ma, Q., Wei, G., Zhou, Y., Pan, X., Xin, S., &amp; Wang, W. (2020). SRF-Net: Spatial Relationship Feature Network for Tooth Point Cloud Classification. Computer Graphics Forum, 39 , 267–277.（SRF-Net：用于牙齿点云分类的空间关系特征网络） </li>
+<li>Miki, Y., Muramatsu, C., Hayashi, T., Zhou, X., Hara, T., Katsumata, A., &amp; Fujita, H. (2017). Classification of teeth in cone-beam ct using deep convolutional neural network. Computers in biology and medicine, 80 , 24–29.（使用深度卷积神经网络对锥束CT中的牙齿进行分类） </li>
+<li>Paszke, A., Gross, S., Massa, F., Lerer, A., Bradbury, J., Chanan, G., Killeen, T., Lin, Z., Gimelshein, N., Antiga, L., Desmaison, A., Kopf, A., Yang, E., DeVito, Z., Raison, M., Tejani, A., Chilamkurthy, S., Steiner, B., Fang, L., Bai, J., &amp; Chintala, S. (2019). Pytorch: An imperative style, high-performance deep learning library. In Advances in Neural Information Processing Systems 32 (pp. 8024–8035).（Pytorch：一种命令式风格、高性能的深度学习库） </li>
+<li>Qi, C. R., Su, H., Mo, K., &amp; Guibas, L. J. (2017a). PointNet: Deep Learning on Point Sets for 3D Classification and Segmentation. In Proceedings of the IEEE conference on computer vision and pattern recognition (pp. 652–660).（PointNet：用于三维分类和分割的点集深度学习） </li>
+<li>Qi, C. R., Yi, L., Su, H., &amp; Guibas, L. J. (2017b). Pointnet++: Deep hierarchical feature learning on point sets in a metric space. Advances in neural information processing systems, 30 .（Pointnet++：在度量空间中对点集进行深层次特征学习） </li>
+<li>Qiu, L., Ye, C., Chen, P., Liu, Y., Han, X., &amp; Cui, S. (2022). Darch: Dental arch prior-assisted 3d tooth instance segmentation with weak annotations. In Proceedings of the IEEE&#x2F;CVF Conference on Computer Vision and Pattern Recognition (pp. 20752–20761).（Darch：辅助弱标注的牙弓先验帮助的三维牙齿实例分割） </li>
+<li>Rao, Y., Wang, Y., Meng, F., Pu, J., Sun, J., &amp; Wang, Q. (2020). A symmetric fully convolutional residual network with dcrf for accurate tooth segmentation. IEEE Access, 8 , 92028–92038.（用于准确牙齿分割的对称全卷积残差网络和DCRF） </li>
+<li>Ren, S., He, K., Girshick, R., &amp; Sun, J. (2015). Faster r-cnn: Towards real-time object detection with region proposal networks. arXiv preprint arXiv:1506.01497 , .（Faster r-cnn：实现实时目标检测的区域建议网络） </li>
+<li>Rodriguez, A., &amp; Laio, A. (2014). Clustering by fast search and find of density peaks. Science, 344 , 1492–1496.（密度峰值的快速搜索和发现的聚类） </li>
+<li>Schubert, E., Sander, J., Ester, M., Kriegel, H. P., &amp; Xu, X. (2017). Dbscan revisited, revisited: why and how you should (still) use dbscan. ACM Transactions on Database Systems (TODS), 42 , （重新访问: 为什么以及如何(仍然)使用 Dbscan.ACM 事务处理数据库系统）</li>
+<li>Szyma´nski, P., &amp; Kajdanowicz, T. (2017). A scikit-based python environment for performing multi-label classification.（基于scikit的Python环境用于执行多标签分类） </li>
+<li>Tang, L., Zhan, Y., Chen, Z., Yu, B., &amp; Tao, D. (2022). Contrastive boundary learning for point cloud segmentation. In Proceedings of the IEEE&#x2F;CVF International Conference on Computer Vision (pp. 8489–8499).（用于点云分割的对比边界学习） </li>
+<li>Tian, S., Dai, N., Zhang, B., Yuan, F., Yu, Q., &amp; Cheng, X. (2019). Automatic classification and segmentation of teeth on 3d dental model using hierarchical deep learning networks. IEEE Access, 7 , 84817–84828.（使用分层深度学习网络对三维牙科模型上的牙齿进行自动分类和分割） </li>
+<li>Verma, N., Boyer, E., &amp; Verbeek, J. (2018). FeaStNet: Feature-Steered Graph Convolutions for 3D Shape Analysis. In IEEE Conference on Computer Vision and Pattern Recognition (CVPR) (pp. 2598–2606).（FeaStNet：用于三维形状分析的特征导向图卷积） </li>
+<li>Wang, J., Sun, K., Cheng, T., Jiang, B., Deng, C., Zhao, Y., Liu, D., Mu, Y., Tan, M., Wang, X. et al. (2020). Deep high-resolution representation learning for visual recognition. IEEE transactions on pattern analysis and machine intelligence, 43 , 3349–3364.（用于视觉识别的深度高分辨率表示学习） </li>
+<li>Wang, J., Yang, Y., Mao, J., Huang, Z., Huang, C., &amp; Xu, W. (2016). Cnn-rnn: A unified framework for multi-label image classification. In IEEE conference on Computer Vision and Pattern Recognition (pp. 2285–2294).（CNN-RNN：多标签图像分类的统一框架） </li>
+<li>Wu, K., Chen, L., Li, J., &amp; Zhou, Y. (2014). Tooth segmentation on dental meshes using morphologic skeleton. Computers &amp; Graphics, 38 , 199–211.（使用形态骨架在牙科网格上进行牙齿分割） </li>
+<li>Wu, T.-H., Lian, C., Lee, S., Pastewait, M., Piers, C., Liu, J., Wang, F., Wang, L., Chiu, C.-Y., Wang, W. et al. (2022). Two-stage mesh deep learning for automated tooth segmentation and landmark localization on 3d intraoral scans. IEEE Transactions on Medical Imaging, .（用于三维口内扫描的自动牙齿分割和地标定位的两阶段网格深度学习） </li>
+<li>Xu, X., Liu, C., &amp; Zheng, Y. (2018). 3d tooth segmentation and labeling using deep convolutional neural networks. IEEE transactions on visualization and computer graphics, 25 , 2336–2348.（使用深度卷积神经网络进行三维牙齿分割和标注） </li>
+<li>Yaqi, M., &amp; Zhongke, L. (2010). Computer aided orthodontics treatment by virtual segmentation and adjustment. In IEEE International Conference on Image Analysis and Signal Processing (ICISP) (pp. 336–339). IEEE volume 1.（通过虚拟分割和调整进行计算机辅助正畸治疗） </li>
+<li>Yuan, T., Liao, W., Dai, N., Cheng, X., &amp; Yu, Q. (2010). Single-tooth modeling for 3d dental model. International journal of biomedical imaging, 2010 .（三维牙科模型的单牙建模） </li>
+<li>Zanjani, F. G., Moin, D. A., Claessen, F., Cherici, T., Parinussa, S., Pourtaherian, A., &amp; Zinger, S. (2019a). Mask-mcnet: Instance segmentation in 3d point cloud of intra-oral scans, . (pp. 128–136).（Mask-mcnet：口内扫描的三维点云实例分割） </li>
+<li>Zanjani, F. G., Moin, D. A., Verheij, B., Claessen, F., Cherici, T., Tan, T. et al. (2019b). Deep Learning Approach to Semantic Segmentation in 3D Point Cloud Intra-oral Scans of Teeth. In International Conference on Medical Imaging with Deep Learning (MIDL).（口内扫描牙齿的三维点云语义分割的深度学习方法） </li>
+<li>Zhang, J., Li, C., Song, Q., Gao, L., &amp; Lai, Y.-K. (2020). Automatic 3D Tooth Segmentation using Convolutional Neural Networks in Harmonic Parameter Space. Elsevier Graphical Models, 39 , 101071.（在谐波参数空间中使用卷积神经网络进行自动三维牙齿分割） </li>
+<li>Zhao, H., Jiang, L., Jia, J., Torr, P. H., &amp; Koltun, V. (2021a). Point transformer. In Proceedings of the IEEE&#x2F;CVF International Conference on Computer Vision (pp. 16259–16268).（Point transformer） </li>
+<li>Zhao, M., Ma, L., Tan, W., &amp; Nie, D. (2006). Interactive tooth segmentation of dental models. In IEEE Engineering in Medicine and Biology Conference (IMBC’06) (pp. 654–657). IEEE.（牙科模型的交互式牙齿分割） </li>
+<li>Zhao, Y., Zhang, L., Liu, Y., Meng, D., Cui, Z., Gao, C., Gao, X., Lian, C., &amp; Shen, D. (2022). Two-stream graph convolutional network for intra-oral scanner image segmentation. IEEE Transactions on Medical Imaging, 41 .（用于口内扫描仪图像分割的双流图卷积网络） </li>
+<li>Zhao, Y., Zhang, L., Yang, C., Tan, Y., Liu, Y., Li, P., Huang, T., &amp; Gao, C. (2021b). 3d dental model segmentation with graph attentional convolution network. Pattern Recognition Letters, 152 , 79–85.（用于三维牙科模型分割的图注意力卷积网络） </li>
+<li>Zou, B.-j., Liu, S.-j., Liao, S.-h., Ding, X., &amp; Liang, Y. (2015). Interactive tooth partition of dental mesh base on tooth-target harmonic field. Computers in biology and medicine, 56 , 132–144.（基于牙齿目标谐波场的牙科网格交互式牙齿分割）</li>
+</ol>
+
+    </div>
+
+    
+    
+    
+        <div class="reward-container">
+  <div></div>
+  <button onclick="var qr = document.getElementById('qr'); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/images/wechatpay.png" alt="SindreYang 微信支付">
+        <p>微信支付</p>
+      </div>
+      
+      <div style="display: inline-block;">
+        <img src="/images/alipay.png" alt="SindreYang 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>SindreYang
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://blog.mviai.com/2025/%E8%AE%BA%E6%96%87%E7%BF%BB%E8%AF%91_3D%E7%89%99%E9%BD%BF%E6%89%AB%E6%8F%8F%E5%88%86%E5%89%B2%E5%92%8C%E8%AF%86%E5%88%AB%E6%8C%91%E6%88%98/" title="论文翻译_3D牙齿扫描分割和识别挑战">http://blog.mviai.com/2025/论文翻译_3D牙齿扫描分割和识别挑战/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <span class="exturl" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC9kZWVkLnpo"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</span> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+        
+
+  <div class="followme">
+    <p>欢迎关注我的其它发布渠道</p>
+
+    <div class="social-list">
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="/images/wechat.png">
+            <span class="icon">
+              <i class="fa fa-wechat"></i>
+            </span>
+
+            <span class="label">WeChat</span>
+          </a>
+        </div>
+    </div>
+  </div>
+
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2025/%E8%AE%BA%E6%96%87%E7%BF%BB%E8%AF%91__3D%E7%82%B9%E4%BA%91%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%BB%BC%E8%BF%B0-2020%E5%B9%B4/" rel="prev" title="论文翻译__3D点云深度学习综述-2020年">
+      <i class="fa fa-chevron-left"></i> 论文翻译__3D点云深度学习综述-2020年
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2025/%E8%8B%B1%E8%AF%AD%E4%B8%80/" rel="next" title="英语一">
+      英语一 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    
+  <div class="comments">
+    <div id="SOHUCS"></div>
+  </div>
+  
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%91%98%E8%A6%81%EF%BC%9A"><span class="nav-number">1.</span> <span class="nav-text">摘要：</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%AE%80%E4%BB%8B"><span class="nav-number">2.</span> <span class="nav-text">简介</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%93%E7%94%A8%E6%9C%AF%E8%AF%AD"><span class="nav-number">2.1.</span> <span class="nav-text">专用术语</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%88%90%E6%9E%9C"><span class="nav-number">2.2.</span> <span class="nav-text">成果</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9F%BA%E4%BA%8E%E4%BA%BA%E5%B7%A5%E9%80%89%E5%8F%96%E7%89%B9%E5%BE%81%E7%9A%84%E6%96%B9%E6%B3%95"><span class="nav-number">2.3.</span> <span class="nav-text">基于人工选取特征的方法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9F%BA%E4%BA%8E%E5%AD%A6%E4%B9%A0%E7%9A%84%E6%96%B9%E6%B3%95"><span class="nav-number">2.4.</span> <span class="nav-text">基于学习的方法</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%9D%90%E6%96%99%E5%92%8C%E6%8C%91%E6%88%98%E8%AE%BE%E7%BD%AE"><span class="nav-number">3.</span> <span class="nav-text">材料和挑战设置</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E9%87%87%E9%9B%86%E5%92%8C%E6%B3%A8%E9%87%8A"><span class="nav-number">3.1.</span> <span class="nav-text">数据采集和注释</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E9%87%87%E9%9B%86"><span class="nav-number">3.1.1.</span> <span class="nav-text">数据采集</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E6%B3%A8%E9%87%8A%E5%92%8C%E5%A4%84%E7%90%86"><span class="nav-number">3.1.2.</span> <span class="nav-text">数据注释和处理</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E8%AE%B0%E5%BD%95"><span class="nav-number">4.</span> <span class="nav-text">数据记录</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8C%91%E6%88%98%E9%85%8D%E7%BD%AE"><span class="nav-number">4.1.</span> <span class="nav-text">挑战配置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%AF%84%E4%BB%B7%E6%A0%87%E5%87%86"><span class="nav-number">4.2.</span> <span class="nav-text">评价标准</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%89%99%E9%BD%BF%E5%AE%9A%E4%BD%8D%E7%B2%BE%E5%BA%A6"><span class="nav-number">4.2.1.</span> <span class="nav-text">牙齿定位精度</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%89%99%E9%BD%BF%E5%88%86%E5%89%B2%E7%B2%BE%E5%BA%A6"><span class="nav-number">4.2.2.</span> <span class="nav-text">牙齿分割精度</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%89%99%E9%BD%BF%E8%AF%86%E5%88%AB%E7%8E%87"><span class="nav-number">4.2.3.</span> <span class="nav-text">牙齿识别率</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%96%B9%E6%B3%95"><span class="nav-number">5.</span> <span class="nav-text">方法</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#CGIP-%E5%9B%A2%E9%98%9F-Hoyeon-Lim-et-al"><span class="nav-number">5.1.</span> <span class="nav-text">CGIP 团队 - Hoyeon Lim et al.</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%89%99%E9%BD%BF%E5%AE%9E%E4%BE%8B%E5%88%86%E5%89%B2%E6%B5%81%E7%A8%8B"><span class="nav-number">5.1.1.</span> <span class="nav-text">牙齿实例分割流程</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-number">5.1.1.1.</span> <span class="nav-text"></span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Tooth-Group-Network"><span class="nav-number">5.1.2.</span> <span class="nav-text">Tooth Group Network</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#FiboSeg%E5%9B%A2%E9%98%9F-Mathieu-Leclercq-et-al"><span class="nav-number">5.2.</span> <span class="nav-text">FiboSeg团队-Mathieu Leclercq et al.</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B8%B2%E6%9F%93%E4%BA%8C%E7%BB%B4%E8%A7%86%E5%9B%BE"><span class="nav-number">5.2.1.</span> <span class="nav-text">渲染二维视图</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BD%91%E7%BB%9C%E8%AE%AD%E7%BB%83"><span class="nav-number">5.2.2.</span> <span class="nav-text">网络训练</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%A2%84%E6%B5%8B"><span class="nav-number">5.2.3.</span> <span class="nav-text">预测</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%90%8E%E5%A4%84%E7%90%86"><span class="nav-number">5.2.4.</span> <span class="nav-text">后处理</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#IGIP-%E5%9B%A2%E9%98%9F-Shaojie-Zhuang-et-al"><span class="nav-number">5.3.</span> <span class="nav-text">IGIP 团队 -Shaojie Zhuang et al</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#TeethSeg-%E5%9B%A2%E9%98%9F-Tudor-Dascalu-%E7%AD%89%E4%BA%BA"><span class="nav-number">5.4.</span> <span class="nav-text">TeethSeg 团队 - Tudor Dascalu 等人</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%B2%97%E5%88%86%E5%89%B2"><span class="nav-number">5.4.1.</span> <span class="nav-text">粗分割</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%B2%BE%E7%BB%86%E5%88%86%E5%89%B2"><span class="nav-number">5.4.2.</span> <span class="nav-text">精细分割</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#os-%E5%9B%A2%E9%98%9F-Tae-Hoon-Yong-et-al"><span class="nav-number">5.5.</span> <span class="nav-text">os 团队-Tae-Hoon Yong et al.</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%89%99%E9%BD%BF%E8%B4%A8%E5%BF%83%E9%A2%84%E6%B5%8B%E5%92%8C%E5%88%86%E7%B1%BB"><span class="nav-number">5.5.1.</span> <span class="nav-text">牙齿质心预测和分类</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8D%95%E4%B8%AA%E7%89%99%E9%BD%BF%E5%88%86%E5%89%B2"><span class="nav-number">5.5.2.</span> <span class="nav-text">单个牙齿分割</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Champers-%E5%9B%A2%E9%98%9F-Niels-van-Nistelrooij"><span class="nav-number">5.6.</span> <span class="nav-text">Champers 团队 - Niels van Nistelrooij</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3D-%E6%89%AB%E6%8F%8F%E9%A2%84%E5%A4%84%E7%90%86"><span class="nav-number">5.6.1.</span> <span class="nav-text">3D 扫描预处理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%8F%90%E8%AE%AE%E7%9A%84%E6%A8%A1%E5%9E%8B%E6%9E%B6%E6%9E%84"><span class="nav-number">5.6.2.</span> <span class="nav-text">提议的模型架构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%90%8E%E5%A4%84%E7%90%86-1"><span class="nav-number">5.6.3.</span> <span class="nav-text">后处理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%9E%E6%96%BD%E7%BB%86%E8%8A%82"><span class="nav-number">5.6.4.</span> <span class="nav-text">实施细节</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%AE%9E%E9%AA%8C%E7%BB%93%E6%9E%9C"><span class="nav-number">6.</span> <span class="nav-text">实验结果</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%9A%E9%87%8F%E8%AF%84%E4%BC%B0"><span class="nav-number">6.1.</span> <span class="nav-text">定量评估</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%9A%E6%80%A7%E8%AF%84%E4%BC%B0"><span class="nav-number">6.2.</span> <span class="nav-text">定性评估</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%BB%93%E8%AE%BA"><span class="nav-number">7.</span> <span class="nav-text">结论</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%BC%95%E7%94%A8"><span class="nav-number">8.</span> <span class="nav-text">引用</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="SindreYang"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">SindreYang</p>
+  <div class="site-description" itemprop="description">沉淀后我愿意做一个温暖的人。有自己的喜好，有自己的原则，有自己的信仰，不急功近利，不浮夸轻薄，宠辱不惊，淡定安逸，心静如水。------不忘初心，方得始终</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">321</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">72</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL1NpbmRyZVlhbmc=" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;SindreYang"><i class="fa fa-fw fa-github"></i>GitHub</span>
+      </span>
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="bWFpbHRvOnl4QG12aWFpLmNvbQ==" title="E-Mail → mailto:yx@mviai.com"><i class="fa fa-fw fa-envelope"></i>E-Mail</span>
+      </span>
+  </div>
+  <div class="cc-license motion-element" itemprop="license">
+    <span class="exturl cc-opacity" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC9kZWVkLnpo"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+  <div class="languages">
+    <label class="lang-select-label">
+      <i class="fa fa-language"></i>
+      <span>简体中文</span>
+      <i class="fa fa-angle-up" aria-hidden="true"></i>
+    </label>
+    <select class="lang-select" data-canonical="">
+      
+        <option value="zh-CN" data-href="/2025/%E8%AE%BA%E6%96%87%E7%BF%BB%E8%AF%91_3D%E7%89%99%E9%BD%BF%E6%89%AB%E6%8F%8F%E5%88%86%E5%89%B2%E5%92%8C%E8%AF%86%E5%88%AB%E6%8C%91%E6%88%98/" selected="">
+          简体中文
+        </option>
+      
+        <option value="en" data-href="/en/2025/%E8%AE%BA%E6%96%87%E7%BF%BB%E8%AF%91_3D%E7%89%99%E9%BD%BF%E6%89%AB%E6%8F%8F%E5%88%86%E5%89%B2%E5%92%8C%E8%AF%86%E5%88%AB%E6%8C%91%E6%88%98/" selected="">
+          English
+        </option>
+      
+    </select>
+  </div>
+
+        
+
+<div class="copyright">
+  
+  &copy; 2018 – 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">SindreYang</span>
+</div><!-- 页面点击小红心 -->
+<script type="text/javascript" src="/js/love.js"></script>
+<!-- 背景波浪 -->
+<script color="0,0,255" opacity="0.5" zIndex="-1" count="99" src="https://cdn.jsdelivr.net/npm/canvas-nest.js@1/dist/canvas-nest.js"></script>
+
+
+<!-- 腾讯企业邮箱 -->
+<style>
+.bizmail_loginpanel {
+    font-size: 12px;
+    width: 300px;
+    height: auto;
+    background: transparent;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.bizmail_LoginBox {
+    padding: 10px 15px;
+}
+
+
+.bizmail_loginpanel form {
+    margin: 0;
+    padding: 0;
+}
+
+.bizmail_loginpanel input.text {
+    font-size: 12px;
+    width: 100px;
+    height: 20px;
+    margin: 0 2px;
+    background-color: transparent;
+    border:1px solid transparent;
+    box-shadow: none;
+    color: black;
+}
+
+.bizmail_loginpanel .bizmail_column {
+    height: 28px;
+}
+
+.bizmail_loginpanel .bizmail_column label {
+    display: block;
+    float: left;
+    width: 30px;
+    height: 24px;
+    line-height: 24px;
+    font-size: 12px;
+}
+
+.bizmail_loginpanel .bizmail_column .bizmail_inputArea {
+    float: left;
+    width: 240px;
+}
+
+.bizmail_loginpanel .bizmail_column span {
+    font-size: 12px;
+    word-wrap: break-word;
+    margin-left: 2px;
+    line-height: 200%;
+}
+
+.bizmail_loginpanel .bizmail_SubmitArea {
+    margin-left: 30px;
+    clear: both;
+}
+
+.bizmail_loginpanel .bizmail_SubmitArea a {
+    font-size: 12px;
+    margin-left: 5px;
+}
+
+.bizmail_loginpanel select {
+    width: 110px;
+    height: 20px;
+    margin: 0 2px;
+}
+.bizmail_loginpanel input {
+
+    background-color: rgba(83, 126, 236, 0.562);
+}
+
+
+</style>
+
+<script type="text/javascript">
+function checkInput() {
+    var e = document.form1.uin,
+        i = document.form1.pwd;
+    return 0 == e.value.length ? e.focus() : 0 == i.value.length ? i.focus() : (document.form1.submit(), setTimeout(" document.form1.pwd.value = '' ", 500)), !1
+}
+
+function writeLoginPanel(e) {
+    if (e && e.domainlist && -1 != e.domainlist.indexOf(".")) {
+        var a = "return checkInput()",
+            t = '<div id="divLoginpanelHor" class="bizmail_loginpanel" style="width:550px;"><div class="bizmail_LoginBox"><form name="form1" action="https://exmail.qq.com/cgi-bin/login" target="_blank" method="post" onsubmit="' + a + '"><input type="hidden" name="firstlogin" value="false" /><input type="hidden" name="errtemplate" value="dm_loginpage" /><input type="hidden" name="aliastype" value="other" /><input type="hidden" name="dmtype" value="bizmail" /><input type="hidden" name="p" value="" /><label>\u8d26\u53f7:</label><input type="text" name="uin" class="text" value="" />@#domainlist#<label>&nbsp&nbsp&nbsp;\u5bc6\u7801:</label><input type="password" name="pwd" class="text" value="" /><input type="submit" class="" name="" value="\u767b\u5f55" />&nbsp;<a href="https://exmail.qq.com/cgi-bin/readtemplate?check=false&t=biz_rf_portal#recovery" target="_blank">\u5fd8\u8bb0\u5bc6\u7801\uff1f</a></form></div></div>',
+            n = '<div id="divLoginpanelVer" class="bizmail_loginpanel"><div class="bizmail_LoginBox"><form name="form1" action="https://exmail.qq.com/cgi-bin/login" target="_blank" method="post" onsubmit="' + a + '"><input type="hidden" name="firstlogin" value="false" /><input type="hidden" name="errtemplate" value="dm_loginpage" /><input type="hidden" name="aliastype" value="other" /><input type="hidden" name="dmtype" value="bizmail" /><input type="hidden" name="p" value="" /><div class="bizmail_column"><label>\u8d26\u53f7:</label><div class="bizmail_inputArea"><input type="text" name="uin" class="text" value="" />@#domainlist#</div></div><div class="bizmail_column"><label>\u5bc6\u7801:</label><div class="bizmail_inputArea"><input type="password" name="pwd" class="text" value="" /></div></div><div class="bizmail_SubmitArea"><input type="submit" class="" name="" style="width:66px;" value="\u767b\u5f55" /><a href="https://exmail.qq.com/cgi-bin/readtemplate?check=false&t=biz_rf_portal#recovery" target="_blank">\u5fd8\u8bb0\u5bc6\u7801\uff1f</a></div></form></div></div>',
+            l = e.domainlist.split(";");
+        if (1 == l.length) var m = '<span>#domain#</span><input type="hidden" name="domain" value="#domain#" />'.replace(/#domain#/g, l[0]);
+        else {
+            m = '<select name="domain">';
+            for (i = 0; i < l.length; i++) m += '<option value="' + l[i] + '">' + l[i] + "</option>";
+            m += "</select>"
+        }
+        e.mode && "vertical" != e.mode && "both" != e.mode || document.write(n.replace(/#domainlist#/g, m)), "horizontal" != e.mode && "both" != e.mode || document.write(t.replace(/#domainlist#/g, m))
+    }
+}
+
+</script>      
+
+<script type="text/javascript"> writeLoginPanel({domainlist:"mviai.com", mode:"horizontal"});</script>      
+
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script size="300" alpha="0.6" zIndex="-1" src="/lib/canvas-ribbon/canvas-ribbon.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/medium-zoom@1/dist/medium-zoom.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+  <script defer src="/lib/three/three.min.js"></script>
+    <script defer src="/lib/three/three-waves.min.js"></script>
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+<script>
+document.querySelectorAll('.pdfobject-container').forEach(element => {
+  let url = element.dataset.target;
+  let pdfOpenParams = {
+    navpanes : 0,
+    toolbar  : 0,
+    statusbar: 0,
+    pagemode : 'thumbs',
+    view     : 'FitH'
+  };
+  let pdfOpenFragment = '#' + Object.entries(pdfOpenParams).map(([key, value]) => `${key}=${encodeURIComponent(value)}`).join('&');
+  let fullURL = `/lib/pdf/web/viewer.html?file=${encodeURIComponent(url)}${pdfOpenFragment}`;
+
+  if (NexT.utils.supportsPDFs()) {
+    element.innerHTML = `<embed class="pdfobject" src="${url + pdfOpenFragment}" type="application/pdf" style="height: ${element.dataset.height};">`;
+  } else {
+    element.innerHTML = `<iframe src="${fullURL}" style="height: ${element.dataset.height};" frameborder="0"></iframe>`;
+  }
+});
+</script>
+
+
+
+
+  
+
+  
+
+  <script>
+  NexT.utils.loadComments(document.querySelector('#SOHUCS'), () => {
+    var appid = 'cyxmItxjS';
+    var conf = 'e5e71132d9086bb54aeeba6e88e87df9';
+    var width = window.innerWidth || document.documentElement.clientWidth;
+    if (width < 960) {
+      window.document.write('<script id="changyan_mobile_js" charset="utf-8" type="text/javascript" src="https://cy-cdn.kuaizhan.com/upload/mobile/wap-js/changyan_mobile.js?client_id=' + appid + '&conf=' + conf + '"><\/script>');
+    } else {
+      var loadJs=function(d,a){var c=document.getElementsByTagName("head")[0]||document.head||document.documentElement;var b=document.createElement("script");b.setAttribute("type","text/javascript");b.setAttribute("charset","UTF-8");b.setAttribute("src",d);if(typeof a==="function"){if(window.attachEvent){b.onreadystatechange=function(){var e=b.readyState;if(e==="loaded"||e==="complete"){b.onreadystatechange=null;a()}}}else{b.onload=a}}c.appendChild(b)};loadJs("https://changyan.sohu.com/upload/changyan.js",function(){window.changyan.api.config({appid:appid,conf:conf})});
+    }
+  });
+  </script>
+  <script src="https://cy-cdn.kuaizhan.com/upload/plugins/plugins.count.js"></script>
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/z16.model.json"},"display":{"position":"left","width":75,"height":150},"mobile":{"show":true},"log":false});</script></body>
+</html>
+
+
+
+

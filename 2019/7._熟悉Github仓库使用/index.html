@@ -1,0 +1,917 @@
+<!DOCTYPE html>
+<html lang="zh-CN,en,default">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" href="/lib/pace/pace-theme-minimal.min.css">
+  <script src="/lib/pace/pace.min.js"></script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"blog.mviai.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":true,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":true,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="自动摘要: 	一、Github简介	官网文档：[https:&#x2F;&#x2F;docs.github.com&#x2F;cn&#x2F;getstarted&#x2F;quickstart](https:&#x2F;&#x2F;docs.github.com&#x2F;cn&#x2F;ge ……..">
+<meta property="og:type" content="article">
+<meta property="og:title" content="7">
+<meta property="og:url" content="http://blog.mviai.com/2019/7._%E7%86%9F%E6%82%89Github%E4%BB%93%E5%BA%93%E4%BD%BF%E7%94%A8/index.html">
+<meta property="og:site_name" content="落叶无痕">
+<meta property="og:description" content="自动摘要: 	一、Github简介	官网文档：[https:&#x2F;&#x2F;docs.github.com&#x2F;cn&#x2F;getstarted&#x2F;quickstart](https:&#x2F;&#x2F;docs.github.com&#x2F;cn&#x2F;ge ……..">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://blog.mviai.com/images/1662718958347-00dfc1f8-664d-49a4-a9a0-35c4f9775d42.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1662694445199-46cabbd8-6c07-4220-addd-f448d6856590.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1662707767258-1d495322-5421-42dc-a8d9-9f88dce610d2.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1662707947725-c06aaaf2-c40f-4ace-8489-09b3ce3e6494.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1662957303374-a816a3c8-f17d-409d-b221-c15324e271f8.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1662952070411-c91cf1a4-a675-435c-be08-7e849ed420b4.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1662953224830-1032d376-4050-44df-adf2-a8b8a03f2bf5.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1662953514935-f9364dfc-d796-45cc-902b-810292f72921.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1662692215478-ec64797c-e62a-4f21-b6de-b8588d22e730.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1662692299334-c3c41339-4f25-4525-8df8-18332cb316b4.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1662692681118-36f9d5d3-5927-4e49-9188-6077f1f7a2ae.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1662693023686-56668d74-5ec2-4d90-89a5-78c1b34ffed3.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1662702831703-86b5c3e6-598d-451f-b503-de77751fe7d4.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1662703225936-f19fcc41-6071-4485-ae8f-d0b7cf092db0.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1662704315276-eb5b2e0d-501d-47a6-96db-6a3537c5f1e2.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1662704535343-cac8ae86-0aa3-4960-864b-3e01f5ed5616.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1662704601579-f195bae8-5f67-4ac6-add7-c3886426535e.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1663032286764-370148a8-b193-4689-bf54-528d14d47ae0.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1663043370995-5c90efe6-8e31-49d1-bca6-2ad386b44c67.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1663033146328-ff87f0cf-a042-4036-b53d-80e9c186eac7.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1663033447224-89625410-7825-4d0d-a56d-863d74007681.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1663053628255-5a98ef19-6b8a-4c10-86f3-724184d7f1db.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1663053705781-c4da8d2a-c82b-477b-afc6-e98d3ba0fa02.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1663035406630-817ab7df-fcba-4a81-89e6-cde86bc39297.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1663043531872-160a39dc-fefc-4fe8-a289-5c1e9c1c4919.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1663036118751-61659a33-9689-4a03-b3d9-a4051b3d94c6.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1663036947040-f6287ebd-c453-45c2-8c15-b050c2dfcba6.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1663037087234-089d264f-6c1b-466b-b04d-43be5bb32152.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1663037524521-fa9f2a04-0ce5-459b-b4a2-3eda37c3a3af.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1663037615663-5c613ab6-4c0e-47cf-a84a-4973e871ec41.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1663038394322-0a1e958e-fec8-4639-8172-3c66a077604e.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1663038689024-d28963cf-9cbe-45ca-9417-26fa12518809.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1663039333612-39cc82e2-3443-4a56-826b-f881ef6e05cf.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1663048109687-97e5416e-a069-465d-ab1a-fee6cba1b92f.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1663040416069-5cbdccbf-95c4-43c7-9a0f-cab87d453010.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1663040782456-2f05e377-842d-4b90-aa49-2917d66780c5.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1663049725681-335dd4ea-5e39-4b01-b012-78e56d7e603d.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1663049798464-30c709a5-3448-4b64-9794-7cfba4f5fbc9.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1663054447869-c3b13110-fb22-4f8b-acb6-84d3719ba18c.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1663054547945-95cba5c2-b9ee-4463-8b23-c5f0345c8d42.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1663052927540-fd206589-3118-45d9-8871-e68f3a43e458.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1663055041295-94ef428a-43f1-40ff-93fe-0d99c29c038a.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1663055296644-8ebac98c-1603-4dc7-9aab-06cb2d052f4e.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1663055936176-1f4f7eb9-672e-4f00-bd17-0379a952efa3.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1663056205807-8f73fdb1-b847-44f4-b569-03f156425f8f.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1663056339122-158e5359-9d75-496e-b507-ceae17864b52.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1663056628983-fec0b475-4dc8-4475-8288-e27c949f1093.png">
+<meta property="og:image" content="https://camo.githubusercontent.com/d8f7abcee9fdb2cded758cbff3b0b3036d4a4641bf58f0cb221aa3d4c1b17d93/68747470733a2f2f6f63746f6465782e6769746875622e636f6d2f696d616765732f79616b746f6361742e706e67#from=url&height=148&id=S7iZW&originHeight=896&originWidth=896&originalType=binary&ratio=1&rotation=0&showTitle=false&status=done&style=none&title=&width=148">
+<meta property="og:image" content="http://blog.mviai.com/images/1663055936176-1f4f7eb9-672e-4f00-bd17-0379a952efa3.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1663058429639-330bccbc-9e5b-4093-94bc-6ba99bdb2f27.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1663058583106-42fdbe60-b4d4-486e-b9d7-9c4febb09beb.png">
+<meta property="article:published_time" content="2019-01-19T16:00:00.000Z">
+<meta property="article:modified_time" content="2025-01-22T12:37:41.634Z">
+<meta property="article:author" content="SindreYang">
+<meta property="article:tag" content="生活">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://blog.mviai.com/images/1662718958347-00dfc1f8-664d-49a4-a9a0-35c4f9775d42.png">
+
+<link rel="canonical" href="http://blog.mviai.com/2019/7._%E7%86%9F%E6%82%89Github%E4%BB%93%E5%BA%93%E4%BD%BF%E7%94%A8/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>7 | 落叶无痕</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">落叶无痕</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类<span class="badge">72</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档<span class="badge">321</span></a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+  <span class="exturl github-corner" data-url="aHR0cHM6Ly9naXRodWIuY29tL1NpbmRyZVlhbmc=" title="Follow me on GitHub" aria-label="Follow me on GitHub"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></span>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://blog.mviai.com/2019/7._%E7%86%9F%E6%82%89Github%E4%BB%93%E5%BA%93%E4%BD%BF%E7%94%A8/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="SindreYang">
+      <meta itemprop="description" content="沉淀后我愿意做一个温暖的人。有自己的喜好，有自己的原则，有自己的信仰，不急功近利，不浮夸轻薄，宠辱不惊，淡定安逸，心静如水。------不忘初心，方得始终">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="落叶无痕">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          7
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2019-01-20 00:00:00" itemprop="dateCreated datePublished" datetime="2019-01-20T00:00:00+08:00">2019-01-20</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2025-01-22 20:37:41" itemprop="dateModified" datetime="2025-01-22T20:37:41+08:00">2025-01-22</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%88%86%E5%89%B2%E5%9F%B9%E8%AE%AD%E8%AE%A1%E5%88%92/" itemprop="url" rel="index"><span itemprop="name">分割培训计划</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">Changyan：</span>
+    
+    
+      <a title="changyan" href="/2019/7._%E7%86%9F%E6%82%89Github%E4%BB%93%E5%BA%93%E4%BD%BF%E7%94%A8/#SOHUCS" itemprop="discussionUrl">
+        <span id="changyan_count_unit" class="post-comments-count hc-comment-count" data-xid="2019/7._熟悉Github仓库使用/" itemprop="commentCount"></span>
+      </a>
+    
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>自动摘要: 	一、Github简介	官网文档：[<span class="exturl" data-url="aHR0cHM6Ly9kb2NzLmdpdGh1Yi5jb20vY24vZ2V0c3RhcnRlZC9xdWlja3N0YXJ0XQ==" title="https://docs.github.com/cn/getstarted/quickstart]">https://docs.github.com/cn/getstarted/quickstart]<i class="fa fa-external-link"></i></span>(<span class="exturl" data-url="aHR0cHM6Ly9kb2NzLmdpdGh1Yi5jb20vY24vZ2U=" title="https://docs.github.com/cn/ge">https://docs.github.com/cn/ge<i class="fa fa-external-link"></i></span> ……..</p>
+<span id="more"></span>
+
+<h1 id="一、Github简介"><a href="#一、Github简介" class="headerlink" title="一、Github简介"></a>一、Github简介</h1><p>官网文档：<span class="exturl" data-url="aHR0cHM6Ly9kb2NzLmdpdGh1Yi5jb20vY24vZ2V0LXN0YXJ0ZWQvcXVpY2tzdGFydA==" title="https://docs.github.com/cn/get-started/quickstart">https://docs.github.com/cn/get-started/quickstart<i class="fa fa-external-link"></i></span>实践教程：<span class="exturl" data-url="aHR0cHM6Ly9za2lsbHMuZ2l0aHViLmNvbS8=" title="https://skills.github.com/">https://skills.github.com/<i class="fa fa-external-link"></i></span>  </p>
+<h2 id="0-预备"><a href="#0-预备" class="headerlink" title="0. 预备"></a>0. 预备</h2><p>a.  github官方网址<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tLw==" title="https://github.com/">https://github.com/<i class="fa fa-external-link"></i></span>，注册邮箱，用户名尽量简单些，因为经常会用到；      首页最下面有对应的API;      <img src="/images/1662718958347-00dfc1f8-664d-49a4-a9a0-35c4f9775d42.png"><br>b.  登录状态下，网站主界面（网址：<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tLw==" title="https://github.com/">https://github.com/<i class="fa fa-external-link"></i></span>）如下：<img src="/images/1662694445199-46cabbd8-6c07-4220-addd-f448d6856590.png"><br>首先看最上面黑色工具条，最左边是一个 GitHub 的 logo，点它就返回现在这个主界面。最右边是和你个人有关的东西（个人，新建，消息），这个和用过的任何软件一类比，就知道功能了。左边搜索框，和搜索引擎一样用来搜索（搜源码，搜资料）。中间的四个按钮：i.  Pull requests：你想参与别人的项目，或想改进别人的项目，改进后需要提交申请，用 pull requests。ii.  Issues：你发现别人项目的 bug，或者有什么问题，怎么和作者交流呢？提一个 Issue ；别人也可以给你的项目提 Issue 反馈问题。Issue 追踪各种想法，增强功能，任务，bug，有点儿像评论功能。iii.  Marketplace：应用商店，里面有免费&#x2F;收费的开发工具。iv.  Explore：你可以理解成软件里的发现页，点进去推荐一些和你相关的话题、项目、新闻等。右上角那个头像就是个人 ,点一下头像，就会弹出一个小页面，点击 Settings 可以更改你的资料，Your XXX 都是你创建的一些东西（这里把点赞 star 也理解成你创建的），点击 Your profile 就可以进入你的主页。这里又涉及到一些专用词。<img src="/images/1662707767258-1d495322-5421-42dc-a8d9-9f88dce610d2.png"><br>    <img src="/images/1662707947725-c06aaaf2-c40f-4ace-8489-09b3ce3e6494.png"><br>i.  Projects：它可不是项目，上面说了 Repository 是项目。它可以翻译为项目板，是 project-boards 的简写， 通过项目板可以灵活地创建适合需求的自定义工作流程，说白了是管理项目流程的，一般不常用；ii.  Star：就是点赞功能，这里用作动词，它叫 star 是因为点赞图标就是星星⭐。不过这个点赞比较像知乎里的点赞功能，它会记录在你的动态里。由于 GitHub 没有收藏功能，所以 star 可以用来收藏；iii.  Follow：就是关注的意思，点击 Followers 看看谁关注了他，点击 Following 看看他关注了谁（大神关注的一般也是大神 ）。iv.  Github Packages：使你的源码和包在同一个地方进行统一的管理，使你可以集中的在Github上开发跟发布。</p>
+<h2 id="1-储存仓repository的创建和删除"><a href="#1-储存仓repository的创建和删除" class="headerlink" title="1. 储存仓repository的创建和删除"></a>1. 储存仓repository的创建和删除</h2><p>a.  在首页创建自己的仓库repository，步骤如下：i. 点击右上角的”+”号下拉框New repository：<img src="/images/1662957303374-a816a3c8-f17d-409d-b221-c15324e271f8.png"><br>ii. 会弹出如下界面：</p>
+<pre><code>  - 红色框为仓库名称(Repository name)和描述(Description)需自行定义；
+  - 绿色框选择公共还是私有，区别在于是否允许外人访问；
+  - 黄色框是选择创建README文件；
+  - 粉色框是选择不上传的文件（gitignore的使用方法非常简单，我们在git目录下创建一个.gitignore文件，然后在这个文件当中列举出我们不希望提交的文件即可）；
+  - 深蓝色框是选择许可证（许可证告诉其他人他们可以和不能用你的代码做什么）；
+</code></pre>
+<p>都定义完成之后点击浅蓝色框里面的绿色按钮Create repository,仓库创建完成。<img src="/images/1662952070411-c91cf1a4-a675-435c-be08-7e849ed420b4.png"><br><img src="/images/1662953224830-1032d376-4050-44df-adf2-a8b8a03f2bf5.png"><br>iii. 建完仓库返回首页可以看到新建仓库的名字sy-5&#x2F;3已经显示在Recent Repositories中，这就表示成功建立新仓库3：<img src="/images/1662953514935-f9364dfc-d796-45cc-902b-810292f72921.png"><br>b.  删除仓库repository，步骤如下：i.  导航到储存仓库的主页，单击’<img src="/images/1662692215478-ec64797c-e62a-4f21-b6de-b8588d22e730.png"><br>‘设置:<img src="/images/1662692299334-c3c41339-4f25-4525-8df8-18332cb316b4.png"><br>ii.  在危险区域“Danger Zone”下，单击删除此存储库“Delete this repository”:<img src="/images/1662692681118-36f9d5d3-5927-4e49-9188-6077f1f7a2ae.png"><br>iii.  阅读警告iv.  如需验证是否正在删除正确的仓库，请输入要删除仓库的名称。<img src="/images/1662693023686-56668d74-5ec2-4d90-89a5-78c1b34ffed3.png"><br>v.  单击“我了解后果，删除此存储仓库”。</p>
+<h2 id="2-界面简介"><a href="#2-界面简介" class="headerlink" title="2. 界面简介"></a>2. 界面简介</h2><p>通过搜索项目、点击别人的界面、推荐页面打开一个项目。以 Python 为例介绍界面：a. 在搜索框输入 Python 搜索，选择第一个项目，看点赞数就知道它是最欢迎的一个。<img src="/images/1662702831703-86b5c3e6-598d-451f-b503-de77751fe7d4.png"><br>b. 点进去就是项目&#x2F;仓库界面啦，认识一下主要功能：<img src="/images/1662703225936-f19fcc41-6071-4485-ae8f-d0b7cf092db0.png"><br>首先最上面一条我们可以看到这个仓库的信息，像关注点赞都是按钮，点击可以看具体的人。这里涉及到两个新词语：i. Watch：关注观察 ，也就是你既可以关注（follow）一个人，也可以关注（watch）一个项目，你关注内容的动态都会显示在主页面。ii. Fork：直译是刀叉，它是指将 GitHub 的某个特定仓库（所有文件）原封不动地复制到自己的账户下。比如你想改进这个项目，加点儿自己的东西，就可以复制一下整个仓库再修改，但是不影响原作者的仓库，你点击 Fork 就能复制。下面一条是标签页：i. 比如默认的一个标签页 Code 就是展示代码的页面；ii. 如果你想看别人提的问题就点击 Issues 页，也许你遇到的问题别人提过并且解决了；iii. 有的人想参与这个项目，他改好后就向作者发起了 Pull Requests，希望作者接受他的改进，点进去可以看谁提交过什么样的改进，作者是否采纳。c. 下面这个主要部分就是仓库里的东西了，你可以看到就是一个个文件夹或文件，里面可能是代码文件，也可能是其他文档，图片什么的。我们会看到Code按钮，点击后，下面出现 HTTPS 地址和 SSH 地址。我们只要复制了这个地址，然后在电脑上右键点击存放文件夹，打开 Git Bash 客户端，输入命令行：git clone 复制的地址，就能下载这个仓库到本地电脑。你也可以点击 Code –&gt; Download ZIP 下载到本地，具体学习。<img src="/images/1662704315276-eb5b2e0d-501d-47a6-96db-6a3537c5f1e2.png"></p>
+<p>d. 滑到最下面，可以看到一个叫 README.md 的一段文字，是仓库里的一个文件，只不过展示出来了。它就像产品说明书，或者是一个介绍页，告诉你这个仓库的有关信息，让你对仓库有了简单的了解。以后你要建个仓库，为了方便别人了解，也要写这样的文件。<img src="/images/1662704535343-cac8ae86-0aa3-4960-864b-3e01f5ed5616.png"><br><img src="/images/1662704601579-f195bae8-5f67-4ac6-add7-c3886426535e.png"><br>e. 基本名称解释汇总：<strong>Pull Request</strong>：你想参与别人的项目，或想改进别人的项目，改进后需要提交申请，用 pull requests。<strong>Repository</strong>：翻译为仓库，也是你的项目。你可以理解成一个大的文件夹，或者笔记本。一个项目对应一个 Repository。<strong>Issue</strong>：Issue 追踪各种想法，增强功能，任务，bug，有点儿像评论留言功能。<strong>Star</strong>：就是给项目点赞<strong>Fork</strong>：将 GitHub的某个特定仓库（所有文件）原封不动地复制到自己的账户下（但不会与原仓库相同）。以此实现分散式版本管理<strong>Follow</strong>：关注人，关注后主页有他的动态<strong>Watch</strong>：关注项目，关注后主页有项目的动态<strong>Gist</strong>：上面没有提到，但是主界面点击头像可以看到 Your Gist。如果你没有一个项目，只是单纯地想分享一些代码片段，就可以写 Gist。<strong>README.md</strong>：每当创建项目、初始化时，都会帮你自动生成 README.md 文件并显示在仓库首页。一般都是使用 Markdown 语法（准确来说应该是GitHub Flavored Markdown(GFM）语法)来描述项目的概要、使用流程、许可协议等。</p>
+<h2 id="3-创建分支"><a href="#3-创建分支" class="headerlink" title="3. 创建分支"></a>3. 创建分支</h2><p>a. 分支：是存储库的并行版本。默认情况下，存储库有一个主分支main，在main存储库中可以创建其他分支，这些分支可以同时获取过去项目的不同版本。在添加的分支上进行编辑并不会改变main的项目内容，分支可以将分支工作与main工作进行隔离。换句话说，在编辑期间，每个项目是不会被改编的。b. 创建分支：导航到“Code”选项卡，如下图：c. 单击“main”主分支下拉列表，如下图：d. 在输入框中输入分支的名称，这里输入的是my-first-branch，如下图：e. 点击创建分支Create branch:my-first-branch，如下图：<img src="/images/1663032286764-370148a8-b193-4689-bf54-528d14d47ae0.png"><br>会出现如下界面：<img src="/images/1663043370995-5c90efe6-8e31-49d1-bca6-2ad386b44c67.png"></p>
+<h2 id="4-提交文件"><a href="#4-提交文件" class="headerlink" title="4. 提交文件"></a>4. 提交文件</h2><p>a. 什么是提交：提交是对项目中的文件和文件夹的一组更改。分支中存在提交。b. 导航到“Code”选项卡上，单击红色框，确保您位于新分支my-first-branch上，如下图：<img src="/images/1663033146328-ff87f0cf-a042-4036-b53d-80e9c186eac7.png"><br>c. 选择添加文件”Add file”下拉列表，单击创建新文“Create new file”件：<img src="/images/1663033447224-89625410-7825-4d0d-a56d-863d74007681.png"><br>d. 在命名您的文件“Name your file…”输入框中输入“PROFILE.md”:<img src="/images/1663053628255-5a98ef19-6b8a-4c10-86f3-724184d7f1db.png"><br>e. 在编辑新文件”Edit new file”区域中，将Welcome to my GitHub profile!这段话复制到您的文件中：<img src="/images/1663053705781-c4da8d2a-c82b-477b-afc6-e98d3ba0fa02.png"><br>f. 对于提交，您可以输入一条简短的提交消息，描述您所做的更改。此消息可帮助其他人了解您的提交中包含的内容。GitHub 提供了一个简单的默认消息，但为了练习，让我们稍微更改一下。首先，输入提交新文件“Commit new file”下方的第一个文本输入Add PROFILE.md字段，单击提交新文件“Commit new file”按钮：<img src="/images/1663035406630-817ab7df-fcba-4a81-89e6-cde86bc39297.png"><br>会出现如下界面：<img src="/images/1663043531872-160a39dc-fefc-4fe8-a289-5c1e9c1c4919.png"></p>
+<h2 id="5-打开拉取请求"><a href="#5-打开拉取请求" class="headerlink" title="5. 打开拉取请求"></a>5. 打开拉取请求</h2><p>a. 什么是拉取请求：协作发生在拉取请求上。拉取请求向其他人显示分支中的更改。此拉取请求将保留您刚刚在分支上所做的更改，并建议将它们应用于main分支。b. 您可能已经注意到，在提交后，将显示一条消息，指示您最近推送到分支，并提供一个按钮，显示比较 &amp; 拉取请求 “Compare &amp; pull request” 。<img src="/images/1663036118751-61659a33-9689-4a03-b3d9-a4051b3d94c6.png"><br>如果需要，请随时单击“Compare &amp; pull request”，然后跳到下面的步骤 vii。如果不单击该按钮，以下说明将引导您手动设置拉取请求：i. 单击存储库中的拉取请求”Pull requests”选项卡。<img src="/images/1663036947040-f6287ebd-c453-45c2-8c15-b050c2dfcba6.png"><br>ii. 单击新建拉取请求”New pull request”。<img src="/images/1663037087234-089d264f-6c1b-466b-b04d-43be5bb32152.png"><br>iii. 在基本”base”下拉列表中，确保已选择“main”:<img src="/images/1663037524521-fa9f2a04-0ce5-459b-b4a2-3eda37c3a3af.png"><br>iv. 选择比较”compare”下拉列表：下拉，然后单击 “my-first-branch”<img src="/images/1663037615663-5c613ab6-4c0e-47cf-a84a-4973e871ec41.png"><br>v. 点击创建拉取请求“Create pull request”：<img src="/images/1663038394322-0a1e958e-fec8-4639-8172-3c66a077604e.png"><br>vi. 为拉取请求 编写标题：Add my first file。<img src="/images/1663038689024-d28963cf-9cbe-45ca-9417-26fa12518809.png"><br>vii. 下一个字段可帮助您提供所做更改的说明。请随意添加到目前为止所完成工作的描述。作为提醒您已经： created a branch, created a file and made a commit!，如下图所示<img src="/images/1663039333612-39cc82e2-3443-4a56-826b-f881ef6e05cf.png"><br>vii. 单击上图“Create pull request”按钮，结果如下图所示：<img src="/images/1663048109687-97e5416e-a069-465d-ab1a-fee6cba1b92f.png"><br>ix. 在哪里找此分支？导航到该仓库界面：单击Pull requests —-&gt;Add PROFILE.md  就可以进入分支界面，如下图：<img src="/images/1663040416069-5cbdccbf-95c4-43c7-9a0f-cab87d453010.png"></p>
+<h2 id="6-合并拉取请求"><a href="#6-合并拉取请求" class="headerlink" title="6. 合并拉取请求"></a>6. 合并拉取请求</h2><p>a. 什么是合并：合并将拉取请求和分支中的更改添加到main分支中。b. 如上一步所述，您可能已经看到正在运行的操作的证据，该操作会自动将您的指令推进到下一步。您必须等待它完成，然后才能合并您的拉取请求。当合并拉取请求”merge pull request”按钮为绿色时，它将准备就绪。<img src="/images/1663040782456-2f05e377-842d-4b90-aa49-2917d66780c5.png"><br>c. 步骤如下：i. 单击合并拉取请求”Merge pull request”按钮;ii. 点击确认合并”Confirm merge”；<img src="/images/1663049725681-335dd4ea-5e39-4b01-b012-78e56d7e603d.png"><br>iii. 一旦您的分支被合并，您就不再需要它了。若要删除此分支，请单击删除分支”Delete branch”。<img src="/images/1663049798464-30c709a5-3448-4b64-9794-7cfba4f5fbc9.png"></p>
+<h1 id="二、使用Markdown通信"><a href="#二、使用Markdown通信" class="headerlink" title="二、使用Markdown通信"></a>二、使用Markdown通信</h1><p>GitHub 不仅仅是代码展示界面，还是一个软件协作平台，Markdown是开发人员在问题和拉取请求中清晰有序地进行沟通的最重要方式之一。本课程将引导您更有效地创建和使用标题，在项目符号列表中组织想法，并显示您已完成的清单工作。您甚至可以使用Markdown在表情符号，图像和链接的帮助下为您的工作增加一些深度。</p>
+<h2 id="0-预备-1"><a href="#0-预备-1" class="headerlink" title="0. 预备"></a>0. 预备</h2><p>点击<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL3NraWxscy9jb21tdW5pY2F0ZS11c2luZy1tYXJrZG93biN0aGlzLWlzLWFuLWgxLWhlYWRlci13aGljaC1pcy10aGUtbGFyZ2VzdA==" title="https://github.com/skills/communicate-using-markdown#this-is-an-h1-header-which-is-the-largest">https://github.com/skills/communicate-using-markdown#this-is-an-h1-header-which-is-the-largest<i class="fa fa-external-link"></i></span>，右键单击使用此模板”Use this template”，然后在新选项卡中打开链接。<img src="/images/1663054447869-c3b13110-fb22-4f8b-acb6-84d3719ba18c.png"><br>创建一个新的库，名字为”introduction-to-github”。<img src="/images/1663054547945-95cba5c2-b9ee-4463-8b23-c5f0345c8d42.png"></p>
+<h2 id="1-加标题-Add-headers"><a href="#1-加标题-Add-headers" class="headerlink" title="1. 加标题 Add headers"></a>1. 加标题 Add headers</h2><p>a. 欢迎来到“使用Markdown通信”！i. 什么是Markdown？Markdown是一种用于在 GitHub 上进行通信的轻量级语法。您可以设置文本格式以添加标题、列表、粗体、斜体、表格和许多其他样式。你可以在 GitHub 周围的大多数地方使用降价：</p>
+<pre><code>  -  issues, pull requests, and discussions中的评论；
+  - 带有.md或.markdown扩展名的文件；
+  - 在要点中共享文本片段；
+</code></pre>
+<p>ii. 什么是标题？标题是节开头的较大文本位，有六个等级，例：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"># This is an &lt;h1&gt; header, which is the largest</span><br><span class="line">## This is an &lt;h2&gt; header</span><br><span class="line">##### This is an &lt;h6&gt; header, which is the smallest</span><br></pre></td></tr></table></figure>
+<p>效果如下：<img src="/images/1663052927540-fd206589-3118-45d9-8871-e68f3a43e458.png"><br>这是一个<h6> header，它是最小的b. 使用header编辑文件</p>
+<pre><code>  1. 打开一个新的浏览器选项卡，并在阅读此选项卡中的说明的同时处理第二个选项卡中的步骤。
+  2. 打开“Pull reduests”选项卡。
+  3. 打开我们为您提出的拉取请求&quot;start learning markdown&quot;。
+</code></pre>
+<p><img src="/images/1663055041295-94ef428a-43f1-40ff-93fe-0d99c29c038a.png"></p>
+<pre><code>  4. 在此拉取请求中，转到已更改文件&quot;File changed&quot;选项卡。
+</code></pre>
+<p><img src="/images/1663055296644-8ebac98c-1603-4dc7-9aab-06cb2d052f4e.png"></p>
+<pre><code>  5. 在菜单栏&quot;index.md&quot;中，从右上角的三个虚线 **...** 菜单中选择**“**Edit file”：
+</code></pre>
+<p><img src="/images/1663055936176-1f4f7eb9-672e-4f00-bd17-0379a952efa3.png"></p>
+<pre><code>  6. 在编辑文件&quot;Edit file&quot;选项卡上，在内容前添加一个# ，后跟一个空格，使其成为 H1 一级标题。您可以使用一到六个#字符后跟一个空格来添加更多等级的标题。
+</code></pre>
+<p><img src="/images/1663056205807-8f73fdb1-b847-44f4-b569-03f156425f8f.png"></p>
+<pre><code>  7. 在新内容上方，点击预览&quot;Preview&quot;。
+</code></pre>
+<p><img src="/images/1663056339122-158e5359-9d75-496e-b507-ceae17864b52.png"></p>
+<pre><code>  8. 在页面底部，键入一条简短而有意义的提交消息，描述您对文件所做的更改。
+</code></pre>
+<p><img src="/images/1663056628983-fec0b475-4dc8-4475-8288-e27c949f1093.png"></p>
+<pre><code>  9. 单击提交更改&quot;commit changes&quot;。
+  10. 等待大约20秒，然后刷新此页面以进行下一步。
+</code></pre>
+<h2 id="2-添加图像-Add-an-image"><a href="#2-添加图像-Add-an-image" class="headerlink" title="2.添加图像 Add an image"></a>2.添加图像 <strong>Add an image</strong></h2><p>a. 添加图像时，在方括号”[]”中包含描述性文本，此文本是为使用屏幕阅读器的用户大声朗读的。当您的图像不显示时，如链接不对时，也会显示它。您可以看到下面图像的语法，例：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">![Image of Yaktocat](https://octodex.github.com/images/yaktocat.png)</span><br></pre></td></tr></table></figure>
+<p>界面展示:<a href="https://camo.githubusercontent.com/d8f7abcee9fdb2cded758cbff3b0b3036d4a4641bf58f0cb221aa3d4c1b17d93/68747470733a2f2f6f63746f6465782e6769746875622e636f6d2f696d616765732f79616b746f6361742e706e67"><img src="https://camo.githubusercontent.com/d8f7abcee9fdb2cded758cbff3b0b3036d4a4641bf58f0cb221aa3d4c1b17d93/68747470733a2f2f6f63746f6465782e6769746875622e636f6d2f696d616765732f79616b746f6361742e706e67#from=url&height=148&id=S7iZW&originHeight=896&originWidth=896&originalType=binary&ratio=1&rotation=0&showTitle=false&status=done&style=none&title=&width=148"></a>b. Add an image步骤：</p>
+<pre><code>  1. 与之前一样，编辑index.md此拉取请求中的文件。
+</code></pre>
+<p><img src="/images/1663055936176-1f4f7eb9-672e-4f00-bd17-0379a952efa3.png"></p>
+<pre><code>  2. 在文件代码行中新增一行，为您选择的图像添加正确的Markdown语句，不要忘记包含替代文本alt-text！
+</code></pre>
+<p><img src="/images/1663058429639-330bccbc-9e5b-4093-94bc-6ba99bdb2f27.png"></p>
+<pre><code>  3. 点击预览&quot;Preview&quot;选项卡检查您的Markdown格式，截图没有截全：
+</code></pre>
+<p><img src="/images/1663058583106-42fdbe60-b4d4-486e-b9d7-9c4febb09beb.png"></p>
+<pre><code>  4. 点击提交更改&quot;Commit changes&quot;。
+  5. 等待大约20秒，然后刷新此页面以进行下一步。
+</code></pre>
+<h2 id="3-添加代码块示例"><a href="#3-添加代码块示例" class="headerlink" title="3.添加代码块示例"></a>3.添加代码块示例</h2><h2 id="a-除了代码块之外，某些代码块的呈现方式也应根据语言（如-python-或命令行文本）而有所不同。例：import-nlpprint-“-”-x-List-syntax-is-required-x-This-item-is-complete-This-item-is-not-complete-Turn-on-GitHub-Pages-Outline-my-portfolio-Introduce-myself-to-the-world"><a href="#a-除了代码块之外，某些代码块的呈现方式也应根据语言（如-python-或命令行文本）而有所不同。例：import-nlpprint-“-”-x-List-syntax-is-required-x-This-item-is-complete-This-item-is-not-complete-Turn-on-GitHub-Pages-Outline-my-portfolio-Introduce-myself-to-the-world" class="headerlink" title="a. 除了代码块之外，某些代码块的呈现方式也应根据语言（如 python 或命令行文本）而有所不同。例：import nlpprint(“###”)- [x] List syntax is required- [x] This item is complete- [ ] This item is not complete- [ ] Turn on GitHub Pages- [ ] Outline my portfolio- [ ] Introduce myself to the world"></a>a. 除了代码块之外，某些代码块的呈现方式也应根据语言（如 python 或命令行文本）而有所不同。例：<br><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">```</span><br><span class="line">import nlp</span><br><span class="line">print(&quot;###&quot;)</span><br></pre></td></tr></table></figure><br><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">界面展示:</span><br></pre></td></tr></table></figure><br>import nlp<br>print(“###”)<br><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">b. 添加代码步骤：</span><br><span class="line"></span><br><span class="line">      1. 与之前一样，编辑此拉取请求中的文件。</span><br><span class="line"></span><br><span class="line">![](/images/1663055936176-1f4f7eb9-672e-4f00-bd17-0379a952efa3.png)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">      2. 在文件中，为您选择的代码示例添加正确的 Markdown方式，这里通过三个单引号来包裹代码块。</span><br><span class="line"></span><br><span class="line">![](/images/1663059442854-06d10123-3db1-4236-b1e5-8b477d5adc4f.png)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">      3. 点击预览&quot;Preview&quot;选项卡检查您的Markdown格式是否正确。</span><br><span class="line"></span><br><span class="line">![](/images/1663059536220-1f90aff2-005a-442b-af37-337b26f46412.png)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">      4. 点击提交更改&quot;Commit changes&quot;。</span><br><span class="line">      5. 等待大约20秒，然后刷新此页面以进行下一步。</span><br><span class="line"></span><br><span class="line">## 4.制作任务列表</span><br><span class="line">a. 什么是任务列表？任务列表会创建要勾选的复选框。它们对于跟踪问题和拉取请求非常有用。如果您在问题或拉取请求的正文中包含任务列表，您将在问题列表中看到一个进度指示器。任务列表的语法非常具体。请务必在需要的地方包含空格，否则它们将无法呈现。例：</span><br></pre></td></tr></table></figure><br>- [x] List syntax is required<br>- [x] This item is complete<br>- [ ] This item is not complete<br><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">界面展示：![](/images/1663060133679-965d5b54-ac09-4914-b5ff-e9525c02ed68.png)</span><br><span class="line">b. 添加任务列表步骤：</span><br><span class="line"></span><br><span class="line">      1. 返回到您的拉取请求pull request。</span><br><span class="line">      2. 使用Markdown创建任务列表。下面是一个示例：</span><br></pre></td></tr></table></figure><br>- [ ] Turn on GitHub Pages<br>- [ ] Outline my portfolio<br>- [ ] Introduce myself to the world<br><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br></pre></td><td class="code"><pre><span class="line">请记住，任务列表以语法- [ ]开头，然后是任务列表项。格式是特有的！</span><br><span class="line"></span><br><span class="line">      3. 使用预览&quot;Preview&quot;选项卡检查您的Markdown格式。</span><br><span class="line"></span><br><span class="line">![](/images/1663060808480-396c3f39-26a6-493f-b977-a615dfe91550.png)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">      4. 提交更改&quot;Commit changes&quot;。</span><br><span class="line">      5. 等待大约20秒，然后刷新此页面以进行下一步。</span><br><span class="line"></span><br><span class="line">## 5.合并拉取请求</span><br><span class="line">步骤：i. 单击合并拉取请求&quot;Merge pull request&quot;。返回Start learning markdown界面，有如下界面：![](/images/1663061387870-f744cdd5-421c-4e7f-ab7d-3c9b336d2d17.png)</span><br><span class="line">![](/images/1663061433135-127d4ca0-78e2-42ba-8b39-568e0fd649ac.png)</span><br><span class="line">    ii. 等待大约20秒，然后刷新此页面以进行下一步。</span><br><span class="line"></span><br><span class="line"># 三、网站页面设置</span><br><span class="line"></span><br><span class="line">## 0. 预备</span><br><span class="line">使用链接[https://github.com/skills/github-pages](https://github.com/skills/github-pages)中的模板建库：i. 右键单击“使用此模板”，然后在新选项卡中打开链接 ![](/images/1663062337955-248b1952-3cf5-4134-ac90-3368963f39e7.png)</span><br><span class="line">ii. 储存库的名字为&quot;introduction-to-github-3&quot;:![](/images/1663062614841-02be72d7-1a91-4c2e-aed5-bd5ed28b75d2.png)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">## 1.启用 GitHub 页面</span><br><span class="line">第一步是在此存储库上启用 GitHub 页面。当您在存储库上启用 GitHub 页面时，GitHub 会获取主分支上的内容，并根据其内容发布网站。</span><br><span class="line"></span><br><span class="line">   1. 打开一个新的浏览器选项卡，并在阅读此选项卡中的说明的同时处理第二个选项卡中的步骤。</span><br><span class="line">   2. 在您的存储库名称&quot;introduction-to-github-3&quot;界面，单击Settings。</span><br><span class="line"></span><br><span class="line">![](/images/1663062908129-b979eb9b-20ac-4912-8a84-fc7cd92a0218.png)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">   3. 单击页面&quot;Pages&quot;：</span><br><span class="line"></span><br><span class="line">![](/images/1663063180913-cbd4cbab-7be2-4d9c-a0f9-19a6f94664bc.png)</span><br><span class="line">d. 在&quot;GitHub Pages&quot;部分，使用源&quot;Source&quot;下拉列表选择&quot;Deploy from a branch&quot;，然后选择&quot;main&quot;分支：![](/images/1663063585345-58c3216e-9c10-489d-a36d-72e6e1ee1bff.png)</span><br><span class="line">e. 等待大约一分钟，刷新此页面可以进行下一步。打开 GitHub 页面会创建存储库的部署。GitHub 操作在等待部署时可能需要长达一分钟的时间才能做出响应。未来的步骤将是大约20秒;此步骤较慢。</span><br><span class="line"></span><br><span class="line">## 2.配置网站</span><br><span class="line">a. 打开 GitHub 页面！</span><br><span class="line"></span><br><span class="line">   - 我们将在我为您创建的my-pages分支中工作，此网站看起来很棒。</span><br><span class="line"></span><br><span class="line">![](/images/1663118337677-e378feba-d635-44ec-9007-0eb4ebcd4b8a.png)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">   - Jekyll 使用标题文件_config.yml来存储您的网站、主题和可重用内容，如网站标题和 GitHub 句柄的设置。您可以在存储库的“Code”选项卡上签出_config.yml文件。</span><br><span class="line">   - 我们需要使用博客就绪的主题。对于此活动，我们将使用名为&quot;minima&quot;的主题。</span><br><span class="line"></span><br><span class="line">b. 步骤：</span><br><span class="line"></span><br><span class="line">      1. 浏览到my-pages分支中的_config.yml文件；</span><br><span class="line"></span><br><span class="line">![](/images/1663118465476-12209cb9-078c-4ea2-a7e9-d27e6ed9dbed.png)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">      2. 在右上角，打开文件编辑器；</span><br><span class="line"></span><br><span class="line">![](/images/1663118562635-05bf7c11-b037-4b13-a204-3dadeb827adb.png)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">      3. 添加一个theme: 设置为 minima，这样它就会显示在 _ config.yml 文件中，如下所示：</span><br><span class="line"></span><br><span class="line">![](/images/1663118942368-98cdad8c-68cf-460c-ab67-8aa321ffe2a5.png)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">      4. (可选)您可以修改其他配置变量，如 title: 、author: 和 description: ，以进一步定制您的网站；</span><br><span class="line">      5. 提交更改，单击Commit changes；</span><br><span class="line"></span><br><span class="line">![](/images/1663119075883-7ed68455-515d-4f70-95ac-0d10c6644bcb.png)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">      6. 等待大约20秒，结果如下：</span><br><span class="line"></span><br><span class="line">![](/images/1663119269844-913df58e-b03c-4f46-a70f-2f7c3d18a0ab.png)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">## 3. 自定义主页homepage</span><br><span class="line">a. 您可以通过向index.md文件或README.md文件添加内容来自定义主页。GitHub 页面首先查找一个index.md文件。您的存储库有一个index.md文件，因此我们可以对其进行更新以包含您的个性化内容。b. 创建主页步骤：</span><br><span class="line"></span><br><span class="line">      1. 浏览到my-pages分支中的index.md文件；</span><br><span class="line"></span><br><span class="line">![](/images/1663119963218-4acaa6be-8b05-4b25-8e03-4281c0525986.png)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">      2. 在右上角，打开文件编辑器；</span><br><span class="line"></span><br><span class="line">![](/images/1663120150542-7ba4a648-a74a-4de2-a139-61ba974ccc2e.png)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">      3. 在主页上键入所需的内容。您可以在此页面上使用Markdown格式；</span><br><span class="line"></span><br><span class="line">![](/images/1663120891010-54ebfd65-4f25-400e-bd24-53651f14b07c.png)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">      4. （可选）您也可以修改title:或暂时忽略它。我们将在下一步中讨论它；</span><br><span class="line">      5. 将更改提交到my-pages分支；</span><br><span class="line"></span><br><span class="line">![](/images/1663120943594-3253ec39-1a49-4fab-b161-4d3743f78fad.png)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">      6. 等待大约20秒，结果展示：</span><br><span class="line"></span><br><span class="line">![](/images/1663121390666-25fdabcb-4afd-4f8d-a37f-4a3a94fe03db.png)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">## 4. 创建博客</span><br><span class="line">a. GitHub 页面使用Jekyll。在Jekyll中，我们可以使用专门命名的文件和前言创建博客。这些文件必须命名为_posts/YYYY-MM-DD-title.md 。您还必须在前言中包含title和date。</span><br><span class="line"></span><br><span class="line">   - 什么是前言：Jekyll文件使用的语法称为 YAML frontmatter。它位于文件的顶部，如下所示：</span><br></pre></td></tr></table></figure></h2><h2 id="title-“Welcome-to-my-blog”date-2019-01-20"><a href="#title-“Welcome-to-my-blog”date-2019-01-20" class="headerlink" title="title: “Welcome to my blog”date: 2019-01-20"></a>title: “Welcome to my blog”<br>date: 2019-01-20</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">   - 有关配置前置物料的详细信息，请参阅[Jekyll frontmatter documentation](https://jekyllrb.com/docs/frontmatter/).。</span><br><span class="line"></span><br><span class="line">b. 创建博客步骤：</span><br><span class="line"></span><br><span class="line">      1. 浏览到my-pages分支。</span><br><span class="line"></span><br><span class="line">![](/images/1663122492083-8babbf60-35e0-469b-9d21-7e22640c9291.png)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">      2. 单击Add file下拉菜单，然后单击Create new file。</span><br><span class="line"></span><br><span class="line">![](/images/1663122540194-2bf3b979-9cf5-4f70-9625-67ff5a3b34c2.png)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">      3. 将文件命名为_posts/YYYY-MM-DD-title.md。</span><br><span class="line"></span><br><span class="line">![](/images/1663122698556-e07ea079-4e28-4adb-aa15-b49a603f0674.png)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">      4. 将YYYY-MM-DD替换为今天的日期，并根据需要更改第一篇博客文章title。</span><br><span class="line">      - 如果您确实编辑了标题，请确保单词之间有连字符。如果您的博客文章日期未遵循正确的日期约定，您将收到错误，并且您的网站将无法构建。更多信息请参阅“[页面构建失败：无效的发布日期](https://docs.github.com/en/pages/setting-up-a-github-pages-site-with-jekyll/troubleshooting-jekyll-build-errors-for-github-pages-sites)”。</span><br><span class="line">      5. 在博客文章的顶部键入以下内容：</span><br></pre></td></tr></table></figure>
+<hr>
+<h2 id="title-“YOUR-TITLE”date-YYYY-MM-DD"><a href="#title-“YOUR-TITLE”date-YYYY-MM-DD" class="headerlink" title="title: “YOUR-TITLE”date: YYYY-MM-DD"></a>title: “YOUR-TITLE”<br>date: YYYY-MM-DD</h2><pre><code>
+      6. 将YOUR-TITLE替换为博客文章的标题。
+
+![](/images/1663123133051-f1ec1cbd-bc4f-47a2-84e4-a5753e903fa4.png)
+
+
+      7. 将YYYY-MM-DD替换为今天的日期。
+
+![](/images/1663123190215-9c9f2b30-8635-46f3-bda2-e16c9222953e.png)
+
+
+      8. 键入博客文章的快速草稿。请记住，您以后可以随时对其进行编辑。
+      9. 提交到分支Commit new file。
+      10. 等待大约20秒，效果展示：
+
+![](/images/1663123380405-1dbadf31-860c-4b1e-93cd-0d87bbed7b00.png)
+
+
+## 5.合并拉取请求
+合并拉取请求步骤：
+
+   1. 单击合并拉取请求Merge pull request。
+   2. 删除分支my-pages（可选）。
+   3. 等待大约20秒，然后刷新此页面以进行下一步。
+
+</code></pre>
+
+    </div>
+
+    
+    
+    
+        <div class="reward-container">
+  <div></div>
+  <button onclick="var qr = document.getElementById('qr'); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/images/wechatpay.png" alt="SindreYang 微信支付">
+        <p>微信支付</p>
+      </div>
+      
+      <div style="display: inline-block;">
+        <img src="/images/alipay.png" alt="SindreYang 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>SindreYang
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://blog.mviai.com/2019/7._%E7%86%9F%E6%82%89Github%E4%BB%93%E5%BA%93%E4%BD%BF%E7%94%A8/" title="7">http://blog.mviai.com/2019/7._熟悉Github仓库使用/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <span class="exturl" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC9kZWVkLnpo"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</span> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+        
+
+  <div class="followme">
+    <p>欢迎关注我的其它发布渠道</p>
+
+    <div class="social-list">
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="/images/wechat.png">
+            <span class="icon">
+              <i class="fa fa-wechat"></i>
+            </span>
+
+            <span class="label">WeChat</span>
+          </a>
+        </div>
+    </div>
+  </div>
+
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2019/%E5%B0%86%E6%95%B0%E6%8D%AE%E5%BD%92%E4%B8%80%E5%8C%96%E5%88%B0%E4%BB%BB%E6%84%8F%E5%8C%BA%E9%97%B4%E8%8C%83%E5%9B%B4%E7%9A%84%E6%96%B9%E6%B3%95/" rel="prev" title="将数据归一化到任意区间范围的方法">
+      <i class="fa fa-chevron-left"></i> 将数据归一化到任意区间范围的方法
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2019/pytorch%20RuntimeError-expected-backend-CPU-and-dtype-Double-but-got-backend-CPU-and-dtype-Float/" rel="next" title="pytorch RuntimeError-expected-backend-CPU-and-dtype-Double-but-got-backend-CPU-and-dtype-Float">
+      pytorch RuntimeError-expected-backend-CPU-and-dtype-Double-but-got-backend-CPU-and-dtype-Float <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    
+  <div class="comments">
+    <div id="SOHUCS"></div>
+  </div>
+  
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%B8%80%E3%80%81Github%E7%AE%80%E4%BB%8B"><span class="nav-number">1.</span> <span class="nav-text">一、Github简介</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#0-%E9%A2%84%E5%A4%87"><span class="nav-number">1.1.</span> <span class="nav-text">0. 预备</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-%E5%82%A8%E5%AD%98%E4%BB%93repository%E7%9A%84%E5%88%9B%E5%BB%BA%E5%92%8C%E5%88%A0%E9%99%A4"><span class="nav-number">1.2.</span> <span class="nav-text">1. 储存仓repository的创建和删除</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-%E7%95%8C%E9%9D%A2%E7%AE%80%E4%BB%8B"><span class="nav-number">1.3.</span> <span class="nav-text">2. 界面简介</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-%E5%88%9B%E5%BB%BA%E5%88%86%E6%94%AF"><span class="nav-number">1.4.</span> <span class="nav-text">3. 创建分支</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-%E6%8F%90%E4%BA%A4%E6%96%87%E4%BB%B6"><span class="nav-number">1.5.</span> <span class="nav-text">4. 提交文件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-%E6%89%93%E5%BC%80%E6%8B%89%E5%8F%96%E8%AF%B7%E6%B1%82"><span class="nav-number">1.6.</span> <span class="nav-text">5. 打开拉取请求</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-%E5%90%88%E5%B9%B6%E6%8B%89%E5%8F%96%E8%AF%B7%E6%B1%82"><span class="nav-number">1.7.</span> <span class="nav-text">6. 合并拉取请求</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BA%8C%E3%80%81%E4%BD%BF%E7%94%A8Markdown%E9%80%9A%E4%BF%A1"><span class="nav-number">2.</span> <span class="nav-text">二、使用Markdown通信</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#0-%E9%A2%84%E5%A4%87-1"><span class="nav-number">2.1.</span> <span class="nav-text">0. 预备</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-%E5%8A%A0%E6%A0%87%E9%A2%98-Add-headers"><span class="nav-number">2.2.</span> <span class="nav-text">1. 加标题 Add headers</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link"><span class="nav-number">2.2.0.0.0.1.</span> <span class="nav-text"> header，它是最小的b. 使用header编辑文件
+  1. 打开一个新的浏览器选项卡，并在阅读此选项卡中的说明的同时处理第二个选项卡中的步骤。
+  2. 打开“Pull reduests”选项卡。
+  3. 打开我们为您提出的拉取请求&quot;start learning markdown&quot;。
+
+
+  4. 在此拉取请求中，转到已更改文件&quot;File changed&quot;选项卡。
+
+
+  5. 在菜单栏&quot;index.md&quot;中，从右上角的三个虚线 **...** 菜单中选择**“**Edit file”：
+
+
+  6. 在编辑文件&quot;Edit file&quot;选项卡上，在内容前添加一个# ，后跟一个空格，使其成为 H1 一级标题。您可以使用一到六个#字符后跟一个空格来添加更多等级的标题。
+
+
+  7. 在新内容上方，点击预览&quot;Preview&quot;。
+
+
+  8. 在页面底部，键入一条简短而有意义的提交消息，描述您对文件所做的更改。
+
+
+  9. 单击提交更改&quot;commit changes&quot;。
+  10. 等待大约20秒，然后刷新此页面以进行下一步。
+
+2.添加图像 Add an imagea. 添加图像时，在方括号”[]”中包含描述性文本，此文本是为使用屏幕阅读器的用户大声朗读的。当您的图像不显示时，如链接不对时，也会显示它。您可以看到下面图像的语法，例：
+1![Image of Yaktocat](https:&#x2F;&#x2F;octodex.github.com&#x2F;images&#x2F;yaktocat.png)
+界面展示:b. Add an image步骤：
+  1. 与之前一样，编辑index.md此拉取请求中的文件。
+
+
+  2. 在文件代码行中新增一行，为您选择的图像添加正确的Markdown语句，不要忘记包含替代文本alt-text！
+
+
+  3. 点击预览&quot;Preview&quot;选项卡检查您的Markdown格式，截图没有截全：
+
+
+  4. 点击提交更改&quot;Commit changes&quot;。
+  5. 等待大约20秒，然后刷新此页面以进行下一步。
+
+3.添加代码块示例a. 除了代码块之外，某些代码块的呈现方式也应根据语言（如 python 或命令行文本）而有所不同。例：123&#96;&#96;&#96;import nlpprint(&quot;###&quot;)1界面展示:import nlpprint(“###”)12345678910111213141516171819202122b. 添加代码步骤：      1. 与之前一样，编辑此拉取请求中的文件。![](&#x2F;images&#x2F;1663055936176-1f4f7eb9-672e-4f00-bd17-0379a952efa3.png)      2. 在文件中，为您选择的代码示例添加正确的 Markdown方式，这里通过三个单引号来包裹代码块。![](&#x2F;images&#x2F;1663059442854-06d10123-3db1-4236-b1e5-8b477d5adc4f.png)      3. 点击预览&quot;Preview&quot;选项卡检查您的Markdown格式是否正确。![](&#x2F;images&#x2F;1663059536220-1f90aff2-005a-442b-af37-337b26f46412.png)      4. 点击提交更改&quot;Commit changes&quot;。      5. 等待大约20秒，然后刷新此页面以进行下一步。## 4.制作任务列表a. 什么是任务列表？任务列表会创建要勾选的复选框。它们对于跟踪问题和拉取请求非常有用。如果您在问题或拉取请求的正文中包含任务列表，您将在问题列表中看到一个进度指示器。任务列表的语法非常具体。请务必在需要的地方包含空格，否则它们将无法呈现。例：- [x] List syntax is required- [x] This item is complete- [ ] This item is not complete12345界面展示：![](&#x2F;images&#x2F;1663060133679-965d5b54-ac09-4914-b5ff-e9525c02ed68.png)b. 添加任务列表步骤：      1. 返回到您的拉取请求pull request。      2. 使用Markdown创建任务列表。下面是一个示例：- [ ] Turn on GitHub Pages- [ ] Outline my portfolio- [ ] Introduce myself to the world123456789101112131415161718192021222324252627282930313233343536373839404142434445464748495051525354555657585960616263646566676869707172737475767778798081828384858687888990919293949596979899100101102103104105106107108109请记住，任务列表以语法- [ ]开头，然后是任务列表项。格式是特有的！      3. 使用预览&quot;Preview&quot;选项卡检查您的Markdown格式。![](&#x2F;images&#x2F;1663060808480-396c3f39-26a6-493f-b977-a615dfe91550.png)      4. 提交更改&quot;Commit changes&quot;。      5. 等待大约20秒，然后刷新此页面以进行下一步。## 5.合并拉取请求步骤：i. 单击合并拉取请求&quot;Merge pull request&quot;。返回Start learning markdown界面，有如下界面：![](&#x2F;images&#x2F;1663061387870-f744cdd5-421c-4e7f-ab7d-3c9b336d2d17.png)![](&#x2F;images&#x2F;1663061433135-127d4ca0-78e2-42ba-8b39-568e0fd649ac.png)    ii. 等待大约20秒，然后刷新此页面以进行下一步。# 三、网站页面设置## 0. 预备使用链接[https:&#x2F;&#x2F;github.com&#x2F;skills&#x2F;github-pages](https:&#x2F;&#x2F;github.com&#x2F;skills&#x2F;github-pages)中的模板建库：i. 右键单击“使用此模板”，然后在新选项卡中打开链接 ![](&#x2F;images&#x2F;1663062337955-248b1952-3cf5-4134-ac90-3368963f39e7.png)ii. 储存库的名字为&quot;introduction-to-github-3&quot;:![](&#x2F;images&#x2F;1663062614841-02be72d7-1a91-4c2e-aed5-bd5ed28b75d2.png)## 1.启用 GitHub 页面第一步是在此存储库上启用 GitHub 页面。当您在存储库上启用 GitHub 页面时，GitHub 会获取主分支上的内容，并根据其内容发布网站。   1. 打开一个新的浏览器选项卡，并在阅读此选项卡中的说明的同时处理第二个选项卡中的步骤。   2. 在您的存储库名称&quot;introduction-to-github-3&quot;界面，单击Settings。![](&#x2F;images&#x2F;1663062908129-b979eb9b-20ac-4912-8a84-fc7cd92a0218.png)   3. 单击页面&quot;Pages&quot;：![](&#x2F;images&#x2F;1663063180913-cbd4cbab-7be2-4d9c-a0f9-19a6f94664bc.png)d. 在&quot;GitHub Pages&quot;部分，使用源&quot;Source&quot;下拉列表选择&quot;Deploy from a branch&quot;，然后选择&quot;main&quot;分支：![](&#x2F;images&#x2F;1663063585345-58c3216e-9c10-489d-a36d-72e6e1ee1bff.png)e. 等待大约一分钟，刷新此页面可以进行下一步。打开 GitHub 页面会创建存储库的部署。GitHub 操作在等待部署时可能需要长达一分钟的时间才能做出响应。未来的步骤将是大约20秒;此步骤较慢。## 2.配置网站a. 打开 GitHub 页面！   - 我们将在我为您创建的my-pages分支中工作，此网站看起来很棒。![](&#x2F;images&#x2F;1663118337677-e378feba-d635-44ec-9007-0eb4ebcd4b8a.png)   - Jekyll 使用标题文件_config.yml来存储您的网站、主题和可重用内容，如网站标题和 GitHub 句柄的设置。您可以在存储库的“Code”选项卡上签出_config.yml文件。   - 我们需要使用博客就绪的主题。对于此活动，我们将使用名为&quot;minima&quot;的主题。b. 步骤：      1. 浏览到my-pages分支中的_config.yml文件；![](&#x2F;images&#x2F;1663118465476-12209cb9-078c-4ea2-a7e9-d27e6ed9dbed.png)      2. 在右上角，打开文件编辑器；![](&#x2F;images&#x2F;1663118562635-05bf7c11-b037-4b13-a204-3dadeb827adb.png)      3. 添加一个theme: 设置为 minima，这样它就会显示在 _ config.yml 文件中，如下所示：![](&#x2F;images&#x2F;1663118942368-98cdad8c-68cf-460c-ab67-8aa321ffe2a5.png)      4. (可选)您可以修改其他配置变量，如 title: 、author: 和 description: ，以进一步定制您的网站；      5. 提交更改，单击Commit changes；![](&#x2F;images&#x2F;1663119075883-7ed68455-515d-4f70-95ac-0d10c6644bcb.png)      6. 等待大约20秒，结果如下：![](&#x2F;images&#x2F;1663119269844-913df58e-b03c-4f46-a70f-2f7c3d18a0ab.png)## 3. 自定义主页homepagea. 您可以通过向index.md文件或README.md文件添加内容来自定义主页。GitHub 页面首先查找一个index.md文件。您的存储库有一个index.md文件，因此我们可以对其进行更新以包含您的个性化内容。b. 创建主页步骤：      1. 浏览到my-pages分支中的index.md文件；![](&#x2F;images&#x2F;1663119963218-4acaa6be-8b05-4b25-8e03-4281c0525986.png)      2. 在右上角，打开文件编辑器；![](&#x2F;images&#x2F;1663120150542-7ba4a648-a74a-4de2-a139-61ba974ccc2e.png)      3. 在主页上键入所需的内容。您可以在此页面上使用Markdown格式；![](&#x2F;images&#x2F;1663120891010-54ebfd65-4f25-400e-bd24-53651f14b07c.png)      4. （可选）您也可以修改title:或暂时忽略它。我们将在下一步中讨论它；      5. 将更改提交到my-pages分支；![](&#x2F;images&#x2F;1663120943594-3253ec39-1a49-4fab-b161-4d3743f78fad.png)      6. 等待大约20秒，结果展示：![](&#x2F;images&#x2F;1663121390666-25fdabcb-4afd-4f8d-a37f-4a3a94fe03db.png)## 4. 创建博客a. GitHub 页面使用Jekyll。在Jekyll中，我们可以使用专门命名的文件和前言创建博客。这些文件必须命名为_posts&#x2F;YYYY-MM-DD-title.md 。您还必须在前言中包含title和date。   - 什么是前言：Jekyll文件使用的语法称为 YAML frontmatter。它位于文件的顶部，如下所示：title: “Welcome to my blog”date: 2019-01-201234567891011121314151617181920212223   - 有关配置前置物料的详细信息，请参阅[Jekyll frontmatter documentation](https:&#x2F;&#x2F;jekyllrb.com&#x2F;docs&#x2F;frontmatter&#x2F;).。b. 创建博客步骤：      1. 浏览到my-pages分支。![](&#x2F;images&#x2F;1663122492083-8babbf60-35e0-469b-9d21-7e22640c9291.png)      2. 单击Add file下拉菜单，然后单击Create new file。![](&#x2F;images&#x2F;1663122540194-2bf3b979-9cf5-4f70-9625-67ff5a3b34c2.png)      3. 将文件命名为_posts&#x2F;YYYY-MM-DD-title.md。![](&#x2F;images&#x2F;1663122698556-e07ea079-4e28-4adb-aa15-b49a603f0674.png)      4. 将YYYY-MM-DD替换为今天的日期，并根据需要更改第一篇博客文章title。      - 如果您确实编辑了标题，请确保单词之间有连字符。如果您的博客文章日期未遵循正确的日期约定，您将收到错误，并且您的网站将无法构建。更多信息请参阅“[页面构建失败：无效的发布日期](https:&#x2F;&#x2F;docs.github.com&#x2F;en&#x2F;pages&#x2F;setting-up-a-github-pages-site-with-jekyll&#x2F;troubleshooting-jekyll-build-errors-for-github-pages-sites)”。      5. 在博客文章的顶部键入以下内容：
+
+title: “YOUR-TITLE”date: YYYY-MM-DD
+      6. 将YOUR-TITLE替换为博客文章的标题。
+
+![](&#x2F;images&#x2F;1663123133051-f1ec1cbd-bc4f-47a2-84e4-a5753e903fa4.png)
+
+
+      7. 将YYYY-MM-DD替换为今天的日期。
+
+![](&#x2F;images&#x2F;1663123190215-9c9f2b30-8635-46f3-bda2-e16c9222953e.png)
+
+
+      8. 键入博客文章的快速草稿。请记住，您以后可以随时对其进行编辑。
+      9. 提交到分支Commit new file。
+      10. 等待大约20秒，效果展示：
+
+![](&#x2F;images&#x2F;1663123380405-1dbadf31-860c-4b1e-93cd-0d87bbed7b00.png)
+
+
+## 5.合并拉取请求
+合并拉取请求步骤：
+
+   1. 单击合并拉取请求Merge pull request。
+   2. 删除分支my-pages（可选）。
+   3. 等待大约20秒，然后刷新此页面以进行下一步。
+
+
+</span></a></li></ol></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-%E6%B7%BB%E5%8A%A0%E5%9B%BE%E5%83%8F-Add-an-image"><span class="nav-number">2.3.</span> <span class="nav-text">2.添加图像 Add an image</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-%E6%B7%BB%E5%8A%A0%E4%BB%A3%E7%A0%81%E5%9D%97%E7%A4%BA%E4%BE%8B"><span class="nav-number">2.4.</span> <span class="nav-text">3.添加代码块示例</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#a-%E9%99%A4%E4%BA%86%E4%BB%A3%E7%A0%81%E5%9D%97%E4%B9%8B%E5%A4%96%EF%BC%8C%E6%9F%90%E4%BA%9B%E4%BB%A3%E7%A0%81%E5%9D%97%E7%9A%84%E5%91%88%E7%8E%B0%E6%96%B9%E5%BC%8F%E4%B9%9F%E5%BA%94%E6%A0%B9%E6%8D%AE%E8%AF%AD%E8%A8%80%EF%BC%88%E5%A6%82-python-%E6%88%96%E5%91%BD%E4%BB%A4%E8%A1%8C%E6%96%87%E6%9C%AC%EF%BC%89%E8%80%8C%E6%9C%89%E6%89%80%E4%B8%8D%E5%90%8C%E3%80%82%E4%BE%8B%EF%BC%9Aimport-nlpprint-%E2%80%9C-%E2%80%9D-x-List-syntax-is-required-x-This-item-is-complete-This-item-is-not-complete-Turn-on-GitHub-Pages-Outline-my-portfolio-Introduce-myself-to-the-world"><span class="nav-number">2.5.</span> <span class="nav-text">a. 除了代码块之外，某些代码块的呈现方式也应根据语言（如 python 或命令行文本）而有所不同。例：123&#96;&#96;&#96;import nlpprint(&quot;###&quot;)1界面展示:import nlpprint(“###”)12345678910111213141516171819202122b. 添加代码步骤：      1. 与之前一样，编辑此拉取请求中的文件。![](&#x2F;images&#x2F;1663055936176-1f4f7eb9-672e-4f00-bd17-0379a952efa3.png)      2. 在文件中，为您选择的代码示例添加正确的 Markdown方式，这里通过三个单引号来包裹代码块。![](&#x2F;images&#x2F;1663059442854-06d10123-3db1-4236-b1e5-8b477d5adc4f.png)      3. 点击预览&quot;Preview&quot;选项卡检查您的Markdown格式是否正确。![](&#x2F;images&#x2F;1663059536220-1f90aff2-005a-442b-af37-337b26f46412.png)      4. 点击提交更改&quot;Commit changes&quot;。      5. 等待大约20秒，然后刷新此页面以进行下一步。## 4.制作任务列表a. 什么是任务列表？任务列表会创建要勾选的复选框。它们对于跟踪问题和拉取请求非常有用。如果您在问题或拉取请求的正文中包含任务列表，您将在问题列表中看到一个进度指示器。任务列表的语法非常具体。请务必在需要的地方包含空格，否则它们将无法呈现。例：- [x] List syntax is required- [x] This item is complete- [ ] This item is not complete12345界面展示：![](&#x2F;images&#x2F;1663060133679-965d5b54-ac09-4914-b5ff-e9525c02ed68.png)b. 添加任务列表步骤：      1. 返回到您的拉取请求pull request。      2. 使用Markdown创建任务列表。下面是一个示例：- [ ] Turn on GitHub Pages- [ ] Outline my portfolio- [ ] Introduce myself to the world123456789101112131415161718192021222324252627282930313233343536373839404142434445464748495051525354555657585960616263646566676869707172737475767778798081828384858687888990919293949596979899100101102103104105106107108109请记住，任务列表以语法- [ ]开头，然后是任务列表项。格式是特有的！      3. 使用预览&quot;Preview&quot;选项卡检查您的Markdown格式。![](&#x2F;images&#x2F;1663060808480-396c3f39-26a6-493f-b977-a615dfe91550.png)      4. 提交更改&quot;Commit changes&quot;。      5. 等待大约20秒，然后刷新此页面以进行下一步。## 5.合并拉取请求步骤：i. 单击合并拉取请求&quot;Merge pull request&quot;。返回Start learning markdown界面，有如下界面：![](&#x2F;images&#x2F;1663061387870-f744cdd5-421c-4e7f-ab7d-3c9b336d2d17.png)![](&#x2F;images&#x2F;1663061433135-127d4ca0-78e2-42ba-8b39-568e0fd649ac.png)    ii. 等待大约20秒，然后刷新此页面以进行下一步。# 三、网站页面设置## 0. 预备使用链接[https:&#x2F;&#x2F;github.com&#x2F;skills&#x2F;github-pages](https:&#x2F;&#x2F;github.com&#x2F;skills&#x2F;github-pages)中的模板建库：i. 右键单击“使用此模板”，然后在新选项卡中打开链接 ![](&#x2F;images&#x2F;1663062337955-248b1952-3cf5-4134-ac90-3368963f39e7.png)ii. 储存库的名字为&quot;introduction-to-github-3&quot;:![](&#x2F;images&#x2F;1663062614841-02be72d7-1a91-4c2e-aed5-bd5ed28b75d2.png)## 1.启用 GitHub 页面第一步是在此存储库上启用 GitHub 页面。当您在存储库上启用 GitHub 页面时，GitHub 会获取主分支上的内容，并根据其内容发布网站。   1. 打开一个新的浏览器选项卡，并在阅读此选项卡中的说明的同时处理第二个选项卡中的步骤。   2. 在您的存储库名称&quot;introduction-to-github-3&quot;界面，单击Settings。![](&#x2F;images&#x2F;1663062908129-b979eb9b-20ac-4912-8a84-fc7cd92a0218.png)   3. 单击页面&quot;Pages&quot;：![](&#x2F;images&#x2F;1663063180913-cbd4cbab-7be2-4d9c-a0f9-19a6f94664bc.png)d. 在&quot;GitHub Pages&quot;部分，使用源&quot;Source&quot;下拉列表选择&quot;Deploy from a branch&quot;，然后选择&quot;main&quot;分支：![](&#x2F;images&#x2F;1663063585345-58c3216e-9c10-489d-a36d-72e6e1ee1bff.png)e. 等待大约一分钟，刷新此页面可以进行下一步。打开 GitHub 页面会创建存储库的部署。GitHub 操作在等待部署时可能需要长达一分钟的时间才能做出响应。未来的步骤将是大约20秒;此步骤较慢。## 2.配置网站a. 打开 GitHub 页面！   - 我们将在我为您创建的my-pages分支中工作，此网站看起来很棒。![](&#x2F;images&#x2F;1663118337677-e378feba-d635-44ec-9007-0eb4ebcd4b8a.png)   - Jekyll 使用标题文件_config.yml来存储您的网站、主题和可重用内容，如网站标题和 GitHub 句柄的设置。您可以在存储库的“Code”选项卡上签出_config.yml文件。   - 我们需要使用博客就绪的主题。对于此活动，我们将使用名为&quot;minima&quot;的主题。b. 步骤：      1. 浏览到my-pages分支中的_config.yml文件；![](&#x2F;images&#x2F;1663118465476-12209cb9-078c-4ea2-a7e9-d27e6ed9dbed.png)      2. 在右上角，打开文件编辑器；![](&#x2F;images&#x2F;1663118562635-05bf7c11-b037-4b13-a204-3dadeb827adb.png)      3. 添加一个theme: 设置为 minima，这样它就会显示在 _ config.yml 文件中，如下所示：![](&#x2F;images&#x2F;1663118942368-98cdad8c-68cf-460c-ab67-8aa321ffe2a5.png)      4. (可选)您可以修改其他配置变量，如 title: 、author: 和 description: ，以进一步定制您的网站；      5. 提交更改，单击Commit changes；![](&#x2F;images&#x2F;1663119075883-7ed68455-515d-4f70-95ac-0d10c6644bcb.png)      6. 等待大约20秒，结果如下：![](&#x2F;images&#x2F;1663119269844-913df58e-b03c-4f46-a70f-2f7c3d18a0ab.png)## 3. 自定义主页homepagea. 您可以通过向index.md文件或README.md文件添加内容来自定义主页。GitHub 页面首先查找一个index.md文件。您的存储库有一个index.md文件，因此我们可以对其进行更新以包含您的个性化内容。b. 创建主页步骤：      1. 浏览到my-pages分支中的index.md文件；![](&#x2F;images&#x2F;1663119963218-4acaa6be-8b05-4b25-8e03-4281c0525986.png)      2. 在右上角，打开文件编辑器；![](&#x2F;images&#x2F;1663120150542-7ba4a648-a74a-4de2-a139-61ba974ccc2e.png)      3. 在主页上键入所需的内容。您可以在此页面上使用Markdown格式；![](&#x2F;images&#x2F;1663120891010-54ebfd65-4f25-400e-bd24-53651f14b07c.png)      4. （可选）您也可以修改title:或暂时忽略它。我们将在下一步中讨论它；      5. 将更改提交到my-pages分支；![](&#x2F;images&#x2F;1663120943594-3253ec39-1a49-4fab-b161-4d3743f78fad.png)      6. 等待大约20秒，结果展示：![](&#x2F;images&#x2F;1663121390666-25fdabcb-4afd-4f8d-a37f-4a3a94fe03db.png)## 4. 创建博客a. GitHub 页面使用Jekyll。在Jekyll中，我们可以使用专门命名的文件和前言创建博客。这些文件必须命名为_posts&#x2F;YYYY-MM-DD-title.md 。您还必须在前言中包含title和date。   - 什么是前言：Jekyll文件使用的语法称为 YAML frontmatter。它位于文件的顶部，如下所示：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#title-%E2%80%9CWelcome-to-my-blog%E2%80%9Ddate-2019-01-20"><span class="nav-number">2.6.</span> <span class="nav-text">title: “Welcome to my blog”date: 2019-01-20</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#title-%E2%80%9CYOUR-TITLE%E2%80%9Ddate-YYYY-MM-DD"><span class="nav-number">2.7.</span> <span class="nav-text">title: “YOUR-TITLE”date: YYYY-MM-DD</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="SindreYang"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">SindreYang</p>
+  <div class="site-description" itemprop="description">沉淀后我愿意做一个温暖的人。有自己的喜好，有自己的原则，有自己的信仰，不急功近利，不浮夸轻薄，宠辱不惊，淡定安逸，心静如水。------不忘初心，方得始终</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">321</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">72</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL1NpbmRyZVlhbmc=" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;SindreYang"><i class="fa fa-fw fa-github"></i>GitHub</span>
+      </span>
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="bWFpbHRvOnl4QG12aWFpLmNvbQ==" title="E-Mail → mailto:yx@mviai.com"><i class="fa fa-fw fa-envelope"></i>E-Mail</span>
+      </span>
+  </div>
+  <div class="cc-license motion-element" itemprop="license">
+    <span class="exturl cc-opacity" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC9kZWVkLnpo"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+  <div class="languages">
+    <label class="lang-select-label">
+      <i class="fa fa-language"></i>
+      <span>简体中文</span>
+      <i class="fa fa-angle-up" aria-hidden="true"></i>
+    </label>
+    <select class="lang-select" data-canonical="">
+      
+        <option value="zh-CN" data-href="/2019/7._%E7%86%9F%E6%82%89Github%E4%BB%93%E5%BA%93%E4%BD%BF%E7%94%A8/" selected="">
+          简体中文
+        </option>
+      
+        <option value="en" data-href="/en/2019/7._%E7%86%9F%E6%82%89Github%E4%BB%93%E5%BA%93%E4%BD%BF%E7%94%A8/" selected="">
+          English
+        </option>
+      
+    </select>
+  </div>
+
+        
+
+<div class="copyright">
+  
+  &copy; 2018 – 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">SindreYang</span>
+</div><!-- 页面点击小红心 -->
+<script type="text/javascript" src="/js/love.js"></script>
+<!-- 背景波浪 -->
+<script color="0,0,255" opacity="0.5" zIndex="-1" count="99" src="https://cdn.jsdelivr.net/npm/canvas-nest.js@1/dist/canvas-nest.js"></script>
+
+
+<!-- 腾讯企业邮箱 -->
+<style>
+.bizmail_loginpanel {
+    font-size: 12px;
+    width: 300px;
+    height: auto;
+    background: transparent;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.bizmail_LoginBox {
+    padding: 10px 15px;
+}
+
+
+.bizmail_loginpanel form {
+    margin: 0;
+    padding: 0;
+}
+
+.bizmail_loginpanel input.text {
+    font-size: 12px;
+    width: 100px;
+    height: 20px;
+    margin: 0 2px;
+    background-color: transparent;
+    border:1px solid transparent;
+    box-shadow: none;
+    color: black;
+}
+
+.bizmail_loginpanel .bizmail_column {
+    height: 28px;
+}
+
+.bizmail_loginpanel .bizmail_column label {
+    display: block;
+    float: left;
+    width: 30px;
+    height: 24px;
+    line-height: 24px;
+    font-size: 12px;
+}
+
+.bizmail_loginpanel .bizmail_column .bizmail_inputArea {
+    float: left;
+    width: 240px;
+}
+
+.bizmail_loginpanel .bizmail_column span {
+    font-size: 12px;
+    word-wrap: break-word;
+    margin-left: 2px;
+    line-height: 200%;
+}
+
+.bizmail_loginpanel .bizmail_SubmitArea {
+    margin-left: 30px;
+    clear: both;
+}
+
+.bizmail_loginpanel .bizmail_SubmitArea a {
+    font-size: 12px;
+    margin-left: 5px;
+}
+
+.bizmail_loginpanel select {
+    width: 110px;
+    height: 20px;
+    margin: 0 2px;
+}
+.bizmail_loginpanel input {
+
+    background-color: rgba(83, 126, 236, 0.562);
+}
+
+
+</style>
+
+<script type="text/javascript">
+function checkInput() {
+    var e = document.form1.uin,
+        i = document.form1.pwd;
+    return 0 == e.value.length ? e.focus() : 0 == i.value.length ? i.focus() : (document.form1.submit(), setTimeout(" document.form1.pwd.value = '' ", 500)), !1
+}
+
+function writeLoginPanel(e) {
+    if (e && e.domainlist && -1 != e.domainlist.indexOf(".")) {
+        var a = "return checkInput()",
+            t = '<div id="divLoginpanelHor" class="bizmail_loginpanel" style="width:550px;"><div class="bizmail_LoginBox"><form name="form1" action="https://exmail.qq.com/cgi-bin/login" target="_blank" method="post" onsubmit="' + a + '"><input type="hidden" name="firstlogin" value="false" /><input type="hidden" name="errtemplate" value="dm_loginpage" /><input type="hidden" name="aliastype" value="other" /><input type="hidden" name="dmtype" value="bizmail" /><input type="hidden" name="p" value="" /><label>\u8d26\u53f7:</label><input type="text" name="uin" class="text" value="" />@#domainlist#<label>&nbsp&nbsp&nbsp;\u5bc6\u7801:</label><input type="password" name="pwd" class="text" value="" /><input type="submit" class="" name="" value="\u767b\u5f55" />&nbsp;<a href="https://exmail.qq.com/cgi-bin/readtemplate?check=false&t=biz_rf_portal#recovery" target="_blank">\u5fd8\u8bb0\u5bc6\u7801\uff1f</a></form></div></div>',
+            n = '<div id="divLoginpanelVer" class="bizmail_loginpanel"><div class="bizmail_LoginBox"><form name="form1" action="https://exmail.qq.com/cgi-bin/login" target="_blank" method="post" onsubmit="' + a + '"><input type="hidden" name="firstlogin" value="false" /><input type="hidden" name="errtemplate" value="dm_loginpage" /><input type="hidden" name="aliastype" value="other" /><input type="hidden" name="dmtype" value="bizmail" /><input type="hidden" name="p" value="" /><div class="bizmail_column"><label>\u8d26\u53f7:</label><div class="bizmail_inputArea"><input type="text" name="uin" class="text" value="" />@#domainlist#</div></div><div class="bizmail_column"><label>\u5bc6\u7801:</label><div class="bizmail_inputArea"><input type="password" name="pwd" class="text" value="" /></div></div><div class="bizmail_SubmitArea"><input type="submit" class="" name="" style="width:66px;" value="\u767b\u5f55" /><a href="https://exmail.qq.com/cgi-bin/readtemplate?check=false&t=biz_rf_portal#recovery" target="_blank">\u5fd8\u8bb0\u5bc6\u7801\uff1f</a></div></form></div></div>',
+            l = e.domainlist.split(";");
+        if (1 == l.length) var m = '<span>#domain#</span><input type="hidden" name="domain" value="#domain#" />'.replace(/#domain#/g, l[0]);
+        else {
+            m = '<select name="domain">';
+            for (i = 0; i < l.length; i++) m += '<option value="' + l[i] + '">' + l[i] + "</option>";
+            m += "</select>"
+        }
+        e.mode && "vertical" != e.mode && "both" != e.mode || document.write(n.replace(/#domainlist#/g, m)), "horizontal" != e.mode && "both" != e.mode || document.write(t.replace(/#domainlist#/g, m))
+    }
+}
+
+</script>      
+
+<script type="text/javascript"> writeLoginPanel({domainlist:"mviai.com", mode:"horizontal"});</script>      
+
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script size="300" alpha="0.6" zIndex="-1" src="/lib/canvas-ribbon/canvas-ribbon.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/medium-zoom@1/dist/medium-zoom.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+  <script defer src="/lib/three/three.min.js"></script>
+    <script defer src="/lib/three/three-waves.min.js"></script>
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+<script>
+document.querySelectorAll('.pdfobject-container').forEach(element => {
+  let url = element.dataset.target;
+  let pdfOpenParams = {
+    navpanes : 0,
+    toolbar  : 0,
+    statusbar: 0,
+    pagemode : 'thumbs',
+    view     : 'FitH'
+  };
+  let pdfOpenFragment = '#' + Object.entries(pdfOpenParams).map(([key, value]) => `${key}=${encodeURIComponent(value)}`).join('&');
+  let fullURL = `/lib/pdf/web/viewer.html?file=${encodeURIComponent(url)}${pdfOpenFragment}`;
+
+  if (NexT.utils.supportsPDFs()) {
+    element.innerHTML = `<embed class="pdfobject" src="${url + pdfOpenFragment}" type="application/pdf" style="height: ${element.dataset.height};">`;
+  } else {
+    element.innerHTML = `<iframe src="${fullURL}" style="height: ${element.dataset.height};" frameborder="0"></iframe>`;
+  }
+});
+</script>
+
+
+
+
+  
+
+  
+
+  <script>
+  NexT.utils.loadComments(document.querySelector('#SOHUCS'), () => {
+    var appid = 'cyxmItxjS';
+    var conf = 'e5e71132d9086bb54aeeba6e88e87df9';
+    var width = window.innerWidth || document.documentElement.clientWidth;
+    if (width < 960) {
+      window.document.write('<script id="changyan_mobile_js" charset="utf-8" type="text/javascript" src="https://cy-cdn.kuaizhan.com/upload/mobile/wap-js/changyan_mobile.js?client_id=' + appid + '&conf=' + conf + '"><\/script>');
+    } else {
+      var loadJs=function(d,a){var c=document.getElementsByTagName("head")[0]||document.head||document.documentElement;var b=document.createElement("script");b.setAttribute("type","text/javascript");b.setAttribute("charset","UTF-8");b.setAttribute("src",d);if(typeof a==="function"){if(window.attachEvent){b.onreadystatechange=function(){var e=b.readyState;if(e==="loaded"||e==="complete"){b.onreadystatechange=null;a()}}}else{b.onload=a}}c.appendChild(b)};loadJs("https://changyan.sohu.com/upload/changyan.js",function(){window.changyan.api.config({appid:appid,conf:conf})});
+    }
+  });
+  </script>
+  <script src="https://cy-cdn.kuaizhan.com/upload/plugins/plugins.count.js"></script>
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/z16.model.json"},"display":{"position":"left","width":75,"height":150},"mobile":{"show":true},"log":false});</script></body>
+</html>
+
+
+
+

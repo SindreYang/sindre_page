@@ -1,0 +1,823 @@
+<!DOCTYPE html>
+<html lang="zh-CN,en,default">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" href="/lib/pace/pace-theme-minimal.min.css">
+  <script src="/lib/pace/pace.min.js"></script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"blog.mviai.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":true,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":true,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="自动摘要: 	1.模型思路	1.输入为一个模型点云数据的集合，随机采样后（保证输入数据大小都一致），形状表示为N*3（N代表这个模型的点的数量，3代表（x,y,z))	2.输入数据先于一个**T ……..">
+<meta property="og:type" content="article">
+<meta property="og:title" content="PointNet_pytorch版代码解析">
+<meta property="og:url" content="http://blog.mviai.com/2025/PointNet_pytorch%E7%89%88%E4%BB%A3%E7%A0%81%E8%A7%A3%E6%9E%90/index.html">
+<meta property="og:site_name" content="落叶无痕">
+<meta property="og:description" content="自动摘要: 	1.模型思路	1.输入为一个模型点云数据的集合，随机采样后（保证输入数据大小都一致），形状表示为N*3（N代表这个模型的点的数量，3代表（x,y,z))	2.输入数据先于一个**T ……..">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://blog.mviai.com/images/1641362251771-2d22b909-cbd2-4979-a8e4-395a0b0b038f.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1641368532499-9ae15e1c-4c7f-4f2c-aced-68d73baeb467.png">
+<meta property="article:published_time" content="2025-01-22T04:37:39.000Z">
+<meta property="article:modified_time" content="2025-01-22T12:37:39.917Z">
+<meta property="article:author" content="SindreYang">
+<meta property="article:tag" content="生活">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://blog.mviai.com/images/1641362251771-2d22b909-cbd2-4979-a8e4-395a0b0b038f.png">
+
+<link rel="canonical" href="http://blog.mviai.com/2025/PointNet_pytorch%E7%89%88%E4%BB%A3%E7%A0%81%E8%A7%A3%E6%9E%90/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>PointNet_pytorch版代码解析 | 落叶无痕</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">落叶无痕</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类<span class="badge">72</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档<span class="badge">321</span></a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+  <span class="exturl github-corner" data-url="aHR0cHM6Ly9naXRodWIuY29tL1NpbmRyZVlhbmc=" title="Follow me on GitHub" aria-label="Follow me on GitHub"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></span>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://blog.mviai.com/2025/PointNet_pytorch%E7%89%88%E4%BB%A3%E7%A0%81%E8%A7%A3%E6%9E%90/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="SindreYang">
+      <meta itemprop="description" content="沉淀后我愿意做一个温暖的人。有自己的喜好，有自己的原则，有自己的信仰，不急功近利，不浮夸轻薄，宠辱不惊，淡定安逸，心静如水。------不忘初心，方得始终">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="落叶无痕">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          PointNet_pytorch版代码解析
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2025-01-22 12:37:39 / 修改时间：20:37:39" itemprop="dateCreated datePublished" datetime="2025-01-22T12:37:39+08:00">2025-01-22</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E7%82%B9%E4%BA%91%E7%B3%BB%E5%88%97/" itemprop="url" rel="index"><span itemprop="name">点云系列</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">Changyan：</span>
+    
+    
+      <a title="changyan" href="/2025/PointNet_pytorch%E7%89%88%E4%BB%A3%E7%A0%81%E8%A7%A3%E6%9E%90/#SOHUCS" itemprop="discussionUrl">
+        <span id="changyan_count_unit" class="post-comments-count hc-comment-count" data-xid="2025/PointNet_pytorch版代码解析/" itemprop="commentCount"></span>
+      </a>
+    
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>自动摘要: 	1.模型思路	1.输入为一个模型点云数据的集合，随机采样后（保证输入数据大小都一致），形状表示为<strong>N*3</strong>（N代表这个模型的点的数量，3代表（x,y,z))	2.输入数据先于一个**T ……..</p>
+<span id="more"></span>
+
+<h1 id="1-模型思路"><a href="#1-模型思路" class="headerlink" title="1.模型思路"></a>1.模型思路</h1><ol>
+<li>输入为一个模型点云数据的集合，随机采样后（保证输入数据大小都一致），形状表示为<strong>N*3</strong>（N代表这个模型的点的数量，3代表（x,y,z))</li>
+<li>输入数据先于一个<strong>T-Net</strong>（transform网络结构）学习到的<strong>转换矩阵</strong>对其，保证了模型对特定空间的<strong>旋转不变性</strong>（反映了点云的性质）</li>
+<li>通过多次MLP（<strong>多层的全连接的前馈网络</strong>)对点云数据进行特征提取，再用一个T-Net对特征对齐<ol>
+<li>注：<ol>
+<li>MLP在网络中逐层前馈(从输入层到隐藏层到输出层，逐层计算结果，即所谓前馈）</li>
+<li>BP叫误差逆传播优化算法</li>
+<li>狭隘地认为：神经网络&#x3D;MLP，那么，BP神经网络&#x3D;BP-MLP(通过BP算法进行优化得到的MLP网络)</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>在特征的各维度上执行<strong>最大池化</strong>来得到最终全局特征。</li>
+<li>对于<strong>分类</strong>问题，将全局特征通过MLP来预测最后的分类分数（针对全局）</li>
+<li>对于<strong>分割</strong>任务，将全局特征于对齐后的特征的局部特征进行<del>串联</del> 拼接，在通多MLP的到每个数据点的分类结果（针对点的）</li>
+</ol>
+<h2 id="1-1问题"><a href="#1-1问题" class="headerlink" title="1.1问题"></a>1.1问题</h2><p><strong>1.针对<del>密集</del>稠密点云，用MLP提取特征可能效果不太好，shapenet，modelnet数据集都是稀疏点云！</strong>答：所以大家常用pointNet++，pointNet++在分类问题上使用pointnet+FCN，在分割问题上用encoder-decoder模型<strong>2.为什么要使用conv1d，而不是用conv3d，conv2d？</strong>答：conv1d只是对一个点的坐标进行卷积，完全没有考虑其他点的信息，如conv2d还要考虑临近像素信息。而我常常在NLP任务中看到conv1d：</p>
+<ul>
+<li>比如一个系统有三个词[‘我’,’打’,’你’]，那么’我’&#x3D;[1,0,0],’打’&#x3D;[0,1,0],’你’&#x3D;[0,1,0],’我打’&#x3D;[1,1,0]等等<ul>
+<li>每个词向量大小为3，对应在点云就表示（x,y,z)</li>
+<li>样本假设如上有4个，对应一个模型点云有2500个点</li>
+</ul>
+</li>
+<li><strong>PointNet中所有卷积核的大小都是1</strong><ul>
+<li>也就是每层卷积都是对单个点样本进行处理，并没有考虑别的点</li>
+<li>而在MLP卷积核一般大于1，假设卷积核大小为4，假设输出结果为4*1，那么这个卷积过程中，每个输出值都是考虑4个词向量，即代表可以提取词与词 的关系特征</li>
+<li>而在pointNet却无法实现，原因：词之间向量关系可以确定，但点云存储时相邻点并不代表在空间上时相邻的，因为<strong>点云无序性</strong></li>
+<li><strong>所以卷积过程中无法考虑周围点的信息会严重减低网络的能力，效果好只是样本过于简单，pontNet++尝试利用CNN方式解决局部信息</strong></li>
+</ul>
+</li>
+</ul>
+<p><strong>补充：</strong>在tensorflow版，用的conv2d代替conv1d，以获得cudnn优化</p>
+<p><strong>3.网络的maxpool层用</strong>torch.max(x, 2, keepdim&#x3D;True)[0]**表示，而不用nn.MaxPool1d?**<strong>答：经过代码验证：</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> torch </span><br><span class="line">x=torch.randn(<span class="number">32</span>,<span class="number">1024</span>,<span class="number">2500</span>)</span><br><span class="line">m=torch.nn.MaxPool1d(<span class="number">2500</span>)</span><br><span class="line">out=m(x)</span><br><span class="line">torch.<span class="built_in">max</span>(x, <span class="number">2</span>, keepdim=<span class="literal">True</span>)[<span class="number">0</span>].equal(out)</span><br><span class="line">Out: <span class="literal">True</span></span><br></pre></td></tr></table></figure>
+<p>可以认为一个样本（模型）映射为一个特征</p>
+<ul>
+<li>针对使用max，而不是 maxpool1d 是因为计算速度更快？<ul>
+<li>答：时间太短，不一定是这个问题，我个人认为他只想从2500–&gt;1，没有像maxpool1d(2500)这种操作，如果要使用maxpool一般是循序渐进池化，而不是这样使用，我认为作者在化繁为简</li>
+</ul>
+</li>
+</ul>
+<p><strong>4.全局特征与局部特征如何<del>串联</del>拼接的？****答：</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">torch.cat([x, pointfeat], <span class="number">1</span>)</span><br><span class="line"><span class="comment"># x是全局特征</span></span><br><span class="line"><span class="comment"># pointfeat是中途直接赋值保存的局部特征</span></span><br></pre></td></tr></table></figure>
+
+
+
+<h1 id="2-网络结构"><a href="#2-网络结构" class="headerlink" title="2.网络结构"></a>2.网络结构</h1><p><img src="/images/1641362251771-2d22b909-cbd2-4979-a8e4-395a0b0b038f.png"></p>
+<h2 id="2-1各个部件解释："><a href="#2-1各个部件解释：" class="headerlink" title="2.1各个部件解释："></a>2.1各个部件解释：</h2><ol>
+<li><p><strong>T-Net(transform):</strong></p>
+<ol>
+<li><strong>第一次，T-Net 3x3，对输入点云进行对齐；</strong></li>
+<li><strong>第二次，T-Net 64*64，对64维特征进行对齐；</strong></li>
+</ol>
+</li>
+<li><p><strong>MLP：</strong></p>
+<ol>
+<li><strong>用于提取点云特征，使用共享权重的卷积</strong></li>
+</ol>
+</li>
+<li><p><strong>max pool:</strong></p>
+<ol>
+<li>**汇总所有点云的信息，进行最大池化，得到点云的全局 信息 **</li>
+</ol>
+</li>
+<li><p><strong>分割：</strong></p>
+<ol>
+<li><strong>局部和全局信息串联结构（concate,语义分割）</strong></li>
+<li><em><em>交叉熵+（原图（就是图中feature transform的输出）的转置的Frobenius范数的平均值）</em> 0.001</em>*（这里就是论文中增加了正则损失（regularization loss，权重0.001）以约束输出尽量为正交矩阵。）<ol>
+<li><strong>注：</strong><img src="/images/1641368532499-9ae15e1c-4c7f-4f2c-aced-68d73baeb467.png"></li>
+</ol>
+</li>
+</ol>
+</li>
+<li><p><strong>分类：</strong></p>
+<ol>
+<li><strong>交叉熵</strong></li>
+</ol>
+</li>
+</ol>
+<h2 id="2-2步骤"><a href="#2-2步骤" class="headerlink" title="2.2步骤"></a>2.2步骤</h2><ol>
+<li>将输入的点云数据作为nx3x1单通道图图像（或者认为是序列文本）—</li>
+<li>接三次卷积和一次池化后，再reshape为1024个节点，然后接两层全连接</li>
+<li>网络除最后一层外都使用了ReLU激活函数和批标准化。</li>
+</ol>
+<p>实际中：T矩阵的参数初始化使用单位矩阵（np.eye(K)）， 参数会随着整个网络的训练进行更新，并不是提前单独训练的。T-Net对特征进行对齐，保证了模型的对特定空间转换的不变性。注：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#STNkd下forward</span></span><br><span class="line">iden=Variable(torch.from_numpy(np.eye(<span class="variable language_">self</span>.k).flatten().astype(np.float32))).view(<span class="number">1</span>,<span class="variable language_">self</span>.k*<span class="variable language_">self</span>.k).repeat(batchsize,<span class="number">1</span>)</span><br></pre></td></tr></table></figure>
+
+<h1 id="3-CONV1D拓展"><a href="#3-CONV1D拓展" class="headerlink" title="3.CONV1D拓展"></a>3.CONV1D拓展</h1><p><strong>1.一维卷积基本信息：</strong></p>
+<ul>
+<li>卷积核有两个维度：高：H，宽W；H&#x3D;C(通道）,W&#x3D;kernel size;</li>
+<li>输出通道：一个卷积核一个通道，多通道就要多个卷积核</li>
+<li>参数：批量大小N，通道数C，序列数L</li>
+</ul>
+<p><strong>2.例子：</strong>点云的点（x,y,z),通道数为3，假设我们有2500个点，则L&#x3D;2500。</p>
+<p><strong>3.kernel size &#x3D; 1****卷积核为1，则w&#x3D;1：</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">input</span>=torch.randn(<span class="number">1</span>,<span class="number">3</span>,<span class="number">1</span>)<span class="comment">#输入一个点</span></span><br><span class="line">Out: </span><br><span class="line">tensor([[[-<span class="number">0.1971</span>],</span><br><span class="line">         [-<span class="number">1.1459</span>],</span><br><span class="line">         [ <span class="number">0.5066</span>]]])</span><br><span class="line">m=torch.nn.Conv1d(<span class="number">3</span>,<span class="number">2</span>,<span class="number">1</span>)<span class="comment">#设置个输入通道为3，输出通道为2，核为1</span></span><br><span class="line">output=m(<span class="built_in">input</span>)</span><br><span class="line">Out: </span><br><span class="line">tensor([[[ <span class="number">0.5606</span>],</span><br><span class="line">         [-<span class="number">0.1690</span>]]], grad_fn=&lt;SqueezeBackward1&gt;)</span><br><span class="line"></span><br><span class="line">output.shape</span><br><span class="line">Out: torch.Size([<span class="number">1</span>, <span class="number">2</span>, <span class="number">1</span>])<span class="comment">#输出形状为（1，2，1）</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#卷积核大小</span></span><br><span class="line">m.weight.shape</span><br><span class="line">Out: torch.Size([<span class="number">2</span>, <span class="number">3</span>, <span class="number">1</span>]) <span class="comment">#说明是两个卷积核（3,1)</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#提取第一个卷积核</span></span><br><span class="line">w1=m.weight[<span class="number">0</span>]</span><br><span class="line">Out: tensor([[ <span class="number">0.1410</span>],</span><br><span class="line">         	[-<span class="number">0.0862</span>],</span><br><span class="line">         	[-<span class="number">0.0438</span>]]</span><br><span class="line">b1=m.bias[<span class="number">0</span>]</span><br><span class="line">Out:  tensor(<span class="number">0.5117</span>)         </span><br><span class="line">output2=(<span class="built_in">input</span>.transpose(<span class="number">1</span>,<span class="number">2</span>)@w1+b1).transpose(<span class="number">1</span>,<span class="number">2</span>)</span><br><span class="line">Out: tensor([[[<span class="number">0.5606</span>]]], grad_fn=&lt;TransposeBackward0&gt;)</span><br></pre></td></tr></table></figure>
+
+<p>4.kernel &#x3D;2</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">input</span>=torch.randn(<span class="number">1</span>,<span class="number">3</span>,<span class="number">1</span>)<span class="comment">#输入一个点</span></span><br><span class="line">m=torch.nn.Conv1d(<span class="number">3</span>,<span class="number">2</span>,<span class="number">2</span>)<span class="comment">#设置个输入通道为3，输出通道为2，核为2</span></span><br><span class="line">output=m(<span class="built_in">input</span>)	</span><br><span class="line"><span class="comment">#报错：</span></span><br><span class="line">RuntimeError: Calculated padded <span class="built_in">input</span> size per channel: (<span class="number">1</span>). Kernel size: (<span class="number">2</span>). Kernel size can<span class="string">&#x27;t be greater than actual input size</span></span><br></pre></td></tr></table></figure>
+<p>如果input&#x3D;torch.randn(1,3,2)则可以继续</p>
+<h1 id="4-T-Net拓展"><a href="#4-T-Net拓展" class="headerlink" title="4.T-Net拓展"></a>4.T-Net拓展</h1><p>1.第一个T-Net：</p>
+<ul>
+<li>是一个mini-pointNet（_MLP+_max pooling+2*FC）</li>
+<li>输入是未经过网络处理的原始点云</li>
+<li>输出是3x3的旋转矩阵（每次迭代矩阵初始值为单位阵作为偏差加入），感觉是在做一定扰动</li>
+</ul>
+<hr>
+<p>2.第二个T-Net：</p>
+<ul>
+<li>结构与第一个相同</li>
+<li>输入是特征提取后的点云</li>
+<li>输出是64x64的旋转矩阵（同样每次迭代矩阵初始值为单位阵作为偏差加入）</li>
+</ul>
+<p>理解：<strong>不变性体现：</strong>从T-Net获得旋转矩阵trans_feat ，然后与样本相乘，获得新的输出，通过控制最后的loss来对变换矩阵进行调整，pointnet并不关心最后真正做了什么变换，只要有利于最后的结果都可以。第一次是对空间中点云调整，第二次是对特征层面点云进行变换！<strong>对应代码：</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> <span class="variable language_">self</span>.feature_transform:</span><br><span class="line">    trans_feat = <span class="variable language_">self</span>.fstn(x)<span class="comment">#通过T-Net获得旋转矩阵</span></span><br><span class="line">    x = x.transpose(<span class="number">2</span>,<span class="number">1</span>)<span class="comment">#转置</span></span><br><span class="line">    x = torch.bmm(x, trans_feat)<span class="comment">#内积，已弃用</span></span><br><span class="line">    x = x.transpose(<span class="number">2</span>,<span class="number">1</span>)<span class="comment">#转置</span></span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">    trans_feat = <span class="literal">None</span></span><br></pre></td></tr></table></figure>
+
+<p><span class="exturl" data-url="aHR0cHM6Ly9rZXZpbnpha2thLmdpdGh1Yi5pby8yMDE3LzAxLzE4L3N0bi1wYXJ0Mi8=" title="https://kevinzakka.github.io/2017/01/18/stn-part2/">https://kevinzakka.github.io/2017/01/18/stn-part2/<i class="fa fa-external-link"></i></span></p>
+
+    </div>
+
+    
+    
+    
+        <div class="reward-container">
+  <div></div>
+  <button onclick="var qr = document.getElementById('qr'); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/images/wechatpay.png" alt="SindreYang 微信支付">
+        <p>微信支付</p>
+      </div>
+      
+      <div style="display: inline-block;">
+        <img src="/images/alipay.png" alt="SindreYang 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>SindreYang
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://blog.mviai.com/2025/PointNet_pytorch%E7%89%88%E4%BB%A3%E7%A0%81%E8%A7%A3%E6%9E%90/" title="PointNet_pytorch版代码解析">http://blog.mviai.com/2025/PointNet_pytorch版代码解析/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <span class="exturl" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC9kZWVkLnpo"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</span> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+        
+
+  <div class="followme">
+    <p>欢迎关注我的其它发布渠道</p>
+
+    <div class="social-list">
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="/images/wechat.png">
+            <span class="icon">
+              <i class="fa fa-wechat"></i>
+            </span>
+
+            <span class="label">WeChat</span>
+          </a>
+        </div>
+    </div>
+  </div>
+
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2025/PointNet_%E7%94%A8%E4%BA%8E%E7%82%B9%E4%BA%91%E7%9A%84%E5%88%86%E7%B1%BB%E5%92%8C%E5%88%86%E5%89%B2%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/" rel="prev" title="PointNet_用于点云的分类和分割深度学习">
+      <i class="fa fa-chevron-left"></i> PointNet_用于点云的分类和分割深度学习
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2025/OpenMesh%E5%9F%BA%E7%A1%80%E6%96%87%E6%A1%A3/" rel="next" title="OpenMesh基础文档">
+      OpenMesh基础文档 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    
+  <div class="comments">
+    <div id="SOHUCS"></div>
+  </div>
+  
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-%E6%A8%A1%E5%9E%8B%E6%80%9D%E8%B7%AF"><span class="nav-number">1.</span> <span class="nav-text">1.模型思路</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-1%E9%97%AE%E9%A2%98"><span class="nav-number">1.1.</span> <span class="nav-text">1.1问题</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-%E7%BD%91%E7%BB%9C%E7%BB%93%E6%9E%84"><span class="nav-number">2.</span> <span class="nav-text">2.网络结构</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#2-1%E5%90%84%E4%B8%AA%E9%83%A8%E4%BB%B6%E8%A7%A3%E9%87%8A%EF%BC%9A"><span class="nav-number">2.1.</span> <span class="nav-text">2.1各个部件解释：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-2%E6%AD%A5%E9%AA%A4"><span class="nav-number">2.2.</span> <span class="nav-text">2.2步骤</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-CONV1D%E6%8B%93%E5%B1%95"><span class="nav-number">3.</span> <span class="nav-text">3.CONV1D拓展</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#4-T-Net%E6%8B%93%E5%B1%95"><span class="nav-number">4.</span> <span class="nav-text">4.T-Net拓展</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="SindreYang"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">SindreYang</p>
+  <div class="site-description" itemprop="description">沉淀后我愿意做一个温暖的人。有自己的喜好，有自己的原则，有自己的信仰，不急功近利，不浮夸轻薄，宠辱不惊，淡定安逸，心静如水。------不忘初心，方得始终</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">321</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">72</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL1NpbmRyZVlhbmc=" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;SindreYang"><i class="fa fa-fw fa-github"></i>GitHub</span>
+      </span>
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="bWFpbHRvOnl4QG12aWFpLmNvbQ==" title="E-Mail → mailto:yx@mviai.com"><i class="fa fa-fw fa-envelope"></i>E-Mail</span>
+      </span>
+  </div>
+  <div class="cc-license motion-element" itemprop="license">
+    <span class="exturl cc-opacity" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC9kZWVkLnpo"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+  <div class="languages">
+    <label class="lang-select-label">
+      <i class="fa fa-language"></i>
+      <span>简体中文</span>
+      <i class="fa fa-angle-up" aria-hidden="true"></i>
+    </label>
+    <select class="lang-select" data-canonical="">
+      
+        <option value="zh-CN" data-href="/2025/PointNet_pytorch%E7%89%88%E4%BB%A3%E7%A0%81%E8%A7%A3%E6%9E%90/" selected="">
+          简体中文
+        </option>
+      
+        <option value="en" data-href="/en/2025/PointNet_pytorch%E7%89%88%E4%BB%A3%E7%A0%81%E8%A7%A3%E6%9E%90/" selected="">
+          English
+        </option>
+      
+    </select>
+  </div>
+
+        
+
+<div class="copyright">
+  
+  &copy; 2018 – 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">SindreYang</span>
+</div><!-- 页面点击小红心 -->
+<script type="text/javascript" src="/js/love.js"></script>
+<!-- 背景波浪 -->
+<script color="0,0,255" opacity="0.5" zIndex="-1" count="99" src="https://cdn.jsdelivr.net/npm/canvas-nest.js@1/dist/canvas-nest.js"></script>
+
+
+<!-- 腾讯企业邮箱 -->
+<style>
+.bizmail_loginpanel {
+    font-size: 12px;
+    width: 300px;
+    height: auto;
+    background: transparent;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.bizmail_LoginBox {
+    padding: 10px 15px;
+}
+
+
+.bizmail_loginpanel form {
+    margin: 0;
+    padding: 0;
+}
+
+.bizmail_loginpanel input.text {
+    font-size: 12px;
+    width: 100px;
+    height: 20px;
+    margin: 0 2px;
+    background-color: transparent;
+    border:1px solid transparent;
+    box-shadow: none;
+    color: black;
+}
+
+.bizmail_loginpanel .bizmail_column {
+    height: 28px;
+}
+
+.bizmail_loginpanel .bizmail_column label {
+    display: block;
+    float: left;
+    width: 30px;
+    height: 24px;
+    line-height: 24px;
+    font-size: 12px;
+}
+
+.bizmail_loginpanel .bizmail_column .bizmail_inputArea {
+    float: left;
+    width: 240px;
+}
+
+.bizmail_loginpanel .bizmail_column span {
+    font-size: 12px;
+    word-wrap: break-word;
+    margin-left: 2px;
+    line-height: 200%;
+}
+
+.bizmail_loginpanel .bizmail_SubmitArea {
+    margin-left: 30px;
+    clear: both;
+}
+
+.bizmail_loginpanel .bizmail_SubmitArea a {
+    font-size: 12px;
+    margin-left: 5px;
+}
+
+.bizmail_loginpanel select {
+    width: 110px;
+    height: 20px;
+    margin: 0 2px;
+}
+.bizmail_loginpanel input {
+
+    background-color: rgba(83, 126, 236, 0.562);
+}
+
+
+</style>
+
+<script type="text/javascript">
+function checkInput() {
+    var e = document.form1.uin,
+        i = document.form1.pwd;
+    return 0 == e.value.length ? e.focus() : 0 == i.value.length ? i.focus() : (document.form1.submit(), setTimeout(" document.form1.pwd.value = '' ", 500)), !1
+}
+
+function writeLoginPanel(e) {
+    if (e && e.domainlist && -1 != e.domainlist.indexOf(".")) {
+        var a = "return checkInput()",
+            t = '<div id="divLoginpanelHor" class="bizmail_loginpanel" style="width:550px;"><div class="bizmail_LoginBox"><form name="form1" action="https://exmail.qq.com/cgi-bin/login" target="_blank" method="post" onsubmit="' + a + '"><input type="hidden" name="firstlogin" value="false" /><input type="hidden" name="errtemplate" value="dm_loginpage" /><input type="hidden" name="aliastype" value="other" /><input type="hidden" name="dmtype" value="bizmail" /><input type="hidden" name="p" value="" /><label>\u8d26\u53f7:</label><input type="text" name="uin" class="text" value="" />@#domainlist#<label>&nbsp&nbsp&nbsp;\u5bc6\u7801:</label><input type="password" name="pwd" class="text" value="" /><input type="submit" class="" name="" value="\u767b\u5f55" />&nbsp;<a href="https://exmail.qq.com/cgi-bin/readtemplate?check=false&t=biz_rf_portal#recovery" target="_blank">\u5fd8\u8bb0\u5bc6\u7801\uff1f</a></form></div></div>',
+            n = '<div id="divLoginpanelVer" class="bizmail_loginpanel"><div class="bizmail_LoginBox"><form name="form1" action="https://exmail.qq.com/cgi-bin/login" target="_blank" method="post" onsubmit="' + a + '"><input type="hidden" name="firstlogin" value="false" /><input type="hidden" name="errtemplate" value="dm_loginpage" /><input type="hidden" name="aliastype" value="other" /><input type="hidden" name="dmtype" value="bizmail" /><input type="hidden" name="p" value="" /><div class="bizmail_column"><label>\u8d26\u53f7:</label><div class="bizmail_inputArea"><input type="text" name="uin" class="text" value="" />@#domainlist#</div></div><div class="bizmail_column"><label>\u5bc6\u7801:</label><div class="bizmail_inputArea"><input type="password" name="pwd" class="text" value="" /></div></div><div class="bizmail_SubmitArea"><input type="submit" class="" name="" style="width:66px;" value="\u767b\u5f55" /><a href="https://exmail.qq.com/cgi-bin/readtemplate?check=false&t=biz_rf_portal#recovery" target="_blank">\u5fd8\u8bb0\u5bc6\u7801\uff1f</a></div></form></div></div>',
+            l = e.domainlist.split(";");
+        if (1 == l.length) var m = '<span>#domain#</span><input type="hidden" name="domain" value="#domain#" />'.replace(/#domain#/g, l[0]);
+        else {
+            m = '<select name="domain">';
+            for (i = 0; i < l.length; i++) m += '<option value="' + l[i] + '">' + l[i] + "</option>";
+            m += "</select>"
+        }
+        e.mode && "vertical" != e.mode && "both" != e.mode || document.write(n.replace(/#domainlist#/g, m)), "horizontal" != e.mode && "both" != e.mode || document.write(t.replace(/#domainlist#/g, m))
+    }
+}
+
+</script>      
+
+<script type="text/javascript"> writeLoginPanel({domainlist:"mviai.com", mode:"horizontal"});</script>      
+
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script size="300" alpha="0.6" zIndex="-1" src="/lib/canvas-ribbon/canvas-ribbon.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/medium-zoom@1/dist/medium-zoom.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+  <script defer src="/lib/three/three.min.js"></script>
+    <script defer src="/lib/three/three-waves.min.js"></script>
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+<script>
+document.querySelectorAll('.pdfobject-container').forEach(element => {
+  let url = element.dataset.target;
+  let pdfOpenParams = {
+    navpanes : 0,
+    toolbar  : 0,
+    statusbar: 0,
+    pagemode : 'thumbs',
+    view     : 'FitH'
+  };
+  let pdfOpenFragment = '#' + Object.entries(pdfOpenParams).map(([key, value]) => `${key}=${encodeURIComponent(value)}`).join('&');
+  let fullURL = `/lib/pdf/web/viewer.html?file=${encodeURIComponent(url)}${pdfOpenFragment}`;
+
+  if (NexT.utils.supportsPDFs()) {
+    element.innerHTML = `<embed class="pdfobject" src="${url + pdfOpenFragment}" type="application/pdf" style="height: ${element.dataset.height};">`;
+  } else {
+    element.innerHTML = `<iframe src="${fullURL}" style="height: ${element.dataset.height};" frameborder="0"></iframe>`;
+  }
+});
+</script>
+
+
+
+
+  
+
+  
+
+  <script>
+  NexT.utils.loadComments(document.querySelector('#SOHUCS'), () => {
+    var appid = 'cyxmItxjS';
+    var conf = 'e5e71132d9086bb54aeeba6e88e87df9';
+    var width = window.innerWidth || document.documentElement.clientWidth;
+    if (width < 960) {
+      window.document.write('<script id="changyan_mobile_js" charset="utf-8" type="text/javascript" src="https://cy-cdn.kuaizhan.com/upload/mobile/wap-js/changyan_mobile.js?client_id=' + appid + '&conf=' + conf + '"><\/script>');
+    } else {
+      var loadJs=function(d,a){var c=document.getElementsByTagName("head")[0]||document.head||document.documentElement;var b=document.createElement("script");b.setAttribute("type","text/javascript");b.setAttribute("charset","UTF-8");b.setAttribute("src",d);if(typeof a==="function"){if(window.attachEvent){b.onreadystatechange=function(){var e=b.readyState;if(e==="loaded"||e==="complete"){b.onreadystatechange=null;a()}}}else{b.onload=a}}c.appendChild(b)};loadJs("https://changyan.sohu.com/upload/changyan.js",function(){window.changyan.api.config({appid:appid,conf:conf})});
+    }
+  });
+  </script>
+  <script src="https://cy-cdn.kuaizhan.com/upload/plugins/plugins.count.js"></script>
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/z16.model.json"},"display":{"position":"left","width":75,"height":150},"mobile":{"show":true},"log":false});</script></body>
+</html>
+
+
+
+

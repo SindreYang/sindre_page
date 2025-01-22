@@ -1,0 +1,754 @@
+<!DOCTYPE html>
+<html lang="zh-CN,en,default">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" href="/lib/pace/pace-theme-minimal.min.css">
+  <script src="/lib/pace/pace.min.js"></script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"blog.mviai.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":true,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":true,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="自动摘要: 	链接：	[TSegFormer:3DToothSegmentationinIntraoralScanswithGeometryGuidedTransformer](https ……..">
+<meta property="og:type" content="article">
+<meta property="og:title" content="论文翻译_TSegFormer使用几何引导变换器在口腔内扫描中进行三维牙齿分割">
+<meta property="og:url" content="http://blog.mviai.com/2025/%E8%AE%BA%E6%96%87%E7%BF%BB%E8%AF%91_TSegFormer%E4%BD%BF%E7%94%A8%E5%87%A0%E4%BD%95%E5%BC%95%E5%AF%BC%E5%8F%98%E6%8D%A2%E5%99%A8%E5%9C%A8%E5%8F%A3%E8%85%94%E5%86%85%E6%89%AB%E6%8F%8F%E4%B8%AD%E8%BF%9B%E8%A1%8C%E4%B8%89%E7%BB%B4%E7%89%99%E9%BD%BF%E5%88%86%E5%89%B2/index.html">
+<meta property="og:site_name" content="落叶无痕">
+<meta property="og:description" content="自动摘要: 	链接：	[TSegFormer:3DToothSegmentationinIntraoralScanswithGeometryGuidedTransformer](https ……..">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://blog.mviai.com/images/1701502601293-7a5da878-1a22-4cae-922b-8e2e2a669b22.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1701502623988-938d90de-c8ae-4651-8992-9376a4111e27.png">
+<meta property="og:image" content="http://blog.mviai.com/images/1701502509125-a223bac0-fe84-4495-90db-b919e8d12053.png">
+<meta property="og:image" content="http://blog.mviai.com/images/413a3ec3d68069701281082378c53de8.svg">
+<meta property="og:image" content="http://blog.mviai.com/images/413a3ec3d68069701281082378c53de8.svg">
+<meta property="og:image" content="http://blog.mviai.com/images/1701502550397-529ce9ac-468a-4ddc-859a-73261f59b3f2.png">
+<meta property="og:image" content="http://blog.mviai.com/images/75bfadcac9ec4981c69c72323cef19de.svg">
+<meta property="og:image" content="http://blog.mviai.com/images/cffaddc4338378e65f6ccfb460fd1894.svg">
+<meta property="og:image" content="http://blog.mviai.com/images/cffaddc4338378e65f6ccfb460fd1894.svg">
+<meta property="og:image" content="http://blog.mviai.com/images/483e31022dc779ac8d91b606dcffe53d.svg">
+<meta property="og:image" content="http://blog.mviai.com/images/dd65fc00b1b967754127e401ee78d303.svg">
+<meta property="og:image" content="http://blog.mviai.com/images/dd65fc00b1b967754127e401ee78d303.svg">
+<meta property="og:image" content="http://blog.mviai.com/images/b56e037126ef7ae76f30752f295812fb.svg">
+<meta property="og:image" content="http://blog.mviai.com/images/d70c2d614d4c6113e697e15c92ba1121.svg">
+<meta property="og:image" content="http://blog.mviai.com/images/d70c2d614d4c6113e697e15c92ba1121.svg">
+<meta property="og:image" content="http://blog.mviai.com/images/86c1aae509583bffb8883c39d32522ab.svg">
+<meta property="og:image" content="http://blog.mviai.com/images/bda00cfc803dbf757975b0116dd6543b.svg">
+<meta property="og:image" content="http://blog.mviai.com/images/fa42de92917737d136a413b76ac27acb.svg">
+<meta property="og:image" content="http://blog.mviai.com/images/2496c643115174bbc12c7621ed25647e.svg">
+<meta property="og:image" content="http://blog.mviai.com/images/90760b7f55f5071c728a20d317fc397d.svg">
+<meta property="og:image" content="http://blog.mviai.com/images/58a59a6ae614335bb36de447646b7867.svg">
+<meta property="og:image" content="http://blog.mviai.com/images/58a59a6ae614335bb36de447646b7867.svg">
+<meta property="og:image" content="http://blog.mviai.com/images/52a3091f8c97ffd5d37352ca001774a6.svg">
+<meta property="og:image" content="http://blog.mviai.com/images/2443fbcfeb7e85e1d62b6f5e4f27207e.svg">
+<meta property="og:image" content="http://blog.mviai.com/images/2443fbcfeb7e85e1d62b6f5e4f27207e.svg">
+<meta property="og:image" content="http://blog.mviai.com/images/459f3c80a50b7be28751b0869ef5386a.svg">
+<meta property="og:image" content="http://blog.mviai.com/images/2bce4bbbb185eb89b7bb13d509947a42.svg">
+<meta property="og:image" content="http://blog.mviai.com/images/f6d2a9776189b43685a32a3547b1f28f.svg">
+<meta property="og:image" content="http://blog.mviai.com/images/3ae9091c0242f9350e46570c9838578f.svg">
+<meta property="og:image" content="http://blog.mviai.com/images/58a59a6ae614335bb36de447646b7867.svg">
+<meta property="og:image" content="http://blog.mviai.com/images/79513b2d33dbebf220c2bbde3560c0d4.svg">
+<meta property="og:image" content="http://blog.mviai.com/images/79513b2d33dbebf220c2bbde3560c0d4.svg">
+<meta property="og:image" content="http://blog.mviai.com/images/9d7e6bb7d33479248bb3b6936f2b985a.svg">
+<meta property="og:image" content="http://blog.mviai.com/images/908b81fbb82ce3b26951a88410c4432b.svg">
+<meta property="og:image" content="http://blog.mviai.com/images/8c89f3314e846132ff0a36777d458724.svg">
+<meta property="og:image" content="http://blog.mviai.com/images/462826d5b0dee6a586387161e3866f2d.svg">
+<meta property="og:image" content="http://blog.mviai.com/images/02fa256049f12b74150ff0195fba6102.svg">
+<meta property="og:image" content="http://blog.mviai.com/images/991de014ba3891a9f6f0148e07b0e744.svg">
+<meta property="article:published_time" content="2025-01-22T04:37:40.000Z">
+<meta property="article:modified_time" content="2025-01-22T12:37:40.645Z">
+<meta property="article:author" content="SindreYang">
+<meta property="article:tag" content="生活">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://blog.mviai.com/images/1701502601293-7a5da878-1a22-4cae-922b-8e2e2a669b22.png">
+
+<link rel="canonical" href="http://blog.mviai.com/2025/%E8%AE%BA%E6%96%87%E7%BF%BB%E8%AF%91_TSegFormer%E4%BD%BF%E7%94%A8%E5%87%A0%E4%BD%95%E5%BC%95%E5%AF%BC%E5%8F%98%E6%8D%A2%E5%99%A8%E5%9C%A8%E5%8F%A3%E8%85%94%E5%86%85%E6%89%AB%E6%8F%8F%E4%B8%AD%E8%BF%9B%E8%A1%8C%E4%B8%89%E7%BB%B4%E7%89%99%E9%BD%BF%E5%88%86%E5%89%B2/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>论文翻译_TSegFormer使用几何引导变换器在口腔内扫描中进行三维牙齿分割 | 落叶无痕</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">落叶无痕</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类<span class="badge">72</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档<span class="badge">321</span></a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+  <span class="exturl github-corner" data-url="aHR0cHM6Ly9naXRodWIuY29tL1NpbmRyZVlhbmc=" title="Follow me on GitHub" aria-label="Follow me on GitHub"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></span>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://blog.mviai.com/2025/%E8%AE%BA%E6%96%87%E7%BF%BB%E8%AF%91_TSegFormer%E4%BD%BF%E7%94%A8%E5%87%A0%E4%BD%95%E5%BC%95%E5%AF%BC%E5%8F%98%E6%8D%A2%E5%99%A8%E5%9C%A8%E5%8F%A3%E8%85%94%E5%86%85%E6%89%AB%E6%8F%8F%E4%B8%AD%E8%BF%9B%E8%A1%8C%E4%B8%89%E7%BB%B4%E7%89%99%E9%BD%BF%E5%88%86%E5%89%B2/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="SindreYang">
+      <meta itemprop="description" content="沉淀后我愿意做一个温暖的人。有自己的喜好，有自己的原则，有自己的信仰，不急功近利，不浮夸轻薄，宠辱不惊，淡定安逸，心静如水。------不忘初心，方得始终">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="落叶无痕">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          论文翻译_TSegFormer使用几何引导变换器在口腔内扫描中进行三维牙齿分割
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2025-01-22 12:37:40 / 修改时间：20:37:40" itemprop="dateCreated datePublished" datetime="2025-01-22T12:37:40+08:00">2025-01-22</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E7%82%B9%E4%BA%91%E7%B3%BB%E5%88%97/" itemprop="url" rel="index"><span itemprop="name">点云系列</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">Changyan：</span>
+    
+    
+      <a title="changyan" href="/2025/%E8%AE%BA%E6%96%87%E7%BF%BB%E8%AF%91_TSegFormer%E4%BD%BF%E7%94%A8%E5%87%A0%E4%BD%95%E5%BC%95%E5%AF%BC%E5%8F%98%E6%8D%A2%E5%99%A8%E5%9C%A8%E5%8F%A3%E8%85%94%E5%86%85%E6%89%AB%E6%8F%8F%E4%B8%AD%E8%BF%9B%E8%A1%8C%E4%B8%89%E7%BB%B4%E7%89%99%E9%BD%BF%E5%88%86%E5%89%B2/#SOHUCS" itemprop="discussionUrl">
+        <span id="changyan_count_unit" class="post-comments-count hc-comment-count" data-xid="2025/论文翻译_TSegFormer使用几何引导变换器在口腔内扫描中进行三维牙齿分割/" itemprop="commentCount"></span>
+      </a>
+    
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>自动摘要: 	链接：	[TSegFormer:3DToothSegmentationinIntraoralScanswithGeometryGuidedTransformer](https ……..</p>
+<span id="more"></span>
+
+<h1 id="链接："><a href="#链接：" class="headerlink" title="链接："></a>链接：</h1><p><span class="exturl" data-url="aHR0cHM6Ly9hcnhpdi5vcmcvYWJzLzIzMTEuMTMyMzQ=" title="https://arxiv.org/abs/2311.13234">TSegFormer: 3D Tooth Segmentation in Intraoral Scans with Geometry Guided Transformer<i class="fa fa-external-link"></i></span></p>
+<p><img src="/images/1701502601293-7a5da878-1a22-4cae-922b-8e2e2a669b22.png"><br><img src="/images/1701502623988-938d90de-c8ae-4651-8992-9376a4111e27.png"></p>
+<h1 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h1><h1 id="方法"><a href="#方法" class="headerlink" title="方法"></a>方法</h1><p><img src="/images/1701502509125-a223bac0-fe84-4495-90db-b919e8d12053.png"><br>图1.我们提出的用于3D牙齿分割的TSegFormer的流程</p>
+<h2 id="概述-1"><a href="#概述-1" class="headerlink" title="概述"></a>概述</h2><p>整个流程如图 1 所示。通过取每个网格面的重力中心点，将原始网格<img src="/images/413a3ec3d68069701281082378c53de8.svg"><br> 转换为点云<img src="/images/413a3ec3d68069701281082378c53de8.svg"><br>。<img src="/images/1701502550397-529ce9ac-468a-4ddc-859a-73261f59b3f2.png"><br>图2.不同曲率 (cur) 的可视化和性能比较。</p>
+<h2 id="TsegFormer-网络架构"><a href="#TsegFormer-网络架构" class="headerlink" title="TsegFormer 网络架构"></a>TsegFormer 网络架构</h2><h3 id="特征提取"><a href="#特征提取" class="headerlink" title="特征提取"></a>特征提取</h3><p>我们首先将输入网格转换为点云，因为直接使用深度网络处理网格的计算成本很高，尤其是对于高分辨率IOS而言。为了补偿潜在的拓扑损失，我们为每个点提取了 8 维特征向量  <img src="/images/75bfadcac9ec4981c69c72323cef19de.svg"><br>，以保留足够的几何信息，包括该点的三维笛卡尔坐标、网格面的三维法向量、高斯曲率和新点“曲率”<img src="/images/cffaddc4338378e65f6ccfb460fd1894.svg"><br>。<img src="/images/cffaddc4338378e65f6ccfb460fd1894.svg"><br>定义为 <img src="/images/483e31022dc779ac8d91b606dcffe53d.svg"><br>      其中是第 个点的法向量，<img src="/images/dd65fc00b1b967754127e401ee78d303.svg"><br>是第<img src="/images/dd65fc00b1b967754127e401ee78d303.svg"><br>中的点数，<img src="/images/b56e037126ef7ae76f30752f295812fb.svg"><br>表示两个矢量之间的弧度。 根据定义，点的曲率反映了该点周围的局部几何结构的弯曲程度，即 3D 齿点云上的局部几何形状。</p>
+<h3 id="核心网络"><a href="#核心网络" class="headerlink" title="核心网络"></a>核心网络</h3><p>在IOS中，划定复杂的牙齿-牙齿或牙齿-牙龈边界需要对局部几何形状有一定的了解。因此，我们首先从输入 <img src="/images/d70c2d614d4c6113e697e15c92ba1121.svg"><br> 中学习局部依赖关系。具体而言，我们设计了一个由两个线性层和两个EdgeConv层组成的点嵌入模块[20]，该模块接受输入<img src="/images/d70c2d614d4c6113e697e15c92ba1121.svg"><br>并学习局部特征<img src="/images/86c1aae509583bffb8883c39d32522ab.svg"><br>，其中<img src="/images/bda00cfc803dbf757975b0116dd6543b.svg"><br>。</p>
+<h3 id="分割头"><a href="#分割头" class="headerlink" title="分割头"></a>分割头</h3><p>为了提高网络识别不同牙齿和牙龈类别的能力，我们设计了两个分割头。主分牙头 MLP (<img src="/images/fa42de92917737d136a413b76ac27acb.svg"><br>） 生成 33 个类别的分级分数 <img src="/images/2496c643115174bbc12c7621ed25647e.svg"><br> 用于牙齿分割。同时，考虑到牙齿-牙龈边界错误预测的普遍性，我们设计了一个辅助分割头M LP来为属于牙齿或牙龈的每个点提供二元分类分数，即<img src="/images/90760b7f55f5071c728a20d317fc397d.svg"><br>. 实验结果表明，与M LP的合作可以细化牙龈分割边界。</p>
+<h3 id="几何引导损失"><a href="#几何引导损失" class="headerlink" title="几何引导损失"></a>几何引导损失</h3><p>观察到具有高点曲率的点通常位于牙冠的上尖端和牙齿边界[图2（c）]，这些地方经常发生错误预测，我们定义了新的几何引导损失<img src="/images/58a59a6ae614335bb36de447646b7867.svg"><br>。<img src="/images/58a59a6ae614335bb36de447646b7867.svg"><br>鼓励 TSegFormer 自适应地更多地关注具有较高点曲率的易出错点，而额外计算可以忽略不计。具体来说，我们将其定义为<img src="/images/52a3091f8c97ffd5d37352ca001774a6.svg"></p>
+<ul>
+<li>其中 γ 是调节因子（在实验中经验设置为 2）;</li>
+<li><img src="/images/2443fbcfeb7e85e1d62b6f5e4f27207e.svg"><br>个点的金色标签;</li>
+<li><img src="/images/2443fbcfeb7e85e1d62b6f5e4f27207e.svg"><br>个点的预测概率.</li>
+<li><img src="/images/459f3c80a50b7be28751b0869ef5386a.svg"><br>个点的顶部<img src="/images/2bce4bbbb185eb89b7bb13d509947a42.svg"><br>（0 &lt; r ≤ 1）之间，即<img src="/images/f6d2a9776189b43685a32a3547b1f28f.svg"><br>，其中 <img src="/images/3ae9091c0242f9350e46570c9838578f.svg"><br>。</li>
+</ul>
+<p>实验结果（图1）2（d））在2,000个案例的数据集上表明，与传统的平均曲率和高斯曲率相比，<img src="/images/58a59a6ae614335bb36de447646b7867.svg"><br>的点曲率更有效，即使它们比没有曲率更差。这是因为我们的点曲率提供了更清晰的牙齿和牙龈边界指示[图2（a）-2（c）]，从而避免了误导模型过多地关注不重要的非边界点。我们将交叉熵损失用作主分割头<img src="/images/79513b2d33dbebf220c2bbde3560c0d4.svg"><br>的损失和辅助分割头<img src="/images/79513b2d33dbebf220c2bbde3560c0d4.svg"><br>,<img src="/images/9d7e6bb7d33479248bb3b6936f2b985a.svg"><br><img src="/images/908b81fbb82ce3b26951a88410c4432b.svg"><br>组合计算所有得出：<img src="/images/8c89f3314e846132ff0a36777d458724.svg"><br>我们设置权重 <img src="/images/462826d5b0dee6a586387161e3866f2d.svg"><br>、<img src="/images/02fa256049f12b74150ff0195fba6102.svg"><br> 和比率 <img src="/images/991de014ba3891a9f6f0148e07b0e744.svg"><br>，SM 图 1 中详细的超参数搜索结果表明，在不同的超参数设置下性能稳定。</p>
+
+    </div>
+
+    
+    
+    
+        <div class="reward-container">
+  <div></div>
+  <button onclick="var qr = document.getElementById('qr'); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/images/wechatpay.png" alt="SindreYang 微信支付">
+        <p>微信支付</p>
+      </div>
+      
+      <div style="display: inline-block;">
+        <img src="/images/alipay.png" alt="SindreYang 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>SindreYang
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://blog.mviai.com/2025/%E8%AE%BA%E6%96%87%E7%BF%BB%E8%AF%91_TSegFormer%E4%BD%BF%E7%94%A8%E5%87%A0%E4%BD%95%E5%BC%95%E5%AF%BC%E5%8F%98%E6%8D%A2%E5%99%A8%E5%9C%A8%E5%8F%A3%E8%85%94%E5%86%85%E6%89%AB%E6%8F%8F%E4%B8%AD%E8%BF%9B%E8%A1%8C%E4%B8%89%E7%BB%B4%E7%89%99%E9%BD%BF%E5%88%86%E5%89%B2/" title="论文翻译_TSegFormer使用几何引导变换器在口腔内扫描中进行三维牙齿分割">http://blog.mviai.com/2025/论文翻译_TSegFormer使用几何引导变换器在口腔内扫描中进行三维牙齿分割/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <span class="exturl" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC9kZWVkLnpo"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</span> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+        
+
+  <div class="followme">
+    <p>欢迎关注我的其它发布渠道</p>
+
+    <div class="social-list">
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="/images/wechat.png">
+            <span class="icon">
+              <i class="fa fa-wechat"></i>
+            </span>
+
+            <span class="label">WeChat</span>
+          </a>
+        </div>
+    </div>
+  </div>
+
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2025/%E8%AE%BA%E6%96%87%E7%BF%BB%E8%AF%91_%E6%94%B6%E6%95%9B%E6%9B%B4%E5%BF%AB%E7%9A%84%E6%8A%95%E5%BD%B1_GAN/" rel="prev" title="论文翻译_收敛更快的投影_GAN">
+      <i class="fa fa-chevron-left"></i> 论文翻译_收敛更快的投影_GAN
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2025/%E8%AE%BA%E6%96%87%E7%BF%BB%E8%AF%91_TANet-%E8%BF%88%E5%90%91%E5%85%A8%E8%87%AA%E5%8A%A8%E6%8E%92%E7%89%99/" rel="next" title="论文翻译_TANet-迈向全自动排牙">
+      论文翻译_TANet-迈向全自动排牙 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    
+  <div class="comments">
+    <div id="SOHUCS"></div>
+  </div>
+  
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%93%BE%E6%8E%A5%EF%BC%9A"><span class="nav-number">1.</span> <span class="nav-text">链接：</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%A6%82%E8%BF%B0"><span class="nav-number">2.</span> <span class="nav-text">概述</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%96%B9%E6%B3%95"><span class="nav-number">3.</span> <span class="nav-text">方法</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A6%82%E8%BF%B0-1"><span class="nav-number">3.1.</span> <span class="nav-text">概述</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#TsegFormer-%E7%BD%91%E7%BB%9C%E6%9E%B6%E6%9E%84"><span class="nav-number">3.2.</span> <span class="nav-text">TsegFormer 网络架构</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%89%B9%E5%BE%81%E6%8F%90%E5%8F%96"><span class="nav-number">3.2.1.</span> <span class="nav-text">特征提取</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A0%B8%E5%BF%83%E7%BD%91%E7%BB%9C"><span class="nav-number">3.2.2.</span> <span class="nav-text">核心网络</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%86%E5%89%B2%E5%A4%B4"><span class="nav-number">3.2.3.</span> <span class="nav-text">分割头</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%87%A0%E4%BD%95%E5%BC%95%E5%AF%BC%E6%8D%9F%E5%A4%B1"><span class="nav-number">3.2.4.</span> <span class="nav-text">几何引导损失</span></a></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="SindreYang"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">SindreYang</p>
+  <div class="site-description" itemprop="description">沉淀后我愿意做一个温暖的人。有自己的喜好，有自己的原则，有自己的信仰，不急功近利，不浮夸轻薄，宠辱不惊，淡定安逸，心静如水。------不忘初心，方得始终</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">321</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">72</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL1NpbmRyZVlhbmc=" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;SindreYang"><i class="fa fa-fw fa-github"></i>GitHub</span>
+      </span>
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="bWFpbHRvOnl4QG12aWFpLmNvbQ==" title="E-Mail → mailto:yx@mviai.com"><i class="fa fa-fw fa-envelope"></i>E-Mail</span>
+      </span>
+  </div>
+  <div class="cc-license motion-element" itemprop="license">
+    <span class="exturl cc-opacity" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC9kZWVkLnpo"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+  <div class="languages">
+    <label class="lang-select-label">
+      <i class="fa fa-language"></i>
+      <span>简体中文</span>
+      <i class="fa fa-angle-up" aria-hidden="true"></i>
+    </label>
+    <select class="lang-select" data-canonical="">
+      
+        <option value="zh-CN" data-href="/2025/%E8%AE%BA%E6%96%87%E7%BF%BB%E8%AF%91_TSegFormer%E4%BD%BF%E7%94%A8%E5%87%A0%E4%BD%95%E5%BC%95%E5%AF%BC%E5%8F%98%E6%8D%A2%E5%99%A8%E5%9C%A8%E5%8F%A3%E8%85%94%E5%86%85%E6%89%AB%E6%8F%8F%E4%B8%AD%E8%BF%9B%E8%A1%8C%E4%B8%89%E7%BB%B4%E7%89%99%E9%BD%BF%E5%88%86%E5%89%B2/" selected="">
+          简体中文
+        </option>
+      
+        <option value="en" data-href="/en/2025/%E8%AE%BA%E6%96%87%E7%BF%BB%E8%AF%91_TSegFormer%E4%BD%BF%E7%94%A8%E5%87%A0%E4%BD%95%E5%BC%95%E5%AF%BC%E5%8F%98%E6%8D%A2%E5%99%A8%E5%9C%A8%E5%8F%A3%E8%85%94%E5%86%85%E6%89%AB%E6%8F%8F%E4%B8%AD%E8%BF%9B%E8%A1%8C%E4%B8%89%E7%BB%B4%E7%89%99%E9%BD%BF%E5%88%86%E5%89%B2/" selected="">
+          English
+        </option>
+      
+    </select>
+  </div>
+
+        
+
+<div class="copyright">
+  
+  &copy; 2018 – 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">SindreYang</span>
+</div><!-- 页面点击小红心 -->
+<script type="text/javascript" src="/js/love.js"></script>
+<!-- 背景波浪 -->
+<script color="0,0,255" opacity="0.5" zIndex="-1" count="99" src="https://cdn.jsdelivr.net/npm/canvas-nest.js@1/dist/canvas-nest.js"></script>
+
+
+<!-- 腾讯企业邮箱 -->
+<style>
+.bizmail_loginpanel {
+    font-size: 12px;
+    width: 300px;
+    height: auto;
+    background: transparent;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.bizmail_LoginBox {
+    padding: 10px 15px;
+}
+
+
+.bizmail_loginpanel form {
+    margin: 0;
+    padding: 0;
+}
+
+.bizmail_loginpanel input.text {
+    font-size: 12px;
+    width: 100px;
+    height: 20px;
+    margin: 0 2px;
+    background-color: transparent;
+    border:1px solid transparent;
+    box-shadow: none;
+    color: black;
+}
+
+.bizmail_loginpanel .bizmail_column {
+    height: 28px;
+}
+
+.bizmail_loginpanel .bizmail_column label {
+    display: block;
+    float: left;
+    width: 30px;
+    height: 24px;
+    line-height: 24px;
+    font-size: 12px;
+}
+
+.bizmail_loginpanel .bizmail_column .bizmail_inputArea {
+    float: left;
+    width: 240px;
+}
+
+.bizmail_loginpanel .bizmail_column span {
+    font-size: 12px;
+    word-wrap: break-word;
+    margin-left: 2px;
+    line-height: 200%;
+}
+
+.bizmail_loginpanel .bizmail_SubmitArea {
+    margin-left: 30px;
+    clear: both;
+}
+
+.bizmail_loginpanel .bizmail_SubmitArea a {
+    font-size: 12px;
+    margin-left: 5px;
+}
+
+.bizmail_loginpanel select {
+    width: 110px;
+    height: 20px;
+    margin: 0 2px;
+}
+.bizmail_loginpanel input {
+
+    background-color: rgba(83, 126, 236, 0.562);
+}
+
+
+</style>
+
+<script type="text/javascript">
+function checkInput() {
+    var e = document.form1.uin,
+        i = document.form1.pwd;
+    return 0 == e.value.length ? e.focus() : 0 == i.value.length ? i.focus() : (document.form1.submit(), setTimeout(" document.form1.pwd.value = '' ", 500)), !1
+}
+
+function writeLoginPanel(e) {
+    if (e && e.domainlist && -1 != e.domainlist.indexOf(".")) {
+        var a = "return checkInput()",
+            t = '<div id="divLoginpanelHor" class="bizmail_loginpanel" style="width:550px;"><div class="bizmail_LoginBox"><form name="form1" action="https://exmail.qq.com/cgi-bin/login" target="_blank" method="post" onsubmit="' + a + '"><input type="hidden" name="firstlogin" value="false" /><input type="hidden" name="errtemplate" value="dm_loginpage" /><input type="hidden" name="aliastype" value="other" /><input type="hidden" name="dmtype" value="bizmail" /><input type="hidden" name="p" value="" /><label>\u8d26\u53f7:</label><input type="text" name="uin" class="text" value="" />@#domainlist#<label>&nbsp&nbsp&nbsp;\u5bc6\u7801:</label><input type="password" name="pwd" class="text" value="" /><input type="submit" class="" name="" value="\u767b\u5f55" />&nbsp;<a href="https://exmail.qq.com/cgi-bin/readtemplate?check=false&t=biz_rf_portal#recovery" target="_blank">\u5fd8\u8bb0\u5bc6\u7801\uff1f</a></form></div></div>',
+            n = '<div id="divLoginpanelVer" class="bizmail_loginpanel"><div class="bizmail_LoginBox"><form name="form1" action="https://exmail.qq.com/cgi-bin/login" target="_blank" method="post" onsubmit="' + a + '"><input type="hidden" name="firstlogin" value="false" /><input type="hidden" name="errtemplate" value="dm_loginpage" /><input type="hidden" name="aliastype" value="other" /><input type="hidden" name="dmtype" value="bizmail" /><input type="hidden" name="p" value="" /><div class="bizmail_column"><label>\u8d26\u53f7:</label><div class="bizmail_inputArea"><input type="text" name="uin" class="text" value="" />@#domainlist#</div></div><div class="bizmail_column"><label>\u5bc6\u7801:</label><div class="bizmail_inputArea"><input type="password" name="pwd" class="text" value="" /></div></div><div class="bizmail_SubmitArea"><input type="submit" class="" name="" style="width:66px;" value="\u767b\u5f55" /><a href="https://exmail.qq.com/cgi-bin/readtemplate?check=false&t=biz_rf_portal#recovery" target="_blank">\u5fd8\u8bb0\u5bc6\u7801\uff1f</a></div></form></div></div>',
+            l = e.domainlist.split(";");
+        if (1 == l.length) var m = '<span>#domain#</span><input type="hidden" name="domain" value="#domain#" />'.replace(/#domain#/g, l[0]);
+        else {
+            m = '<select name="domain">';
+            for (i = 0; i < l.length; i++) m += '<option value="' + l[i] + '">' + l[i] + "</option>";
+            m += "</select>"
+        }
+        e.mode && "vertical" != e.mode && "both" != e.mode || document.write(n.replace(/#domainlist#/g, m)), "horizontal" != e.mode && "both" != e.mode || document.write(t.replace(/#domainlist#/g, m))
+    }
+}
+
+</script>      
+
+<script type="text/javascript"> writeLoginPanel({domainlist:"mviai.com", mode:"horizontal"});</script>      
+
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script size="300" alpha="0.6" zIndex="-1" src="/lib/canvas-ribbon/canvas-ribbon.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/medium-zoom@1/dist/medium-zoom.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+  <script defer src="/lib/three/three.min.js"></script>
+    <script defer src="/lib/three/three-waves.min.js"></script>
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+<script>
+document.querySelectorAll('.pdfobject-container').forEach(element => {
+  let url = element.dataset.target;
+  let pdfOpenParams = {
+    navpanes : 0,
+    toolbar  : 0,
+    statusbar: 0,
+    pagemode : 'thumbs',
+    view     : 'FitH'
+  };
+  let pdfOpenFragment = '#' + Object.entries(pdfOpenParams).map(([key, value]) => `${key}=${encodeURIComponent(value)}`).join('&');
+  let fullURL = `/lib/pdf/web/viewer.html?file=${encodeURIComponent(url)}${pdfOpenFragment}`;
+
+  if (NexT.utils.supportsPDFs()) {
+    element.innerHTML = `<embed class="pdfobject" src="${url + pdfOpenFragment}" type="application/pdf" style="height: ${element.dataset.height};">`;
+  } else {
+    element.innerHTML = `<iframe src="${fullURL}" style="height: ${element.dataset.height};" frameborder="0"></iframe>`;
+  }
+});
+</script>
+
+
+
+
+  
+
+  
+
+  <script>
+  NexT.utils.loadComments(document.querySelector('#SOHUCS'), () => {
+    var appid = 'cyxmItxjS';
+    var conf = 'e5e71132d9086bb54aeeba6e88e87df9';
+    var width = window.innerWidth || document.documentElement.clientWidth;
+    if (width < 960) {
+      window.document.write('<script id="changyan_mobile_js" charset="utf-8" type="text/javascript" src="https://cy-cdn.kuaizhan.com/upload/mobile/wap-js/changyan_mobile.js?client_id=' + appid + '&conf=' + conf + '"><\/script>');
+    } else {
+      var loadJs=function(d,a){var c=document.getElementsByTagName("head")[0]||document.head||document.documentElement;var b=document.createElement("script");b.setAttribute("type","text/javascript");b.setAttribute("charset","UTF-8");b.setAttribute("src",d);if(typeof a==="function"){if(window.attachEvent){b.onreadystatechange=function(){var e=b.readyState;if(e==="loaded"||e==="complete"){b.onreadystatechange=null;a()}}}else{b.onload=a}}c.appendChild(b)};loadJs("https://changyan.sohu.com/upload/changyan.js",function(){window.changyan.api.config({appid:appid,conf:conf})});
+    }
+  });
+  </script>
+  <script src="https://cy-cdn.kuaizhan.com/upload/plugins/plugins.count.js"></script>
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/z16.model.json"},"display":{"position":"left","width":75,"height":150},"mobile":{"show":true},"log":false});</script></body>
+</html>
+
+
+
+
